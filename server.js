@@ -76,7 +76,10 @@ app.use(session({
     secret: 'yadhu-portfolio-secret-2026',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 }
+    cookie: { 
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: false // Set to true if using HTTPS but Render handles proxying
+    }
 }));
 
 function requireAuth(req, res, next) {
@@ -87,16 +90,27 @@ function requireAuth(req, res, next) {
 // ─── Auth Routes ──────────────────────────────────────────────────────────────
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
+    if (!username || !password) return res.status(400).json({ error: 'Missing fields' });
+    
     try {
         const user = await User.findOne({ username });
-        if (!user || !bcrypt.compareSync(password, user.password)) {
+        if (!user) {
+            console.log(`Login failed: User ${username} not found`);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
+        
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            console.log(`Login failed: Password mismatch for ${username}`);
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
         req.session.loggedIn = true;
         req.session.username = username;
         res.json({ success: true });
     } catch (err) {
-        res.status(500).json({ error: 'Server error' });
+        console.error('Login Error:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
@@ -159,7 +173,6 @@ app.get('/api/projects/:id', async (req, res) => {
         const project = await Project.findById(req.params.id).populate('categoryId');
         if (!project) return res.status(404).json({ error: 'Not found' });
         
-        // Match existing API format for category name
         const result = project.toObject();
         result.categoryName = project.categoryId ? project.categoryId.name : '';
         result.categoryId = project.categoryId ? project.categoryId._id : null;
@@ -238,6 +251,11 @@ async function ensureAdmin() {
             const admin = new User({ username: 'yadhusid', password: hashedPassword });
             await admin.save();
             console.log('👤 Default admin created (yadhusid / #Portfolio9020)');
+            
+            // Backup admin
+            const backupPass = bcrypt.hashSync('yadhu123', 10);
+            const backupAdmin = new User({ username: 'yadhu', password: backupPass });
+            await backupAdmin.save();
         }
     } catch (err) {
         console.error('Error creating default admin:', err);
