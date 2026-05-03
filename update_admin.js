@@ -13,21 +13,21 @@ async function updateAdmin() {
         await mongoose.connect(process.env.MONGODB_URI);
         console.log('📦 Connected to MongoDB Atlas');
 
-        const username = 'yadhusid';
-        const password = '#Portfolio9020';
-        const hashedPassword = bcrypt.hashSync(password, 10);
+        const users = [
+            { username: 'yadhusid', password: '#Portfolio9020' },
+            { username: 'yadhu', password: 'yadhu123' }
+        ];
 
-        // Delete old admin if exists
-        await User.deleteMany({ username: 'admin' });
-        
-        // Update or create new admin
-        await User.findOneAndUpdate(
-            { username },
-            { username, password: hashedPassword },
-            { upsert: true, new: true }
-        );
+        for (const u of users) {
+            const hashedPassword = bcrypt.hashSync(u.password, 10);
+            await User.findOneAndUpdate(
+                { username: u.username },
+                { username: u.username, password: hashedPassword },
+                { upsert: true, new: true }
+            );
+            console.log(`✅ User ${u.username} updated.`);
+        }
 
-        console.log(`✅ Admin user updated to: ${username}`);
         process.exit(0);
     } catch (err) {
         console.error('❌ Error updating admin:', err);
