@@ -234,10 +234,10 @@ async function ensureAdmin() {
     try {
         const count = await User.countDocuments();
         if (count === 0) {
-            const hashedPassword = bcrypt.hashSync('admin123', 10);
-            const admin = new User({ username: 'admin', password: hashedPassword });
+            const hashedPassword = bcrypt.hashSync('#Portfolio9020', 10);
+            const admin = new User({ username: 'yadhusid', password: hashedPassword });
             await admin.save();
-            console.log('👤 Default admin created (admin / admin123)');
+            console.log('👤 Default admin created (yadhusid / #Portfolio9020)');
         }
     } catch (err) {
         console.error('Error creating default admin:', err);
