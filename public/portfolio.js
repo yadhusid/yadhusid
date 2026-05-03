@@ -54,12 +54,14 @@
         gridEl.innerHTML = filtered.map((p, i) => {
             const cat = allCategories.find(c => c.id === p.categoryId);
             const delay = ['', 'delay-1', 'delay-2'][i % 3];
+            // Cycle through the neutral glass backgrounds for a monochrome look
+            const glassClass = ['bg-glass-grey-1', 'bg-glass-grey-2', 'bg-glass-grey-3', 'bg-glass-grey-4'][i % 4];
             return `
             <div class="project-card fade-up ${delay}">
                 <a href="/project.html?id=${p.id}" style="text-decoration:none;color:inherit;">
                     ${p.coverImage
                         ? `<img src="${p.coverImage}" alt="${p.title}" style="width:100%;height:250px;object-fit:cover;">`
-                        : `<div class="project-image-placeholder gradient-${(i % 3) + 1}"><span>${cat ? cat.name : 'Project'}</span></div>`}
+                        : `<div class="project-image-placeholder ${glassClass}"><span>${cat ? cat.name : 'Project'}</span></div>`}
                     <div class="project-info">
                         ${cat ? `<span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:#6366f1;font-weight:600;">${cat.name}</span>` : ''}
                         <h3 style="margin-top:0.5rem;">${p.title}</h3>

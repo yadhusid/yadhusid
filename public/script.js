@@ -72,7 +72,28 @@ if (contactForm) {
     });
 }
 
-// Header scroll effect
+// Mobile Menu Toggle
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+const navItems = document.querySelectorAll('.nav-links a');
+
+if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+}
+
+// Header scroll effect - Removed dark transition to maintain white glass theme
+/*
 const header = document.querySelector('header');
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
@@ -83,3 +104,4 @@ window.addEventListener('scroll', () => {
         header.style.boxShadow = 'none';
     }
 });
+*/

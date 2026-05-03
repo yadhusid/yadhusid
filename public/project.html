@@ -9,11 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0f;
-            --text: #ffffff;
-            --muted: #a0a0ab;
-            --accent: #6366f1;
-            --accent2: #ec4899;
+            --bg: #ffffff;
+            --text: #000000;
+            --muted: #555555;
+            --accent: #000000;
+            --accent2: #333333;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         html { scroll-behavior:smooth; }
@@ -22,12 +22,12 @@
         /* Nav */
         nav {
             position: fixed; top:0; width:100%; padding:1.2rem 2rem;
-            background:rgba(10,10,15,0.85); backdrop-filter:blur(12px);
-            border-bottom:1px solid rgba(255,255,255,0.05);
+            background:rgba(255,255,255,0.7); backdrop-filter:blur(20px) saturate(180%);
+            border-bottom:1px solid rgba(0,0,0,0.05);
             display:flex; align-items:center; justify-content:space-between; z-index:100;
         }
         .nav-logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:1.3rem; letter-spacing:2px; text-decoration:none; color:var(--text); }
-        .nav-back { display:flex; align-items:center; gap:0.5rem; color:var(--muted); text-decoration:none; font-size:0.9rem; transition:color 0.2s; }
+        .nav-back { display:flex; align-items:center; gap:0.5rem; color:var(--muted); text-decoration:none; font-size:0.9rem; transition:color 0.2s; font-weight: 600; }
         .nav-back:hover { color:var(--text); }
 
         /* Hero */
@@ -35,18 +35,19 @@
             width:100%; height:75vh; min-height:450px;
             position:relative; overflow:hidden;
             display:flex; align-items:flex-end;
+            background: #f8f8f8;
         }
         .hero-img {
             position:absolute; inset:0; width:100%; height:100%;
-            object-fit:cover; filter:brightness(0.4);
+            object-fit:cover; filter: grayscale(0.2) contrast(1.1);
         }
         .hero-placeholder {
             position:absolute; inset:0;
-            background:linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background: #eeeeee;
         }
         .hero-gradient {
             position:absolute; inset:0;
-            background:linear-gradient(to top, rgba(10,10,15,1) 0%, rgba(10,10,15,0.4) 50%, rgba(10,10,15,0.1) 100%);
+            background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
         }
         .hero-content {
             position:relative; z-index:2; padding:4rem 2rem 3rem;
@@ -54,16 +55,17 @@
         }
         .project-category {
             display:inline-block; padding:0.4rem 1rem; border-radius:20px;
-            background:rgba(99,102,241,0.2); border:1px solid rgba(99,102,241,0.4);
-            color:var(--accent); font-size:0.8rem; font-weight:600;
+            background:rgba(0,0,0,0.05); border:1px solid rgba(0,0,0,0.1);
+            color:var(--text); font-size:0.8rem; font-weight:600;
             text-transform:uppercase; letter-spacing:2px; margin-bottom:1.25rem;
         }
         .project-title {
             font-family:'Outfit',sans-serif; font-size:clamp(2rem,5vw,3.5rem);
             font-weight:800; line-height:1.1; margin-bottom:1rem;
+            color: var(--text);
         }
         .project-desc {
-            color:rgba(255,255,255,0.7); font-size:1.1rem; max-width:600px; line-height:1.7;
+            color: var(--muted); font-size:1.1rem; max-width:600px; line-height:1.7;
         }
 
         /* Case Study Body */
@@ -76,7 +78,7 @@
         .block-text {
             font-size: 1.1rem;
             line-height: 1.9;
-            color: rgba(255,255,255,0.85);
+            color: var(--text);
             margin-bottom: 3rem;
         }
 
@@ -85,7 +87,7 @@
             border-radius: 16px;
             margin-bottom: 3rem;
             display: block;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
             transition: transform 0.4s ease;
         }
         .block-image:hover { transform: scale(1.01); }
@@ -96,8 +98,8 @@
             height: 60vh; flex-direction: column; gap: 1rem; color: var(--muted);
         }
         .spinner {
-            width:40px; height:40px; border:3px solid rgba(255,255,255,0.1);
-            border-top-color: var(--accent); border-radius:50%;
+            width:40px; height:40px; border:3px solid rgba(0,0,0,0.05);
+            border-top-color: var(--text); border-radius:50%;
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -105,7 +107,7 @@
         /* Footer */
         footer {
             text-align:center; padding:2rem; color:var(--muted);
-            font-size:0.9rem; border-top:1px solid rgba(255,255,255,0.05);
+            font-size:0.9rem; border-top:1px solid rgba(0,0,0,0.05);
         }
 
         /* Fade-in animation */
