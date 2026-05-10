@@ -130,7 +130,7 @@
         }
 
         .nav-main-row {
-            @apply flex items-center justify-between w-full px-10;
+            @apply flex items-center justify-between w-full px-12;
             height: 50px;
             min-height: 50px;
             flex-shrink: 0;
@@ -138,16 +138,22 @@
         }
 
         #mobile-menu-content {
-            @apply flex flex-col items-center justify-center gap-6 py-8 opacity-0 pointer-events-none;
+            @apply hidden flex-col items-center justify-center gap-6 py-8 opacity-0 pointer-events-none;
             transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             transform: translateY(-20px);
             flex-grow: 1;
         }
 
         .glass-nav.active #mobile-menu-content {
-            @apply opacity-100 pointer-events-auto;
+            @apply flex opacity-100 pointer-events-auto;
             transform: translateY(0);
             transition-delay: 0.1s;
+        }
+
+        @media (min-width: 768px) {
+            #mobile-menu-content {
+                display: none !important;
+            }
         }
 
         /* Hamburger Animation Removed */
@@ -569,16 +575,17 @@
                         <li><a href="#projects" class="nav-scroll">Projects</a></li>
                     </ul>
                     
-                <div class="flex items-center gap-2 md:gap-4">
-                    <a href="#contact" class="hidden md:block bg-[#111] text-white px-6 py-2 rounded-full text-[13px] font-medium nav-scroll">
-                        Let's Talk
-                    </a>
-                    <!-- Mobile Hamburger -->
-                    <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
-                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                    </button>
+                    <div class="flex items-center gap-2 md:gap-4">
+                        <a href="#contact" class="hidden md:block bg-[#111] text-white px-6 py-2 rounded-full text-[13px] font-medium nav-scroll">
+                            Let's Talk
+                        </a>
+                        <!-- Mobile Hamburger -->
+                        <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
+                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
             
