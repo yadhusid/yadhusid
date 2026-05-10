@@ -434,12 +434,20 @@ class VisualCMS {
             // Extract Styles
             const style = window.getComputedStyle(el);
             data.style = {
-                fontSize: style.fontSize,
-                fontFamily: style.fontFamily,
-                paddingBottom: style.paddingBottom,
-                marginBottom: style.marginBottom,
-                borderRadius: style.borderRadius
+                fontSize: style.fontSize || '16px',
+                fontFamily: style.fontFamily || 'sans-serif',
+                paddingBottom: style.paddingBottom || '0px',
+                marginBottom: style.marginBottom || '0px',
+                borderRadius: style.borderRadius || '0px'
             };
+
+            // Banner Specific Styles
+            if (data.isBanner) {
+                const glass = el.querySelector('.glass-overlay');
+                if (glass) {
+                    data.glassOpacity = window.getComputedStyle(glass).opacity || 1;
+                }
+            }
         }
 
         window.parent.postMessage({

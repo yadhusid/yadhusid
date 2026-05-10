@@ -209,9 +209,18 @@
 
         function renderProperties(data) {
             const panel = document.getElementById('properties-panel');
+            if (!data) {
+                panel.innerHTML = '<div style="padding: 2.5rem; text-align: center; color: var(--muted); font-size: 0.7rem;">Select an element to edit properties.</div>';
+                return;
+            }
+
             let html = '';
 
-            if (data.content !== undefined) {
+            // --- Context Header ---
+            html += `<div style="padding: 1.5rem 1.5rem 0; color: var(--accent); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800;">Editing ${data.isBanner ? 'Layered Banner' : (data.tagName || 'Element')}</div>`;
+
+            // --- 1. Content Section ---
+            if (data.content !== undefined && !data.isBanner) {
                 html += createFolder('Content', `
                     <div class="property-control">
                         <label>Text / HTML</label>
@@ -220,49 +229,71 @@
                 `, true);
             }
 
+            // --- 2. Layered Banner Configuration (Folder 1 / Folder 2 style) ---
             if (data.isBanner) {
-                html += createFolder('Banner Media', `
+                // Folder 1: Top Layer (Glass UI)
+                html += createFolder('Layer 1: Interface (Glass Overlay)', `
                     <div class="property-control">
-                        <label>Upload Media (Video/GIF/Image)</label>
-                        <div class="media-upload-zone" onclick="triggerMediaUpload('${data.id}')">
-                            <p>Click to upload .mp4, .gif, or .jpg</p>
+                        <label>Glass Effect Opacity</label>
+                        <div class="property-group">
+                            <input type="range" min="0" max="100" value="${(data.glassOpacity || 1) * 100}" oninput="updateBannerGlass('${data.id}', this.value)">
                         </div>
+                        <p style="font-size: 10px; color: var(--muted); margin-top: 5px;">Adjust the intensity of the ribbed glass texture.</p>
                     </div>
+                `, true);
+
+                // Folder 2: Bottom Layer (Media Content)
+                html += createFolder('Layer 2: Media (Video/GIF/Image)', `
                     <div class="property-control">
-                        <label>Glass Overlay Opacity</label>
-                        <input type="range" min="0" max="100" value="100" oninput="updateBannerGlass('${data.id}', this.value)">
+                        <label>Media Source</label>
+                        <div class="media-upload-zone" onclick="triggerMediaUpload('${data.id}')">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin:0 auto; opacity:0.5;"><path d="M12 4v16m8-8H4"/></svg>
+                            <p>${data.src ? 'Replace current media' : 'Click to upload media'}</p>
+                        </div>
+                        <p style="font-size: 10px; color: var(--muted); margin-top: 10px;">Supports .mp4, .gif, .jpg, and .png</p>
                     </div>
+                    ${data.src ? `
+                    <div class="property-control">
+                        <label>Current Media</label>
+                        <div style="font-size: 10px; color: var(--accent2); word-break: break-all; opacity: 0.6;">${data.src.substring(0, 50)}...</div>
+                    </div>` : ''}
                 `, true);
             }
 
-            const currentFont = data.style?.fontFamily?.split(',')[0].replace(/['"]/g, '') || 'Inter';
-            html += createFolder('Typography', `
-                <div class="property-control">
-                    <label>Font Type</label>
-                    <select onchange="updateStyle('${data.id}', 'fontFamily', this.value)">
-                        <option value="'Inter', sans-serif" ${currentFont === 'Inter' ? 'selected' : ''}>Inter (Body)</option>
-                        <option value="'Outfit', sans-serif" ${currentFont === 'Outfit' ? 'selected' : ''}>Outfit (Heading)</option>
-                    </select>
-                </div>
-                <div class="property-control">
-                    <label>Font Size</label>
-                    <div class="property-group">
-                        <input type="number" value="${parseInt(data.style?.fontSize) || 16}" oninput="updateStyle('${data.id}', 'fontSize', this.value + 'px')">
-                        <span class="unit-label">PX</span>
+            // --- 3. Typography Section ---
+            if (data.style) {
+                const currentFont = data.style.fontFamily.split(',')[0].replace(/['"]/g, '');
+                html += createFolder('Typography', `
+                    <div class="property-control">
+                        <label>Font Type</label>
+                        <select onchange="updateStyle('${data.id}', 'fontFamily', this.value)">
+                            <option value="'Inter', sans-serif" ${currentFont === 'Inter' ? 'selected' : ''}>Inter (Body)</option>
+                            <option value="'Outfit', sans-serif" ${currentFont === 'Outfit' ? 'selected' : ''}>Outfit (Heading)</option>
+                        </select>
                     </div>
-                </div>
-            `);
+                    <div class="property-control">
+                        <label>Font Size</label>
+                        <div class="property-group">
+                            <input type="number" value="${parseInt(data.style.fontSize) || 16}" oninput="updateStyle('${data.id}', 'fontSize', this.value + 'px')">
+                            <span class="unit-label">PX</span>
+                        </div>
+                    </div>
+                `);
+            }
 
-            html += createFolder('Layout & Spacing', `
-                <div class="property-control">
-                    <label>Inner Padding (Bottom)</label>
-                    <input type="range" min="0" max="200" value="${parseInt(data.style?.paddingBottom) || 0}" oninput="updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
-                </div>
-                <div class="property-control">
-                    <label>Corner Radius</label>
-                    <input type="range" min="0" max="100" value="${parseInt(data.style?.borderRadius) || 0}" oninput="updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
-                </div>
-            `);
+            // --- 4. Layout & Spacing Section ---
+            if (data.style) {
+                html += createFolder('Layout & Spacing', `
+                    <div class="property-control">
+                        <label>Inner Padding (Bottom)</label>
+                        <input type="range" min="0" max="200" value="${parseInt(data.style.paddingBottom) || 0}" oninput="updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
+                    </div>
+                    <div class="property-control">
+                        <label>Corner Radius</label>
+                        <input type="range" min="0" max="100" value="${parseInt(data.style.borderRadius) || 0}" oninput="updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
+                    </div>
+                `);
+            }
 
             panel.innerHTML = html;
         }
