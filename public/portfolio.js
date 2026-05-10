@@ -75,21 +75,17 @@
             const descColor = 'text-white/50';
 
             return `
-            <a href="/project.html?id=${p.id}" class="${bgColor} h-[550px] rounded-[32px] overflow-hidden relative group cursor-pointer hover:shadow-2xl transition-all duration-300 block">
+            <a href="/project.html?id=${p.id}" class="bg-[#0d0d0d] h-[380px] rounded-[24px] overflow-hidden relative group cursor-pointer transition-all duration-500 block border border-white/5">
                 ${p.coverImage
-                    ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700">`
-                    : ''}
-                <div class="absolute inset-0 p-12 ${textColor} flex flex-col justify-between z-10">
-                    <div>
-                        <h3 class="text-xl font-bold uppercase tracking-widest mb-3 leading-snug">${p.title}</h3>
-                        <div class="w-10 h-[1px] ${hrColor} mb-6"></div>
-                        <p class="text-[11px] ${descColor} max-w-[200px] leading-relaxed font-light">
-                            ${p.description ? p.description.substring(0, 150) + (p.description.length > 150 ? '...' : '') : 'Explore the process and details of this design project.'}
-                        </p>
-                    </div>
-                    <div>
-                        <div class="font-bold text-sm mb-1 tracking-widest uppercase opacity-80">${cat ? cat.name : 'Design'}</div>
-                        <div class="text-[10px] uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">View Project →</div>
+                    ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105">`
+                    : '<div class="absolute inset-0 bg-[#111]"></div>'}
+                
+                <!-- Hover Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 z-10">
+                    <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF4B2B] mb-2">${cat ? cat.name : 'Design'}</div>
+                        <h3 class="text-xl font-bold text-white tracking-tight leading-tight">${p.title}</h3>
+                        <div class="text-[11px] text-white/50 uppercase tracking-widest mt-4 opacity-0 group-hover:opacity-100 transition-opacity delay-100">View Project →</div>
                     </div>
                 </div>
             </a>`;
