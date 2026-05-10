@@ -120,17 +120,17 @@
             height: 50px;
             border-radius: var(--nav-radius) !important;
             transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        border-radius 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                        border-radius 0.4s ease;
             z-index: 100;
         }
 
         .glass-nav.active {
-            height: 350px;
+            height: 340px;
             border-radius: 24px !important;
         }
 
         .nav-main-row {
-            @apply flex items-center justify-between w-full px-6 md:px-10;
+            @apply flex items-center justify-between w-full px-10;
             height: 50px;
             min-height: 50px;
             flex-shrink: 0;
@@ -139,14 +139,15 @@
 
         #mobile-menu-content {
             @apply flex flex-col items-center justify-center gap-6 py-8 opacity-0 pointer-events-none;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(-20px);
+            flex-grow: 1;
         }
 
         .glass-nav.active #mobile-menu-content {
             @apply opacity-100 pointer-events-auto;
             transform: translateY(0);
-            transition-delay: 0.2s;
+            transition-delay: 0.1s;
         }
 
         /* Hamburger Animation Removed */
