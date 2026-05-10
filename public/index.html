@@ -130,24 +130,32 @@
         }
 
         .nav-main-row {
-            @apply flex items-center justify-between w-full px-12;
+            @apply flex items-center justify-between w-full;
             height: 50px;
             min-height: 50px;
             flex-shrink: 0;
             color: #111111;
+            padding: 0 40px !important;
         }
 
         #mobile-menu-content {
-            @apply hidden flex-col items-center justify-center gap-6 py-8 opacity-0 pointer-events-none;
-            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            padding: 32px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.4s ease;
             transform: translateY(-20px);
-            flex-grow: 1;
+            pointer-events: none;
         }
 
         .glass-nav.active #mobile-menu-content {
-            @apply flex opacity-100 pointer-events-auto;
+            display: flex;
+            opacity: 100;
+            pointer-events: auto;
             transform: translateY(0);
-            transition-delay: 0.1s;
         }
 
         @media (min-width: 768px) {
@@ -590,7 +598,7 @@
             </div>
             
             <!-- Mobile Menu Content (Accordion) -->
-            <div id="mobile-menu-content" class="md:hidden flex flex-col items-center justify-center gap-6 py-8 opacity-0 transition-all duration-500 pointer-events-none">
+            <div id="mobile-menu-content">
                 <a href="#home" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
                 <a href="#expertise" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
                 <a href="#projects" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
