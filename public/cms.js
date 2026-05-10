@@ -196,6 +196,32 @@ class VisualCMS {
                     this.addSkill();
                     dummy.remove();
                 }
+
+                if (action === 'update-glass') {
+                    const container = document.getElementById(e.data.id);
+                    if (container) {
+                        const glass = container.querySelector('.glass-overlay');
+                        if (glass) glass.style.opacity = e.data.value;
+                    }
+                }
+
+                if (action === 'get-html') {
+                    const clone = document.documentElement.cloneNode(true);
+                    
+                    // Cleanup CMS artifacts
+                    clone.querySelectorAll('.cms-sidebar, .cms-floating-toolbar, .cms-bottom-toolbar, script[src*="cms.js"], .editable, .editable-media').forEach(el => {
+                        el.classList.remove('editable', 'editable-media');
+                        el.removeAttribute('contenteditable');
+                        el.removeAttribute('title');
+                        if (el.tagName === 'SCRIPT' || el.classList.contains('cms-sidebar')) el.remove();
+                    });
+
+                    // Remove auto-generated IDs from media elements
+                    clone.querySelectorAll('[id^="media-"]').forEach(el => el.removeAttribute('id'));
+
+                    const finalHTML = '<!DOCTYPE html>\n' + clone.outerHTML;
+                    window.parent.postMessage({ action: 'html-response', html: finalHTML }, '*');
+                }
             }
         });
     }

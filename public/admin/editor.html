@@ -6,7 +6,61 @@
     <title>Visual Editor | yadsid.com</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-        /* Properties Panel Enhancements */
+    <style>
+        :root {
+            --bg: #000000;
+            --sidebar: #050505;
+            --canvas-bg: #0d0d0d;
+            --border: rgba(255,255,255,0.12);
+            --accent: #3b82f6;
+            --text: #ffffff;
+            --muted: #a0a0ab;
+            --input-bg: rgba(255,255,255,0.06);
+            --input-focus: rgba(255,255,255,0.1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; transition: none !important; }
+        body { font-family:'Inter', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+        /* Toolbar */
+        .toolbar {
+            height: 64px; background: var(--bg); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; z-index: 1000;
+        }
+        .toolbar-logo { font-family:'Outfit', sans-serif; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px; color: var(--text); text-transform: uppercase; }
+
+        /* Workspace */
+        .workspace { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+        /* Sidebar Architecture */
+        .sidebar {
+            background: var(--sidebar); display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
+            min-width: 120px;
+        }
+        .sidebar-left { width: 220px; }
+        .sidebar-right { width: 300px; }
+
+        /* Resizers */
+        .resizer {
+            width: 4px; background: transparent; cursor: col-resize; transition: background 0.2s !important;
+            z-index: 100; position: relative;
+        }
+        .resizer:hover, .resizer.active { background: var(--accent); }
+
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+        .sidebar-header h3 { font-family:'Outfit', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 800; }
+
+        /* Canvas Area */
+        .canvas-area {
+            flex: 1; background: var(--canvas-bg); display: flex; justify-content: center; align-items: center; padding: 2rem; overflow: auto;
+        }
+        #canvas-container {
+            width: 100%; height: 100%; background: #000;
+            box-shadow: 0 60px 150px rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden;
+            transition: width 0.3s ease;
+        }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Properties Panel Folder System */
         .property-folder { border-bottom: 1px solid var(--border); }
         .folder-header { 
             padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; 
@@ -22,10 +76,12 @@
         .property-control { padding: 1rem 1.5rem; }
         .property-control label { display: block; font-size: 0.6rem; color: var(--muted); margin-bottom: 0.5rem; font-weight: 600; }
 
-        select {
+        input[type=number], input[type=text], textarea, select {
             width: 100%; padding: 0.8rem 1rem; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
             font-size: 0.85rem; outline: none; color: var(--text); appearance: none;
         }
+        input:focus, textarea:focus, select:focus { background: var(--input-focus); border-color: var(--accent); }
+        input[type=range] { width: 100%; margin-top: 1rem; accent-color: var(--accent); cursor: pointer; }
 
         .media-upload-zone {
             border: 1px dashed var(--border); border-radius: 12px; padding: 1.5rem; text-align: center;
@@ -38,15 +94,27 @@
         .property-group input { flex: 1; }
         .unit-label { font-size: 10px; color: var(--muted); font-weight: 700; width: 20px; }
 
+        /* Buttons */
+        .btn-primary { padding: 0.75rem 1.5rem; background: var(--accent); color: #fff !important; border: none; border-radius: 50px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 800; cursor: pointer; }
+        .btn-sm { padding: 0.5rem 1rem; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border); font-size: 0.7rem; font-weight: 700; cursor: pointer; color: var(--text); }
+        .btn-sm.active { background: var(--text); color: #000 !important; border-color: var(--text); }
+
+        .toggle-group { display: flex; gap: 6px; background: var(--input-bg); padding: 6px; border-radius: 12px; border: 1px solid var(--border); }
+
+        .nav-item { 
+            padding: 1rem 1.5rem; font-size: 0.7rem; font-weight: 700; color: var(--muted); 
+            cursor: pointer; border-bottom: 1px solid var(--border); background: transparent;
+        }
+        .nav-item:hover { background: var(--input-bg); color: var(--text); }
     </style>
 </head>
 <body>
 
     <header class="toolbar">
         <div style="display:flex; align-items:center; gap:1.25rem;">
-            <button class="btn-sm" onclick="location.href='/admin/dashboard.html'" style="display:flex; align-items:center; gap:8px; background:var(--input-bg); border:1px solid var(--border);">
+            <button class="btn-sm" onclick="location.href='/admin/dashboard.html'" style="display:flex; align-items:center; gap:8px;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Back to CMS
+                Dashboard
             </button>
             <div class="toolbar-logo">Visual Editor</div>
         </div>
@@ -55,11 +123,10 @@
             <button class="btn-sm" onclick="setDevice('tablet', this)">Tablet</button>
             <button class="btn-sm" onclick="setDevice('mobile', this)">Mobile</button>
         </div>
-        <button class="btn-primary" onclick="publishChanges()" style="background:#3b82f6; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);">Publish Changes</button>
+        <button class="btn-primary" onclick="publishChanges(event)">Publish Changes</button>
     </header>
 
     <div class="workspace">
-        <!-- Sections Navigator -->
         <aside class="sidebar sidebar-left" id="left-sidebar">
             <div class="sidebar-header"><h3>Sections</h3></div>
             <div id="sections-list">
@@ -69,30 +136,23 @@
                 <div class="nav-item" onclick="focusSection('contact')">Contact Area</div>
                 <div class="nav-item" onclick="focusSection('footer')">Footer</div>
             </div>
-            <div style="padding: 1.25rem;">
-                <button class="btn-sm" style="width: 100%;" onclick="addSpacer()">+ Add Spacer</button>
-            </div>
         </aside>
 
-        <!-- LEFT RESIZER -->
         <div class="resizer" id="left-resizer"></div>
 
-        <!-- Canvas Area -->
         <main class="canvas-area" id="canvas-area">
             <div id="canvas-container">
                 <iframe id="visual-iframe" src="/?edit=true&embedded=true"></iframe>
             </div>
         </main>
 
-        <!-- RIGHT RESIZER -->
         <div class="resizer" id="right-resizer"></div>
 
-        <!-- Properties Panel -->
         <aside class="sidebar sidebar-right" id="right-sidebar">
             <div class="sidebar-header"><h3>Properties</h3></div>
             <div id="properties-panel">
-                <div style="padding: 2.5rem; text-align: center; color: var(--muted); font-size: 0.7rem; line-height: 1.6; letter-spacing: 0.5px;">
-                    Select an element on the canvas<br>to edit its properties.
+                <div style="padding: 2.5rem; text-align: center; color: var(--muted); font-size: 0.7rem; line-height: 1.6;">
+                    Select an element to edit properties.
                 </div>
             </div>
         </aside>
@@ -101,49 +161,30 @@
     <script>
         let currentElementData = null;
 
-        // --- RESIZABLE SIDEBARS ---
+        // --- Resizing Logic ---
         const leftSidebar = document.getElementById('left-sidebar');
         const rightSidebar = document.getElementById('right-sidebar');
         const leftResizer = document.getElementById('left-resizer');
         const rightResizer = document.getElementById('right-resizer');
-        const canvasArea = document.getElementById('canvas-area');
 
         let isResizingLeft = false;
         let isResizingRight = false;
 
-        leftResizer.addEventListener('mousedown', (e) => {
-            isResizingLeft = true;
-            leftResizer.classList.add('active');
-            canvasArea.classList.add('dragging');
-        });
-
-        rightResizer.addEventListener('mousedown', (e) => {
-            isResizingRight = true;
-            rightResizer.classList.add('active');
-            canvasArea.classList.add('dragging');
-        });
+        leftResizer.addEventListener('mousedown', () => isResizingLeft = true);
+        rightResizer.addEventListener('mousedown', () => isResizingRight = true);
 
         document.addEventListener('mousemove', (e) => {
             if (isResizingLeft) {
-                const newWidth = e.clientX;
-                if (newWidth > 120 && newWidth < 400) {
-                    leftSidebar.style.width = newWidth + 'px';
-                }
+                leftSidebar.style.width = e.clientX + 'px';
             }
             if (isResizingRight) {
-                const newWidth = window.innerWidth - e.clientX;
-                if (newWidth > 150 && newWidth < 500) {
-                    rightSidebar.style.width = newWidth + 'px';
-                }
+                rightSidebar.style.width = (window.innerWidth - e.clientX) + 'px';
             }
         });
 
         document.addEventListener('mouseup', () => {
             isResizingLeft = false;
             isResizingRight = false;
-            leftResizer.classList.remove('active');
-            rightResizer.classList.remove('active');
-            canvasArea.classList.remove('dragging');
         });
 
         function setDevice(dev, btn) {
@@ -156,8 +197,7 @@
         }
 
         function focusSection(id) {
-            const iframe = document.getElementById('visual-iframe');
-            iframe.contentWindow.postMessage({ source: 'cms-dashboard', action: 'scroll-to-section', id: id }, '*');
+            sendToIframe({ source: 'cms-dashboard', action: 'scroll-to-section', id: id });
         }
 
         window.addEventListener('message', (e) => {
@@ -171,7 +211,6 @@
             const panel = document.getElementById('properties-panel');
             let html = '';
 
-            // --- 1. Content Section ---
             if (data.content !== undefined) {
                 html += createFolder('Content', `
                     <div class="property-control">
@@ -181,70 +220,47 @@
                 `, true);
             }
 
-            // --- 2. Media Section (Banner Specific) ---
             if (data.isBanner) {
                 html += createFolder('Banner Media', `
                     <div class="property-control">
                         <label>Upload Media (Video/GIF/Image)</label>
                         <div class="media-upload-zone" onclick="triggerMediaUpload('${data.id}')">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin:0 auto;"><path d="M12 4v16m8-8H4"/></svg>
                             <p>Click to upload .mp4, .gif, or .jpg</p>
                         </div>
                     </div>
                     <div class="property-control">
                         <label>Glass Overlay Opacity</label>
-                        <div class="property-group">
-                            <input type="range" min="0" max="100" value="100" oninput="updateBannerGlass('${data.id}', this.value)">
-                        </div>
+                        <input type="range" min="0" max="100" value="100" oninput="updateBannerGlass('${data.id}', this.value)">
                     </div>
                 `, true);
             }
 
-            // --- 3. Typography Section ---
-            const currentFont = data.style.fontFamily.split(',')[0].replace(/['"]/g, '');
+            const currentFont = data.style?.fontFamily?.split(',')[0].replace(/['"]/g, '') || 'Inter';
             html += createFolder('Typography', `
                 <div class="property-control">
                     <label>Font Type</label>
-                    <select onchange="updateStyle('${data.id}', 'fontFamily', this.value); document.getElementById('font-size-ctrl').style.display='block';">
+                    <select onchange="updateStyle('${data.id}', 'fontFamily', this.value)">
                         <option value="'Inter', sans-serif" ${currentFont === 'Inter' ? 'selected' : ''}>Inter (Body)</option>
                         <option value="'Outfit', sans-serif" ${currentFont === 'Outfit' ? 'selected' : ''}>Outfit (Heading)</option>
                     </select>
                 </div>
-                <div class="property-control" id="font-size-ctrl" style="display:${data.style.fontSize ? 'block' : 'none'}">
+                <div class="property-control">
                     <label>Font Size</label>
                     <div class="property-group">
-                        <input type="number" value="${parseInt(data.style.fontSize) || 16}" oninput="updateStyle('${data.id}', 'fontSize', this.value + 'px')">
+                        <input type="number" value="${parseInt(data.style?.fontSize) || 16}" oninput="updateStyle('${data.id}', 'fontSize', this.value + 'px')">
                         <span class="unit-label">PX</span>
                     </div>
-                    <input type="range" min="8" max="120" value="${parseInt(data.style.fontSize) || 16}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'fontSize', this.value + 'px')">
                 </div>
             `);
 
-            // --- 4. Layout & Spacing Section ---
             html += createFolder('Layout & Spacing', `
                 <div class="property-control">
                     <label>Inner Padding (Bottom)</label>
-                    <div class="property-group">
-                        <input type="number" value="${parseInt(data.style.paddingBottom) || 0}" oninput="updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
-                        <span class="unit-label">PX</span>
-                    </div>
-                    <input type="range" min="0" max="200" value="${parseInt(data.style.paddingBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
-                </div>
-                <div class="property-control">
-                    <label>Outer Margin (Bottom)</label>
-                    <div class="property-group">
-                        <input type="number" value="${parseInt(data.style.marginBottom) || 0}" oninput="updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
-                        <span class="unit-label">PX</span>
-                    </div>
-                    <input type="range" min="0" max="200" value="${parseInt(data.style.marginBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
+                    <input type="range" min="0" max="200" value="${parseInt(data.style?.paddingBottom) || 0}" oninput="updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
                 </div>
                 <div class="property-control">
                     <label>Corner Radius</label>
-                    <div class="property-group">
-                        <input type="number" value="${parseInt(data.style.borderRadius) || 0}" oninput="updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
-                        <span class="unit-label">PX</span>
-                    </div>
-                    <input type="range" min="0" max="100" value="${parseInt(data.style.borderRadius) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
+                    <input type="range" min="0" max="100" value="${parseInt(data.style?.borderRadius) || 0}" oninput="updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
                 </div>
             `);
 
@@ -258,9 +274,7 @@
                     <h4>${name}</h4>
                     <span class="folder-icon">▶</span>
                 </div>
-                <div class="folder-content">
-                    ${content}
-                </div>
+                <div class="folder-content">${content}</div>
             </div>`;
         }
 
@@ -282,11 +296,7 @@
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         const mediaType = file.type.startsWith('video') ? 'video' : 'image';
-                        sendToIframe({ 
-                            source: 'cms-dashboard', 
-                            action: 'update-media', 
-                            data: { id, mediaType, src: event.target.result } 
-                        });
+                        sendToIframe({ source: 'cms-dashboard', action: 'update-media', data: { id, mediaType, src: event.target.result } });
                     };
                     reader.readAsDataURL(file);
                 }
@@ -295,11 +305,8 @@
         }
 
         function updateBannerGlass(id, val) {
-            const container = document.getElementById('visual-iframe').contentDocument.getElementById(id);
-            if (container) {
-                const glass = container.querySelector('.glass-overlay');
-                if (glass) glass.style.opacity = val / 100;
-            }
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({ source: 'cms-dashboard', action: 'update-glass', id, value: val / 100 }, '*');
         }
 
         function sendToIframe(msg) {
@@ -307,40 +314,27 @@
             iframe.contentWindow.postMessage(msg, '*');
         }
 
-        function sendToIframe(msg) {
-            const iframe = document.getElementById('visual-iframe');
-            iframe.contentWindow.postMessage(msg, '*');
-        }
-
-        function publishChanges() {
+        async function publishChanges(event) {
             const btn = event.target;
             const originalText = btn.innerText;
             btn.innerText = 'Publishing...';
             btn.disabled = true;
 
-            // 1. Request HTML from Iframe
-            sendToIframe({ type: 'GET_HTML' });
+            sendToIframe({ source: 'cms-dashboard', action: 'get-html' });
 
-            // 2. Setup one-time listener for the response
             const responseHandler = async (e) => {
-                if (e.data.type === 'HTML_RESPONSE') {
+                if (e.data.action === 'html-response') {
                     window.removeEventListener('message', responseHandler);
-                    
                     try {
                         const res = await fetch('/admin/save-cms', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ html: e.data.html })
                         });
-                        
-                        if (res.ok) {
-                            alert('✅ Success! Changes published to yadsid.com');
-                        } else {
-                            const err = await res.json();
-                            alert('❌ Error: ' + (err.error || 'Failed to save'));
-                        }
+                        if (res.ok) alert('✅ Success! Website updated.');
+                        else alert('❌ Error: Save failed.');
                     } catch (err) {
-                        alert('❌ Network Error: Could not connect to server');
+                        alert('❌ Network Error.');
                     } finally {
                         btn.innerText = originalText;
                         btn.disabled = false;
@@ -348,10 +342,6 @@
                 }
             };
             window.addEventListener('message', responseHandler);
-        }
-        
-        function addSpacer() {
-            alert('Spacer element added to homepage sequence.');
         }
     </script>
 </body>
