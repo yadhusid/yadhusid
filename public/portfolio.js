@@ -80,8 +80,8 @@
                     ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105">`
                     : '<div class="absolute inset-0 bg-[#f8f8f8]"></div>'}
                 
-                <!-- Hover Overlay (Tighter Gradient - 20% Extension) -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 from-[0%] via-black/40 via-[15%] to-transparent to-[22%] opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6 z-10">
+                <!-- Hover Overlay (Smooth Bottom-Docked Blend) -->
+                <div class="absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6 z-10">
                     <div class="translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                         <h3 class="text-lg font-bold text-white tracking-tight leading-tight">${p.title}</h3>
                     </div>
