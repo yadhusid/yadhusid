@@ -106,6 +106,22 @@ class VisualCMS {
             <button class="cms-format-btn" data-command="formatBlock" data-value="P" style="font-size: 11px;">P</button>
         `;
         document.body.appendChild(this.floatingToolbar);
+
+        // Add Selection Styles
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .cms-hover { 
+                outline: 2px solid rgba(59, 130, 246, 0.4) !important; 
+                outline-offset: -2px !important; 
+            }
+            .cms-selected { 
+                outline: 2px solid #3b82f6 !important; 
+                outline-offset: -2px !important; 
+                box-shadow: 0 0 0 1000px rgba(59, 130, 246, 0.05) !important;
+            }
+            .editable:hover, .editable-media:hover { cursor: pointer; }
+        `;
+        document.head.appendChild(style);
     }
 
     makeElementsEditable() {
@@ -333,24 +349,41 @@ class VisualCMS {
             });
         });
 
+        // Highlight on Hover
+        document.addEventListener('mouseover', (e) => {
+            const el = e.target.closest('.editable, .editable-media');
+            if (el) el.classList.add('cms-hover');
+        });
+        document.addEventListener('mouseout', (e) => {
+            const el = e.target.closest('.editable, .editable-media');
+            if (el) el.classList.remove('cms-hover');
+        });
+
         document.addEventListener('click', (e) => {
             if (e.target.closest('.cms-floating-toolbar') || e.target.closest('.cms-bottom-toolbar') || e.target.closest('.cms-sidebar')) {
                 return;
             }
 
+            // Remove previous selection
+            document.querySelectorAll('.cms-selected').forEach(el => el.classList.remove('cms-selected'));
+
             const editable = e.target.closest('.editable');
             const media = e.target.closest('.editable-media');
 
             if (editable) {
+                e.preventDefault();
+                e.stopPropagation();
                 this.selectedElement = editable;
+                this.selectedElement.classList.add('cms-selected');
                 this.positionFloatingToolbar(this.selectedElement);
                 this.notifyDashboard('text', this.selectedElement);
             } else if (media) {
+                e.preventDefault();
+                e.stopPropagation();
                 this.selectedElement = media;
+                this.selectedElement.classList.add('cms-selected');
                 this.floatingToolbar.classList.remove('active');
                 this.notifyDashboard('media', this.selectedElement);
-                // Optionally still trigger immediate upload or wait for dashboard
-                // this.triggerMediaUpload(this.selectedElement);
             } else {
                 this.floatingToolbar.classList.remove('active');
                 this.selectedElement = null;
