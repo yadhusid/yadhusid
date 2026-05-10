@@ -135,7 +135,8 @@
             min-height: 50px;
             flex-shrink: 0;
             color: #111111;
-            padding: 0 40px !important;
+            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
         }
 
         #mobile-menu-content {
@@ -164,8 +165,6 @@
             }
         }
 
-        /* Hamburger Animation Removed */
-
         /* Scrolled state: dock to top edge */
         header.scrolled {
             top: 0 !important;
@@ -185,11 +184,10 @@
             display: none;
         }
         header.scrolled .nav-main-row {
-            padding-left: 40px !important;
-            padding-right: 40px !important;
+            padding-left: var(--global-padding-desktop) !important;
+            padding-right: var(--global-padding-desktop) !important;
         }
 
-        /* Hover Inversion Removed */
         .btn-invert:hover {
             background-color: white !important;
             color: #111 !important;
@@ -212,7 +210,18 @@
             --nav-radius: calc(32px - 8px);
         }
 
-        @media (max-width: 767px) {
+        @media (max-width: 1279px) and (min-width: 861px) {
+            .nav-main-row {
+                padding-left: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-right: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            }
+            header.scrolled .nav-main-row {
+                padding-left: var(--global-padding-tablet) !important;
+                padding-right: var(--global-padding-tablet) !important;
+            }
+        }
+
+        @media (max-width: 860px) {
             :root {
                 --radius-tl: 24px;
                 --radius-tr: 24px;
@@ -223,12 +232,12 @@
                 --nav-radius: calc(24px - 6px);
             }
             .nav-main-row {
-                
-                
+                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
             }
-            header.scrolled .glass-nav .nav-main-row {
-                padding-left: 40px !important;
-                padding-right: 40px !important;
+            header.scrolled .nav-main-row {
+                padding-left: var(--global-padding-mobile) !important;
+                padding-right: var(--global-padding-mobile) !important;
             }
             header.scrolled .glass-nav {
                 border-radius: 0 !important;
@@ -276,8 +285,6 @@
             transform: translateZ(0);
             will-change: backdrop-filter;
         }
-        
-        /* Scroll indicator bounce Removed */
         
         /* Textarea auto-grow: hide resize handle */
         textarea {
@@ -347,7 +354,7 @@
                 margin-right: var(--global-padding-tablet);
             }
         }
-        @media (max-width: 767px) {
+        @media (max-width: 1279px) and (min-width: 861px) {
             .global-padding {
                 padding-left: var(--global-padding-mobile);
                 padding-right: var(--global-padding-mobile);
@@ -413,8 +420,8 @@
             display: none;
         }
         header.scrolled .nav-main-row {
-            padding-left: 40px !important;
-            padding-right: 40px !important;
+            padding-left: var(--global-padding-desktop) !important;
+            padding-right: var(--global-padding-desktop) !important;
         }
 
         /* Hover Inversion Removed */
@@ -440,7 +447,7 @@
             --nav-radius: calc(32px - 8px);
         }
 
-        @media (max-width: 767px) {
+        @media (max-width: 1279px) and (min-width: 861px) {
             :root {
                 --radius-tl: 24px;
                 --radius-tr: 24px;
@@ -455,8 +462,8 @@
                 
             }
             header.scrolled .glass-nav .nav-main-row {
-                padding-left: 40px !important;
-                padding-right: 40px !important;
+                padding-left: var(--global-padding-desktop) !important;
+                padding-right: var(--global-padding-desktop) !important;
             }
             header.scrolled .glass-nav {
                 border-radius: 0 !important;
@@ -609,7 +616,14 @@
 
     <!-- Hero Section -->
     <section id="home" data-section-id="hero" class="w-full" style="padding: var(--hero-outer-padding); overflow: hidden;">
-        <div class="reeded-gradient relative flex flex-col justify-between w-full hero-banner-height hero-top-safe-zone" style="border-radius: var(--banner-radius); padding-bottom: 30px;">
+        <div class="reeded-gradient relative flex flex-col justify-between w-full hero-banner-height hero-top-safe-zone" style="border-radius: var(--banner-radius); padding-bottom: 30px;" id="hero-banner-container">
+            <!-- Media Layer -->
+            <div class="media-layer" id="hero-media-layer">
+                <!-- Media injected here -->
+            </div>
+            <!-- Glass Overlay -->
+            <div class="glass-overlay"></div>
+            
             <!-- Left-Aligned Content Group: Heading + CTA Buttons -->
             <div class="relative z-10 w-full flex flex-col items-start text-left hero-content-pad">
                 <p class="text-white text-lg md:text-[22px] font-light tracking-wide mb-2 md:mb-6 opacity-90 text-left">
@@ -703,7 +717,14 @@
 
     <!-- Contact Banner Section -->
     <section id="contact" class="w-full py-[4.7vw]" style="scroll-margin-top: var(--scroll-offset);">
-        <div class="rounded-[32px] reeded-gradient p-[8%] md:p-[6%] text-white relative overflow-hidden flex flex-col md:flex-row md:items-end lg:items-end justify-between gap-16 md:gap-[4.2vw] min-h-[500px] global-margin">
+        <div class="rounded-[32px] reeded-gradient p-[8%] md:p-[6%] text-white relative overflow-hidden flex flex-col md:flex-row md:items-end lg:items-end justify-between gap-16 md:gap-[4.2vw] min-h-[500px] global-margin" id="contact-banner-container">
+            <!-- Media Layer -->
+            <div class="media-layer" id="contact-media-layer">
+                <!-- Media injected here -->
+            </div>
+            <!-- Glass Overlay -->
+            <div class="glass-overlay"></div>
+            
             <!-- Left Column: CTA + Contact Buttons -->
             <div class="relative z-10 w-full md:w-1/2 lg:w-1/2">
                 <h2 class="text-[clamp(42px,8.5vw,64px)] font-bold tracking-tight mb-[8vw] md:mb-[4vw] leading-[1.02] md:leading-[0.95]">

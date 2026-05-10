@@ -137,6 +137,7 @@ class VisualCMS {
         mediaElements.forEach(el => {
             el.classList.add('editable-media');
             el.title = "Click to replace media";
+            if (!el.id) el.id = 'media-' + Math.random().toString(36).substr(2, 9);
         });
 
         // Dashboard Command Listener
@@ -162,6 +163,24 @@ class VisualCMS {
                 if (action === 'trigger-media') {
                     const el = document.getElementById(data.id);
                     if (el) this.triggerMediaUpload(el);
+                }
+
+                if (action === 'update-style') {
+                    const el = document.getElementById(data.id);
+                    if (el) el.style[data.property] = data.value;
+                }
+
+                if (action === 'update-media') {
+                    const container = document.getElementById(data.id);
+                    if (!container) return;
+                    const mediaLayer = container.querySelector('.media-layer');
+                    if (!mediaLayer) return;
+
+                    if (data.mediaType === 'video') {
+                        mediaLayer.innerHTML = `<video autoplay muted loop playsinline class="media-content" style="width:100%;height:100%;object-fit:cover;"><source src="${data.src}" type="video/mp4"></video>`;
+                    } else {
+                        mediaLayer.innerHTML = `<img src="${data.src}" class="media-content" style="width:100%;height:100%;object-fit:cover;">`;
+                    }
                 }
 
                 if (action === 'update-radius') {
@@ -372,7 +391,29 @@ class VisualCMS {
             }
             if (el.classList.contains('reeded-gradient')) {
                 data.isBanner = true;
+                const mediaLayer = el.querySelector('.media-layer');
+                if (mediaLayer) {
+                    const video = mediaLayer.querySelector('video');
+                    const img = mediaLayer.querySelector('img');
+                    if (video) {
+                        data.mediaType = 'video';
+                        data.src = video.querySelector('source')?.src;
+                    } else if (img) {
+                        data.mediaType = 'image';
+                        data.src = img.src;
+                    }
+                }
             }
+
+            // Extract Styles
+            const style = window.getComputedStyle(el);
+            data.style = {
+                fontSize: style.fontSize,
+                fontFamily: style.fontFamily,
+                paddingBottom: style.paddingBottom,
+                marginBottom: style.marginBottom,
+                borderRadius: style.borderRadius
+            };
         }
 
         window.parent.postMessage({

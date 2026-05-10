@@ -6,84 +6,38 @@
     <title>Visual Editor | yadsid.com</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #000000;
-            --sidebar: #050505;
-            --canvas-bg: #0d0d0d;
-            --border: rgba(255,255,255,0.12);
-            --accent: #3b82f6;
-            --text: #ffffff;
-            --muted: #a0a0ab;
-            --input-bg: rgba(255,255,255,0.06);
-            --input-focus: rgba(255,255,255,0.1);
+        /* Properties Panel Enhancements */
+        .property-folder { border-bottom: 1px solid var(--border); }
+        .folder-header { 
+            padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; 
+            cursor: pointer; background: rgba(255,255,255,0.02); user-select: none;
         }
-        * { margin:0; padding:0; box-sizing:border-box; transition: none !important; }
-        body { font-family:'Inter', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        .folder-header h4 { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 800; }
+        .folder-content { display: none; padding: 0.5rem 0; background: var(--bg); }
+        .property-folder.open .folder-content { display: block; }
+        .property-folder.open .folder-header { background: rgba(255,255,255,0.05); }
+        .folder-icon { font-size: 10px; transition: transform 0.2s !important; color: var(--muted); }
+        .property-folder.open .folder-icon { transform: rotate(90deg); }
 
-        /* Toolbar */
-        .toolbar {
-            height: 64px; background: var(--bg); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; z-index: 1000;
-        }
-        .toolbar-logo { font-family:'Outfit', sans-serif; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px; color: var(--text); text-transform: uppercase; }
+        .property-control { padding: 1rem 1.5rem; }
+        .property-control label { display: block; font-size: 0.6rem; color: var(--muted); margin-bottom: 0.5rem; font-weight: 600; }
 
-        /* Workspace */
-        .workspace { flex: 1; display: flex; overflow: hidden; position: relative; }
-
-        /* Sidebar Architecture */
-        .sidebar {
-            background: var(--sidebar); display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
-            min-width: 120px;
-        }
-        .sidebar-left { width: 180px; }
-        .sidebar-right { width: 260px; }
-
-        /* Resizers */
-        .resizer {
-            width: 4px; background: transparent; cursor: col-resize; transition: background 0.2s !important;
-            z-index: 100; position: relative;
-        }
-        .resizer:hover, .resizer.active { background: var(--accent); }
-
-        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
-        .sidebar-header h3 { font-family:'Outfit', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 800; }
-
-        /* Canvas (Central Focus) */
-        .canvas-area {
-            flex: 1; background: var(--canvas-bg); display: flex; justify-content: center; align-items: center; padding: 2rem; overflow: auto;
-            min-width: 300px;
-        }
-        #canvas-container {
-            width: 100%; height: 100%; max-width: 100%; background: #000;
-            box-shadow: 0 60px 150px rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden;
-        }
-        iframe { width: 100%; height: 100%; border: none; pointer-events: auto; }
-        .canvas-area.dragging iframe { pointer-events: none; }
-
-        /* UI Elements */
-        .nav-item { 
-            padding: 1rem 1.5rem; font-size: 0.7rem; font-weight: 700; color: var(--muted); 
-            cursor: pointer; border-bottom: 1px solid var(--border); background: transparent;
-        }
-        .nav-item:hover { background: var(--input-bg); color: var(--text); }
-        
-        .property-section { padding: 1.5rem; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.01); }
-        .property-section label { display: block; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 1rem; font-weight: 800; }
-        
-        input[type=number], input[type=text], textarea {
+        select {
             width: 100%; padding: 0.8rem 1rem; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
-            font-size: 0.85rem; font-family: inherit; outline: none; color: var(--text);
+            font-size: 0.85rem; outline: none; color: var(--text); appearance: none;
         }
-        input:focus, textarea:focus { background: var(--input-focus); border-color: var(--accent); }
-        input[type=range] { width: 100%; margin-top: 1rem; accent-color: var(--accent); cursor: pointer; }
 
-        /* Buttons */
-        .btn-primary { padding: 0.75rem 1.5rem; background: var(--accent); color: #fff !important; border: none; border-radius: 50px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 800; cursor: pointer; }
-        .btn-sm { padding: 0.5rem 1rem; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border); font-size: 0.7rem; font-weight: 700; cursor: pointer; color: var(--text); }
-        .btn-sm.active { background: var(--text); color: #000 !important; border-color: var(--text); }
+        .media-upload-zone {
+            border: 1px dashed var(--border); border-radius: 12px; padding: 1.5rem; text-align: center;
+            cursor: pointer; transition: all 0.2s !important;
+        }
+        .media-upload-zone:hover { border-color: var(--accent); background: var(--input-bg); }
+        .media-upload-zone p { font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem; }
 
-        .toggle-group { display: flex; gap: 6px; background: var(--input-bg); padding: 6px; border-radius: 12px; border: 1px solid var(--border); }
+        .property-group { display: flex; gap: 8px; align-items: center; }
+        .property-group input { flex: 1; }
+        .unit-label { font-size: 10px; color: var(--muted); font-weight: 700; width: 20px; }
+
     </style>
 </head>
 <body>
@@ -109,7 +63,7 @@
         <aside class="sidebar sidebar-left" id="left-sidebar">
             <div class="sidebar-header"><h3>Sections</h3></div>
             <div id="sections-list">
-                <div class="nav-item" onclick="focusSection('hero')">Hero Banner</div>
+                <div class="nav-item" onclick="focusSection('home')">Hero Banner</div>
                 <div class="nav-item" onclick="focusSection('expertise')">Core Skills</div>
                 <div class="nav-item" onclick="focusSection('projects')">Projects Grid</div>
                 <div class="nav-item" onclick="focusSection('contact')">Contact Area</div>
@@ -145,7 +99,7 @@
     </div>
 
     <script>
-        let currentIframeData = null;
+        let currentElementData = null;
 
         // --- RESIZABLE SIDEBARS ---
         const leftSidebar = document.getElementById('left-sidebar');
@@ -207,8 +161,8 @@
         }
 
         window.addEventListener('message', (e) => {
-            if (e.data.type === 'ELEMENT_SELECTED') {
-                currentIframeData = e.data.data;
+            if (e.data.action === 'element-selected') {
+                currentElementData = e.data.data;
                 renderProperties(e.data.data);
             }
         });
@@ -217,55 +171,140 @@
             const panel = document.getElementById('properties-panel');
             let html = '';
 
-            // 1. Text Content
+            // --- 1. Content Section ---
             if (data.content !== undefined) {
-                html += `
-                <div class="property-section">
-                    <label>Text Content</label>
-                    <textarea rows="4" oninput="updateContent('${data.id}', this.value)">${data.content}</textarea>
-                </div>`;
+                html += createFolder('Content', `
+                    <div class="property-control">
+                        <label>Text / HTML</label>
+                        <textarea rows="4" oninput="updateContent('${data.id}', this.value)">${data.content}</textarea>
+                    </div>
+                `, true);
             }
 
-            // 2. Advanced Spacing Tool (Inner & Outer)
-            html += `
-            <div class="property-section">
-                <label>Inner Spacing (Padding)</label>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="number" value="${parseInt(data.style.paddingBottom) || 0}" oninput="updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
-                    <span style="font-size:10px; color:var(--muted);">PX</span>
-                </div>
-                <input type="range" min="0" max="200" value="${parseInt(data.style.paddingBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
-            </div>
-            
-            <div class="property-section">
-                <label>Outer Spacing (Margin/Gap)</label>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="number" value="${parseInt(data.style.marginBottom) || 0}" oninput="updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
-                    <span style="font-size:10px; color:var(--muted);">PX</span>
-                </div>
-                <input type="range" min="0" max="200" value="${parseInt(data.style.marginBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
-            </div>`;
+            // --- 2. Media Section (Banner Specific) ---
+            if (data.isBanner) {
+                html += createFolder('Banner Media', `
+                    <div class="property-control">
+                        <label>Upload Media (Video/GIF/Image)</label>
+                        <div class="media-upload-zone" onclick="triggerMediaUpload('${data.id}')">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin:0 auto;"><path d="M12 4v16m8-8H4"/></svg>
+                            <p>Click to upload .mp4, .gif, or .jpg</p>
+                        </div>
+                    </div>
+                    <div class="property-control">
+                        <label>Glass Overlay Opacity</label>
+                        <div class="property-group">
+                            <input type="range" min="0" max="100" value="100" oninput="updateBannerGlass('${data.id}', this.value)">
+                        </div>
+                    </div>
+                `, true);
+            }
 
-            // 3. Border Radius Control
-            html += `
-            <div class="property-section">
-                <label>Corner Radius (Rounding)</label>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="number" value="${parseInt(data.style.borderRadius) || 0}" oninput="updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
-                    <span style="font-size:10px; color:var(--muted);">PX</span>
+            // --- 3. Typography Section ---
+            const currentFont = data.style.fontFamily.split(',')[0].replace(/['"]/g, '');
+            html += createFolder('Typography', `
+                <div class="property-control">
+                    <label>Font Type</label>
+                    <select onchange="updateStyle('${data.id}', 'fontFamily', this.value); document.getElementById('font-size-ctrl').style.display='block';">
+                        <option value="'Inter', sans-serif" ${currentFont === 'Inter' ? 'selected' : ''}>Inter (Body)</option>
+                        <option value="'Outfit', sans-serif" ${currentFont === 'Outfit' ? 'selected' : ''}>Outfit (Heading)</option>
+                    </select>
                 </div>
-                <input type="range" min="0" max="100" value="${parseInt(data.style.borderRadius) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
-            </div>`;
+                <div class="property-control" id="font-size-ctrl" style="display:${data.style.fontSize ? 'block' : 'none'}">
+                    <label>Font Size</label>
+                    <div class="property-group">
+                        <input type="number" value="${parseInt(data.style.fontSize) || 16}" oninput="updateStyle('${data.id}', 'fontSize', this.value + 'px')">
+                        <span class="unit-label">PX</span>
+                    </div>
+                    <input type="range" min="8" max="120" value="${parseInt(data.style.fontSize) || 16}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'fontSize', this.value + 'px')">
+                </div>
+            `);
+
+            // --- 4. Layout & Spacing Section ---
+            html += createFolder('Layout & Spacing', `
+                <div class="property-control">
+                    <label>Inner Padding (Bottom)</label>
+                    <div class="property-group">
+                        <input type="number" value="${parseInt(data.style.paddingBottom) || 0}" oninput="updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
+                        <span class="unit-label">PX</span>
+                    </div>
+                    <input type="range" min="0" max="200" value="${parseInt(data.style.paddingBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
+                </div>
+                <div class="property-control">
+                    <label>Outer Margin (Bottom)</label>
+                    <div class="property-group">
+                        <input type="number" value="${parseInt(data.style.marginBottom) || 0}" oninput="updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
+                        <span class="unit-label">PX</span>
+                    </div>
+                    <input type="range" min="0" max="200" value="${parseInt(data.style.marginBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
+                </div>
+                <div class="property-control">
+                    <label>Corner Radius</label>
+                    <div class="property-group">
+                        <input type="number" value="${parseInt(data.style.borderRadius) || 0}" oninput="updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
+                        <span class="unit-label">PX</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="${parseInt(data.style.borderRadius) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
+                </div>
+            `);
 
             panel.innerHTML = html;
         }
 
+        function createFolder(name, content, isOpen = false) {
+            return `
+            <div class="property-folder ${isOpen ? 'open' : ''}">
+                <div class="folder-header" onclick="this.parentElement.classList.toggle('open')">
+                    <h4>${name}</h4>
+                    <span class="folder-icon">▶</span>
+                </div>
+                <div class="folder-content">
+                    ${content}
+                </div>
+            </div>`;
+        }
+
         function updateContent(id, val) {
-            sendToIframe({ type: 'UPDATE_TEXT', id, value: val });
+            sendToIframe({ source: 'cms-dashboard', action: 'update-content', data: { id, val } });
         }
 
         function updateStyle(id, prop, val) {
-            sendToIframe({ type: 'UPDATE_STYLE', id, property: prop, value: val });
+            sendToIframe({ source: 'cms-dashboard', action: 'update-style', data: { id, property: prop, value: val } });
+        }
+
+        function triggerMediaUpload(id) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,video/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const mediaType = file.type.startsWith('video') ? 'video' : 'image';
+                        sendToIframe({ 
+                            source: 'cms-dashboard', 
+                            action: 'update-media', 
+                            data: { id, mediaType, src: event.target.result } 
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function updateBannerGlass(id, val) {
+            const container = document.getElementById('visual-iframe').contentDocument.getElementById(id);
+            if (container) {
+                const glass = container.querySelector('.glass-overlay');
+                if (glass) glass.style.opacity = val / 100;
+            }
+        }
+
+        function sendToIframe(msg) {
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage(msg, '*');
         }
 
         function sendToIframe(msg) {
