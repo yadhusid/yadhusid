@@ -58,16 +58,16 @@ function toggleMenu() {
     if (!hamburger || !mainNav || !mobileMenuContent) return;
     
     hamburger.classList.toggle('active');
-    mainNav.classList.toggle('active');
+    mainNav.classList.toggle('expanded');
 
-    if (mainNav.classList.contains('active')) {
+    if (mainNav.classList.contains('expanded')) {
         mobileMenuContent.style.opacity = '1';
         mobileMenuContent.style.pointerEvents = 'auto';
         
         const spans = hamburger.querySelectorAll('span');
-        spans[0].style.transform = 'translateY(7px) rotate(45deg)';
+        spans[0].style.transform = 'translateY(7.5px) rotate(45deg)';
         spans[1].style.opacity = '0';
-        spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+        spans[2].style.transform = 'translateY(-7.5px) rotate(-45deg)';
     } else {
         mobileMenuContent.style.opacity = '0';
         mobileMenuContent.style.pointerEvents = 'none';

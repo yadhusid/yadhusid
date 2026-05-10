@@ -192,15 +192,24 @@ class VisualCMS {
                 }
 
                 if (action === 'update-media') {
-                    const container = document.getElementById(data.id);
-                    if (!container) return;
-                    const mediaLayer = container.querySelector('.media-layer');
-                    if (!mediaLayer) return;
-
-                    if (data.mediaType === 'video') {
-                        mediaLayer.innerHTML = `<video autoplay muted loop playsinline class="media-content" style="width:100%;height:100%;object-fit:cover;"><source src="${data.src}" type="video/mp4"></video>`;
+                    const el = document.getElementById(data.id);
+                    if (!el) return;
+                    
+                    const mediaLayer = el.querySelector('.media-layer');
+                    if (mediaLayer) {
+                        // Layered Banner Mode
+                        if (data.mediaType === 'video') {
+                            mediaLayer.innerHTML = `<video autoplay muted loop playsinline class="media-content" style="width:100%;height:100%;object-fit:cover;"><source src="${data.src}" type="video/mp4"></video>`;
+                        } else {
+                            mediaLayer.innerHTML = `<img src="${data.src}" class="media-content" style="width:100%;height:100%;object-fit:cover;">`;
+                        }
+                    } else if (el.tagName === 'IMG') {
+                        // Direct Image Mode
+                        el.src = data.src;
                     } else {
-                        mediaLayer.innerHTML = `<img src="${data.src}" class="media-content" style="width:100%;height:100%;object-fit:cover;">`;
+                        // Fallback Background Mode
+                        el.style.backgroundImage = `url('${data.src}')`;
+                        el.style.backgroundSize = 'cover';
                     }
                 }
 

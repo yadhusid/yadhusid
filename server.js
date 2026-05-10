@@ -387,6 +387,23 @@ async function ensureAdmin() {
     }
 }
 
+// ─── Visual Editor Saving ──────────────────────────────────────────────────
+app.post('/admin/save-cms', requireAuth, (req, res) => {
+    const { html } = req.body;
+    if (!html) return res.status(400).json({ error: 'HTML content required' });
+
+    try {
+        const indexPath = path.join(__dirname, 'public', 'index.html');
+        // We write the HTML back to the public/index.html file
+        fs.writeFileSync(indexPath, html, 'utf8');
+        console.log('✅ index.html updated via Visual Editor');
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error saving CMS changes:', err);
+        res.status(500).json({ error: 'Could not save changes to disk' });
+    }
+});
+
 // ─── Start Server ─────────────────────────────────────────────────────────────
 app.listen(PORT, async () => {
     await ensureAdmin();
