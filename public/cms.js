@@ -21,10 +21,6 @@ class VisualCMS {
         this.initCoreSkills();
         this.initProjectCategories();
         
-        // Notify parent that canvas is ready
-        window.parent.postMessage({ action: 'canvas-ready' }, '*');
-    }
-        
         // Add SortableJS dynamically if not present
         if (!window.Sortable) {
             const script = document.createElement('script');
@@ -35,6 +31,9 @@ class VisualCMS {
             };
             document.head.appendChild(script);
         }
+
+        // Notify parent that canvas is ready
+        window.parent.postMessage({ action: 'canvas-ready' }, '*');
     }
 
     injectUI() {
@@ -409,8 +408,8 @@ class VisualCMS {
         this.floatingToolbar.classList.add('active');
         const top = rect.top + window.scrollY - this.floatingToolbar.offsetHeight - 10;
         const left = rect.left + window.scrollX + (rect.width / 2) - (this.floatingToolbar.offsetWidth / 2);
-        this.floatingToolbar.style.top = \`\${Math.max(10, top)}px\`;
-        this.floatingToolbar.style.left = \`\${Math.max(10, left)}px\`;
+        this.floatingToolbar.style.top = `${Math.max(10, top)}px`;
+        this.floatingToolbar.style.left = `${Math.max(10, left)}px`;
     }
 
     triggerMediaUpload(el) {
@@ -561,7 +560,7 @@ class VisualCMS {
         pill.style.cssText = "padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em; cursor:grab;";
         pill.setAttribute('contenteditable', 'true');
         
-        pill.innerHTML = \`<div class="w-1.5 h-1.5 bg-[#111] rounded-full flex-shrink-0"></div> \${name}\`;
+        pill.innerHTML = `<div class="w-1.5 h-1.5 bg-[#111] rounded-full flex-shrink-0"></div> ${name}`;
         
         const delBtn = document.createElement('button');
         delBtn.className = 'cms-del-skill';
