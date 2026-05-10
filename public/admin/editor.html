@@ -201,11 +201,23 @@
         }
 
         window.addEventListener('message', (e) => {
+            if (e.data.action === 'canvas-ready') {
+                document.getElementById('properties-panel').innerHTML = '<div style="padding: 2.5rem; text-align: center; color: #10b981; font-size: 0.7rem;">Canvas Connected. Select an element.</div>';
+            }
             if (e.data.action === 'element-selected') {
                 currentElementData = e.data.data;
-                renderProperties(e.data.data);
+                try {
+                    renderProperties(e.data.data);
+                } catch (err) {
+                    console.error(err);
+                    document.getElementById('properties-panel').innerHTML = `<div style="padding: 2rem; color: #ef4444; font-size: 0.7rem;">Error rendering properties: ${err.message}</div>`;
+                }
             }
         });
+
+        window.onerror = function(msg, url, line) {
+            console.error("Editor Error: " + msg + " at " + line);
+        };
 
         function renderProperties(data) {
             const panel = document.getElementById('properties-panel');

@@ -3,6 +3,7 @@ class VisualCMS {
         this.isActive = window.location.href.includes('edit=true');
         this.selectedElement = null;
         if (this.isActive) {
+            console.log("[CMS] Initialization Active");
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => this.init());
             } else {
@@ -12,12 +13,17 @@ class VisualCMS {
     }
 
     init() {
+        console.log("[CMS] Starting Engine...");
         document.body.classList.add('cms-enabled');
         this.injectUI();
         this.makeElementsEditable();
         this.bindEvents();
         this.initCoreSkills();
         this.initProjectCategories();
+        
+        // Notify parent that canvas is ready
+        window.parent.postMessage({ action: 'canvas-ready' }, '*');
+    }
         
         // Add SortableJS dynamically if not present
         if (!window.Sortable) {
@@ -431,7 +437,7 @@ class VisualCMS {
     }
 
     notifyDashboard(type, el) {
-        if (!window.location.href.includes('embedded=true')) return;
+        if (!this.isActive) return;
 
         let data = { type: type };
         
