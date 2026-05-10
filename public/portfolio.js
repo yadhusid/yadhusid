@@ -80,11 +80,10 @@
                     ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105">`
                     : '<div class="absolute inset-0 bg-[#f8f8f8]"></div>'}
                 
-                <!-- Hover Overlay (Dark Gradient) -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 z-10">
-                    <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <h3 class="text-xl font-bold text-white tracking-tight leading-tight">${p.title}</h3>
-                        <div class="text-[11px] text-white/50 uppercase tracking-widest mt-4 opacity-0 group-hover:opacity-100 transition-opacity delay-100">View Project →</div>
+                <!-- Hover Overlay (Simplified & Lowered) -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6 z-10">
+                    <div class="translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-lg font-bold text-white tracking-tight leading-tight">${p.title}</h3>
                     </div>
                 </div>
             </a>`;
