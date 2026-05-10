@@ -1,0 +1,22 @@
+{
+  "project_name": "yadsid.com project",
+  "lead_developer": "Antigravity",
+  "role": "Lead Developer & UI/UX Designer",
+  "tech_stack": {
+    "frontend": "Tailwind CSS, Vanilla JS, HTML5",
+    "backend": "Node.js (Express)",
+    "database": "MongoDB Atlas",
+    "media": "Cloudinary",
+    "deployment": "Render.com"
+  },
+  "design_system": {
+    "fonts": {
+      "headings": "Outfit",
+      "body": "Inter"
+    },
+    "theme": "Vibrant Mesh Gradient (v2.5)",
+    "primary_colors": ["#FF4B2B", "#FF416C", "#FFB347"]
+  },
+  "deployment_trigger": "GitHub push to origin main",
+  "status": "Production Live / CMS Active"
+}

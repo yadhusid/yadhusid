@@ -1,0 +1,221 @@
+/* CMS Visual Interface Styles - Figma/Webflow Style */
+body.cms-enabled {
+    padding-bottom: 100px; /* Space for bottom toolbar */
+}
+
+/* Responsive Modes */
+body.cms-mode-tablet {
+    width: 860px;
+    margin: 0 auto;
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+body.cms-mode-mobile {
+    width: 390px;
+    margin: 0 auto;
+    box-shadow: 0 0 50px rgba(0,0,0,0.1);
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+/* Base elements in CMS mode */
+body.cms-enabled .editable {
+    cursor: text;
+    transition: box-shadow 0.2s ease;
+    position: relative;
+    z-index: 10;
+}
+
+body.cms-enabled .editable:hover {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Blue outline like Figma */
+    border-radius: 4px;
+}
+
+body.cms-enabled .editable:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: 4px;
+}
+
+body.cms-enabled .editable-media:hover {
+    box-shadow: 0 0 0 2px #10b981; /* Green for media */
+    cursor: pointer;
+}
+
+/* Floating Formatting Toolbar (appears near selected text) */
+.cms-floating-toolbar {
+    position: absolute;
+    background: #1e1e1e;
+    border-radius: 8px;
+    padding: 6px;
+    display: flex;
+    gap: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateY(10px);
+    border: 1px solid #333;
+}
+
+.cms-floating-toolbar.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.cms-format-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-family: serif;
+    font-weight: bold;
+}
+
+.cms-format-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.cms-format-btn.active {
+    background: #3b82f6;
+}
+
+.cms-toolbar-divider {
+    width: 1px;
+    background: #444;
+    margin: 0 4px;
+}
+
+/* Sidebar for Data Management */
+.cms-sidebar {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    height: 100vh;
+    background: #111;
+    color: #fff;
+    z-index: 10001;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 1px solid #333;
+    padding: 20px;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+
+.cms-sidebar.open {
+    right: 0;
+}
+
+.cms-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.cms-sidebar-header h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+.cms-section { margin-bottom: 25px; }
+.cms-section h4 { font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+
+.cms-input {
+    width: 100%;
+    background: #222;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.cms-action-btn {
+    width: 100%;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cms-close-btn { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+
+/* Main Bottom Toolbar */
+.cms-bottom-toolbar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    padding: 8px 16px;
+    display: flex;
+    gap: 16px;
+    z-index: 10000;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    align-items: center;
+}
+
+.cms-viewport-toggles {
+    display: flex;
+    gap: 4px;
+    background: rgba(0,0,0,0.5);
+    padding: 4px;
+    border-radius: 100px;
+}
+
+.cms-viewport-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cms-viewport-btn.active {
+    background: #333;
+    color: #fff;
+}
+
+.cms-save-btn {
+    background: linear-gradient(45deg, #FF4B2B, #FF416C);
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 65, 108, 0.3);
+    transition: transform 0.2s;
+}
+
+.cms-save-btn:hover {
+    transform: scale(1.05);
+}
+
+.cms-sortable-ghost { opacity: 0.4; }
+.cms-del-skill:hover { background: rgba(0,0,0,0.2) !important; color: red; }

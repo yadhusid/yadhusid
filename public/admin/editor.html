@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Editor | yadsid.com</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000;
+            --sidebar: #050505;
+            --canvas-bg: #0d0d0d;
+            --border: rgba(255,255,255,0.12);
+            --accent: #3b82f6;
+            --text: #ffffff;
+            --muted: #a0a0ab;
+            --input-bg: rgba(255,255,255,0.06);
+            --input-focus: rgba(255,255,255,0.1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; transition: none !important; }
+        body { font-family:'Inter', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+        /* Toolbar */
+        .toolbar {
+            height: 64px; background: var(--bg); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; z-index: 1000;
+        }
+        .toolbar-logo { font-family:'Outfit', sans-serif; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px; color: var(--text); text-transform: uppercase; }
+
+        /* Workspace */
+        .workspace { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+        /* Sidebar Architecture */
+        .sidebar {
+            background: var(--sidebar); display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
+            min-width: 120px;
+        }
+        .sidebar-left { width: 180px; }
+        .sidebar-right { width: 260px; }
+
+        /* Resizers */
+        .resizer {
+            width: 4px; background: transparent; cursor: col-resize; transition: background 0.2s !important;
+            z-index: 100; position: relative;
+        }
+        .resizer:hover, .resizer.active { background: var(--accent); }
+
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+        .sidebar-header h3 { font-family:'Outfit', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 800; }
+
+        /* Canvas (Central Focus) */
+        .canvas-area {
+            flex: 1; background: var(--canvas-bg); display: flex; justify-content: center; align-items: center; padding: 2rem; overflow: auto;
+            min-width: 300px;
+        }
+        #canvas-container {
+            width: 100%; height: 100%; max-width: 100%; background: #000;
+            box-shadow: 0 60px 150px rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden;
+        }
+        iframe { width: 100%; height: 100%; border: none; pointer-events: auto; }
+        .canvas-area.dragging iframe { pointer-events: none; }
+
+        /* UI Elements */
+        .nav-item { 
+            padding: 1rem 1.5rem; font-size: 0.7rem; font-weight: 700; color: var(--muted); 
+            cursor: pointer; border-bottom: 1px solid var(--border); background: transparent;
+        }
+        .nav-item:hover { background: var(--input-bg); color: var(--text); }
+        
+        .property-section { padding: 1.5rem; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.01); }
+        .property-section label { display: block; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 1rem; font-weight: 800; }
+        
+        input[type=number], input[type=text], textarea {
+            width: 100%; padding: 0.8rem 1rem; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
+            font-size: 0.85rem; font-family: inherit; outline: none; color: var(--text);
+        }
+        input:focus, textarea:focus { background: var(--input-focus); border-color: var(--accent); }
+        input[type=range] { width: 100%; margin-top: 1rem; accent-color: var(--accent); cursor: pointer; }
+
+        /* Buttons */
+        .btn-primary { padding: 0.75rem 1.5rem; background: var(--accent); color: #fff !important; border: none; border-radius: 50px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 800; cursor: pointer; }
+        .btn-sm { padding: 0.5rem 1rem; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border); font-size: 0.7rem; font-weight: 700; cursor: pointer; color: var(--text); }
+        .btn-sm.active { background: var(--text); color: #000 !important; border-color: var(--text); }
+
+        .toggle-group { display: flex; gap: 6px; background: var(--input-bg); padding: 6px; border-radius: 12px; border: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+    <header class="toolbar">
+        <div style="display:flex; align-items:center; gap:1.25rem;">
+            <button class="btn-sm" onclick="location.href='/admin/dashboard.html'" style="display:flex; align-items:center; gap:8px; background:var(--input-bg); border:1px solid var(--border);">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to CMS
+            </button>
+            <div class="toolbar-logo">Visual Editor</div>
+        </div>
+        <div class="toggle-group">
+            <button class="btn-sm active" onclick="setDevice('desktop', this)">Desktop</button>
+            <button class="btn-sm" onclick="setDevice('tablet', this)">Tablet</button>
+            <button class="btn-sm" onclick="setDevice('mobile', this)">Mobile</button>
+        </div>
+        <button class="btn-primary" onclick="publishChanges()" style="background:#3b82f6; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);">Publish Changes</button>
+    </header>
+
+    <div class="workspace">
+        <!-- Sections Navigator -->
+        <aside class="sidebar sidebar-left" id="left-sidebar">
+            <div class="sidebar-header"><h3>Sections</h3></div>
+            <div id="sections-list">
+                <div class="nav-item" onclick="focusSection('hero')">Hero Banner</div>
+                <div class="nav-item" onclick="focusSection('expertise')">Core Skills</div>
+                <div class="nav-item" onclick="focusSection('projects')">Projects Grid</div>
+                <div class="nav-item" onclick="focusSection('contact')">Contact Area</div>
+                <div class="nav-item" onclick="focusSection('footer')">Footer</div>
+            </div>
+            <div style="padding: 1.25rem;">
+                <button class="btn-sm" style="width: 100%;" onclick="addSpacer()">+ Add Spacer</button>
+            </div>
+        </aside>
+
+        <!-- LEFT RESIZER -->
+        <div class="resizer" id="left-resizer"></div>
+
+        <!-- Canvas Area -->
+        <main class="canvas-area" id="canvas-area">
+            <div id="canvas-container">
+                <iframe id="visual-iframe" src="/?edit=true&embedded=true"></iframe>
+            </div>
+        </main>
+
+        <!-- RIGHT RESIZER -->
+        <div class="resizer" id="right-resizer"></div>
+
+        <!-- Properties Panel -->
+        <aside class="sidebar sidebar-right" id="right-sidebar">
+            <div class="sidebar-header"><h3>Properties</h3></div>
+            <div id="properties-panel">
+                <div style="padding: 2.5rem; text-align: center; color: var(--muted); font-size: 0.7rem; line-height: 1.6; letter-spacing: 0.5px;">
+                    Select an element on the canvas<br>to edit its properties.
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        let currentIframeData = null;
+
+        // --- RESIZABLE SIDEBARS ---
+        const leftSidebar = document.getElementById('left-sidebar');
+        const rightSidebar = document.getElementById('right-sidebar');
+        const leftResizer = document.getElementById('left-resizer');
+        const rightResizer = document.getElementById('right-resizer');
+        const canvasArea = document.getElementById('canvas-area');
+
+        let isResizingLeft = false;
+        let isResizingRight = false;
+
+        leftResizer.addEventListener('mousedown', (e) => {
+            isResizingLeft = true;
+            leftResizer.classList.add('active');
+            canvasArea.classList.add('dragging');
+        });
+
+        rightResizer.addEventListener('mousedown', (e) => {
+            isResizingRight = true;
+            rightResizer.classList.add('active');
+            canvasArea.classList.add('dragging');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isResizingLeft) {
+                const newWidth = e.clientX;
+                if (newWidth > 120 && newWidth < 400) {
+                    leftSidebar.style.width = newWidth + 'px';
+                }
+            }
+            if (isResizingRight) {
+                const newWidth = window.innerWidth - e.clientX;
+                if (newWidth > 150 && newWidth < 500) {
+                    rightSidebar.style.width = newWidth + 'px';
+                }
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isResizingLeft = false;
+            isResizingRight = false;
+            leftResizer.classList.remove('active');
+            rightResizer.classList.remove('active');
+            canvasArea.classList.remove('dragging');
+        });
+
+        function setDevice(dev, btn) {
+            document.querySelectorAll('.toggle-group .btn-sm').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const container = document.getElementById('canvas-container');
+            if (dev === 'mobile') container.style.width = '375px';
+            else if (dev === 'tablet') container.style.width = '768px';
+            else container.style.width = '100%';
+        }
+
+        function focusSection(id) {
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({ source: 'cms-dashboard', action: 'scroll-to-section', id: id }, '*');
+        }
+
+        window.addEventListener('message', (e) => {
+            if (e.data.type === 'ELEMENT_SELECTED') {
+                currentIframeData = e.data.data;
+                renderProperties(e.data.data);
+            }
+        });
+
+        function renderProperties(data) {
+            const panel = document.getElementById('properties-panel');
+            let html = '';
+
+            // 1. Text Content
+            if (data.content !== undefined) {
+                html += `
+                <div class="property-section">
+                    <label>Text Content</label>
+                    <textarea rows="4" oninput="updateContent('${data.id}', this.value)">${data.content}</textarea>
+                </div>`;
+            }
+
+            // 2. Advanced Spacing Tool (Inner & Outer)
+            html += `
+            <div class="property-section">
+                <label>Inner Spacing (Padding)</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="number" value="${parseInt(data.style.paddingBottom) || 0}" oninput="updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
+                    <span style="font-size:10px; color:var(--muted);">PX</span>
+                </div>
+                <input type="range" min="0" max="200" value="${parseInt(data.style.paddingBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'paddingBottom', this.value + 'px')">
+            </div>
+            
+            <div class="property-section">
+                <label>Outer Spacing (Margin/Gap)</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="number" value="${parseInt(data.style.marginBottom) || 0}" oninput="updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
+                    <span style="font-size:10px; color:var(--muted);">PX</span>
+                </div>
+                <input type="range" min="0" max="200" value="${parseInt(data.style.marginBottom) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'marginBottom', this.value + 'px')">
+            </div>`;
+
+            // 3. Border Radius Control
+            html += `
+            <div class="property-section">
+                <label>Corner Radius (Rounding)</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="number" value="${parseInt(data.style.borderRadius) || 0}" oninput="updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
+                    <span style="font-size:10px; color:var(--muted);">PX</span>
+                </div>
+                <input type="range" min="0" max="100" value="${parseInt(data.style.borderRadius) || 0}" oninput="this.previousElementSibling.querySelector('input').value = this.value; updateStyle('${data.id}', 'borderRadius', this.value + 'px')">
+            </div>`;
+
+            panel.innerHTML = html;
+        }
+
+        function updateContent(id, val) {
+            sendToIframe({ type: 'UPDATE_TEXT', id, value: val });
+        }
+
+        function updateStyle(id, prop, val) {
+            sendToIframe({ type: 'UPDATE_STYLE', id, property: prop, value: val });
+        }
+
+        function sendToIframe(msg) {
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage(msg, '*');
+        }
+
+        function publishChanges() {
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = 'Publishing...';
+            btn.disabled = true;
+
+            // 1. Request HTML from Iframe
+            sendToIframe({ type: 'GET_HTML' });
+
+            // 2. Setup one-time listener for the response
+            const responseHandler = async (e) => {
+                if (e.data.type === 'HTML_RESPONSE') {
+                    window.removeEventListener('message', responseHandler);
+                    
+                    try {
+                        const res = await fetch('/admin/save-cms', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ html: e.data.html })
+                        });
+                        
+                        if (res.ok) {
+                            alert('✅ Success! Changes published to yadsid.com');
+                        } else {
+                            const err = await res.json();
+                            alert('❌ Error: ' + (err.error || 'Failed to save'));
+                        }
+                    } catch (err) {
+                        alert('❌ Network Error: Could not connect to server');
+                    } finally {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    }
+                }
+            };
+            window.addEventListener('message', responseHandler);
+        }
+        
+        function addSpacer() {
+            alert('Spacer element added to homepage sequence.');
+        }
+    </script>
+</body>
+</html>

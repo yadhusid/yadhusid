@@ -1,185 +1,800 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yadhu Sidharthan | Creative Graphics Designer</title>
-    <meta name="description" content="Portfolio of Yadhu Sidharthan, Senior Graphic Designer specializing in AI-Driven Design & Creative Direction with 9+ years of experience.">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
+    <meta name="description" content="Portfolio of Yadhu Sidharthan, a Creative Graphics Designer specializing in Branding, UI/UX, and AI-integrated workflows.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yadsid.com/">
+    <meta property="og:title" content="Yadhu Sidharthan | Creative Graphics Designer">
+    <meta property="og:description" content="Portfolio of Yadhu Sidharthan, a Creative Graphics Designer specializing in Branding, UI/UX, and AI-integrated workflows.">
+    <meta property="og:image" content="https://yadsid.com/cover-preview.jpg">
 
-    <header>
-        <nav>
-            <div class="logo">YADHU.AI</div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#expertise">Expertise</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yadsid.com/">
+    <meta property="twitter:title" content="Yadhu Sidharthan | Creative Graphics Designer">
+    <meta property="twitter:description" content="Portfolio of Yadhu Sidharthan, a Creative Graphics Designer specializing in Branding, UI/UX, and AI-integrated workflows.">
+    <meta property="twitter:image" content="https://yadsid.com/cover-preview.jpg">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Outfit:wght@300;400;600;800&amp;display=swap" rel="stylesheet">
+    <!-- Tailwind CDN with Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                screens: {
+                    'md': '861px',    /* Tablet and up */
+                    'lg': '1218px',   /* Desktop and up */
+                },
+                extend: {
+                    fontFamily: {
+                        heading: ['Outfit', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        figma: {
+                            orange: '#FF4B2B',
+                            pink: '#FF416C',
+                            yellow: '#FFB347',
+                            tag: '#F0F0F0',
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-mesh': 'linear-gradient(45deg, #FF4B2B 0%, #FF416C 50%, #FFB347 100%)',
+                    },
+                    borderRadius: {
+                        'figma': '24px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        :root {
+            /* 1920 Base System (1920px = 100%) */
+            --base-width: 1920;
+            --global-padding-desktop: 11vw;
+            --global-padding-tablet: clamp(8vw, 9vw, 10vw);
+            --global-padding-mobile: 5.2vw;
+            
+            --hero-outer-padding: 0.9vw;
+            --nav-offset: 2.1vw;
+            
+            --spacing-hero-skills: 3.9vw;  /* Reduced ~10% from 4.4vw */
+            --spacing-skills-projects: 4.9vw; /* Reduced from 6.1vw */
+            
+            --grid-gap: 1.8vw;
+            
+            /* Nav safe-zone offset for scroll targets */
+            --scroll-offset: 80px;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #000000; color: #ffffff; overflow-x: hidden; }
+        
+        @layer utilities {
+            .font-heading { font-family: 'Outfit', sans-serif; }
+            h1, h2, h3, h4 { @apply font-heading tracking-tight; }
+        }
+        
+        .global-padding {
+            padding-left: var(--global-padding-desktop);
+            padding-right: var(--global-padding-desktop);
+        }
+        .global-margin {
+            margin-left: var(--global-padding-desktop);
+            margin-right: var(--global-padding-desktop);
+        }
+        @media (max-width: 1279px) and (min-width: 768px) {
+            .global-padding {
+                padding-left: var(--global-padding-tablet);
+                padding-right: var(--global-padding-tablet);
+            }
+            .global-margin {
+                margin-left: var(--global-padding-tablet);
+                margin-right: var(--global-padding-tablet);
+            }
+        }
+        @media (max-width: 767px) {
+            .global-padding {
+                padding-left: var(--global-padding-mobile);
+                padding-right: var(--global-padding-mobile);
+            }
+            .global-margin {
+                margin-left: var(--global-padding-mobile);
+                margin-right: var(--global-padding-mobile);
+            }
+        }
+
+        header {
+            transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-nav {
+            @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-sm flex flex-col justify-start overflow-hidden;
+            height: 50px;
+            border-radius: var(--nav-radius) !important;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-nav.expanded {
+            height: 320px !important;
+            border-radius: 24px;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .nav-main-row {
+            @apply flex items-center justify-between w-full;
+            height: 50px;
+            min-height: 50px;
+            flex-shrink: 0;
+            color: #ffffff;
+            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
+            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
+        }
+
+        .mobile-links {
+            @apply flex flex-col gap-6 py-8 px-8 opacity-0 pointer-events-none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-10px);
+        }
+
+        .glass-nav.expanded .mobile-links {
+            @apply opacity-100 pointer-events-auto;
+            transform: translateY(0);
+            transition-delay: 0.25s; /* Delay reveal until container starts expanding */
+        }
+
+        /* Hamburger Animation Removed */
+
+        /* Scrolled state: dock to top edge */
+        header.scrolled {
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            padding: 0 !important;
+        }
+        header.scrolled .glass-nav {
+            border-radius: 0 !important;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            width: 100%;
+            max-width: 100%;
+        }
+        header.scrolled .beading-frame {
+            display: none;
+        }
+        header.scrolled .nav-main-row {
+            padding-left: var(--global-padding-desktop) !important;
+            padding-right: var(--global-padding-desktop) !important;
+        }
+
+        /* Hover Inversion Removed */
+        .btn-invert:hover {
+            background-color: white !important;
+            color: #111 !important;
+        }
+        .btn-invert:hover svg {
+            stroke: #111 !important;
+        }
+        
+        .nav-link:hover {
+            color: #FF4B2B;
+        }
+
+        :root {
+            --radius-tl: 32px;
+            --radius-tr: 32px;
+            --radius-br: 32px;
+            --radius-bl: 32px;
+            --banner-radius: var(--radius-tl) var(--radius-tr) var(--radius-br) var(--radius-bl);
+            --nav-inset: 2.1vw;
+            --nav-radius: calc(32px - 8px);
+        }
+
+        @media (max-width: 767px) {
+            :root {
+                --radius-tl: 24px;
+                --radius-tr: 24px;
+                --radius-br: 24px;
+                --radius-bl: 24px;
+                --banner-radius: var(--radius-tl) var(--radius-tr) var(--radius-br) var(--radius-bl);
+                --nav-inset: 3.2vw;
+                --nav-radius: calc(24px - 6px);
+            }
+            .nav-main-row {
+                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            }
+            header.scrolled .glass-nav .nav-main-row {
+                padding-left: var(--global-padding-mobile) !important;
+                padding-right: var(--global-padding-mobile) !important;
+            }
+            header.scrolled .glass-nav {
+                border-radius: 0 !important;
+            }
+        }
+
+        /* Beading Frame Logic */
+        .beading-frame {
+            position: absolute;
+            inset: calc(-1 * var(--nav-inset));
+            border-top: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-left: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-right: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--banner-radius);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .reeded-gradient {
+            background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%);
+            position: relative;
+        }
+        .reeded-gradient::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05) 0px,
+                rgba(255, 255, 255, 0.05) 2px,
+                transparent 2px,
+                transparent 16px
+            );
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: inherit;
+            pointer-events: none;
+            transform: translateZ(0); /* Force GPU repaint for glass stability */
+        }
+        
+        /* Immediate Glassmorphism Stability */
+        .glass-card, .btn-glass, [class*="bg-white/"] {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transform: translateZ(0);
+            will-change: backdrop-filter;
+        }
+        
+        /* Scroll indicator bounce Removed */
+        
+        /* Textarea auto-grow: hide resize handle */
+        textarea {
+            resize: none !important;
+            overflow: hidden;
+        }
+
+        .hero-banner-height {
+            height: 81vh; /* Scenario 2: Mobile stable height */
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .hero-banner-height {
+                height: 90vh; /* Scenario 1: Tablet/Desktop stable height */
+            }
+        }
+        
+        /* Contained Gap Logic: 15% Internal Space */
+        .hero-top-safe-zone {
+            padding-top: 15vh !important;
+            padding-bottom: 10vh; /* Squeeze content slightly to reduce bottom gap on mobile */
+        }
+        @media (min-width: 1024px) {
+            .hero-top-safe-zone {
+                padding-bottom: 0; /* Reset for desktop */
+            }
+        }
+    </style>
+    
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }
+/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.left-1\/2{left:50%}.z-10{z-index:10}.z-50{z-index:50}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mb-\[3vw\]{margin-bottom:3vw}.mb-\[8vw\]{margin-bottom:8vw}.ml-4{margin-left:1rem}.ml-auto{margin-left:auto}.mt-1{margin-top:0.25rem}.mt-6{margin-top:1.5rem}.mt-\[var\(--spacing-skills-projects\)\]{margin-top:var(--spacing-skills-projects)}.flex{display:flex}.grid{display:grid}.hidden{display:none}.aspect-\[4\/3\]{aspect-ratio:4/3}.h-1\.5{height:0.375rem}.h-6{height:1.5rem}.min-h-\[500px\]{min-height:500px}.w-1\.5{width:0.375rem}.w-6{width:1.5rem}.w-full{width:100%}.min-w-fit{min-width:-moz-fit-content;min-width:fit-content}.max-w-2xl{max-width:42rem}.max-w-5xl{max-width:64rem}.flex-shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-start{justify-content:flex-start}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-16{gap:4rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-\[1\.5vw\]{gap:1.5vw}.overflow-hidden{overflow:hidden}.scroll-smooth{scroll-behavior:smooth}.whitespace-nowrap{white-space:nowrap}.rounded-\[24px\]{border-radius:24px}.rounded-\[32px\]{border-radius:32px}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-t{border-top-width:1px}.border-\[\#E5E5E5\]{--tw-border-opacity:1;border-color:rgb(229 229 229 / var(--tw-border-opacity, 1))}.border-\[\#EEE\]{--tw-border-opacity:1;border-color:rgb(238 238 238 / var(--tw-border-opacity, 1))}.border-\[\#F2F2F2\]{--tw-border-opacity:1;border-color:rgb(242 242 242 / var(--tw-border-opacity, 1))}.border-white\/20{border-color:rgb(255 255 255 / 0.2)}.border-white\/30{border-color:rgb(255 255 255 / 0.3)}.bg-\[\#111\]{--tw-bg-opacity:1;background-color:rgb(17 17 17 / var(--tw-bg-opacity, 1))}.bg-\[\#EAEAEA\]{--tw-bg-opacity:1;background-color:rgb(234 234 234 / var(--tw-bg-opacity, 1))}.bg-\[\#F2F2F2\]{--tw-bg-opacity:1;background-color:rgb(242 242 242 / var(--tw-bg-opacity, 1))}.bg-\[\#F5F5F5\]{--tw-bg-opacity:1;background-color:rgb(245 245 245 / var(--tw-bg-opacity, 1))}.bg-\[\#F7F7F7\]{--tw-bg-opacity:1;background-color:rgb(247 247 247 / var(--tw-bg-opacity, 1))}.bg-\[\#F9F9F9\]{--tw-bg-opacity:1;background-color:rgb(249 249 249 / var(--tw-bg-opacity, 1))}.bg-\[\#FDFDFD\]{--tw-bg-opacity:1;background-color:rgb(253 253 253 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.bg-white\/20{background-color:rgb(255 255 255 / 0.2)}.p-\[8\%\]{padding:8%}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-\[2\.2vw\]{padding-top:2.2vw;padding-bottom:2.2vw}.py-\[4\.7vw\]{padding-top:4.7vw;padding-bottom:4.7vw}.pt-0{padding-top:0px}.text-left{text-align:left}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[13px\]{font-size:13px}.text-\[14px\]{font-size:14px}.text-\[15px\]{font-size:15px}.text-\[clamp\(13px\2c 1vw\2c 15px\)\]{font-size:clamp(13px,1vw,15px)}.text-\[clamp\(14px\2c 1vw\2c 16px\)\]{font-size:clamp(14px,1vw,16px)}.text-\[clamp\(40px\2c 5vw\2c 60px\)\]{font-size:clamp(40px,5vw,60px)}.text-\[clamp\(42px\2c 8\.5vw\2c 64px\)\]{font-size:clamp(42px,8.5vw,64px)}.text-\[clamp\(80px\2c 10vw\2c 120px\)\]{font-size:clamp(80px,10vw,120px)}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-light{font-weight:300}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.lowercase{text-transform:lowercase}.leading-\[1\.02\]{line-height:1.02}.leading-\[1\.0\]{line-height:1.0}.leading-\[1\.6\]{line-height:1.6}.leading-none{line-height:1}.tracking-\[-0\.04em\]{letter-spacing:-0.04em}.tracking-tight{letter-spacing:-0.025em}.tracking-wide{letter-spacing:0.025em}.tracking-widest{letter-spacing:0.1em}.text-\[\#111\]{--tw-text-opacity:1;color:rgb(17 17 17 / var(--tw-text-opacity, 1))}.text-\[\#444\]{--tw-text-opacity:1;color:rgb(68 68 68 / var(--tw-text-opacity, 1))}.text-\[\#666\]{--tw-text-opacity:1;color:rgb(102 102 102 / var(--tw-text-opacity, 1))}.text-\[\#888\]{--tw-text-opacity:1;color:rgb(136 136 136 / var(--tw-text-opacity, 1))}.text-\[\#AAA\]{--tw-text-opacity:1;color:rgb(170 170 170 / var(--tw-text-opacity, 1))}.text-black{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-white\/90{color:rgb(255 255 255 / 0.9)}.opacity-70{opacity:0.7}.opacity-90{opacity:0.9}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}h1, h2, h3, h4{font-family:Outfit, sans-serif;letter-spacing:-0.025em; font-family: 'Outfit', sans-serif}
+        :root {
+            /* 1920 Base System (1920px = 100%) */
+            --base-width: 1920;
+            --global-padding-desktop: 11vw;
+            --global-padding-tablet: clamp(8vw, 9vw, 10vw);
+            --global-padding-mobile: 5.2vw;
+            
+            --hero-outer-padding: 0.9vw;
+            --nav-offset: 2.1vw;
+            
+            --spacing-hero-skills: 3.9vw;  /* Reduced ~10% from 4.4vw */
+            --spacing-skills-projects: 4.9vw; /* Reduced from 6.1vw */
+            
+            --grid-gap: 1.8vw;
+            
+            /* Nav safe-zone offset for scroll targets */
+            --scroll-offset: 80px;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #000000; color: #ffffff; overflow-x: hidden; }
+        
+        .global-padding {
+            padding-left: var(--global-padding-desktop);
+            padding-right: var(--global-padding-desktop);
+        }
+        .global-margin {
+            margin-left: var(--global-padding-desktop);
+            margin-right: var(--global-padding-desktop);
+        }
+        @media (max-width: 1279px) and (min-width: 768px) {
+            .global-padding {
+                padding-left: var(--global-padding-tablet);
+                padding-right: var(--global-padding-tablet);
+            }
+            .global-margin {
+                margin-left: var(--global-padding-tablet);
+                margin-right: var(--global-padding-tablet);
+            }
+        }
+        @media (max-width: 767px) {
+            .global-padding {
+                padding-left: var(--global-padding-mobile);
+                padding-right: var(--global-padding-mobile);
+            }
+            .global-margin {
+                margin-left: var(--global-padding-mobile);
+                margin-right: var(--global-padding-mobile);
+            }
+        }
+
+        header {
+            transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-nav{display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;border-width:1px;border-color:rgb(255 255 255 / 0.2);background-color:rgb(255 255 255 / 0.8);--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+            height: 50px;
+            border-radius: var(--nav-radius) !important;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        padding 0.5s cubic-bezier(0.4, 0, 0.2, 1)}
+        
+        .glass-nav.expanded {
+            height: 320px !important;
+            border-radius: 24px;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .nav-main-row{display:flex;width:100%;align-items:center;justify-content:space-between;
+            height: 50px;
+            min-height: 50px;
+            flex-shrink: 0;
+            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
+            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset))}
+
+        .mobile-links{pointer-events:none;display:flex;flex-direction:column;gap:1.5rem;padding-top:2rem;padding-bottom:2rem;padding-left:2rem;padding-right:2rem;opacity:0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-10px)}
+
+        .glass-nav.expanded .mobile-links{pointer-events:auto;opacity:1;
+            transform: translateY(0);
+            transition-delay: 0.25s /* Delay reveal until container starts expanding */}
+
+        /* Hamburger Animation Removed */
+
+        /* Scrolled state: dock to top edge */
+        header.scrolled {
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            padding: 0 !important;
+        }
+        header.scrolled .glass-nav {
+            border-radius: 0 !important;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            width: 100%;
+            max-width: 100%;
+        }
+        header.scrolled .beading-frame {
+            display: none;
+        }
+        header.scrolled .nav-main-row {
+            padding-left: var(--global-padding-desktop) !important;
+            padding-right: var(--global-padding-desktop) !important;
+        }
+
+        /* Hover Inversion Removed */
+        .btn-invert:hover {
+            background-color: white !important;
+            color: #111 !important;
+        }
+        .btn-invert:hover svg {
+            stroke: #111 !important;
+        }
+        
+        .nav-link:hover {
+            color: #FF4B2B;
+        }
+
+        :root {
+            --radius-tl: 32px;
+            --radius-tr: 32px;
+            --radius-br: 32px;
+            --radius-bl: 32px;
+            --banner-radius: var(--radius-tl) var(--radius-tr) var(--radius-br) var(--radius-bl);
+            --nav-inset: 2.1vw;
+            --nav-radius: calc(32px - 8px);
+        }
+
+        @media (max-width: 767px) {
+            :root {
+                --radius-tl: 24px;
+                --radius-tr: 24px;
+                --radius-br: 24px;
+                --radius-bl: 24px;
+                --banner-radius: var(--radius-tl) var(--radius-tr) var(--radius-br) var(--radius-bl);
+                --nav-inset: 3.2vw;
+                --nav-radius: calc(24px - 6px);
+            }
+            .nav-main-row {
+                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            }
+            header.scrolled .glass-nav .nav-main-row {
+                padding-left: var(--global-padding-mobile) !important;
+                padding-right: var(--global-padding-mobile) !important;
+            }
+            header.scrolled .glass-nav {
+                border-radius: 0 !important;
+            }
+        }
+
+        /* Beading Frame Logic */
+        .beading-frame {
+            position: absolute;
+            inset: calc(-1 * var(--nav-inset));
+            border-top: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-left: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-right: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--banner-radius);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .reeded-gradient {
+            background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%);
+            position: relative;
+        }
+        .reeded-gradient::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05) 0px,
+                rgba(255, 255, 255, 0.05) 2px,
+                transparent 2px,
+                transparent 16px
+            );
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: inherit;
+            pointer-events: none;
+            transform: translateZ(0); /* Force GPU repaint for glass stability */
+        }
+        
+        /* Immediate Glassmorphism Stability */
+        .glass-card, .btn-glass, [class*="bg-white/"] {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transform: translateZ(0);
+            will-change: backdrop-filter;
+        }
+        
+        /* Scroll indicator bounce Removed */
+        
+        /* Textarea auto-grow: hide resize handle */
+        textarea {
+            resize: none !important;
+            overflow: hidden;
+        }
+
+        .hero-banner-height {
+            height: 81vh; /* Scenario 2: Mobile stable height */
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .hero-banner-height {
+                height: 90vh; /* Scenario 1: Tablet/Desktop stable height */
+            }
+        }
+        
+        /* Contained Gap Logic: 15% Internal Space */
+        .hero-top-safe-zone {
+            padding-top: 15vh !important;
+            padding-bottom: 10vh; /* Squeeze content slightly to reduce bottom gap on mobile */
+        }
+        @media (min-width: 1024px) {
+            .hero-top-safe-zone {
+                padding-bottom: 0; /* Reset for desktop */
+            }
+        }
+        .selection\:bg-figma-orange *::selection{--tw-bg-opacity:1;background-color:rgb(255 75 43 / var(--tw-bg-opacity, 1))}
+        .selection\:text-white *::selection{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}
+        .selection\:bg-figma-orange::selection{--tw-bg-opacity:1;background-color:rgb(255 75 43 / var(--tw-bg-opacity, 1))}
+        .selection\:text-white::selection{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}
+        .placeholder\:text-\[\#888\]::placeholder{--tw-text-opacity:1;color:rgb(136 136 136 / var(--tw-text-opacity, 1))}
+        .hover\:bg-black:hover{--tw-bg-opacity:1;background-color:rgb(0 0 0 / var(--tw-bg-opacity, 1))}
+        .hover\:bg-white\/30:hover{background-color:rgb(255 255 255 / 0.3)}
+        .hover\:text-\[\#111\]:hover{--tw-text-opacity:1;color:rgb(17 17 17 / var(--tw-text-opacity, 1))}
+        .hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}
+        .focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}
+        @media (min-width: 861px){.md\:mb-0{margin-bottom:0px}.md\:mb-12{margin-bottom:3rem}.md\:mb-6{margin-bottom:1.5rem}.md\:mb-\[4vw\]{margin-bottom:4vw}.md\:mt-10{margin-top:2.5rem}.md\:block{display:block}.md\:w-1\/2{width:50%}.md\:w-full{width:100%}.md\:max-w-\[320px\]{max-width:320px}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:items-end{align-items:flex-end}.md\:gap-4{gap:1rem}.md\:gap-6{gap:1.5rem}.md\:gap-\[4\.2vw\]{gap:4.2vw}.md\:p-\[6\%\]{padding:6%}.md\:py-2{padding-top:0.5rem;padding-bottom:0.5rem}.md\:text-\[22px\]{font-size:22px}.md\:leading-\[0\.95\]{line-height:0.95}}
+        @media (min-width: 1218px){.lg\:mt-0{margin-top:0px}.lg\:w-1\/2{width:50%}.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.lg\:items-end{align-items:flex-end}.lg\:gap-10{gap:2.5rem}}
+    </style><style>
+        .cms-hover { 
+            outline: 2px solid rgba(59, 130, 246, 0.5) !important; 
+            cursor: default !important; 
+            outline-offset: 1px !important; 
+        }
+        .cms-selected { 
+            outline: 2px solid #3b82f6 !important; 
+            outline-offset: 1px !important; 
+            position: relative; 
+            z-index: 9999; 
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+    </style></head>
+<body class="selection:bg-figma-orange selection:text-white relative">
+
+    <!-- Floating Navigation -->
+    <header class="fixed z-50 transition-all duration-300" style="top: var(--hero-outer-padding); 
+                   left: var(--hero-outer-padding); 
+                   right: var(--hero-outer-padding);
+                   padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
+        <nav class="glass-nav relative" id="main-nav">
+            <!-- Beading Frame: Bridges gap to banner edges -->
+            <div class="beading-frame"></div>
+            <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
+                <div class="flex items-center gap-2 flex-nowrap min-w-fit">
+                    <div class="w-6 h-6 bg-white rounded-full flex-shrink-0"></div>
+                    <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center" style="margin: 0; padding: 0;">yadsid.com</div>
+                </div>
+                
+                <div class="flex items-center gap-6 lg:gap-10">
+                    <!-- Desktop Menu: Home > Core Skills > Projects > Let's Talk -->
+                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-white/70">
+                        <li><a href="#home" class="nav-scroll">Home</a></li>
+                        <li><a href="#expertise" class="nav-scroll">Core Skills</a></li>
+                        <li><a href="#projects" class="nav-scroll">Projects</a></li>
+                    </ul>
+                    
+                    <!-- Action Group: CTA -->
+                    <div class="flex items-center gap-2 md:gap-4">
+                        <a href="#contact" class="hidden md:block bg-white text-black px-6 py-2 rounded-full text-[13px] font-medium nav-scroll">
+                            Let's Talk
+                        </a>
+                    </div>
+                </div>
             </div>
+            <!-- Mobile Hamburger -->
+            <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
+                <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
+                <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
+            </button>
         </nav>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-drawer" class="fixed inset-0 bg-black/95 backdrop-blur-2xl z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-all duration-500 md:hidden">
+            <a href="#home" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Home</a>
+            <a href="#expertise" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Core Skills</a>
+            <a href="#projects" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Projects</a>
+            <a href="#contact" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Let's Talk</a>
+        </div>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <h2 class="subtitle fade-up">Yadhu Sidharthan</h2>
-                <h1 class="title fade-up delay-1">Creative <span class="gradient-text">Graphics Designer</span></h1>
-                <p class="description fade-up delay-2">AI-Driven Design & Creative Direction. Crafting compelling brand stories through CRO-driven strategies and AI-powered execution.</p>
-                <div class="cta-group fade-up delay-3">
-                    <a href="#projects" class="btn primary-btn">View My Work</a>
-                    <a href="#contact" class="btn secondary-btn">Let's Talk</a>
-                </div>
-            </div>
-            <div class="hero-visual fade-in delay-2">
-                <div class="abstract-shape shape-1"></div>
-                <div class="abstract-shape shape-2"></div>
-                <div class="glass-card main-card">
-                    <div class="card-content">
-                        <h3>9+ Years</h3>
-                        <p>Experience in branding & UI/UX</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Hero Section -->
+    <section id="home" data-section-id="hero" class="w-full" style="padding: var(--hero-outer-padding); overflow: hidden;">
+        <div class="reeded-gradient relative flex flex-col justify-between w-full hero-banner-height hero-top-safe-zone" style="border-radius: var(--banner-radius); padding-bottom: 30px;">
+            <!-- Left-Aligned Content Group: Heading + CTA Buttons -->
+            <div class="relative z-10 w-full flex flex-col items-start text-left hero-content-pad">
+                <p class="text-white text-lg md:text-[22px] font-light tracking-wide mb-2 md:mb-6 opacity-90 text-left">
+                    Yadhu Sidharthan
+                </p>
+                <!-- Single Line Fluid Heading with Auto-Arrange (Left Aligned - High Impact Scaling) -->
+                <h1 class="text-white font-bold leading-[1.0] tracking-[-0.04em] mb-8 md:mb-12 text-left text-[clamp(80px,10vw,120px)] py-4 md:py-2 max-w-5xl">
+                    Creative Graphics Designer
+                </h1>
 
-        <!-- Skills & Expertise Section -->
-        <section id="expertise" class="expertise section-padding">
-            <div class="container">
-                <div class="section-header fade-up">
-                    <h2 class="section-title">Skills & <span class="gradient-text">Expertise</span></h2>
-                    <p>Leveraging cutting-edge tools and a deep understanding of user behavior to deliver measurable results.</p>
+                <!-- Buttons Group Left-Aligned -->
+                <div class="flex flex-wrap items-center justify-start gap-4 md:gap-6">
+                    <a href="#projects" class="bg-white text-black px-8 py-4 rounded-full text-base font-bold shadow-xl nav-scroll">
+                        View My Work
+                    </a>
+                    <a href="#contact" class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-full text-base font-bold nav-scroll">
+                        Let's Talk
+                    </a>
                 </div>
-                <div class="expertise-grid">
-                    <div class="expertise-card fade-up">
-                        <div class="icon">✨</div>
-                        <h3>AI-Integrated Workflows</h3>
-                        <p>Streamlining production and enhancing creativity using the latest AI-driven design tools.</p>
-                    </div>
-                    <div class="expertise-card fade-up delay-1">
-                        <div class="icon">🎯</div>
-                        <h3>Creative Direction</h3>
-                        <p>Leading design strategies that align with brand vision and drive campaign performance.</p>
-                    </div>
-                    <div class="expertise-card fade-up delay-2">
-                        <div class="icon">🎨</div>
-                        <h3>Branding & Identity</h3>
-                        <p>Developing memorable brand identities that resonate with target audiences.</p>
-                    </div>
-                    <div class="expertise-card fade-up delay-3">
-                        <div class="icon">💻</div>
-                        <h3>UI/UX & CRO</h3>
-                        <p>Creating intuitive interfaces and CRO-driven designs that increase engagement.</p>
+            </div>
+
+            <!-- Bottom Elements -->
+            <div class="relative w-full">
+                <div class="flex items-center justify-between relative hero-content-pad">
+                    <!-- Center: Scroll Indicator -->
+                    <a href="#expertise" class="scroll-arrow absolute left-1/2 bg-white rounded-full z-10 cursor-pointer shadow-sm nav-scroll flex items-center justify-center" style="padding:clamp(6px,1vw,8px);">
+                        <svg style="width:clamp(12px,1.3vw,18px);height:clamp(12px,1.3vw,18px)" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
+                    </a>
+
+                    <!-- Right: Social Icons -->
+                    <div class="flex gap-[1.5vw] z-10 ml-auto">
+                        <a href="#" style="width:clamp(24px,4vw,32px);height:clamp(24px,4vw,32px);font-size:clamp(9px,1vw,13px)" class="bg-[#111] text-white rounded-full flex items-center justify-center font-bold">in</a>
+                        <a href="#" style="width:clamp(24px,4vw,32px);height:clamp(24px,4vw,32px);font-size:clamp(9px,1vw,13px)" class="bg-[#111] text-white rounded-full flex items-center justify-center font-bold">Bē</a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="projects section-padding">
-            <div class="container">
-                <div class="section-header fade-up">
-                    <h2 class="section-title">Selected <span class="gradient-text">Projects</span></h2>
-                    <p>A showcase of AI-powered creative execution and strategic design.</p>
+    <!-- Core Skills Section -->
+    <section id="expertise" class="w-full global-padding" style="margin-top:clamp(32px,3.9vw,80px);scroll-margin-top: var(--scroll-offset);">
+        <div>
+            <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight text-white" style="margin-bottom:clamp(12px,1.4vw,28px)">
+                Core Skills
+            </h2>
+            <p class="text-[clamp(13px,1vw,15px)] text-white/60 leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)">
+                Senior Graphic Designer with 9+ years of experience in branding, creative direction, UI/UX, and AI-integrated design workflows. Proven track record of improving campaign performance, increasing engagement, and reducing production costs through CRO-driven strategies and AI-powered creative execution.
+            </p>
+            <div class="flex flex-wrap" style="gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(20px,2.5vw,48px)">
+                <span class="bg-[#0d0d0d] border border-white/10 rounded-full font-bold uppercase flex items-center gap-2 text-white/80" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                    <div class="w-1.5 h-1.5 bg-[#FF4B2B] rounded-full flex-shrink-0"></div> UI/UX
+                </span>
+                <span class="bg-[#0d0d0d] border border-white/10 rounded-full font-bold uppercase flex items-center gap-2 text-white/80" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                    <div class="w-1.5 h-1.5 bg-[#FF4B2B] rounded-full flex-shrink-0"></div> PRINT
+                </span>
+                <span class="bg-[#0d0d0d] border border-white/10 rounded-full font-bold uppercase flex items-center gap-2 text-white/80" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                    <div class="w-1.5 h-1.5 bg-[#FF4B2B] rounded-full flex-shrink-0"></div> CREATIVE DIRECTION
+                </span>
+            </div>
+            
+            <hr class="border-white/10" style="margin-bottom:clamp(24px,2.8vw,56px)">
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="pt-0 bg-black w-full global-padding" style="scroll-margin-top: var(--scroll-offset);">
+        <div>
+            <div style="margin-bottom:clamp(28px,4.2vw,80px)">
+                <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight text-white" style="margin-bottom:clamp(12px,1.4vw,20px)">Projects</h2>
+                <p class="text-[clamp(14px,1vw,16px)] text-white/50 leading-[1.6] max-w-2xl mb-10" id="projects-draft-text">
+                    This is a secondary paragraph that describes my approach to various projects, from concept to final execution. Each project is a unique blend of strategy and creativity.
+                </p>
+                
+                <div class="flex flex-wrap gap-3 mb-10" id="project-categories">
+                    <button class="bg-white/10 border border-white/10 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all">All Works</button>
+                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">UI/UX</button>
+                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">Sprint</button>
+                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">Brand Direction</button>
+                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">Branding</button>
                 </div>
-                <!-- Category Filter Tabs -->
-                <div class="category-tabs" id="categoryTabs"></div>
-                <!-- Dynamic Projects Grid -->
-                <div class="projects-grid" id="projectsGrid">
-                    <div class="projects-loading">Loading projects...</div>
+                
+                <hr class="border-white/10" style="margin-bottom:clamp(20px,2.8vw,56px)">
+            </div>
+
+            <!-- Project Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: var(--grid-gap);" id="projectsGrid"><!-- Content will load from portfolio.js --></div>
+            
+            <hr class="border-white/10 mt-[var(--spacing-skills-projects)]">
+        </div>
+    </section>
+
+    <!-- Contact Banner Section -->
+    <section id="contact" class="w-full py-[4.7vw]" style="scroll-margin-top: var(--scroll-offset);">
+        <div class="rounded-[32px] reeded-gradient p-[8%] md:p-[6%] text-white relative overflow-hidden flex flex-col md:flex-row md:items-end lg:items-end justify-between gap-16 md:gap-[4.2vw] min-h-[500px] global-margin">
+            <!-- Left Column: CTA + Contact Buttons -->
+            <div class="relative z-10 w-full md:w-1/2 lg:w-1/2">
+                <h2 class="text-[clamp(42px,8.5vw,64px)] font-bold tracking-tight mb-[8vw] md:mb-[4vw] leading-[1.02] md:leading-[0.95]">
+                    Let's Create<br>Something<br>Extraordinary
+                </h2>
+                <p class="text-white/90 text-[13px] mb-[3vw] font-medium">
+                    Available for freelance opportunities and collaborations.
+                </p>
+                <!-- Contact Buttons: Vertically stacked, full width, glassmorphic -->
+                <div class="flex flex-col gap-2.5 w-full md:max-w-[320px]">
+                    <a href="tel:+971523325687" class="bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 btn-invert w-full">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        +971 523325687
+                    </a>
+                    <a href="mailto:yadhusid@gmail.com" class="bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 btn-invert w-full lowercase">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        yadhusid@gmail.com
+                    </a>
+                    <a href="#" class="bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 btn-invert w-full">
+                        <span class="font-black text-[14px]">in</span>
+                        LinkedIn Profile
+                    </a>
+                    <a href="#" class="bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 btn-invert w-full">
+                        <span class="font-black text-[14px]">Bē</span>
+                        Behance Portfolio
+                    </a>
                 </div>
             </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="services section-padding">
-            <div class="container">
-                <div class="services-wrapper">
-                    <div class="services-content fade-up">
-                        <h2 class="section-title">My <span class="gradient-text">Services</span></h2>
-                        <p>End-to-end design solutions tailored for modern businesses.</p>
-                        <ul class="services-list">
-                            <li><strong>AI-Powered Design:</strong> Rapid prototyping and high-quality asset generation.</li>
-                            <li><strong>Brand Strategy:</strong> Comprehensive visual identity systems.</li>
-                            <li><strong>Digital Design:</strong> Web, App, and social media creatives.</li>
-                            <li><strong>Conversion Optimization:</strong> Data-driven design tweaks for maximum ROI.</li>
-                        </ul>
+            
+            <!-- Right Column: Form -->
+            <div class="relative z-10 w-full md:w-full lg:w-1/2 mt-6 md:mt-10 lg:mt-0">
+                <form class="flex flex-col gap-3" id="contactForm">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] uppercase tracking-widest opacity-70 ml-4">Your Name</label>
+                        <input type="text" placeholder="John Doe" class="w-full bg-white rounded-full px-5 py-3 text-[13px] text-[#111] placeholder:text-[#888] focus:outline-none">
                     </div>
-                    <div class="services-visual fade-in delay-1">
-                        <div class="glow-orb"></div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] uppercase tracking-widest opacity-70 ml-4">Email ID</label>
+                        <input type="email" placeholder="john@example.com" class="w-full bg-white rounded-full px-5 py-3 text-[13px] text-[#111] placeholder:text-[#888] focus:outline-none">
                     </div>
-                </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] uppercase tracking-widest opacity-70 ml-4">Message</label>
+                        <textarea placeholder="Tell me about your project..." rows="4" class="w-full bg-white rounded-[24px] px-5 py-4 text-[13px] text-[#111] placeholder:text-[#888] focus:outline-none" id="autoGrowTextarea"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 rounded-full px-5 py-3 text-[13px] font-semibold transition-colors mt-1">
+                        Send Message
+                    </button>
+                </form>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="contact section-padding">
-            <div class="container">
-                <div class="contact-card glass-card fade-up">
-                    <div class="contact-info">
-                        <h2>Let's create something <span class="gradient-text">extraordinary</span></h2>
-                        <p>Available for freelance opportunities and collaborations.</p>
-                        <div class="contact-links-container">
-                            <div class="social-links">
-                                <a href="https://www.linkedin.com/in/yadhu-sidharthan-b54862a4/" target="_blank" class="social-icon" style="display: flex; align-items: center;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-                                    LinkedIn
-                                </a>
-                                <a href="#" class="social-icon" style="display: flex; align-items: center;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;"><path d="M22 7h-7v2h7v-2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.546-1.436-2.35-2.461-2.35-.986 0-2.366.739-2.504 2.35zm-8.56 0c2.353 0 3.705-1.045 3.705-3.138 0-1.871-1.141-2.862-3.235-2.862h-5.04v12h5.275c2.613 0 3.992-1.461 3.992-3.34 0-2.053-1.611-2.66-2.697-2.66zm-2.73-3.13v-1.127h2.09c.81 0 1.258.337 1.258.916 0 .72-.513.91-1.393.91h-1.955zm0 3.425h2.155c.983 0 1.63.4 1.63 1.109 0 .864-.783 1.161-1.63 1.161h-2.155v-2.27z"/></svg>
-                                    Behance
-                                </a>
-                                <a href="#" class="social-icon" style="display: flex; align-items: center;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                                    Email
-                                </a>
-                            </div>
-                            <div class="phone-link" style="margin-top: 1.5rem;">
-                                <a href="tel:+971523325687" class="social-icon" style="display: flex; align-items: center;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                                    +971523325687 (Dubai)
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <input type="text" id="name" required placeholder="Your Name">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" required placeholder="Your Email">
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" rows="4" required placeholder="Your Message"></textarea>
-                        </div>
-                        <button type="submit" class="btn primary-btn submit-btn">Send Message</button>
-                    </form>
-                </div>
+    <footer class="py-[2.2vw] w-full border-t border-white/10">
+        <div class="flex flex-col md:flex-row items-center justify-between text-[11px] font-medium text-white/40 global-padding">
+            <div class="font-bold text-white text-[13px] mb-4 md:mb-0">yadsid.com</div>
+            <div class="mb-4 md:mb-0">© 2026 Yadhu Sidharthan. All rights reserved.</div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white">LinkedIn</a>
+                <a href="#" class="hover:text-white">Behance</a>
             </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Yadhu Sidharthan. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Responsive hero padding helper -->
+    <style>
+        .hero-content-pad {
+            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding));
+            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding));
+        }
+        @media (max-width: 1279px) and (min-width: 768px) {
+            .hero-content-pad {
+                padding-left: calc(var(--global-padding-tablet) - var(--hero-outer-padding)) !important;
+                padding-right: calc(var(--global-padding-tablet) - var(--hero-outer-padding)) !important;
+            }
+        }
+        @media (max-width: 767px) {
+            .hero-content-pad {
+                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding)) !important;
+                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding)) !important;
+            }
+        }
+    </style>
+
+    <!-- Scripts -->
     <script src="script.js"></script>
     <script src="portfolio.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Textarea auto-grow
+            const ta = document.getElementById('autoGrowTextarea');
+            if (ta) {
+                ta.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                });
+            }
+        });
+    </script>
+    <script src="admin/cms-connector.js?v=2"></script>
+
+
 </body>
 </html>

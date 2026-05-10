@@ -5,8 +5,10 @@
     let allCategories = [];
     let activeCategory = 'all';
 
-    const tabsEl = document.getElementById('categoryTabs');
+    const tabsEl = document.getElementById('project-categories');
     const gridEl = document.getElementById('projectsGrid');
+
+    if (!tabsEl || !gridEl) return; // Exit if not on portfolio page
 
     // ── Fetch data ─────────────────────────────────────────────────────────────
     async function fetchData() {
@@ -15,75 +17,89 @@
                 fetch('/api/categories'),
                 fetch('/api/projects')
             ]);
+
+            if (!catRes.ok || !projRes.ok) throw new Error('API request failed');
+
             allCategories = await catRes.json();
             allProjects = await projRes.json();
+
             renderTabs();
             renderProjects('all');
         } catch (err) {
-            // Server not running — show static placeholder message
+            console.error('FetchData failed:', err);
             gridEl.innerHTML = `
                 <div style="grid-column:1/-1;text-align:center;color:#a0a0ab;padding:3rem 0;">
-                    <p style="font-size:1.1rem;margin-bottom:0.5rem;">Start the server to see your projects here.</p>
-                    <p style="font-size:0.9rem;">Run <code style="background:rgba(99,102,241,0.15);padding:0.2rem 0.5rem;border-radius:4px;color:#6366f1;">node server.js</code> in your project folder.</p>
+                    <p style="font-size:1.1rem;margin-bottom:0.5rem;">Your portfolio is ready. Add projects in the CMS to see them here.</p>
                 </div>`;
-            tabsEl.style.display = 'none';
+            if (tabsEl) tabsEl.style.display = 'none';
         }
     }
 
     // ── Render category filter tabs ────────────────────────────────────────────
     function renderTabs() {
-        if (!allCategories.length) { tabsEl.style.display = 'none'; return; }
-        const tabs = [{ id: 'all', name: 'All Work' }, ...allCategories];
-        tabsEl.innerHTML = tabs.map(c => `
-            <button class="cat-tab ${c.id === 'all' ? 'active' : ''}" data-id="${c.id}" onclick="filterCategory('${c.id}', this)">
+        if (!allCategories.length) return;
+        const tabs = [{ id: 'all', name: 'All Works' }, ...allCategories];
+        tabsEl.innerHTML = tabs.map(c => {
+            const isActive = c.id === activeCategory;
+            return `
+            <button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all${isActive ? ' !bg-black !text-white' : ''}" 
+                    data-id="${c.id}" 
+                    onclick="filterCategory('${c.id}', this)">
                 ${c.name}
-            </button>`).join('');
+            </button>`;
+        }).join('');
     }
 
     // ── Render project cards ───────────────────────────────────────────────────
     function renderProjects(categoryId) {
-        const filtered = categoryId === 'all'
+        let filtered = categoryId === 'all'
             ? allProjects
             : allProjects.filter(p => p.categoryId === categoryId);
 
+        // Filter only published projects for the public view
+        filtered = filtered.filter(p => p.status === 'published');
+
         if (!filtered.length) {
-            gridEl.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#a0a0ab;padding:3rem 0;">No projects in this category yet.</div>`;
+            gridEl.innerHTML = `<div class="col-span-full py-20 text-center text-gray-400 font-medium tracking-widest text-sm">No projects in this category yet.</div>`;
             return;
         }
 
+        const bgColors = ['bg-[#0d0d0d]', 'bg-[#0a0a0a]', 'bg-[#050505]', 'bg-[#111111]'];
+
         gridEl.innerHTML = filtered.map((p, i) => {
             const cat = allCategories.find(c => c.id === p.categoryId);
-            const delay = ['', 'delay-1', 'delay-2'][i % 3];
-            // Cycle through the neutral glass backgrounds for a monochrome look
-            const glassClass = ['bg-glass-grey-1', 'bg-glass-grey-2', 'bg-glass-grey-3', 'bg-glass-grey-4'][i % 4];
-            return `
-            <div class="project-card fade-up ${delay}">
-                <a href="/project.html?id=${p.id}" style="text-decoration:none;color:inherit;">
-                    ${p.coverImage
-                        ? `<img src="${p.coverImage}" alt="${p.title}" style="width:100%;height:250px;object-fit:cover;">`
-                        : `<div class="project-image-placeholder ${glassClass}"><span>${cat ? cat.name : 'Project'}</span></div>`}
-                    <div class="project-info">
-                        ${cat ? `<span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:#6366f1;font-weight:600;">${cat.name}</span>` : ''}
-                        <h3 style="margin-top:0.5rem;">${p.title}</h3>
-                        <p>${p.description || ''}</p>
-                        <span class="project-link">View Case Study →</span>
-                    </div>
-                </a>
-            </div>`;
-        }).join('');
+            const bgColor = bgColors[i % bgColors.length];
+            const isDark = true; // All are dark now
+            const textColor = 'text-white';
+            const hrColor = 'bg-[#FF4B2B]'; // Signature accent
+            const descColor = 'text-white/50';
 
-        // Trigger scroll observer on new cards
-        document.querySelectorAll('#projectsGrid .fade-up').forEach(el => {
-            el.classList.remove('visible');
-            setTimeout(() => el.classList.add('visible'), 50);
-        });
+            return `
+            <a href="/project.html?id=${p.id}" class="${bgColor} h-[550px] rounded-[32px] overflow-hidden relative group cursor-pointer hover:shadow-2xl transition-all duration-300 block">
+                ${p.coverImage
+                    ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700">`
+                    : ''}
+                <div class="absolute inset-0 p-12 ${textColor} flex flex-col justify-between z-10">
+                    <div>
+                        <h3 class="text-xl font-bold uppercase tracking-widest mb-3 leading-snug">${p.title}</h3>
+                        <div class="w-10 h-[1px] ${hrColor} mb-6"></div>
+                        <p class="text-[11px] ${descColor} max-w-[200px] leading-relaxed font-light">
+                            ${p.description ? p.description.substring(0, 150) + (p.description.length > 150 ? '...' : '') : 'Explore the process and details of this design project.'}
+                        </p>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm mb-1 tracking-widest uppercase opacity-80">${cat ? cat.name : 'Design'}</div>
+                        <div class="text-[10px] uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">View Project →</div>
+                    </div>
+                </div>
+            </a>`;
+        }).join('');
     }
 
     // ── Expose filter function globally (used in onclick) ──────────────────────
     window.filterCategory = function (id, btn) {
         activeCategory = id;
-        document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
+        renderTabs(); // Re-render to update tab styles
         renderProjects(id);
     };
 

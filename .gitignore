@@ -1,5 +1,6 @@
 node_modules/
-database.json
-public/uploads/
 .env
+.DS_Store
 *.log
+database.json
+.gemini/

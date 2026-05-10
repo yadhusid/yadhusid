@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anti-Gravity Visual CMS Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #0a0a0a; color: #fff; font-family: 'Inter', sans-serif; }
+        .sidebar { background: #121212; border-color: #222; }
+        .canvas { background: #1a1a1a; }
+        .device-btn.active { color: #3b82f6; border-bottom: 2px solid #3b82f6; }
+        /* Removed iframe wrapper transition animations as requested */
+    </style>
+</head>
+<body class="flex h-screen w-screen overflow-hidden">
+    <!-- LEFT: Site Structure -->
+    <aside class="sidebar w-72 border-r flex flex-col flex-shrink-0">
+        <div class="p-4 text-xl font-bold tracking-tighter border-b border-white/10">ANTI‑GRAVITY</div>
+        <div class="p-4 flex-1 overflow-y-auto">
+            <h3 class="text-xs uppercase text-gray-500 font-semibold mb-4">Sections</h3>
+            <ul id="section-list" class="space-y-2">
+                <li data-section="hero" class="p-3 bg-white/5 rounded cursor-pointer hover:bg-white/10 border-l-2 border-blue-500">Hero Banner</li>
+                <li data-section="skills" class="p-3 bg-white/5 rounded cursor-pointer hover:bg-white/10">Core Skills</li>
+                <li data-section="projects" class="p-3 bg-white/5 rounded cursor-pointer hover:bg-white/10">Projects</li>
+                <li data-section="contact" class="p-3 bg-white/5 rounded cursor-pointer hover:bg-white/10">Contact</li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- CENTER: Canvas -->
+    <main class="flex-1 flex flex-col min-w-0">
+        <div class="h-14 border-b flex items-center justify-between px-6 bg-[#121212]">
+            <div class="flex space-x-4">
+                <button class="device-btn text-sm font-medium" onclick="resizeCanvas('mobile', this)">Mobile</button>
+                <button class="device-btn text-sm font-medium" onclick="resizeCanvas('tablet', this)">Tablet</button>
+                <button class="device-btn active text-sm font-medium" onclick="resizeCanvas('desktop', this)">Desktop</button>
+            </div>
+            <div class="flex space-x-3">
+                <button class="px-4 py-1.5 bg-white/10 hover:bg-white/20 text-sm font-medium rounded transition-colors">Preview</button>
+                <button class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-sm font-semibold rounded transition-colors" id="publish-btn">Publish</button>
+            </div>
+        </div>
+        <div class="flex-1 flex justify-center items-center p-8 canvas overflow-auto" id="canvas-area">
+            <div id="iframe-wrapper" class="w-full h-[900px] shadow-2xl" style="max-width: 1440px;">
+                <iframe id="preview-frame" src="../index.html?v=3" class="w-full h-full border-0 bg-white"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <!-- RIGHT: Property Panel -->
+    <aside class="sidebar w-80 border-l flex flex-col p-6 overflow-y-auto flex-shrink-0">
+        <h3 class="text-sm font-bold mb-6">Properties</h3>
+        <div id="no-selection" class="text-center py-12 text-gray-400">
+            <p class="text-sm">Click any element in the preview to edit</p>
+        </div>
+        <div id="editor-panel" class="space-y-6 hidden">
+            <!-- Text Content -->
+            <div>
+                <label class="block text-xs text-gray-400 mb-2 font-semibold uppercase tracking-wider">Text Content</label>
+                <textarea id="prop-text" rows="4" class="w-full bg-black border border-white/10 p-3 rounded text-sm focus:outline-none focus:border-blue-500"></textarea>
+            </div>
+            <!-- Padding -->
+            <div>
+                <label class="flex justify-between items-center mb-2 text-xs text-gray-400 font-semibold uppercase tracking-wider">
+                    Top Padding <span id="pad-value" class="text-blue-400">0px</span>
+                </label>
+                <input type="range" id="prop-padding" min="0" max="200" class="w-full accent-blue-500" />
+            </div>
+            <!-- Link URL -->
+            <div>
+                <label class="block text-xs text-gray-400 mb-2 font-semibold uppercase tracking-wider">Link URL (for &lt;a&gt;)</label>
+                <input type="text" id="prop-link" class="w-full bg-black border border-white/10 p-2.5 rounded text-sm focus:outline-none focus:border-blue-500" placeholder="https://..." />
+            </div>
+            <!-- Image Source -->
+            <div>
+                <label class="block text-xs text-gray-400 mb-2 font-semibold uppercase tracking-wider">Image Source (for &lt;img&gt;)</label>
+                <input type="text" id="prop-image" class="w-full bg-black border border-white/10 p-2.5 rounded text-sm focus:outline-none focus:border-blue-500" placeholder="/path/to/image.jpg" />
+            </div>
+            <!-- Icon Picker -->
+            <div>
+                <label class="block text-xs text-gray-400 mb-2 font-semibold uppercase tracking-wider">Icon (CSS class)</label>
+                <input type="text" id="prop-icon" class="w-full bg-black border border-white/10 p-2.5 rounded text-sm focus:outline-none focus:border-blue-500" placeholder="fas fa-star" />
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        const iframe = document.getElementById('preview-frame');
+        const wrapper = document.getElementById('iframe-wrapper');
+        const noSel = document.getElementById('no-selection');
+        const editor = document.getElementById('editor-panel');
+        
+        const txt = document.getElementById('prop-text');
+        const pad = document.getElementById('prop-padding');
+        const padVal = document.getElementById('pad-value');
+        const link = document.getElementById('prop-link');
+        const imgSrc = document.getElementById('prop-image');
+        const icon = document.getElementById('prop-icon');
+
+        // Canvas resize (No animations as requested)
+        function resizeCanvas(dev, btn) {
+            document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if(dev === 'mobile') { 
+                wrapper.style.maxWidth = '375px'; 
+            }
+            else if(dev === 'tablet') { 
+                wrapper.style.maxWidth = '768px'; 
+            }
+            else { 
+                wrapper.style.maxWidth = '1440px'; 
+            }
+        }
+
+        // Receive selection data from iframe (using cms-connector.js format)
+        window.addEventListener('message', (e) => {
+            if (!e.data || !e.data.type) return;
+            
+            if (e.data.type === 'ELEMENT_SELECTED') {
+                const data = e.data.data;
+                noSel.classList.add('hidden');
+                editor.classList.remove('hidden');
+                
+                txt.value = data.content || '';
+                pad.value = parseInt(data.style.paddingTop) || 0;
+                padVal.textContent = pad.value + 'px';
+                link.value = data.attributes.href || '';
+                imgSrc.value = data.attributes.src || '';
+                icon.value = data.className || '';
+            }
+        });
+
+        // Send updates to iframe
+        txt.addEventListener('input', (e) => {
+            iframe.contentWindow.postMessage({ type: 'UPDATE_TEXT', value: e.target.value }, '*');
+        });
+        
+        pad.addEventListener('input', (e) => {
+            padVal.textContent = e.target.value + 'px';
+            iframe.contentWindow.postMessage({ type: 'UPDATE_STYLE', property: 'paddingTop', value: e.target.value + 'px' }, '*');
+        });
+        
+        link.addEventListener('input', (e) => {
+            iframe.contentWindow.postMessage({ type: 'UPDATE_ATTRIBUTE', attribute: 'href', value: e.target.value }, '*');
+        });
+        
+        imgSrc.addEventListener('input', (e) => {
+            iframe.contentWindow.postMessage({ type: 'UPDATE_ATTRIBUTE', attribute: 'src', value: e.target.value }, '*');
+        });
+        
+        icon.addEventListener('input', (e) => {
+            iframe.contentWindow.postMessage({ type: 'UPDATE_ATTRIBUTE', attribute: 'class', value: e.target.value }, '*');
+        });
+        
+        // Publish button
+        document.getElementById('publish-btn').addEventListener('click', async function() {
+            const btn = this;
+            btn.innerText = "Publishing...";
+            
+            // Minimal clone logic to save the HTML
+            const docClone = iframe.contentWindow.document.documentElement.cloneNode(true);
+            docClone.querySelectorAll('.cms-selected, .cms-hover').forEach(el => {
+                el.classList.remove('cms-selected', 'cms-hover');
+                el.removeAttribute('data-cms-active');
+            });
+            
+            try {
+                const res = await fetch('/admin/save-cms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ html: '<!DOCTYPE html>\n' + docClone.outerHTML })
+                });
+                
+                if (res.ok) {
+                    btn.innerText = "Published!";
+                    btn.classList.add('bg-green-600');
+                    setTimeout(() => {
+                        btn.innerText = "Publish";
+                        btn.classList.remove('bg-green-600');
+                    }, 2000);
+                }
+            } catch (err) {
+                alert("Error saving: " + err.message);
+                btn.innerText = "Publish";
+            }
+        });
+    </script>
+</body>
+</html>
