@@ -51,26 +51,27 @@ if (contactForm) {
 
 // ── Mobile Menu Toggle ────────────────────────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
-const mobileDrawer = document.getElementById('mobile-drawer');
-const mainNav = document.getElementById('main-nav'); // Correctly declare mainNav
+const mobileMenuContent = document.getElementById('mobile-menu-content');
+const mainNav = document.getElementById('main-nav');
 
 function toggleMenu() {
-    if (!hamburger || !mobileDrawer) return;
+    if (!hamburger || !mainNav || !mobileMenuContent) return;
+    
     hamburger.classList.toggle('active');
-    mobileDrawer.classList.toggle('active');
+    mainNav.classList.toggle('active');
 
-    if (mobileDrawer.classList.contains('active')) {
-        mobileDrawer.style.opacity = '1';
-        mobileDrawer.style.pointerEvents = 'auto';
-        document.body.style.overflow = 'hidden';
+    if (mainNav.classList.contains('active')) {
+        mobileMenuContent.style.opacity = '1';
+        mobileMenuContent.style.pointerEvents = 'auto';
+        
         const spans = hamburger.querySelectorAll('span');
         spans[0].style.transform = 'translateY(7px) rotate(45deg)';
         spans[1].style.opacity = '0';
         spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
     } else {
-        mobileDrawer.style.opacity = '0';
-        mobileDrawer.style.pointerEvents = 'none';
-        document.body.style.overflow = '';
+        mobileMenuContent.style.opacity = '0';
+        mobileMenuContent.style.pointerEvents = 'none';
+        
         const spans = hamburger.querySelectorAll('span');
         spans[0].style.transform = '';
         spans[1].style.opacity = '1';
@@ -92,10 +93,9 @@ document.querySelectorAll('.nav-scroll').forEach(link => {
         if (!target) return;
 
         // Close mobile menu if open
-        if (mobileDrawer && mobileDrawer.classList.contains('active')) {
+        if (mainNav && mainNav.classList.contains('active')) {
             toggleMenu();
         }
-        if (mainNav) mainNav.classList.remove('expanded');
 
         const offset = targetId === '#home' ? 0 : 80;
         const top = target.getBoundingClientRect().top + window.pageYOffset - offset;

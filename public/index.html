@@ -119,38 +119,34 @@
             @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm flex flex-col justify-start overflow-hidden;
             height: 50px;
             border-radius: var(--nav-radius) !important;
-            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .glass-nav.expanded {
-            height: 320px !important;
-            border-radius: 24px;
-            overflow: hidden;
+            transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-radius 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 100;
         }
 
+        .glass-nav.active {
+            height: 350px;
+            border-radius: 24px !important;
+        }
+
         .nav-main-row {
-            @apply flex items-center justify-between w-full;
+            @apply flex items-center justify-between w-full px-6 md:px-10;
             height: 50px;
             min-height: 50px;
             flex-shrink: 0;
             color: #111111;
-            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
-            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
         }
 
-        .mobile-links {
-            @apply flex flex-col gap-6 py-8 px-8 opacity-0 pointer-events-none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        #mobile-menu-content {
+            @apply flex flex-col items-center justify-center gap-6 py-8 opacity-0 pointer-events-none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
             transform: translateY(-10px);
         }
 
-        .glass-nav.expanded .mobile-links {
+        .glass-nav.active #mobile-menu-content {
             @apply opacity-100 pointer-events-auto;
             transform: translateY(0);
-            transition-delay: 0.25s; /* Delay reveal until container starts expanding */
+            transition-delay: 0.2s;
         }
 
         /* Hamburger Animation Removed */
@@ -584,15 +580,15 @@
                     </button>
                 </div>
             </div>
+            
+            <!-- Mobile Menu Content (Accordion) -->
+            <div id="mobile-menu-content" class="md:hidden flex flex-col items-center justify-center gap-6 py-8 opacity-0 transition-all duration-500 pointer-events-none">
+                <a href="#home" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
+                <a href="#expertise" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
+                <a href="#projects" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
+                <a href="#contact" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
+            </div>
         </nav>
-
-        <!-- Mobile Drawer -->
-        <div id="mobile-drawer" class="fixed inset-0 bg-white/95 backdrop-blur-2xl z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-all duration-500 md:hidden">
-            <a href="#home" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
-            <a href="#expertise" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
-            <a href="#projects" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
-            <a href="#contact" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
-        </div>
     </header>
 
     <!-- Hero Section -->
