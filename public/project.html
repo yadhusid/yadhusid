@@ -21,7 +21,7 @@
             h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
         }
 
-        body { font-family: 'Inter', sans-serif; background: #000000; color: #ffffff; padding-top: var(--nav-height); }
+        body { font-family: 'Inter', sans-serif; background: #fff; color: #111; padding-top: var(--nav-height); }
         
         .global-padding {
             padding-left: var(--global-padding-desktop);
@@ -43,12 +43,12 @@
 
         /* Permanently Docked Squared Navbar */
         .glass-nav {
-            @apply fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-2xl border-b border-white/10 flex items-center justify-between;
+            @apply fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-2xl border-b border-black/5 flex items-center justify-between;
             height: var(--nav-height);
         }
 
         .btn-back {
-            @apply flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.1em] text-white/60 hover:text-white transition-all duration-300;
+            @apply flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.1em] text-[#666] hover:text-black transition-all duration-300;
         }
     </style>
 </head>
@@ -59,8 +59,8 @@
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" class="group-hover:-translate-x-1 transition-transform"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             Back to Projects
         </a>
-        <a href="/" class="text-[15px] font-extrabold tracking-tight flex items-center gap-2 text-white">
-            <div class="w-6 h-6 bg-white rounded-full"></div>
+        <a href="/" class="text-[15px] font-extrabold tracking-tight flex items-center gap-2">
+            <div class="w-6 h-6 bg-[#111] rounded-full"></div>
             yadsid.com
         </a>
     </header>
@@ -70,7 +70,7 @@
     <!-- Reusable Footer Area -->
     <div id="thank-you-section" class="hidden">
         <section class="global-padding py-[12vw]">
-            <div class="bg-[#0d0d0d] border border-white/10 rounded-[48px] p-[8%] text-white thank-you-card flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="bg-[#111] rounded-[48px] p-[8%] text-white thank-you-card flex flex-col md:flex-row items-center justify-between gap-12">
                 <div class="ty-text">
                     <h2 class="text-[clamp(36px,5.5vw,72px)] font-bold mb-[2vw] leading-none font-heading tracking-tighter">Do you like what you see?</h2>
                     <p class="text-white/60 text-[16px] mb-[3.5vw] max-w-2xl leading-relaxed">
@@ -89,8 +89,8 @@
         </section>
     </div>
 
-    <footer class="py-[5vw] text-center border-t border-white/10">
-        <p class="text-[11px] text-white/40 tracking-widest uppercase">© 2026 Yadhu Sidharthan. All rights reserved.</p>
+    <footer class="py-[5vw] text-center border-t border-[#EEE]">
+        <p class="text-[11px] text-[#888] tracking-widest uppercase">© 2026 Yadhu Sidharthan. All rights reserved.</p>
     </footer>
 
     <script>
@@ -112,9 +112,9 @@
             
             const contentHTML = `
                 <div class="global-padding py-[10vw]">
-                    <span class="inline-block px-4 py-1.5 bg-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 text-white/60">${project.categoryName || 'Design'}</span>
-                    <h1 class="text-[clamp(44px,7.5vw,110px)] font-bold leading-[0.85] tracking-tighter mb-10 font-heading max-w-5xl text-white">${project.title}</h1>
-                    <p class="text-white/80 text-[clamp(18px,1.6vw,22px)] max-w-3xl leading-relaxed mb-12 font-light">${project.description || ''}</p>
+                    <span class="inline-block px-4 py-1.5 bg-black/5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 text-[#666]">${project.categoryName || 'Design'}</span>
+                    <h1 class="text-[clamp(44px,7.5vw,110px)] font-bold leading-[0.85] tracking-tighter mb-10 font-heading max-w-5xl">${project.title}</h1>
+                    <p class="text-[#333] text-[clamp(18px,1.6vw,22px)] max-w-3xl leading-relaxed mb-12 font-light">${project.description || ''}</p>
                 </div>
                 
                 <div class="flex flex-col gap-0 global-padding">

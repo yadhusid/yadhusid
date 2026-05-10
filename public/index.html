@@ -74,7 +74,7 @@
             /* Nav safe-zone offset for scroll targets */
             --scroll-offset: 80px;
         }
-        body { font-family: 'Inter', sans-serif; background-color: #000000; color: #ffffff; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #111111; overflow-x: hidden; }
         
         @layer utilities {
             .font-heading { font-family: 'Outfit', sans-serif; }
@@ -116,7 +116,7 @@
                         right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-nav {
-            @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-sm flex flex-col justify-start overflow-hidden;
+            @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm flex flex-col justify-start overflow-hidden;
             height: 50px;
             border-radius: var(--nav-radius) !important;
             transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -136,7 +136,7 @@
             height: 50px;
             min-height: 50px;
             flex-shrink: 0;
-            color: #ffffff;
+            color: #111111;
             padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
             padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
         }
@@ -188,7 +188,7 @@
         }
         
         .nav-link:hover {
-            color: #FF4B2B;
+            color: #FF416C;
         }
 
         :root {
@@ -316,7 +316,7 @@
             /* Nav safe-zone offset for scroll targets */
             --scroll-offset: 80px;
         }
-        body { font-family: 'Inter', sans-serif; background-color: #000000; color: #ffffff; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #111111; overflow-x: hidden; }
         
         .global-padding {
             padding-left: var(--global-padding-desktop);
@@ -416,7 +416,7 @@
         }
         
         .nav-link:hover {
-            color: #FF4B2B;
+            color: #FF416C;
         }
 
         :root {
@@ -560,13 +560,13 @@
             <div class="beading-frame"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
-                    <div class="w-6 h-6 bg-white rounded-full flex-shrink-0"></div>
+                    <div class="w-6 h-6 bg-[#111] rounded-full flex-shrink-0"></div>
                     <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center" style="margin: 0; padding: 0;">yadsid.com</div>
                 </div>
                 
                 <div class="flex items-center gap-6 lg:gap-10">
                     <!-- Desktop Menu: Home > Core Skills > Projects > Let's Talk -->
-                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-white/70">
+                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-[#111]">
                         <li><a href="#home" class="nav-scroll">Home</a></li>
                         <li><a href="#expertise" class="nav-scroll">Core Skills</a></li>
                         <li><a href="#projects" class="nav-scroll">Projects</a></li>
@@ -574,7 +574,7 @@
                     
                     <!-- Action Group: CTA -->
                     <div class="flex items-center gap-2 md:gap-4">
-                        <a href="#contact" class="hidden md:block bg-white text-black px-6 py-2 rounded-full text-[13px] font-medium nav-scroll">
+                        <a href="#contact" class="hidden md:block bg-[#111] text-white px-6 py-2 rounded-full text-[13px] font-medium nav-scroll">
                             Let's Talk
                         </a>
                     </div>
@@ -582,18 +582,18 @@
             </div>
             <!-- Mobile Hamburger -->
             <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
-                <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
-                <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
-                <span class="w-6 h-0.5 bg-white transition-all duration-300"></span>
+                <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
             </button>
         </nav>
 
         <!-- Mobile Drawer -->
-        <div id="mobile-drawer" class="fixed inset-0 bg-black/95 backdrop-blur-2xl z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-all duration-500 md:hidden">
-            <a href="#home" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Home</a>
-            <a href="#expertise" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Core Skills</a>
-            <a href="#projects" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Projects</a>
-            <a href="#contact" class="nav-scroll text-2xl font-bold tracking-tighter text-white" onclick="toggleMenu()">Let's Talk</a>
+        <div id="mobile-drawer" class="fixed inset-0 bg-white/95 backdrop-blur-2xl z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-all duration-500 md:hidden">
+            <a href="#home" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
+            <a href="#expertise" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
+            <a href="#projects" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
+            <a href="#contact" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
         </div>
     </header>
 
@@ -642,52 +642,52 @@
     <!-- Core Skills Section -->
     <section id="expertise" class="w-full global-padding" style="margin-top:clamp(32px,3.9vw,80px);scroll-margin-top: var(--scroll-offset);">
         <div>
-            <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight text-white" style="margin-bottom:clamp(12px,1.4vw,28px)">
+            <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,28px)">
                 Core Skills
             </h2>
-            <p class="text-[clamp(13px,1vw,15px)] text-white/60 leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)">
+            <p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)">
                 Senior Graphic Designer with 9+ years of experience in branding, creative direction, UI/UX, and AI-integrated design workflows. Proven track record of improving campaign performance, increasing engagement, and reducing production costs through CRO-driven strategies and AI-powered creative execution.
             </p>
             <div class="flex flex-wrap" style="gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(20px,2.5vw,48px)">
-                <span class="bg-[#0d0d0d] border border-white/10 rounded-full font-bold uppercase flex items-center gap-2 text-white/80" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
-                    <div class="w-1.5 h-1.5 bg-[#FF4B2B] rounded-full flex-shrink-0"></div> UI/UX
+                <span class="bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111]" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                    <div class="w-1.5 h-1.5 bg-[#111] rounded-full flex-shrink-0"></div> UI/UX
                 </span>
-                <span class="bg-[#0d0d0d] border border-white/10 rounded-full font-bold uppercase flex items-center gap-2 text-white/80" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
-                    <div class="w-1.5 h-1.5 bg-[#FF4B2B] rounded-full flex-shrink-0"></div> PRINT
+                <span class="bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111]" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                    <div class="w-1.5 h-1.5 bg-[#111] rounded-full flex-shrink-0"></div> PRINT
                 </span>
-                <span class="bg-[#0d0d0d] border border-white/10 rounded-full font-bold uppercase flex items-center gap-2 text-white/80" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
-                    <div class="w-1.5 h-1.5 bg-[#FF4B2B] rounded-full flex-shrink-0"></div> CREATIVE DIRECTION
+                <span class="bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111]" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                    <div class="w-1.5 h-1.5 bg-[#111] rounded-full flex-shrink-0"></div> CREATIVE DIRECTION
                 </span>
             </div>
             
-            <hr class="border-white/10" style="margin-bottom:clamp(24px,2.8vw,56px)">
+            <hr class="border-[#E5E5E5]" style="margin-bottom:clamp(24px,2.8vw,56px)">
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="pt-0 bg-black w-full global-padding" style="scroll-margin-top: var(--scroll-offset);">
+    <section id="projects" class="pt-0 bg-white w-full global-padding" style="scroll-margin-top: var(--scroll-offset);">
         <div>
             <div style="margin-bottom:clamp(28px,4.2vw,80px)">
-                <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight text-white" style="margin-bottom:clamp(12px,1.4vw,20px)">Projects</h2>
-                <p class="text-[clamp(14px,1vw,16px)] text-white/50 leading-[1.6] max-w-2xl mb-10" id="projects-draft-text">
+                <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,20px)">Projects</h2>
+                <p class="text-[clamp(14px,1vw,16px)] text-[#666] leading-[1.6] max-w-2xl mb-10" id="projects-draft-text">
                     This is a secondary paragraph that describes my approach to various projects, from concept to final execution. Each project is a unique blend of strategy and creativity.
                 </p>
                 
                 <div class="flex flex-wrap gap-3 mb-10" id="project-categories">
-                    <button class="bg-white/10 border border-white/10 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all">All Works</button>
-                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">UI/UX</button>
-                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">Sprint</button>
-                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">Brand Direction</button>
-                    <button class="bg-white/5 border border-white/5 px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-white/60 hover:bg-white hover:text-black transition-all">Branding</button>
+                    <button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all">All Works</button>
+                    <button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all">UI/UX</button>
+                    <button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all">Sprint</button>
+                    <button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all">Brand Direction</button>
+                    <button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all">Branding</button>
                 </div>
                 
-                <hr class="border-white/10" style="margin-bottom:clamp(20px,2.8vw,56px)">
+                <hr class="border-[#E5E5E5]" style="margin-bottom:clamp(20px,2.8vw,56px)">
             </div>
 
             <!-- Project Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="gap: var(--grid-gap);" id="projectsGrid"><!-- Content will load from portfolio.js --></div>
             
-            <hr class="border-white/10 mt-[var(--spacing-skills-projects)]">
+            <hr class="border-[#E5E5E5] mt-[var(--spacing-skills-projects)]">
         </div>
     </section>
 
@@ -746,13 +746,13 @@
         </div>
     </section>
 
-    <footer class="py-[2.2vw] w-full border-t border-white/10">
-        <div class="flex flex-col md:flex-row items-center justify-between text-[11px] font-medium text-white/40 global-padding">
-            <div class="font-bold text-white text-[13px] mb-4 md:mb-0">yadsid.com</div>
+    <footer class="py-[2.2vw] w-full border-t border-[#F2F2F2]">
+        <div class="flex flex-col md:flex-row items-center justify-between text-[11px] font-medium text-[#888] global-padding">
+            <div class="font-bold text-[#111] text-[13px] mb-4 md:mb-0">yadsid.com</div>
             <div class="mb-4 md:mb-0">© 2026 Yadhu Sidharthan. All rights reserved.</div>
             <div class="flex gap-6">
-                <a href="#" class="hover:text-white">LinkedIn</a>
-                <a href="#" class="hover:text-white">Behance</a>
+                <a href="#" class="hover:text-[#111]">LinkedIn</a>
+                <a href="#" class="hover:text-[#111]">Behance</a>
             </div>
         </div>
     </footer>

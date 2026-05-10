@@ -75,17 +75,17 @@
             const descColor = 'text-white/50';
 
             return `
-            <a href="/project.html?id=${p.id}" class="bg-[#0d0d0d] h-[380px] rounded-[24px] overflow-hidden relative group cursor-pointer transition-all duration-500 block border border-white/5">
+            <a href="/project.html?id=${p.id}" class="bg-white h-[380px] rounded-[24px] overflow-hidden relative group cursor-pointer transition-all duration-500 block border border-black/5 hover:shadow-xl">
                 ${p.coverImage
                     ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105">`
-                    : '<div class="absolute inset-0 bg-[#111]"></div>'}
+                    : '<div class="absolute inset-0 bg-[#f8f8f8]"></div>'}
                 
                 <!-- Hover Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 z-10">
+                <div class="absolute inset-0 bg-gradient-to-t from-white/95 via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 z-10">
                     <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF4B2B] mb-2">${cat ? cat.name : 'Design'}</div>
-                        <h3 class="text-xl font-bold text-white tracking-tight leading-tight">${p.title}</h3>
-                        <div class="text-[11px] text-white/50 uppercase tracking-widest mt-4 opacity-0 group-hover:opacity-100 transition-opacity delay-100">View Project →</div>
+                        <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF416C] mb-2">${cat ? cat.name : 'Design'}</div>
+                        <h3 class="text-xl font-bold text-[#111] tracking-tight leading-tight">${p.title}</h3>
+                        <div class="text-[11px] text-[#666] uppercase tracking-widest mt-4 opacity-0 group-hover:opacity-100 transition-opacity delay-100">View Project →</div>
                     </div>
                 </div>
             </a>`;
