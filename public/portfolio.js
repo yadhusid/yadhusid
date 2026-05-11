@@ -54,7 +54,7 @@
     function renderProjects(categoryId) {
         let filtered = categoryId === 'all'
             ? allProjects
-            : allProjects.filter(p => p.categoryId === categoryId);
+            : allProjects.filter(p => p.categoryIds && p.categoryIds.includes(categoryId));
 
         // Filter only published projects for the public view
         filtered = filtered.filter(p => p.status === 'published');
@@ -67,7 +67,7 @@
         const bgColors = ['bg-[#0d0d0d]', 'bg-[#0a0a0a]', 'bg-[#050505]', 'bg-[#111111]'];
 
         gridEl.innerHTML = filtered.map((p, i) => {
-            const cat = allCategories.find(c => c.id === p.categoryId);
+            const cat = allCategories.find(c => p.categoryIds && p.categoryIds.includes(c.id));
             const bgColor = bgColors[i % bgColors.length];
             const isDark = true; // All are dark now
             const textColor = 'text-white';

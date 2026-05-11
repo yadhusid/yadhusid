@@ -66,7 +66,7 @@ BlockSchema.set('toObject', { virtuals: true });
 const ProjectSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: String,
-    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    categoryIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
     coverImage: String,
     images: [String], // Media Gallery Bulk Storage
     blocks: [BlockSchema],
@@ -232,7 +232,7 @@ app.get('/api/projects', async (req, res) => {
     try {
         const { category } = req.query;
         let query = {};
-        if (category) query.categoryId = category;
+        if (category) query.categoryIds = category;
         const projects = await Project.find(query).sort({ createdAt: -1 });
         res.json(projects);
     } catch (err) {
@@ -246,12 +246,12 @@ app.get('/api/projects/:id', async (req, res) => {
             return res.status(404).json({ error: 'Invalid Project ID' });
         }
         
-        const project = await Project.findById(req.params.id).populate('categoryId');
+        const project = await Project.findById(req.params.id).populate('categoryIds');
         if (!project) return res.status(404).json({ error: 'Project not found' });
         
         const result = project.toJSON();
-        result.categoryName = project.categoryId ? project.categoryId.name : '';
-        result.categoryId = project.categoryId ? project.categoryId._id : null;
+        result.categoryNames = project.categoryIds ? project.categoryIds.map(c => c.name) : [];
+        result.categoryIds = project.categoryIds ? project.categoryIds.map(c => c._id) : [];
         
         res.json(result);
     } catch (err) {
@@ -261,13 +261,13 @@ app.get('/api/projects/:id', async (req, res) => {
 });
 
 app.post('/api/projects', requireAuth, upload.single('coverImage'), async (req, res) => {
-    const { title, description, categoryId } = req.body;
-    if (!title || !categoryId) return res.status(400).json({ error: 'Title and category required' });
+    const { title, description, categoryIds } = req.body;
+    if (!title || !categoryIds) return res.status(400).json({ error: 'Title and categories required' });
     try {
         const project = new Project({
             title,
             description: description || '',
-            categoryId,
+            categoryIds: Array.isArray(categoryIds) ? categoryIds : [categoryIds],
             coverImage: req.file ? req.file.path : null,
             blocks: []
         });

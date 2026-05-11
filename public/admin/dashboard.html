@@ -248,7 +248,6 @@
         <!-- Projects -->
         <div class="page" id="page-projects">
             <div class="page-title">Projects</div>
-            <div class="page-sub">Add, edit or delete portfolio projects.</div>
             <div class="form-card">
                 <h3>Add New Project</h3>
                 <div class="form-row">
@@ -256,9 +255,12 @@
                         <label>Project Title</label>
                         <input type="text" id="projTitle" placeholder="e.g. Brand Refresh for XYZ">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="position: relative;">
                         <label>Category</label>
-                        <select id="projCategory"></select>
+                        <select id="projCategory" onchange="addCategoryToProject(this.value, this.options[this.selectedIndex].text); this.value='';">
+                            <option value="">Select Categories...</option>
+                        </select>
+                        <div id="selectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -532,7 +534,31 @@
 
         function populateCategorySelect() {
             const sel = document.getElementById('projCategory');
-            sel.innerHTML = allCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            if (!sel) return;
+            sel.innerHTML = '<option value="">Select Categories...</option>' + allCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+
+        let selectedProjCategories = [];
+        function addCategoryToProject(id, name) {
+            if (!id || selectedProjCategories.find(c => c.id === id)) return;
+            selectedProjCategories.push({ id, name });
+            renderSelectedCategories();
+        }
+
+        function removeCategoryFromProject(id) {
+            selectedProjCategories = selectedProjCategories.filter(c => c.id !== id);
+            renderSelectedCategories();
+        }
+
+        function renderSelectedCategories() {
+            const container = document.getElementById('selectedCategories');
+            if (!container) return;
+            container.innerHTML = selectedProjCategories.map(c => `
+                <div style="background:var(--input-bg); border:1px solid var(--border); padding:5px 12px; border-radius:50px; font-size:12px; display:flex; align-items:center; gap:8px; color:var(--accent);">
+                    ${c.name}
+                    <span onclick="removeCategoryFromProject('${c.id}')" style="cursor:pointer; color:var(--danger); font-weight:bold; font-size:14px;">✕</span>
+                </div>
+            `).join('');
         }
 
         async function addCategory() {
@@ -560,9 +586,12 @@
         }
 
         // ÔöÇÔöÇ Projects ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-        function getCatName(id) {
-            const c = allCategories.find(c => c.id === id);
-            return c ? c.name : 'Unknown';
+        function getCatNames(ids) {
+            if (!ids || !ids.length) return 'Uncategorized';
+            return ids.map(id => {
+                const c = allCategories.find(cat => (cat.id === id || cat._id === id));
+                return c ? c.name : 'Unknown';
+            }).join(', ');
         }
 
         function renderProjects() {
@@ -576,7 +605,7 @@
                             : `<div class="item-thumb-placeholder">­ƒÄ¿</div>`}
                         <div>
                             <div class="item-name">${p.title}</div>
-                            <div class="item-meta">${getCatName(p.categoryId)}</div>
+                            <div class="item-meta">${getCatNames(p.categoryIds)}</div>
                         </div>
                     </div>
                     <div style="display:flex;gap:0.5rem;align-items:center;">
@@ -592,14 +621,16 @@
 
         async function addProject() {
             const title = document.getElementById('projTitle').value.trim();
-            const categoryId = document.getElementById('projCategory').value;
+            const categoryIds = selectedProjCategories.map(c => c.id);
             const description = document.getElementById('projDesc').value.trim();
-            const coverFile = document.getElementById('projImage').files[0]; // Fixed: was projCover
-            if (!title || !categoryId) return showToast('Title and category are required.', true);
+            const coverFile = document.getElementById('projImage').files[0];
+            if (!title || !categoryIds.length) return showToast('Title and at least one category are required.', true);
 
             const fd = new FormData();
             fd.append('title', title);
-            fd.append('categoryId', categoryId);
+            // Append each category ID individually for Multer/Express to see it as an array if needed, 
+            // or send as JSON string if preferred. Most standard is multiple appends.
+            categoryIds.forEach(id => fd.append('categoryIds', id));
             fd.append('description', description);
             if (coverFile) fd.append('coverImage', coverFile);
 
@@ -608,6 +639,8 @@
                 document.getElementById('projTitle').value = '';
                 document.getElementById('projDesc').value = '';
                 document.getElementById('projImage').value = '';
+                selectedProjCategories = [];
+                renderSelectedCategories();
                 await loadProjects();
                 updateStats();
                 showToast('Project created!');
