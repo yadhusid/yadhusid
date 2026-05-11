@@ -93,8 +93,8 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: process.env.SESSION_SECRET || 'yadhu-portfolio-secret-2026',
@@ -390,17 +390,18 @@ async function ensureAdmin() {
 // ─── Visual Editor Saving ──────────────────────────────────────────────────
 app.post('/admin/save-cms', requireAuth, (req, res) => {
     const { html } = req.body;
+    console.log('[CMS] Save attempt received. HTML Length:', html?.length || 0);
+    
     if (!html) return res.status(400).json({ error: 'HTML content required' });
 
     try {
         const indexPath = path.join(__dirname, 'public', 'index.html');
-        // We write the HTML back to the public/index.html file
         fs.writeFileSync(indexPath, html, 'utf8');
-        console.log('✅ index.html updated via Visual Editor');
+        console.log('✅ index.html updated successfully');
         res.json({ success: true });
     } catch (err) {
-        console.error('Error saving CMS changes:', err);
-        res.status(500).json({ error: 'Could not save changes to disk' });
+        console.error('❌ Error saving CMS changes:', err);
+        res.status(500).json({ error: 'FileSystem Error: ' + err.message });
     }
 });
 
