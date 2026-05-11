@@ -260,7 +260,24 @@
             background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%);
             position: relative;
         }
-        .glass-overlay { z-index: 2; position: absolute; inset: 0; backdrop-filter: blur(2px); pointer-events: none; border-radius: inherit; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px); } .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%); } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
+                .glass-overlay { 
+            position: absolute; 
+            inset: 0; 
+            z-index: 2; 
+            backdrop-filter: blur(20px) saturate(180%); 
+            -webkit-backdrop-filter: blur(20px) saturate(180%); 
+            pointer-events: none; 
+            border-radius: inherit; 
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05) 0px,
+                rgba(255, 255, 255, 0.05) 10px,
+                rgba(0, 0, 0, 0.05) 11px,
+                rgba(0, 0, 0, 0.05) 20px
+            );
+            background-color: rgba(255, 100, 100, 0.1); 
+        }
+ .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%); } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
             content: '';
             position: absolute;
             inset: 0;
@@ -504,7 +521,24 @@
             background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%);
             position: relative;
         }
-        .glass-overlay { z-index: 2; position: absolute; inset: 0; backdrop-filter: blur(2px); pointer-events: none; border-radius: inherit; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 16px); } .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%); } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
+                .glass-overlay { 
+            position: absolute; 
+            inset: 0; 
+            z-index: 2; 
+            backdrop-filter: blur(20px) saturate(180%); 
+            -webkit-backdrop-filter: blur(20px) saturate(180%); 
+            pointer-events: none; 
+            border-radius: inherit; 
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05) 0px,
+                rgba(255, 255, 255, 0.05) 10px,
+                rgba(0, 0, 0, 0.05) 11px,
+                rgba(0, 0, 0, 0.05) 20px
+            );
+            background-color: rgba(255, 100, 100, 0.1); 
+        }
+ .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%); } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
             content: '';
             position: absolute;
             inset: 0;
