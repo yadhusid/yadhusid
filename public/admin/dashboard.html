@@ -97,9 +97,11 @@
 
         /* Lists */
         .item-list { display:flex; flex-direction:column; gap:0.8rem; }
-        .grid-view { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:1.5rem; }
-        .grid-view .item-row { flex-direction:column; align-items:flex-start; gap:1.2rem; text-align: center; }
-        .grid-view .item-thumb { width:100%; height: 150px; }
+        .grid-view { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1.5rem; }
+        .grid-view .item-row { flex-direction:column; align-items:stretch; gap:1.2rem; text-align: left; padding: 1.5rem; height: auto; min-height: 380px; }
+        .grid-view .item-thumb { width:100%; height: 180px; border-radius: 16px; margin-bottom: 0.5rem; }
+        .grid-view .item-actions { flex-wrap: wrap; justify-content: flex-start; gap: 0.5rem; margin-top: auto; border-top: 1px solid var(--border); pt: 1rem; }
+        .grid-view .item-main-info { flex-direction: column; align-items: flex-start !important; }
         .item-row { display:flex; align-items:center; justify-content:space-between; background:var(--input-bg); border-radius:18px; padding:1.4rem 1.8rem; position: relative; }
         .item-name { font-weight:700; font-size:1.05rem; }
         .item-meta { color:var(--muted); font-size:0.85rem; margin-top:0.25rem; }
@@ -214,8 +216,6 @@
 
         <!-- Categories -->
         <div class="page" id="page-categories">
-            <div class="page-title">Categories</div>
-            <div class="page-sub">Organise your portfolio (e.g. Campaign Design, UI/UX Interface)</div>
             <div class="form-card">
                 <h3>Add New Category</h3>
                 <div class="form-row">
@@ -223,12 +223,13 @@
                         <label>Category Name</label>
                         <input type="text" id="catName" placeholder="e.g. Motion Graphics">
                     </div>
-                    <div class="form-group">
-                        <label>Gallery (Bulk)</label>
+                    <div class="form-group" style="flex: 2;">
+                        <label>Media Gallery Section</label>
                         <div class="file-upload-wrapper">
-                            <input type="file" id="bulkImagesCat" class="file-upload-input" multiple accept="image/*">
-                            <div class="file-upload-btn">+ Add Media to Gallery</div>
+                            <input type="file" id="bulkImagesCat" class="file-upload-input" multiple accept="image/*" onchange="previewCategoryGallery(this)">
+                            <div class="file-upload-btn" style="border-style: dashed; background: transparent;">+ Click to Add Media to Category Gallery</div>
                         </div>
+                        <div id="catGalleryPreview" style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;"></div>
                     </div>
                 </div>
                 <button class="btn-primary" onclick="addCategory()">Add Category</button>
@@ -247,7 +248,6 @@
 
         <!-- Projects -->
         <div class="page" id="page-projects">
-            <div class="page-title">Projects</div>
             <div class="form-card">
                 <h3>Add New Project</h3>
                 <div class="form-row">
@@ -554,11 +554,28 @@
             const container = document.getElementById('selectedCategories');
             if (!container) return;
             container.innerHTML = selectedProjCategories.map(c => `
-                <div style="background:var(--input-bg); border:1px solid var(--border); padding:5px 12px; border-radius:50px; font-size:12px; display:flex; align-items:center; gap:8px; color:var(--accent);">
+                <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); padding:6px 14px; border-radius:50px; font-size:11px; font-weight:600; display:flex; align-items:center; gap:8px; color:var(--accent); letter-spacing:0.5px;">
                     ${c.name}
-                    <span onclick="removeCategoryFromProject('${c.id}')" style="cursor:pointer; color:var(--danger); font-weight:bold; font-size:14px;">✕</span>
+                    <span onclick="removeCategoryFromProject('${c.id}')" style="cursor:pointer; color:var(--danger); font-weight:bold; font-size:16px; margin-left:2px; display:flex; align-items:center;">&times;</span>
                 </div>
             `).join('');
+        }
+
+        function previewCategoryGallery(input) {
+            const area = document.getElementById('catGalleryPreview');
+            area.innerHTML = '';
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.style.cssText = 'width:80px; height:80px; border-radius:12px; overflow:hidden; border:1px solid var(--border); background:#000; flex-shrink:0; position:relative;';
+                        div.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+                        area.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
         }
 
         async function addCategory() {
@@ -599,22 +616,22 @@
             if (!allProjects.length) { list.innerHTML = '<p style="color:#a0a0ab;font-size:0.9rem;">No projects yet.</p>'; return; }
             list.innerHTML = allProjects.map(p => `
                 <div class="item-row">
-                    <div style="display:flex;align-items:center;gap:1rem;">
+                    <div class="item-main-info" style="display:flex;align-items:center;gap:1rem;">
                         ${p.coverImage
                             ? `<img src="${p.coverImage}" class="item-thumb" alt="cover">`
-                            : `<div class="item-thumb-placeholder">­ƒÄ¿</div>`}
+                            : `<div class="item-thumb" style="background:#222; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
                         <div>
                             <div class="item-name">${p.title}</div>
                             <div class="item-meta">${getCatNames(p.categoryIds)}</div>
                         </div>
                     </div>
-                    <div style="display:flex;gap:0.5rem;align-items:center;">
+                    <div class="item-actions" style="display:flex;gap:0.5rem;align-items:center; flex-shrink: 0;">
                         <span style="font-size:10px; padding:2px 8px; border-radius:10px; background:${p.status === 'published' ? 'var(--success)' : '#333'}; color:${p.status === 'published' ? '#000' : '#888'};">
                             ${(p.status || 'draft').toUpperCase()}
                         </span>
-                        <button class="btn-sm" onclick="toggleStatus('${p.id}', '${p.status || 'draft'}')">Toggle Status</button>
-                        <button class="btn-sm" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')">Edit Content</button>
-                        <button class="btn-danger" onclick="deleteProject('${p.id}')">Delete</button>
+                        <button class="btn-sm" style="font-size:11px; padding: 0.5rem 0.8rem;" onclick="toggleStatus('${p.id}', '${p.status || 'draft'}')">Status</button>
+                        <button class="btn-sm" style="font-size:11px; padding: 0.5rem 0.8rem;" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')">Content</button>
+                        <button class="btn-danger" style="font-size:11px; padding: 0.5rem 0.8rem;" onclick="deleteProject('${p.id}')">Delete</button>
                     </div>
                 </div>`).join('');
         }

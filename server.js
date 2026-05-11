@@ -45,7 +45,8 @@ const User = mongoose.model('User', UserSchema);
 
 const CategorySchema = new mongoose.Schema({
     name: { type: String, required: true },
-    slug: { type: String, required: true, unique: true }
+    slug: { type: String, required: true, unique: true },
+    images: [String]
 });
 CategorySchema.virtual('id').get(function(){ return this._id.toHexString(); });
 CategorySchema.set('toJSON', { virtuals: true });
