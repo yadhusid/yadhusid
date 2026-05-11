@@ -61,6 +61,7 @@ const BlockSchema = new mongoose.Schema({
 });
 BlockSchema.virtual('id').get(function(){ return this._id.toHexString(); });
 BlockSchema.set('toJSON', { virtuals: true });
+BlockSchema.set('toObject', { virtuals: true });
 
 const ProjectSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -74,6 +75,7 @@ const ProjectSchema = new mongoose.Schema({
 });
 ProjectSchema.virtual('id').get(function(){ return this._id.toHexString(); });
 ProjectSchema.set('toJSON', { virtuals: true });
+ProjectSchema.set('toObject', { virtuals: true });
 const Project = mongoose.model('Project', ProjectSchema);
 
 // ─── Cloudinary & Multer ──────────────────────────────────────────────────────
@@ -247,7 +249,7 @@ app.get('/api/projects/:id', async (req, res) => {
         const project = await Project.findById(req.params.id).populate('categoryId');
         if (!project) return res.status(404).json({ error: 'Project not found' });
         
-        const result = project.toObject();
+        const result = project.toJSON();
         result.categoryName = project.categoryId ? project.categoryId.name : '';
         result.categoryId = project.categoryId ? project.categoryId._id : null;
         
@@ -329,7 +331,10 @@ app.delete('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, 
     try {
         const project = await Project.findById(req.params.projectId);
         if (!project) return res.status(404).json({ error: 'Not found' });
-        project.blocks = project.blocks.filter(b => b._id.toString() !== req.params.blockId);
+        project.blocks = project.blocks.filter(b => {
+            if (!b._id) return true;
+            return b._id.toString() !== req.params.blockId;
+        });
         await project.save();
         res.json({ success: true });
     } catch (err) {
