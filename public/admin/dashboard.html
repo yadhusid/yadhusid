@@ -103,6 +103,19 @@
         .grid-view .item-actions { flex-wrap: wrap; justify-content: flex-start; gap: 0.5rem; margin-top: auto; border-top: 1px solid var(--border); pt: 1rem; }
         .grid-view .item-main-info { flex-direction: column; align-items: flex-start !important; }
         .item-row { display:flex; align-items:center; justify-content:space-between; background:var(--input-bg); border-radius:18px; padding:1.4rem 1.8rem; position: relative; }
+        
+        /* Compact Styling for Categories */
+        .compact-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .compact-list .item-row { padding: 0.6rem 1.2rem; border-radius: 12px; }
+        .compact-list .item-name { font-size: 0.9rem; font-weight: 600; }
+        .compact-list .item-meta { font-size: 0.7rem; }
+        .compact-list .btn-danger { padding: 0.4rem 0.8rem; font-size: 11px; border-radius: 8px; }
+
+        .compact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.8rem; }
+        .compact-grid .item-row { flex-direction: column; align-items: center; text-align: center; padding: 1rem; border-radius: 16px; min-height: 110px; justify-content: center; }
+        .compact-grid .item-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
+        .compact-grid .item-meta { font-size: 0.7rem; margin-bottom: 10px; }
+        .compact-grid .btn-danger { padding: 0.35rem 0.8rem; font-size: 10px; border-radius: 8px; width: 100%; }
         .item-name { font-weight:700; font-size:1.05rem; }
         .item-meta { color:var(--muted); font-size:0.85rem; margin-top:0.25rem; }
         .item-thumb { width:52px; height:52px; border-radius:14px; object-fit:cover; }
@@ -223,14 +236,6 @@
                         <label>Category Name</label>
                         <input type="text" id="catName" placeholder="e.g. Motion Graphics">
                     </div>
-                    <div class="form-group" style="flex: 2;">
-                        <label>Media Gallery Section</label>
-                        <div class="file-upload-wrapper">
-                            <input type="file" id="bulkImagesCat" class="file-upload-input" multiple accept="image/*" onchange="previewCategoryGallery(this)">
-                            <div class="file-upload-btn" style="border-style: dashed; background: transparent;">+ Click to Add Media to Category Gallery</div>
-                        </div>
-                        <div id="catGalleryPreview" style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;"></div>
-                    </div>
                 </div>
                 <button class="btn-primary" onclick="addCategory()">Add Category</button>
             </div>
@@ -242,7 +247,7 @@
                         <button class="btn-sm" onclick="setFormat('catList', 'grid', this)">Grid</button>
                     </div>
                 </div>
-                <div class="item-list" id="catList"></div>
+                <div class="compact-list" id="catList"></div>
             </div>
         </div>
 
@@ -416,10 +421,12 @@
         // -- Format Toggle --
         function setFormat(listId, format, btnEl) {
             const list = document.getElementById(listId);
+            const isCategory = listId === 'catList';
+            
             if (format === 'grid') {
-                list.className = 'grid-view';
+                list.className = isCategory ? 'compact-grid' : 'grid-view';
             } else {
-                list.className = 'item-list';
+                list.className = isCategory ? 'compact-list' : 'item-list';
             }
             
             // Update active state
