@@ -985,35 +985,27 @@
         function startCoverDrag(e) {
             if (e.target.classList.contains('remove-cover-btn')) return;
             isDraggingCover = true;
-            startX = e.clientX;
-            startY = e.clientY;
+            document.body.style.cursor = 'grabbing';
             document.addEventListener('mousemove', handleCoverDrag);
             document.addEventListener('mouseup', stopCoverDrag);
         }
 
         function handleCoverDrag(e) {
             if (!isDraggingCover) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
             
             // Fixed sensitivity: 1px mouse movement = (100 / box_dimension) percent movement.
-            // When zoomed in, we want movement to be relative to the zoomed view.
             const sensitivity = 100 / (150 * coverSettings.zoom);
             
-            // To make "dragging the image" feel natural:
-            // Moving mouse RIGHT (dx > 0) should move image content RIGHT, 
-            // which means DECREASING the object-position percentage.
-            coverSettings.x = Math.max(0, Math.min(100, coverSettings.x - dx * sensitivity));
-            coverSettings.y = Math.max(0, Math.min(100, coverSettings.y - dy * sensitivity));
-            
-            startX = e.clientX;
-            startY = e.clientY;
+            // movementX/Y is the most direct way to track deltas
+            coverSettings.x = Math.max(0, Math.min(100, coverSettings.x - e.movementX * sensitivity));
+            coverSettings.y = Math.max(0, Math.min(100, coverSettings.y - e.movementY * sensitivity));
             
             updateCoverStyle();
         }
 
         function stopCoverDrag() {
             isDraggingCover = false;
+            document.body.style.cursor = 'default';
             document.removeEventListener('mousemove', handleCoverDrag);
             document.removeEventListener('mouseup', stopCoverDrag);
         }
