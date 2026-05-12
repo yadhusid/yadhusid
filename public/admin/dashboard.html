@@ -341,7 +341,6 @@
                                 <div class="control-header"><span>Zoom</span> <span class="val" id="zoomVal">1.0x</span></div>
                                 <input type="range" id="coverZoom" min="1" max="3" step="0.01" value="1" oninput="updateCoverStyle()">
                             </div>
-                            <button class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 12px;" onclick="applyCoverSettings()">Apply</button>
                         </div>
                     </div>
                 </div>
@@ -985,8 +984,13 @@
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
             
-            // Adjust sensitivity based on zoom
-            const sensitivity = 0.2 / coverSettings.zoom;
+            // Increased sensitivity and normalized for zoom
+            // Higher zoom means smaller movements move the image further in pixel space, 
+            // but we want it to feel "glued" to the mouse cursor.
+            // In a 150px box, dx pixels is (dx/150)*100 percent.
+            // With zoom, the image is effectively larger, so 1% movement in the original 
+            // image covers more visual space.
+            const sensitivity = 100 / (150 * coverSettings.zoom);
             
             coverSettings.x = Math.max(0, Math.min(100, coverSettings.x - dx * sensitivity));
             coverSettings.y = Math.max(0, Math.min(100, coverSettings.y - dy * sensitivity));
@@ -1001,10 +1005,6 @@
             isDraggingCover = false;
             document.removeEventListener('mousemove', handleCoverDrag);
             document.removeEventListener('mouseup', stopCoverDrag);
-        }
-
-        function applyCoverSettings() {
-            showToast('Position applied!');
         }
 
         function removeCover(e) {
