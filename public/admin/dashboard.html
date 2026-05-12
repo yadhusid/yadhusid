@@ -792,8 +792,23 @@
             if (coverFile) {
                 fd.append('coverImage', coverFile);
                 fd.append('coverImageZoom', coverSettings.zoom);
-                fd.append('coverImageX', coverSettings.x);
-                fd.append('coverImageY', coverSettings.y);
+                
+                // Convert pixel offsets back to percentages for the backend
+                // The backend uses object-position (0-100%)
+                const currentW = coverSettings.imgW * coverSettings.zoom;
+                const currentH = coverSettings.imgH * coverSettings.zoom;
+                
+                // Available travel space
+                const travelX = currentW - 180;
+                const travelY = currentH - 180;
+                
+                // Percentage is (offset / travel) * 100
+                // Since our offsets are negative (0 to -travel), we invert them
+                const percX = travelX > 0 ? (Math.abs(coverSettings.x) / travelX) * 100 : 50;
+                const percY = travelY > 0 ? (Math.abs(coverSettings.y) / travelY) * 100 : 50;
+                
+                fd.append('coverImageX', percX);
+                fd.append('coverImageY', percY);
             }
 
             const res = await fetch('/api/projects', { method: 'POST', body: fd });
@@ -980,9 +995,9 @@
             }
         }
 
-        let coverSettings = { zoom: 1, x: 50, y: 50 };
+        let coverSettings = { zoom: 1, x: 0, y: 0, imgW: 0, imgH: 0 };
         let isDraggingCover = false;
-        let startX, startY;
+        let lastMouseX, lastMouseY;
 
         function handleCoverUpload(input) {
             const file = input.files[0];
@@ -995,15 +1010,35 @@
                 const controls = document.getElementById('coverControls');
                 const uploadBtnText = document.getElementById('uploadBtnText');
                 
-                img.src = e.target.result;
-                container.style.display = 'block';
-                controls.style.display = 'flex';
-                uploadBtnText.textContent = 'Change Cover Image';
-                
-                // Reset settings
-                coverSettings = { zoom: 1, x: 50, y: 50 };
-                document.getElementById('coverZoom').value = 1;
-                updateCoverStyle();
+                const tempImg = new Image();
+                tempImg.onload = () => {
+                    const aspect = tempImg.width / tempImg.height;
+                    // Size image to cover 180x180
+                    if (aspect > 1) { // Wide
+                        coverSettings.imgH = 180;
+                        coverSettings.imgW = 180 * aspect;
+                    } else { // Tall or Square
+                        coverSettings.imgW = 180;
+                        coverSettings.imgH = 180 / aspect;
+                    }
+                    
+                    img.src = e.target.result;
+                    img.style.width = coverSettings.imgW + 'px';
+                    img.style.height = coverSettings.imgH + 'px';
+                    
+                    container.style.display = 'block';
+                    controls.style.display = 'flex';
+                    uploadBtnText.textContent = 'Change Cover Image';
+                    
+                    // Reset to center
+                    coverSettings.zoom = 1;
+                    coverSettings.x = -(coverSettings.imgW - 180) / 2;
+                    coverSettings.y = -(coverSettings.imgH - 180) / 2;
+                    
+                    document.getElementById('coverZoom').value = 1;
+                    updateCoverStyle();
+                };
+                tempImg.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
@@ -1015,14 +1050,18 @@
             
             document.getElementById('zoomVal').textContent = coverSettings.zoom.toFixed(1) + 'x';
             
-            img.style.transform = `scale(${coverSettings.zoom})`;
-            img.style.objectPosition = `${coverSettings.x}% ${coverSettings.y}%`;
+            // Apply scale and translate
+            // We use transform-origin 0 0 for easier pixel math
+            img.style.transformOrigin = '0 0';
+            img.style.transform = `translate(${coverSettings.x}px, ${coverSettings.y}px) scale(${coverSettings.zoom})`;
         }
 
         function startCoverDrag(e) {
             if (e.target.classList.contains('remove-cover-btn')) return;
             isDraggingCover = true;
-            document.body.style.cursor = 'grabbing';
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            document.getElementById('coverPreviewContainer').classList.add('active-drag');
             document.addEventListener('mousemove', handleCoverDrag);
             document.addEventListener('mouseup', stopCoverDrag);
         }
@@ -1030,18 +1069,34 @@
         function handleCoverDrag(e) {
             if (!isDraggingCover) return;
             
-            // Fixed sensitivity: 1px mouse movement = (100 / box_dimension) percent movement.
-            const sensitivity = 100 / (150 * coverSettings.zoom);
+            const dx = e.clientX - lastMouseX;
+            const dy = e.clientY - lastMouseY;
             
-            // movementX/Y is the most direct way to track deltas
-            coverSettings.x = Math.max(0, Math.min(100, coverSettings.x - e.movementX * sensitivity));
-            coverSettings.y = Math.max(0, Math.min(100, coverSettings.y - e.movementY * sensitivity));
+            // 1:1 pixel movement
+            coverSettings.x += dx;
+            coverSettings.y += dy;
+            
+            // Boundary checks: don't allow showing empty space
+            // Container is 180x180
+            const currentW = coverSettings.imgW * coverSettings.zoom;
+            const currentH = coverSettings.imgH * coverSettings.zoom;
+            
+            // Clamp x between -(currentW - 180) and 0
+            const minX = Math.min(0, 180 - currentW);
+            const minY = Math.min(0, 180 - currentH);
+            
+            coverSettings.x = Math.max(minX, Math.min(0, coverSettings.x));
+            coverSettings.y = Math.max(minY, Math.min(0, coverSettings.y));
+            
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
             
             updateCoverStyle();
         }
 
         function stopCoverDrag() {
             isDraggingCover = false;
+            document.getElementById('coverPreviewContainer').classList.remove('active-drag');
             document.body.style.cursor = 'default';
             document.removeEventListener('mousemove', handleCoverDrag);
             document.removeEventListener('mouseup', stopCoverDrag);
