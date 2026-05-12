@@ -183,24 +183,52 @@
         }
 
         /* Cover Preview & Reposition */
-        .cover-preview-wrapper { display: flex; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
+        .cover-preview-wrapper { display: flex; align-items: center; gap: 2rem; margin-top: 1.5rem; }
         .cover-preview-container {
-            width: 150px; height: 150px; border-radius: 20px; overflow: hidden;
+            width: 180px; height: 180px; border-radius: 24px; overflow: hidden;
             position: relative; background: #000; display: none;
-            border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            cursor: move; user-select: none;
+            border: 2px solid var(--border); box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+            cursor: grab; user-select: none;
         }
-        .cover-preview-img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-        .cover-controls { display: none; flex-direction: column; gap: 1rem; }
-        .zoom-control { display: flex; flex-direction: column; gap: 8px; }
-        .zoom-control input[type=range] { width: 120px; }
-        .remove-cover-btn {
-            position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6);
-            color: #fff; border-radius: 50%; width: 24px; height: 24px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 14px; border: 1px solid rgba(255,255,255,0.2);
-            z-index: 10; backdrop-filter: blur(5px);
+        .cover-preview-container:active { cursor: grabbing; }
+        .cover-preview-container.active-drag { border-color: var(--accent); transform: scale(1.02); transition: transform 0.2s, border-color 0.2s; }
+        
+        .cover-preview-img { 
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; object-fit: cover; 
+            pointer-events: none; transition: transform 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+            transform-origin: center center;
         }
+        
+        .cover-controls { display: none; flex-direction: column; gap: 1.2rem; flex: 1; }
+        .zoom-control { background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 16px; border: 1px solid var(--border); }
+        
+        /* Project List Reordering */
+        .item-row { 
+            display:flex; align-items:center; justify-content:space-between; 
+            background:var(--input-bg); border-radius:18px; padding:1.2rem 1.6rem; 
+            position: relative; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+        .item-row.dragging { 
+            opacity: 0.4; transform: scale(0.95); 
+            background: rgba(255,255,255,0.08); 
+            border: 1px dashed var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 100;
+        }
+        .item-row.drag-over {
+            border-top: 2px solid var(--accent);
+            padding-top: 2rem;
+        }
+        .drag-handle { 
+            cursor: grab; color: var(--muted); margin-right: 1.5rem; 
+            display: grid; grid-template-columns: repeat(2, 4px); gap: 3px;
+            padding: 8px; border-radius: 6px; transition: all 0.2s;
+        }
+        .drag-handle:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .drag-handle span { width: 4px; height: 4px; background: currentColor; border-radius: 50%; }
+        .grid-view .drag-handle { display: none; }
     </style>
 </head>
 <body>
@@ -347,9 +375,10 @@
                         
                         <div class="cover-controls" id="coverControls">
                             <div class="zoom-control">
-                                <div class="control-header"><span>Zoom</span> <span class="val" id="zoomVal">1.0x</span></div>
-                                <input type="range" id="coverZoom" min="1" max="3" step="0.01" value="1" oninput="updateCoverStyle()">
+                                <div class="control-header"><span>Zoom Factor</span> <span class="val" id="zoomVal">1.0x</span></div>
+                                <input type="range" id="coverZoom" min="1" max="4" step="0.01" value="1" oninput="updateCoverStyle()">
                             </div>
+                            <div style="font-size: 11px; color: var(--muted); margin-top: 5px;">Click & drag to reposition</div>
                         </div>
                     </div>
                 </div>
@@ -716,9 +745,17 @@
             const list = document.getElementById('projList');
             if (!allProjects.length) { list.innerHTML = '<p style="color:#a0a0ab;font-size:0.9rem;">No projects yet.</p>'; return; }
             list.innerHTML = allProjects.map(p => `
-                <div class="item-row" draggable="true" ondragstart="handleProjDragStart(event, '${p.id}')" ondragover="handleProjDragOver(event)" ondrop="handleProjDrop(event, '${p.id}')">
+                <div class="item-row" draggable="true" 
+                     ondragstart="handleProjDragStart(event, '${p.id}')" 
+                     ondragover="handleProjDragOver(event)" 
+                     ondragleave="handleProjDragLeave(event)"
+                     ondrop="handleProjDrop(event, '${p.id}')">
                     <div class="item-main-info" style="display:flex;align-items:center;">
-                        <div class="drag-handle"><span></span><span></span><span></span></div>
+                        <div class="drag-handle">
+                            <span></span><span></span>
+                            <span></span><span></span>
+                            <span></span><span></span>
+                        </div>
                         <div style="display:flex; align-items:center; gap:1rem;">
                             ${p.coverImage
                                 ? `<img src="${p.coverImage}" class="item-thumb" alt="cover">`
@@ -1024,28 +1061,71 @@
 
         function handleProjDragStart(e, id) {
             draggedProjId = id;
-            e.currentTarget.classList.add('dragging');
+            const row = e.currentTarget;
+            row.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
+            
+            // Create a transparent image for the ghost so we can style the row ourselves
+            const img = new Image();
+            img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            e.dataTransfer.setDragImage(img, 0, 0);
         }
 
         function handleProjDragOver(e) {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
+            const row = e.currentTarget;
+            if (row.classList.contains('dragging')) return;
+            
+            const rect = row.getBoundingClientRect();
+            const midpoint = rect.top + rect.height / 2;
+            
+            if (e.clientY < midpoint) {
+                row.style.borderTop = '2px solid var(--accent)';
+                row.style.borderBottom = 'none';
+            } else {
+                row.style.borderBottom = '2px solid var(--accent)';
+                row.style.borderTop = 'none';
+            }
+        }
+
+        function handleProjDragLeave(e) {
+            const row = e.currentTarget;
+            row.style.borderTop = 'none';
+            row.style.borderBottom = 'none';
         }
 
         function handleProjDrop(e, targetId) {
             e.preventDefault();
-            const list = document.querySelectorAll('.item-row');
-            list.forEach(item => item.classList.remove('dragging'));
+            const rows = document.querySelectorAll('.item-row');
+            rows.forEach(item => {
+                item.classList.remove('dragging');
+                item.style.borderTop = 'none';
+                item.style.borderBottom = 'none';
+            });
 
             if (draggedProjId === targetId) return;
 
             const projects = [...allProjects];
             const draggedIdx = projects.findIndex(p => p.id === draggedProjId);
             const targetIdx = projects.findIndex(p => p.id === targetId);
+            
+            const rect = e.currentTarget.getBoundingClientRect();
+            const midpoint = rect.top + rect.height / 2;
+            const dropAfter = e.clientY > midpoint;
 
             const [draggedItem] = projects.splice(draggedIdx, 1);
-            projects.splice(targetIdx, 0, draggedItem);
+            let finalTargetIdx = targetIdx;
+            
+            // If dropping after the target, we need to adjust the index
+            // But since we already spliced out the item, the array is shorter
+            // Actually, simply using targetIdx is fine if we drop before.
+            // If drop after, use targetIdx + 1.
+            if (dropAfter) finalTargetIdx++;
+            
+            // Correct for index change after splice
+            if (draggedIdx < finalTargetIdx) finalTargetIdx--;
+
+            projects.splice(finalTargetIdx, 0, draggedItem);
 
             allProjects = projects;
             renderProjects();
