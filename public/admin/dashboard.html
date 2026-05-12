@@ -174,20 +174,24 @@
         }
 
         /* Cover Preview & Reposition */
+        .cover-preview-wrapper { display: flex; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
         .cover-preview-container {
-            width: 100%; height: 220px; border-radius: 24px; overflow: hidden;
-            position: relative; background: #000; margin-top: 1.5rem; display: none;
-            border: 1px solid var(--border); box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+            width: 150px; height: 150px; border-radius: 20px; overflow: hidden;
+            position: relative; background: #000; display: none;
+            border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            cursor: move; user-select: none;
         }
-        .cover-preview-img { width: 100%; height: 100%; object-fit: cover; }
-        .cover-controls { margin-top: 1.5rem; display: none; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border); }
-        .control-group { margin-bottom: 1rem; }
-        .control-group:last-child { margin-bottom: 0; }
-        .control-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .control-header span { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; }
-        .control-header .val { color: var(--accent); }
-        input[type=range] { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; appearance: none; -webkit-appearance: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: pointer; border: 2px solid #000; }
+        .cover-preview-img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .cover-controls { display: none; flex-direction: column; gap: 1rem; }
+        .zoom-control { display: flex; flex-direction: column; gap: 8px; }
+        .zoom-control input[type=range] { width: 120px; }
+        .remove-cover-btn {
+            position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6);
+            color: #fff; border-radius: 50%; width: 24px; height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 14px; border: 1px solid rgba(255,255,255,0.2);
+            z-index: 10; backdrop-filter: blur(5px);
+        }
     </style>
 </head>
 <body>
@@ -320,31 +324,24 @@
                     <textarea id="projDesc" placeholder="Brief description of the project..."></textarea>
                 </div>
                 <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                        <label style="margin-bottom:0;">Cover Image</label>
-                        <button id="removeCoverBtn" class="btn-sm" style="display:none; padding: 4px 10px; font-size: 10px; background: rgba(239,68,68,0.1); color: #ef4444;" onclick="removeCover()">Remove Image</button>
-                    </div>
+                    <label>Cover Image</label>
                     <div class="file-upload-wrapper">
                         <input type="file" id="projImage" class="file-upload-input" accept="image/*" onchange="handleCoverUpload(this)">
                         <div class="file-upload-btn" id="uploadBtnText">Upload Project Cover</div>
                     </div>
                     
-                    <div class="cover-preview-container" id="coverPreviewContainer">
-                        <img id="coverPreviewImg" class="cover-preview-img" src="" alt="preview">
-                    </div>
-                    
-                    <div class="cover-controls" id="coverControls">
-                        <div class="control-group">
-                            <div class="control-header"><span>Zoom Level</span> <span class="val" id="zoomVal">1.0x</span></div>
-                            <input type="range" id="coverZoom" min="1" max="3" step="0.01" value="1" oninput="updateCoverStyle()">
+                    <div class="cover-preview-wrapper" id="coverPreviewWrapper">
+                        <div class="cover-preview-container" id="coverPreviewContainer" onmousedown="startCoverDrag(event)">
+                            <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
+                            <img id="coverPreviewImg" class="cover-preview-img" src="" alt="preview">
                         </div>
-                        <div class="control-group">
-                            <div class="control-header"><span>Horizontal Position</span> <span class="val" id="xVal">50%</span></div>
-                            <input type="range" id="coverX" min="0" max="100" step="1" value="50" oninput="updateCoverStyle()">
-                        </div>
-                        <div class="control-group">
-                            <div class="control-header"><span>Vertical Position</span> <span class="val" id="yVal">50%</span></div>
-                            <input type="range" id="coverY" min="0" max="100" step="1" value="50" oninput="updateCoverStyle()">
+                        
+                        <div class="cover-controls" id="coverControls">
+                            <div class="zoom-control">
+                                <div class="control-header"><span>Zoom</span> <span class="val" id="zoomVal">1.0x</span></div>
+                                <input type="range" id="coverZoom" min="1" max="3" step="0.01" value="1" oninput="updateCoverStyle()">
+                            </div>
+                            <button class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 12px;" onclick="applyCoverSettings()">Apply</button>
                         </div>
                     </div>
                 </div>
@@ -746,9 +743,9 @@
             
             if (coverFile) {
                 fd.append('coverImage', coverFile);
-                fd.append('coverImageZoom', document.getElementById('coverZoom').value);
-                fd.append('coverImageX', document.getElementById('coverX').value);
-                fd.append('coverImageY', document.getElementById('coverY').value);
+                fd.append('coverImageZoom', coverSettings.zoom);
+                fd.append('coverImageX', coverSettings.x);
+                fd.append('coverImageY', coverSettings.y);
             }
 
             const res = await fetch('/api/projects', { method: 'POST', body: fd });
@@ -935,6 +932,10 @@
             }
         }
 
+        let coverSettings = { zoom: 1, x: 50, y: 50 };
+        let isDraggingCover = false;
+        let startX, startY;
+
         function handleCoverUpload(input) {
             const file = input.files[0];
             if (!file) return;
@@ -944,15 +945,16 @@
                 const container = document.getElementById('coverPreviewContainer');
                 const img = document.getElementById('coverPreviewImg');
                 const controls = document.getElementById('coverControls');
-                const removeBtn = document.getElementById('removeCoverBtn');
                 const uploadBtnText = document.getElementById('uploadBtnText');
                 
                 img.src = e.target.result;
                 container.style.display = 'block';
-                controls.style.display = 'block';
-                removeBtn.style.display = 'block';
+                controls.style.display = 'flex';
                 uploadBtnText.textContent = 'Change Cover Image';
                 
+                // Reset settings
+                coverSettings = { zoom: 1, x: 50, y: 50 };
+                document.getElementById('coverZoom').value = 1;
                 updateCoverStyle();
             };
             reader.readAsDataURL(file);
@@ -961,23 +963,57 @@
         function updateCoverStyle() {
             const img = document.getElementById('coverPreviewImg');
             const zoom = document.getElementById('coverZoom').value;
-            const x = document.getElementById('coverX').value;
-            const y = document.getElementById('coverY').value;
+            coverSettings.zoom = parseFloat(zoom);
             
-            document.getElementById('zoomVal').textContent = parseFloat(zoom).toFixed(1) + 'x';
-            document.getElementById('xVal').textContent = x + '%';
-            document.getElementById('yVal').textContent = y + '%';
+            document.getElementById('zoomVal').textContent = coverSettings.zoom.toFixed(1) + 'x';
             
-            img.style.transform = `scale(${zoom})`;
-            img.style.objectPosition = `${x}% ${y}%`;
+            img.style.transform = `scale(${coverSettings.zoom})`;
+            img.style.objectPosition = `${coverSettings.x}% ${coverSettings.y}%`;
         }
 
-        function removeCover() {
+        function startCoverDrag(e) {
+            if (e.target.classList.contains('remove-cover-btn')) return;
+            isDraggingCover = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            document.addEventListener('mousemove', handleCoverDrag);
+            document.addEventListener('mouseup', stopCoverDrag);
+        }
+
+        function handleCoverDrag(e) {
+            if (!isDraggingCover) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            
+            // Adjust sensitivity based on zoom
+            const sensitivity = 0.2 / coverSettings.zoom;
+            
+            coverSettings.x = Math.max(0, Math.min(100, coverSettings.x - dx * sensitivity));
+            coverSettings.y = Math.max(0, Math.min(100, coverSettings.y - dy * sensitivity));
+            
+            startX = e.clientX;
+            startY = e.clientY;
+            
+            updateCoverStyle();
+        }
+
+        function stopCoverDrag() {
+            isDraggingCover = false;
+            document.removeEventListener('mousemove', handleCoverDrag);
+            document.removeEventListener('mouseup', stopCoverDrag);
+        }
+
+        function applyCoverSettings() {
+            showToast('Position applied!');
+        }
+
+        function removeCover(e) {
+            if (e) e.stopPropagation();
             document.getElementById('projImage').value = '';
             document.getElementById('coverPreviewContainer').style.display = 'none';
             document.getElementById('coverControls').style.display = 'none';
-            document.getElementById('removeCoverBtn').style.display = 'none';
             document.getElementById('uploadBtnText').textContent = 'Upload Project Cover';
+            coverSettings = { zoom: 1, x: 50, y: 50 };
         }
 
         // -- Visual Editor Functions --
