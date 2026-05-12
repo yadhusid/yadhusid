@@ -102,7 +102,16 @@
         .grid-view .item-thumb { width:100%; height: 180px; border-radius: 16px; margin-bottom: 0.5rem; }
         .grid-view .item-actions { flex-wrap: wrap; justify-content: flex-start; gap: 0.5rem; margin-top: auto; border-top: 1px solid var(--border); pt: 1rem; }
         .grid-view .item-main-info { flex-direction: column; align-items: flex-start !important; }
-        .item-row { display:flex; align-items:center; justify-content:space-between; background:var(--input-bg); border-radius:18px; padding:1.4rem 1.8rem; position: relative; }
+        .item-row { display:flex; align-items:center; justify-content:space-between; background:var(--input-bg); border-radius:18px; padding:1.4rem 1.8rem; position: relative; transition: transform 0.2s ease, opacity 0.2s ease; }
+        .item-row.dragging { opacity: 0.5; transform: scale(0.98); background: rgba(255,255,255,0.05); }
+        .drag-handle { 
+            cursor: grab; color: #444; margin-right: 1.2rem; display: flex; 
+            flex-direction: column; gap: 3px; width: 12px; transition: color 0.2s;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .drag-handle:hover { color: var(--accent); }
+        .drag-handle span { width: 100%; height: 2px; background: currentColor; border-radius: 1px; }
+        .grid-view .drag-handle { display: none; } /* Hide handle in grid view for now */
         
         /* Compact Styling for Categories */
         .compact-list { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -707,14 +716,17 @@
             const list = document.getElementById('projList');
             if (!allProjects.length) { list.innerHTML = '<p style="color:#a0a0ab;font-size:0.9rem;">No projects yet.</p>'; return; }
             list.innerHTML = allProjects.map(p => `
-                <div class="item-row">
-                    <div class="item-main-info" style="display:flex;align-items:center;gap:1rem;">
-                        ${p.coverImage
-                            ? `<img src="${p.coverImage}" class="item-thumb" alt="cover">`
-                            : `<div class="item-thumb" style="background:#222; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
-                        <div>
-                            <div class="item-name">${p.title}</div>
-                            <div class="item-meta">${getCatNames(p.categoryIds)}</div>
+                <div class="item-row" draggable="true" ondragstart="handleProjDragStart(event, '${p.id}')" ondragover="handleProjDragOver(event)" ondrop="handleProjDrop(event, '${p.id}')">
+                    <div class="item-main-info" style="display:flex;align-items:center;">
+                        <div class="drag-handle"><span></span><span></span><span></span></div>
+                        <div style="display:flex; align-items:center; gap:1rem;">
+                            ${p.coverImage
+                                ? `<img src="${p.coverImage}" class="item-thumb" alt="cover">`
+                                : `<div class="item-thumb" style="background:#222; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
+                            <div>
+                                <div class="item-name">${p.title}</div>
+                                <div class="item-meta">${getCatNames(p.categoryIds)}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="item-actions" style="display:flex;gap:0.5rem;align-items:center; flex-shrink: 0;">
@@ -984,14 +996,13 @@
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
             
-            // Increased sensitivity and normalized for zoom
-            // Higher zoom means smaller movements move the image further in pixel space, 
-            // but we want it to feel "glued" to the mouse cursor.
-            // In a 150px box, dx pixels is (dx/150)*100 percent.
-            // With zoom, the image is effectively larger, so 1% movement in the original 
-            // image covers more visual space.
+            // Fixed sensitivity: 1px mouse movement = (100 / box_dimension) percent movement.
+            // When zoomed in, we want movement to be relative to the zoomed view.
             const sensitivity = 100 / (150 * coverSettings.zoom);
             
+            // To make "dragging the image" feel natural:
+            // Moving mouse RIGHT (dx > 0) should move image content RIGHT, 
+            // which means DECREASING the object-position percentage.
             coverSettings.x = Math.max(0, Math.min(100, coverSettings.x - dx * sensitivity));
             coverSettings.y = Math.max(0, Math.min(100, coverSettings.y - dy * sensitivity));
             
@@ -1016,7 +1027,54 @@
             coverSettings = { zoom: 1, x: 50, y: 50 };
         }
 
-        // -- Visual Editor Functions --
+        // -- Project Reordering Logic --
+        let draggedProjId = null;
+
+        function handleProjDragStart(e, id) {
+            draggedProjId = id;
+            e.currentTarget.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleProjDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleProjDrop(e, targetId) {
+            e.preventDefault();
+            const list = document.querySelectorAll('.item-row');
+            list.forEach(item => item.classList.remove('dragging'));
+
+            if (draggedProjId === targetId) return;
+
+            const projects = [...allProjects];
+            const draggedIdx = projects.findIndex(p => p.id === draggedProjId);
+            const targetIdx = projects.findIndex(p => p.id === targetId);
+
+            const [draggedItem] = projects.splice(draggedIdx, 1);
+            projects.splice(targetIdx, 0, draggedItem);
+
+            allProjects = projects;
+            renderProjects();
+            saveProjectOrder();
+        }
+
+        async function saveProjectOrder() {
+            const projectIds = allProjects.map(p => p.id);
+            try {
+                const res = await fetch('/api/projects/reorder', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ projectIds })
+                });
+                if (res.ok) {
+                    showToast('Project order saved');
+                }
+            } catch (err) {
+                showToast('Failed to save order', true);
+            }
+        }
         function setDevice(dev, btn) {
             const group = btn.parentElement;
             group.querySelectorAll('.btn-sm').forEach(b => b.classList.remove('active'));

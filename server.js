@@ -74,6 +74,7 @@ const ProjectSchema = new mongoose.Schema({
     coverImageY: { type: Number, default: 50 },
     images: [String], // Media Gallery Bulk Storage
     blocks: [BlockSchema],
+    order: { type: Number, default: 0 },
     status: { type: String, enum: ['draft', 'published'], default: 'draft' },
     createdAt: { type: Date, default: Date.now }
 });
@@ -237,7 +238,7 @@ app.get('/api/projects', async (req, res) => {
         const { category } = req.query;
         let query = {};
         if (category) query.categoryIds = category;
-        const projects = await Project.find(query).sort({ createdAt: -1 });
+        const projects = await Project.find(query).sort({ order: 1, createdAt: -1 });
         res.json(projects);
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
@@ -414,6 +415,26 @@ app.post('/admin/save-cms', requireAuth, (req, res) => {
     } catch (err) {
         console.error('❌ Error saving CMS changes:', err);
         res.status(500).json({ error: 'FileSystem Error: ' + err.message });
+    }
+});
+
+app.put('/api/projects/reorder', requireAuth, async (req, res) => {
+    try {
+        const { projectIds } = req.body;
+        if (!Array.isArray(projectIds)) return res.status(400).json({ error: 'Invalid projectIds array' });
+        
+        const bulkOps = projectIds.map((id, index) => ({
+            updateOne: {
+                filter: { _id: id },
+                update: { order: index }
+            }
+        }));
+        
+        await Project.bulkWrite(bulkOps);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Reorder Error:', err);
+        res.status(500).json({ error: 'Could not reorder projects' });
     }
 });
 
