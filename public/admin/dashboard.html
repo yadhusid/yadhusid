@@ -145,6 +145,49 @@
         /* Toggles */
         .toggle-group { display:flex; gap:0.4rem; background:rgba(255,255,255,0.04); padding:0.4rem; border-radius:14px; }
         .toggle-group .btn-sm { border-radius:10px; padding: 0.5rem 1rem; }
+
+        /* Custom Dropdown */
+        .custom-dropdown { position: relative; width: 100%; }
+        .custom-dropdown-selected {
+            width: 100%; padding: 1.1rem 1.4rem; background: var(--input-bg);
+            border: 1px solid var(--border); border-radius: 16px; color: var(--text);
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.95rem;
+        }
+        .custom-dropdown-options {
+            position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+            background: #121212; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+            max-height: 250px; overflow-y: auto; z-index: 1000; display: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6); backdrop-filter: blur(30px);
+            padding: 8px;
+        }
+        .custom-dropdown-options.show { display: block; animation: fadeInDown 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .custom-dropdown-option {
+            padding: 0.8rem 1.2rem; cursor: pointer; font-size: 0.9rem; color: #a0a0ab;
+            border-radius: 12px; transition: all 0.2s ease;
+        }
+        .custom-dropdown-option:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cover Preview & Reposition */
+        .cover-preview-container {
+            width: 100%; height: 220px; border-radius: 24px; overflow: hidden;
+            position: relative; background: #000; margin-top: 1.5rem; display: none;
+            border: 1px solid var(--border); box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+        }
+        .cover-preview-img { width: 100%; height: 100%; object-fit: cover; }
+        .cover-controls { margin-top: 1.5rem; display: none; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border); }
+        .control-group { margin-bottom: 1rem; }
+        .control-group:last-child { margin-bottom: 0; }
+        .control-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .control-header span { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; }
+        .control-header .val { color: var(--accent); }
+        input[type=range] { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; appearance: none; -webkit-appearance: none; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: pointer; border: 2px solid #000; }
     </style>
 </head>
 <body>
@@ -262,10 +305,14 @@
                     </div>
                     <div class="form-group" style="position: relative;">
                         <label>Category</label>
-                        <select id="projCategory" onchange="addCategoryToProject(this.value, this.options[this.selectedIndex].text); this.value='';">
-                            <option value="">Select Categories...</option>
-                        </select>
-                        <div id="selectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+                        <div class="custom-dropdown">
+                            <div class="custom-dropdown-selected" onclick="toggleCustomDropdown()">
+                                <span id="dropdownSelectedText">Select Categories...</span>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </div>
+                            <div class="custom-dropdown-options" id="dropdownOptions"></div>
+                        </div>
+                        <div id="selectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;"></div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -273,10 +320,32 @@
                     <textarea id="projDesc" placeholder="Brief description of the project..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Cover Image</label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <label style="margin-bottom:0;">Cover Image</label>
+                        <button id="removeCoverBtn" class="btn-sm" style="display:none; padding: 4px 10px; font-size: 10px; background: rgba(239,68,68,0.1); color: #ef4444;" onclick="removeCover()">Remove Image</button>
+                    </div>
                     <div class="file-upload-wrapper">
-                        <input type="file" id="projImage" class="file-upload-input" accept="image/*">
-                        <div class="file-upload-btn">Upload Image</div>
+                        <input type="file" id="projImage" class="file-upload-input" accept="image/*" onchange="handleCoverUpload(this)">
+                        <div class="file-upload-btn" id="uploadBtnText">Upload Project Cover</div>
+                    </div>
+                    
+                    <div class="cover-preview-container" id="coverPreviewContainer">
+                        <img id="coverPreviewImg" class="cover-preview-img" src="" alt="preview">
+                    </div>
+                    
+                    <div class="cover-controls" id="coverControls">
+                        <div class="control-group">
+                            <div class="control-header"><span>Zoom Level</span> <span class="val" id="zoomVal">1.0x</span></div>
+                            <input type="range" id="coverZoom" min="1" max="3" step="0.01" value="1" oninput="updateCoverStyle()">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-header"><span>Horizontal Position</span> <span class="val" id="xVal">50%</span></div>
+                            <input type="range" id="coverX" min="0" max="100" step="1" value="50" oninput="updateCoverStyle()">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-header"><span>Vertical Position</span> <span class="val" id="yVal">50%</span></div>
+                            <input type="range" id="coverY" min="0" max="100" step="1" value="50" oninput="updateCoverStyle()">
+                        </div>
                     </div>
                 </div>
                 <button class="btn-primary" onclick="addProject()">Create Project</button>
@@ -540,16 +609,36 @@
         }
 
         function populateCategorySelect() {
-            const sel = document.getElementById('projCategory');
-            if (!sel) return;
-            sel.innerHTML = '<option value="">Select Categories...</option>' + allCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            const optionsContainer = document.getElementById('dropdownOptions');
+            if (!optionsContainer) return;
+            
+            optionsContainer.innerHTML = allCategories.map(c => `
+                <div class="custom-dropdown-option" onclick="addCategoryToProject('${c.id}', '${c.name.replace(/'/g, "\\'")}')">
+                    ${c.name}
+                </div>
+            `).join('');
+        }
+
+        function toggleCustomDropdown() {
+            document.getElementById('dropdownOptions').classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.closest('.custom-dropdown')) {
+                document.getElementById('dropdownOptions').classList.remove('show');
+            }
         }
 
         let selectedProjCategories = [];
         function addCategoryToProject(id, name) {
-            if (!id || selectedProjCategories.find(c => c.id === id)) return;
+            if (!id || selectedProjCategories.find(c => c.id === id)) {
+                document.getElementById('dropdownOptions').classList.remove('show');
+                return;
+            }
             selectedProjCategories.push({ id, name });
             renderSelectedCategories();
+            document.getElementById('dropdownOptions').classList.remove('show');
         }
 
         function removeCategoryFromProject(id) {
@@ -652,17 +741,22 @@
 
             const fd = new FormData();
             fd.append('title', title);
-            // Append each category ID individually for Multer/Express to see it as an array if needed, 
-            // or send as JSON string if preferred. Most standard is multiple appends.
             categoryIds.forEach(id => fd.append('categoryIds', id));
             fd.append('description', description);
-            if (coverFile) fd.append('coverImage', coverFile);
+            
+            if (coverFile) {
+                fd.append('coverImage', coverFile);
+                fd.append('coverImageZoom', document.getElementById('coverZoom').value);
+                fd.append('coverImageX', document.getElementById('coverX').value);
+                fd.append('coverImageY', document.getElementById('coverY').value);
+            }
 
             const res = await fetch('/api/projects', { method: 'POST', body: fd });
             if (res.ok) {
                 document.getElementById('projTitle').value = '';
                 document.getElementById('projDesc').value = '';
                 document.getElementById('projImage').value = '';
+                removeCover(); // Reset preview
                 selectedProjCategories = [];
                 renderSelectedCategories();
                 await loadProjects();
@@ -839,6 +933,51 @@
                     reader.readAsDataURL(file);
                 });
             }
+        }
+
+        function handleCoverUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const container = document.getElementById('coverPreviewContainer');
+                const img = document.getElementById('coverPreviewImg');
+                const controls = document.getElementById('coverControls');
+                const removeBtn = document.getElementById('removeCoverBtn');
+                const uploadBtnText = document.getElementById('uploadBtnText');
+                
+                img.src = e.target.result;
+                container.style.display = 'block';
+                controls.style.display = 'block';
+                removeBtn.style.display = 'block';
+                uploadBtnText.textContent = 'Change Cover Image';
+                
+                updateCoverStyle();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateCoverStyle() {
+            const img = document.getElementById('coverPreviewImg');
+            const zoom = document.getElementById('coverZoom').value;
+            const x = document.getElementById('coverX').value;
+            const y = document.getElementById('coverY').value;
+            
+            document.getElementById('zoomVal').textContent = parseFloat(zoom).toFixed(1) + 'x';
+            document.getElementById('xVal').textContent = x + '%';
+            document.getElementById('yVal').textContent = y + '%';
+            
+            img.style.transform = `scale(${zoom})`;
+            img.style.objectPosition = `${x}% ${y}%`;
+        }
+
+        function removeCover() {
+            document.getElementById('projImage').value = '';
+            document.getElementById('coverPreviewContainer').style.display = 'none';
+            document.getElementById('coverControls').style.display = 'none';
+            document.getElementById('removeCoverBtn').style.display = 'none';
+            document.getElementById('uploadBtnText').textContent = 'Upload Project Cover';
         }
 
         // -- Visual Editor Functions --

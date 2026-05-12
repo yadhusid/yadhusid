@@ -69,6 +69,9 @@ const ProjectSchema = new mongoose.Schema({
     description: String,
     categoryIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
     coverImage: String,
+    coverImageZoom: { type: Number, default: 1 },
+    coverImageX: { type: Number, default: 50 },
+    coverImageY: { type: Number, default: 50 },
     images: [String], // Media Gallery Bulk Storage
     blocks: [BlockSchema],
     status: { type: String, enum: ['draft', 'published'], default: 'draft' },
@@ -270,6 +273,9 @@ app.post('/api/projects', requireAuth, upload.single('coverImage'), async (req, 
             description: description || '',
             categoryIds: Array.isArray(categoryIds) ? categoryIds : [categoryIds],
             coverImage: req.file ? req.file.path : null,
+            coverImageZoom: req.body.coverImageZoom || 1,
+            coverImageX: req.body.coverImageX || 50,
+            coverImageY: req.body.coverImageY || 50,
             blocks: []
         });
         await project.save();
