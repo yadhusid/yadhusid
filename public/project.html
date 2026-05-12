@@ -62,11 +62,11 @@
 <body>
 
     <header class="glass-nav global-padding">
-        <a href="/#projects" class="btn-back group">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" class="group-hover:-translate-x-1 transition-transform"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <a href="/#projects" class="bg-[#111] text-white px-8 py-2.5 rounded-full text-[12px] font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg shadow-black/10">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             Back to Projects
         </a>
-        <a href="/" class="text-[15px] font-extrabold tracking-tight flex items-center gap-2">
+        <a href="/" class="text-[15px] font-extrabold tracking-tight flex items-center gap-2 hover:opacity-70 transition-opacity">
             <div class="w-6 h-6 bg-[#111] rounded-full"></div>
             yadsid.com
         </a>
@@ -107,20 +107,32 @@
             const id = params.get('id');
             if (!id) return;
 
-            const res = await fetch('/api/projects/' + id);
-            if (!res.ok) {
+            // Fetch categories first to display names
+            const [projRes, catRes] = await Promise.all([
+                fetch('/api/projects/' + id),
+                fetch('/api/categories')
+            ]);
+            
+            if (!projRes.ok) {
                 document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Project not found.</div>`;
                 return;
             }
 
-            const project = await res.json();
+            const project = await projRes.json();
+            const allCategories = await catRes.json();
+            
+            const categoryNames = (project.categoryIds || []).map(cid => {
+                const c = allCategories.find(cat => cat.id === cid);
+                return c ? c.name : '';
+            }).filter(n => n).join(', ') || 'Design';
+
             document.title = project.title + ' | Yadhu Sidharthan';
 
             const blocks = [...(project.blocks || [])].sort((a,b) => a.order - b.order);
             
             const contentHTML = `
                 <div class="global-padding py-[10vw] reveal" id="hero-content">
-                    <span class="inline-block px-4 py-1.5 bg-black/5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 text-[#666]">${project.categoryName || 'Design'}</span>
+                    <span class="inline-block px-4 py-1.5 bg-black/5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 text-[#666]">${categoryNames}</span>
                     <h1 class="text-[clamp(44px,7.5vw,110px)] font-bold leading-[0.85] tracking-tighter mb-10 font-heading max-w-5xl">${project.title}</h1>
                     <p class="text-[#333] text-[clamp(18px,1.6vw,22px)] max-w-3xl leading-relaxed mb-12 font-light">${project.description || ''}</p>
                 </div>
@@ -138,7 +150,7 @@
                     }).join('')}
                     
                     ${(project.images || []).map(img => {
-                        return `<img src="${img}" class="w-full object-cover reveal" style="margin: 0;">`;
+                        return `<div class="w-full py-4"><img src="${img}" class="w-full rounded-[var(--radius-outer)] object-cover reveal" style="margin: 0;"></div>`;
                     }).join('')}
                 </div>
                 ${document.getElementById('thank-you-section').innerHTML}

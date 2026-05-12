@@ -335,6 +335,21 @@ app.post('/api/projects/:id/gallery', requireAuth, upload.array('images', 10), a
     }
 });
 
+app.delete('/api/projects/:id/gallery', requireAuth, async (req, res) => {
+    try {
+        const { imageUrl } = req.query;
+        const project = await Project.findById(req.params.id);
+        if (!project) return res.status(404).json({ error: 'Project not found' });
+        
+        project.images = (project.images || []).filter(img => img !== imageUrl);
+        await project.save();
+        
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete gallery image' });
+    }
+});
+
 app.delete('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, res) => {
     try {
         const project = await Project.findById(req.params.projectId);

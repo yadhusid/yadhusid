@@ -462,7 +462,20 @@
             </div>
 
 
-            <h4 style="margin-bottom:0.75rem;font-size:0.9rem;color:#a0a0ab;text-transform:uppercase;letter-spacing:1px;">Content Blocks</h4>
+            <div style="border-top:1px solid var(--border); margin:2rem 0; padding-top:2rem;">
+                <h4 style="margin-bottom:0.75rem;font-size:0.9rem;color:#a0a0ab;text-transform:uppercase;letter-spacing:1px;">Media Gallery (Bulk Storage)</h4>
+                <div style="display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.5rem;">
+                    <div style="flex:1;">
+                        <input type="file" id="bulkImagesProj" multiple accept="image/*" style="display:none;" onchange="previewGallery(this)">
+                        <button class="btn-sm" style="width:100%; height:45px;" onclick="document.getElementById('bulkImagesProj').click()">Choice: Select Gallery Images</button>
+                    </div>
+                    <button class="btn-primary" style="height:45px;" onclick="bulkUploadProj()">Upload to Gallery</button>
+                </div>
+                <div id="galleryPreviewArea" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem;"></div>
+                <div id="existingGallery" style="display:flex; gap:10px; flex-wrap:wrap; padding:10px; background:rgba(0,0,0,0.1); border-radius:12px; min-height:50px;"></div>
+            </div>
+
+            <h4 style="margin-bottom:0.75rem;font-size:0.9rem;color:#a0a0ab;text-transform:uppercase;letter-spacing:1px;">Sequential Content Blocks</h4>
             <div class="block-list" id="blockList"></div>
         </div>
     </div>
@@ -575,8 +588,8 @@
         }
 
         // Bulk Gallery Logic
-        async function bulkUpload() {
-            const files = document.getElementById('bulkImages').files;
+        async function bulkUploadProj() {
+            const files = document.getElementById('bulkImagesProj').files;
             if (!files.length) return showToast('Please select images first.', true);
             
             const fd = new FormData();
@@ -584,7 +597,7 @@
                 fd.append('images', files[i]);
             }
             
-            showToast('Uploading gallery...');
+            showToast('Uploading to gallery...');
             const res = await fetch(`/api/projects/${currentProjectId}/gallery`, {
                 method: 'POST',
                 body: fd
@@ -592,9 +605,41 @@
             if (res.ok) {
                 showToast('Gallery updated successfully.');
                 document.getElementById('bulkImagesProj').value = '';
-                // Refresh blocks or show gallery list if needed
+                document.getElementById('galleryPreviewArea').innerHTML = '';
+                await loadBlocks(); // This will also refresh gallery
             } else {
                 showToast('Bulk upload failed.', true);
+            }
+        }
+
+        function previewGallery(input) {
+            const area = document.getElementById('galleryPreviewArea');
+            area.innerHTML = '';
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.style.cssText = 'width:50px; height:50px; border-radius:8px; overflow:hidden; border:1px solid var(--border);';
+                        div.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+                        area.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        async function deleteGalleryImg(imageUrl) {
+            if (!confirm('Remove this image from gallery?')) return;
+            showToast('Removing...');
+            const res = await fetch(`/api/projects/${currentProjectId}/gallery?imageUrl=${encodeURIComponent(imageUrl)}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                showToast('Image removed.');
+                await loadBlocks();
+            } else {
+                showToast('Failed to remove image.', true);
             }
         }
 
@@ -862,6 +907,20 @@
         async function loadBlocks() {
             const res = await fetch('/api/projects/' + currentProjectId);
             const project = await res.json();
+            
+            // Render Gallery
+            const galleryArea = document.getElementById('existingGallery');
+            if (project.images && project.images.length) {
+                galleryArea.innerHTML = project.images.map(img => `
+                    <div style="position:relative; width:80px; height:80px; border-radius:12px; overflow:hidden; border:1px solid var(--border);">
+                        <img src="${img}" style="width:100%; height:100%; object-fit:cover;">
+                        <button onclick="deleteGalleryImg('${img}')" style="position:absolute; top:4px; right:4px; background:rgba(255,0,0,0.8); color:white; border:none; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;">×</button>
+                    </div>
+                `).join('');
+            } else {
+                galleryArea.innerHTML = '<p style="color:#555; font-size:11px; margin:0;">Gallery is empty</p>';
+            }
+
             const list = document.getElementById('blockList');
             if (!project.blocks || !project.blocks.length) {
                 list.innerHTML = '<p style="color:#a0a0ab;font-size:0.9rem;">No content blocks yet. Add text or images above.</p>';
