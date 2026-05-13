@@ -107,30 +107,26 @@
             padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
         }
 
-        #mobile-menu-content {
+        header.scrolled {
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            padding: 0 !important;
+        }
+        header.scrolled .glass-nav {
+            border-radius: 0 !important;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            width: 100%;
+            max-width: 100%;
+        }
+        header.scrolled .beading-frame {
             display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 40px 0;
-            opacity: 0;
-            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(-20px);
-            pointer-events: none;
         }
-
-        .glass-nav.active #mobile-menu-content {
-            display: flex;
-            opacity: 100;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        @media (min-width: 768px) {
-            #mobile-menu-content {
-                display: none !important;
-            }
+        header.scrolled .nav-main-row {
+            padding-left: var(--global-padding-desktop) !important;
+            padding-right: var(--global-padding-desktop) !important;
         }
 
         header.scrolled {
@@ -194,38 +190,18 @@
                 </div>
                 
                 <div class="flex items-center gap-6 lg:gap-10">
-                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-[#111]">
-                        <li><a href="index.html#home" class="nav-link">Home</a></li>
-                        <li><a href="index.html#expertise" class="nav-link">Core Skills</a></li>
-                        <li><a href="index.html#projects" class="nav-link">Projects</a></li>
-                    </ul>
-                    <div class="flex items-center gap-2 md:gap-4">
-                        <a href="index.html#contact" class="hidden md:block bg-[#111] text-white px-6 py-2 rounded-full text-[13px] font-medium">
-                            Let's Talk
-                        </a>
-                        <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
-                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        </button>
-                    </div>
+                    <a href="index.html#projects" class="bg-[#111] text-white px-5 py-2 rounded-full text-[13px] font-medium flex items-center gap-2 hover:bg-black transition-colors shadow-sm">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back
+                    </a>
                 </div>
-            </div>
-            
-            <div id="mobile-menu-content">
-                <a href="index.html#home" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
-                <a href="index.html#expertise" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
-                <a href="index.html#projects" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
-                <a href="index.html#contact" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
             </div>
         </nav>
     </header>
 
-    <!-- Project Header -->
     <section class="w-full global-padding" style="padding-top: 160px; padding-bottom: 2rem;">
         <div class="max-w-4xl">
-            <span id="proj-category" class="text-[11px] font-bold uppercase tracking-widest text-[#AAA] mb-2 block">Loading...</span>
-            <h1 id="proj-title" class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight leading-[1.0] mb-4">Loading...</h1>
+            <h1 id="proj-title" class="text-[clamp(32px,4vw,48px)] font-bold tracking-tight leading-[1.0] mb-4">Loading...</h1>
         </div>
     </section>
 
@@ -246,15 +222,6 @@
     </footer>
 
     <script>
-        // Mobile Menu Toggle
-        const hamburger = document.getElementById('hamburger');
-        const mainNav = document.getElementById('main-nav');
-        
-        function toggleMenu() {
-            mainNav.classList.toggle('active');
-        }
-        if (hamburger) hamburger.addEventListener('click', toggleMenu);
-
         // Header Scrolled State
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
