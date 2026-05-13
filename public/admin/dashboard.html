@@ -133,11 +133,30 @@
         .block-list { display:flex; flex-direction:column; gap:1rem; margin-top:2rem; max-height: 400px; overflow-y: auto; padding-right: 10px; }
         .block-list::-webkit-scrollbar { width: 6px; }
         .block-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .block-item { background:var(--input-bg); border:1px solid var(--border); border-radius:20px; padding:1.5rem; display:flex; align-items:flex-start; gap:1.5rem; }
-        .block-type-badge { padding:0.4rem 0.8rem; border-radius:10px; font-size:0.65rem; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; flex-shrink:0; background:rgba(255,255,255,0.06); color:var(--muted); }
-        .block-preview { flex:1; font-size:0.9rem; color:var(--accent2); overflow:hidden; }
-        .block-item.sortable-ghost { opacity: 0.2; }
-        .drag-handle { cursor: grab; padding: 0.5rem; color: var(--muted); }
+        .block-item-preview { 
+            position:relative; padding:2rem; background:#1a1a1a; border:1px solid var(--border); 
+            border-radius:24px; margin-bottom:1.5rem; display: flex; align-items: center; gap: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .block-item-preview:hover { border-color: rgba(255,255,255,0.15); background: #1e1e1e; }
+        .block-item-preview.sortable-ghost { opacity: 0.3; transform: scale(0.98); }
+        
+        .block-drag-handle {
+            display: flex; flex-direction: column; gap: 4px; padding: 1rem 0.8rem;
+            background: rgba(255,255,255,0.03); border-radius: 12px; cursor: grab;
+            color: #444; transition: all 0.2s; flex-shrink: 0;
+        }
+        .block-drag-handle:hover { background: rgba(255,255,255,0.08); color: var(--accent); }
+        .block-drag-handle:active { cursor: grabbing; }
+        .block-drag-handle span { width: 4px; height: 4px; background: currentColor; border-radius: 50%; }
+        .block-drag-handle-grid { display: grid; grid-template-columns: repeat(2, 4px); gap: 4px; }
+        
+        .block-preview-content { flex: 1; display: flex; flex-direction: column; align-items: center; }
+        .block-preview-media { width: 60%; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .block-preview-text { width: 80%; margin: 0 auto; font-size: 1rem; line-height: 1.6; color: #d1d1d1; text-align: center; }
+        
+        .block-actions-overlay { position: absolute; top: 1rem; right: 1rem; display: flex; gap: 0.6rem; z-index: 10; }
+        .block-type-badge { background: #333; color: #fff; font-size: 9px; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
 
         /* Modal */
         .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center; backdrop-filter: blur(12px); }
@@ -816,7 +835,7 @@
                             ${(p.status || 'draft').toUpperCase()}
                         </span>
                         <button class="btn-sm" style="font-size:11px; padding: 0.5rem 0.8rem;" onclick="toggleStatus('${p.id}', '${p.status || 'draft'}')">Status</button>
-                        <button class="btn-sm" style="font-size:11px; padding: 0.5rem 0.8rem;" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')">Content</button>
+                        <button class="btn-sm" style="font-size:11px; padding: 0.5rem 0.8rem;" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')">Edit</button>
                         <button class="btn-danger" style="font-size:11px; padding: 0.5rem 0.8rem;" onclick="deleteProject('${p.id}')">Delete</button>
                     </div>
                 </div>`).join('');
@@ -929,24 +948,37 @@
             const sorted = [...project.blocks].sort((a,b) => a.order - b.order);
             list.innerHTML = sorted.map(b => {
                 let preview = '';
-                if (b.type === 'image') preview = `<img src="${b.content}" style="width:100%; border-radius:24px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">`;
-                else if (b.type === 'video') preview = `<video src="${b.content}" style="width:100%; border-radius:24px; box-shadow:0 1px 3px rgba(0,0,0,0.1);" muted loop autoplay playsinline></video>`;
-                else if (b.type === 'spacing') preview = `<div class="spacing-block" style="height:40px; background:rgba(255,255,255,0.05); border:1px dashed rgba(255,255,255,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#555; font-size:11px; pointer-events: auto;">--- Spacing ---</div>`;
-                else if (b.type === 'divider') preview = `<hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); width:100%; margin:10px 0; pointer-events: auto;">`;
-                else preview = `<div style="font-size:16px; line-height:1.8; color:#333;">${b.content.replace(/\\n/g,'<br>')}</div>`;
+                if (b.type === 'image') {
+                    preview = `<div class="block-preview-media"><img src="${b.content}" style="width:100%; border-radius:16px;"></div>`;
+                } else if (b.type === 'video') {
+                    preview = `<div class="block-preview-media"><video src="${b.content}" style="width:100%; border-radius:16px;" muted loop autoplay playsinline></video></div>`;
+                } else if (b.type === 'spacing') {
+                    preview = `<div class="block-preview-text" style="height:60px; background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center; color:#555; font-size:12px;">--- Vertical Spacing Area ---</div>`;
+                } else if (b.type === 'divider') {
+                    preview = `<div class="block-preview-text" style="width:100%;"><hr style="border:0; border-top:1px solid rgba(255,255,255,0.15); width:100%; margin:20px 0;"></div>`;
+                } else {
+                    preview = `<div class="block-preview-text">${b.content.replace(/\\n/g,'<br>')}</div>`;
+                }
                 
                 const bid = b._id || b.id;
                 return `
-                <div class="block-item-preview drag-handle" data-id="${bid}" style="position:relative; padding:1.5rem; background:#1a1a1a; border:1px solid var(--border); border-radius:16px; margin-bottom:1rem; cursor:grab; text-align:left;">
-                    <div style="position:absolute; top:0.5rem; right:0.5rem; display:flex; gap:0.5rem; z-index:10;">
-                        <span class="block-type-badge ${b.type === 'text' ? 'badge-text' : 'badge-image'}" style="background:#333; color:#fff; font-size:10px; padding:2px 8px;">${b.type}</span>
-                        ${b.radiusTop ? '<span style="font-size:10px; color:var(--success);">◔ Top</span>' : ''}
-                        ${b.radiusBottom ? '<span style="font-size:10px; color:var(--success);">◡ Bot</span>' : ''}
-                        ${b.hasGap ? '<span style="font-size:10px; color:var(--success);">↕ Gap</span>' : ''}
-                        <button class="btn-danger" style="padding:0.2rem 0.4rem; font-size:10px; border-radius:4px;" onclick="deleteBlock('${bid}')">✕</button>
+                <div class="block-item-preview" data-id="${bid}">
+                    <div class="block-drag-handle">
+                        <div class="block-drag-handle-grid">
+                            <span></span><span></span>
+                            <span></span><span></span>
+                            <span></span><span></span>
+                        </div>
                     </div>
-                    <div style="width:100%; pointer-events:none; position: relative;">
+                    <div class="block-preview-content">
                         ${preview}
+                    </div>
+                    <div class="block-actions-overlay">
+                        <span class="block-type-badge">${b.type}</span>
+                        ${b.radiusTop ? '<span style="font-size:9px; color:var(--success); font-weight:800;">◔ TOP</span>' : ''}
+                        ${b.radiusBottom ? '<span style="font-size:9px; color:var(--success); font-weight:800;">◡ BOT</span>' : ''}
+                        ${b.hasGap ? '<span style="font-size:9px; color:var(--success); font-weight:800;">↕ GAP</span>' : ''}
+                        <button class="btn-danger" style="padding:0.3rem 0.5rem; font-size:10px; border-radius:6px;" onclick="deleteBlock('${bid}')">✕</button>
                     </div>
                 </div>`;
             }).join('');
@@ -954,8 +986,9 @@
             // Initialize Sortable
             if (window.blockSortable) window.blockSortable.destroy();
             window.blockSortable = new Sortable(list, {
-                handle: '.drag-handle',
-                animation: 150,
+                handle: '.block-drag-handle',
+                animation: 250,
+                ghostClass: 'sortable-ghost',
                 onEnd: async function () {
                     const blockIds = Array.from(list.children).map(el => el.dataset.id);
                     await fetch('/api/projects/' + currentProjectId + '/blocks/reorder', {
