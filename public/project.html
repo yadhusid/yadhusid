@@ -150,6 +150,18 @@
             padding-left: var(--global-padding-desktop) !important;
             padding-right: var(--global-padding-desktop) !important;
         }
+        @media (max-width: 1279px) and (min-width: 768px) {
+            header.scrolled .nav-main-row {
+                padding-left: var(--global-padding-tablet) !important;
+                padding-right: var(--global-padding-tablet) !important;
+            }
+        }
+        @media (max-width: 767px) {
+            header.scrolled .nav-main-row {
+                padding-left: var(--global-padding-mobile) !important;
+                padding-right: var(--global-padding-mobile) !important;
+            }
+        }
 
         .nav-link:hover {
             color: #FF416C;
@@ -175,12 +187,9 @@
 </head>
 <body class="bg-white">
 
-    <header class="fixed z-50 transition-all duration-300" style="top: var(--hero-outer-padding); 
-                   left: var(--hero-outer-padding); 
-                   right: var(--hero-outer-padding);
-                   padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
-        <nav class="glass-nav relative" id="main-nav">
-            <div class="beading-frame"></div>
+    <header class="fixed z-50 transition-all duration-300 scrolled" style="top: 0; left: 0; right: 0; padding: 0;">
+        <nav class="glass-nav relative scrolled" id="main-nav">
+            <div class="beading-frame" style="display: none;"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
                     <a href="index.html" class="flex items-center gap-2">
@@ -199,14 +208,14 @@
         </nav>
     </header>
 
-    <section class="w-full global-padding" style="padding-top: 160px; padding-bottom: 2rem;">
+    <section class="w-full global-padding" style="padding-top: 140px; padding-bottom: 1rem;">
         <div class="max-w-4xl">
             <h1 id="proj-title" class="text-[clamp(32px,4vw,48px)] font-bold tracking-tight leading-[1.0] mb-4">Loading...</h1>
         </div>
     </section>
 
     <!-- Content Blocks Container -->
-    <section id="project-blocks" class="w-full global-padding" style="padding-bottom: 100px; padding-top: 2rem;">
+    <section id="project-blocks" class="w-full global-padding" style="padding-bottom: 100px; padding-top: 1rem;">
         <!-- Dynamic blocks injected here -->
     </section>
 
