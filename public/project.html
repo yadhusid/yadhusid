@@ -247,7 +247,7 @@
 
                 document.title = `${project.title} | Yadhu Sidharthan`;
                 document.getElementById('proj-title').textContent = project.title;
-                document.getElementById('proj-category').textContent = (project.categoryNames && project.categoryNames.length) ? project.categoryNames.join(' & ') : 'Project';
+                // Removed proj-category update as the element was deleted for UI cleanup
 
                 const blocksContainer = document.getElementById('project-blocks');
                 if (project.blocks && project.blocks.length) {
