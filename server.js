@@ -365,24 +365,6 @@ app.delete('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, 
     }
 });
 
-// ─── Visual CMS Save Route ───────────────────────────────────────────────────
-app.post('/admin/save-cms', requireAuth, (req, res) => {
-    const { html } = req.body;
-    if (!html) return res.status(400).json({ error: 'Missing HTML content' });
-
-    try {
-        const fs = require('fs');
-        const path = require('path');
-        const indexPath = path.join(__dirname, 'public', 'index.html');
-        
-        fs.writeFileSync(indexPath, html, 'utf8');
-        console.log('✅ CMS Changes Published to index.html');
-        res.json({ success: true });
-    } catch (err) {
-        console.error('CMS Save Error:', err);
-        res.status(500).json({ error: 'Failed to save changes' });
-    }
-});
 
 // Update Project Status
 app.patch('/api/projects/:id/status', requireAuth, async (req, res) => {
@@ -423,9 +405,19 @@ app.post('/admin/save-cms', requireAuth, (req, res) => {
     if (!html) return res.status(400).json({ error: 'HTML content required' });
 
     try {
+        // Robust cleaning of CMS-specific artifacts before saving
+        const cleanedHtml = html
+            .replace(/<div[^>]*class="[^"]*cms-floating-toolbar[^"]*"[\s\S]*?<\/div>/g, '')
+            .replace(/<div[^>]*class="[^"]*cms-bottom-toolbar[^"]*"[\s\S]*?<\/div>/g, '')
+            .replace(/<div[^>]*class="[^"]*cms-sidebar[^"]*"[\s\S]*?<\/div>/g, '')
+            .replace(/\s*cms-(hover|selected|enabled|active-element|active-item)\s*/g, ' ')
+            .replace(/style="[^"]*outline:[^"]*"/g, '')
+            .replace(/contenteditable="true"/g, '')
+            .replace(/spellcheck="false"/g, '');
+
         const indexPath = path.join(__dirname, 'public', 'index.html');
-        fs.writeFileSync(indexPath, html, 'utf8');
-        console.log('✅ index.html updated successfully');
+        fs.writeFileSync(indexPath, cleanedHtml, 'utf8');
+        console.log('✅ index.html updated successfully (cleaned)');
         res.json({ success: true });
     } catch (err) {
         console.error('❌ Error saving CMS changes:', err);

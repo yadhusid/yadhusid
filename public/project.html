@@ -56,7 +56,19 @@
         }
 
         /* Motion Ready Class */
-        .reveal { opacity: 0; transform: translateY(20px); }
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible { 
+            opacity: 1 !important; 
+            transform: translateY(0) !important; 
+        }
+        /* Ensure media is visible even if JS fails */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; }
+        }
     </style>
 </head>
 <body>
@@ -103,66 +115,84 @@
     <script src="/lib/motion.js"></script>
     <script>
         async function loadProject() {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            if (!id) return;
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get('id');
+                if (!id) return;
 
-            // Fetch categories first to display names
-            const [projRes, catRes] = await Promise.all([
-                fetch('/api/projects/' + id),
-                fetch('/api/categories')
-            ]);
-            
-            if (!projRes.ok) {
-                document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Project not found.</div>`;
-                return;
-            }
-
-            const project = await projRes.json();
-            const allCategories = await catRes.json();
-            
-            const categoryNames = (project.categoryIds || []).map(cid => {
-                const c = allCategories.find(cat => cat.id === cid);
-                return c ? c.name : '';
-            }).filter(n => n).join(', ') || 'Design';
-
-            document.title = project.title + ' | Yadhu Sidharthan';
-
-            const blocks = [...(project.blocks || [])].sort((a,b) => a.order - b.order);
-            
-            const contentHTML = `
-                <div class="global-padding py-[10vw] reveal" id="hero-content">
-                    <span class="inline-block px-4 py-1.5 bg-black/5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 text-[#666]">${categoryNames}</span>
-                    <h1 class="text-[clamp(44px,7.5vw,110px)] font-bold leading-[0.85] tracking-tighter mb-10 font-heading max-w-5xl">${project.title}</h1>
-                    <p class="text-[#333] text-[clamp(18px,1.6vw,22px)] max-w-3xl leading-relaxed mb-12 font-light">${project.description || ''}</p>
-                </div>
+                const [projRes, catRes] = await Promise.all([
+                    fetch('/api/projects/' + id).catch(() => ({ ok: false })),
+                    fetch('/api/categories').catch(() => ({ ok: false }))
+                ]);
                 
-                <div class="flex flex-col gap-0 global-padding">
-                    ${blocks.map(b => {
-                        const radiusClass = `${b.radiusTop ? 'rounded-t-[var(--radius-outer)]' : ''} ${b.radiusBottom ? 'rounded-b-[var(--radius-outer)]' : ''}`;
-                        const gapStyle = b.hasGap ? 'margin-top: 4vw; margin-bottom: 4vw;' : 'margin: 0;';
-                        
-                        if (b.type === 'image') return `<img src="${b.content}" class="w-full ${radiusClass} object-cover reveal" style="${gapStyle}">`;
-                        if (b.type === 'video') return `<video src="${b.content}" class="w-full ${radiusClass} reveal" style="${gapStyle}" autoplay loop muted playsinline></video>`;
-                        if (b.type === 'spacing') return `<div style="height: 4vw; min-height: 40px;"></div>`;
-                        if (b.type === 'divider') return `<div class="global-padding"><hr class="border-[#E5E5E5] w-full"></div>`;
-                        return `<div class="global-padding text-[clamp(16px,1.2vw,20px)] leading-[1.8] text-[#333] reveal" style="${gapStyle}">${b.content.replace(/\n/g,'<br>')}</div>`;
-                    }).join('')}
+                if (!projRes.ok) {
+                    document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Project not found.</div>`;
+                    return;
+                }
+
+                const project = await projRes.json();
+                const allCategories = catRes.ok ? await catRes.json() : [];
+                
+                const categoryNames = (project.categoryIds || []).map(cid => {
+                    const c = allCategories.find(cat => cat.id === cid);
+                    return c ? c.name : '';
+                }).filter(n => n).join(', ') || 'Design';
+
+                document.title = (project.title || 'Project') + ' | Yadhu Sidharthan';
+                const blocks = [...(project.blocks || [])].sort((a,b) => a.order - b.order);
+                const thankYouHTML = document.getElementById('thank-you-section')?.innerHTML || '';
+                
+                const contentHTML = `
+                    <div class="global-padding py-[10vw] reveal" id="hero-content">
+                        <span class="inline-block px-4 py-1.5 bg-black/5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 text-[#666]">${categoryNames}</span>
+                        <h1 class="text-[clamp(44px,7.5vw,110px)] font-bold leading-[0.85] tracking-tighter mb-10 font-heading max-w-5xl">${project.title || 'Untitled'}</h1>
+                        <p class="text-[#333] text-[clamp(18px,1.6vw,22px)] max-w-3xl leading-relaxed mb-12 font-light">${project.description || ''}</p>
+                    </div>
                     
-                    ${(project.images || []).map(img => {
-                        return `<div class="w-full py-4"><img src="${img}" class="w-full rounded-[var(--radius-outer)] object-cover reveal" style="margin: 0;"></div>`;
-                    }).join('')}
-                </div>
-                ${document.getElementById('thank-you-section').innerHTML}
-            `;
+                    <div class="flex flex-col gap-0 global-padding">
+                        ${blocks.map(b => {
+                            if (!b || (!b.content && b.type !== 'spacing' && b.type !== 'divider')) return '';
+                            const radiusClass = \`\${b.radiusTop ? 'rounded-t-[var(--radius-outer)]' : ''} \${b.radiusBottom ? 'rounded-b-[var(--radius-outer)]' : ''}\`;
+                            const gapStyle = b.hasGap ? 'margin-top: 4vw; margin-bottom: 4vw;' : 'margin: 0;';
+                            const content = b.content || '';
+                            
+                            if (b.type === 'image') return \`<img src="\${content}" class="w-full \${radiusClass} object-cover reveal" style="\${gapStyle}">\`;
+                            if (b.type === 'video') return \`<video src="\${content}" class="w-full \${radiusClass} reveal" style="\${gapStyle}" autoplay loop muted playsinline></video>\`;
+                            if (b.type === 'spacing') return \`<div style="height: 4vw; min-height: 40px;"></div>\`;
+                            if (b.type === 'divider') return \`<div class="global-padding"><hr class="border-[#E5E5E5] w-full"></div>\`;
+                            return \`<div class="global-padding text-[clamp(16px,1.2vw,20px)] leading-[1.8] text-[#333] reveal" style="\${gapStyle}">\${content.replace(/\\n/g,'<br>')}</div>\`;
+                        }).join('')}
+                        
+                        \${(project.images || []).map(img => {
+                            return \`<div class="w-full py-4"><img src="\${img}" class="w-full rounded-[var(--radius-outer)] object-cover reveal" style="margin: 0;"></div>\`;
+                        }).join('')}
+                    </div>
+                    \${thankYouHTML}
+                `;
 
-            document.getElementById('app').innerHTML = contentHTML;
+                document.getElementById('app').innerHTML = contentHTML;
 
-            // Trigger animations
-            const { animate, inView } = Motion;
-            inView(".reveal", ({ target }) => {
-                animate(target, { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, easing: "ease-out" });
-            });
+                if (window.Motion) {
+                    const { animate, inView } = Motion;
+                    inView(".reveal", ({ target }) => {
+                        animate(target, { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, easing: "ease-out" });
+                    });
+                } else {
+                    // IntersectionObserver Fallback
+                    const obs = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+                }
+            } catch (e) {
+                console.error(e);
+                document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Error loading project.</div>`;
+            }
         }
         loadProject();
     </script>
