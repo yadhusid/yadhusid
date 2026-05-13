@@ -106,6 +106,18 @@
             padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
             padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
         }
+        @media (max-width: 1279px) and (min-width: 861px) {
+            .nav-main-row {
+                padding-left: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-right: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            }
+        }
+        @media (max-width: 860px) {
+            .nav-main-row {
+                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            }
+        }
 
         header.scrolled {
             top: 0 !important;
@@ -218,9 +230,12 @@
 </head>
 <body class="bg-white">
 
-    <header class="fixed z-50 transition-all duration-300 scrolled" style="top: 0; left: 0; right: 0; padding: 0;">
-        <nav class="glass-nav relative scrolled" id="main-nav">
-            <div class="beading-frame" style="display: none;"></div>
+    <header class="fixed z-50 transition-all duration-300" style="top: var(--hero-outer-padding); 
+                   left: var(--hero-outer-padding); 
+                   right: var(--hero-outer-padding);
+                   padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
+        <nav class="glass-nav relative" id="main-nav">
+            <div class="beading-frame"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
                     <a href="index.html" class="flex items-center gap-2">
@@ -288,7 +303,8 @@
         }
         if (hamburger) hamburger.addEventListener('click', toggleMenu);
 
-        // Header Scrolled State
+        // Header Scrolled State disabled to maintain shrunk state
+        /* 
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             if (window.scrollY > 20) {
@@ -297,6 +313,7 @@
                 header.classList.remove('scrolled');
             }
         });
+        */
 
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
