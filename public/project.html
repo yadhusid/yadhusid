@@ -1,199 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Yadhu Sidharthan</title>
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Outfit:wght@300;400;600;800&amp;display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Outfit', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'figma': '24px',
+                    }
+                }
+            }
+        }
+    </script>
     <style type="text/tailwindcss">
         :root {
-            --global-padding-desktop: 12.1vw;
-            --global-padding-tablet: 0px;
-            --global-padding-mobile: 0px;
-            --nav-height: 64px;
-
-            /* Parallel Radii */
+            --global-padding-desktop: 11vw;
+            --global-padding-tablet: clamp(8vw, 9vw, 10vw);
+            --global-padding-mobile: 5.2vw;
+            --hero-outer-padding: 0.9vw;
             --radius-outer: 32px;
             --radius-padding: 12px;
             --radius-inner: calc(var(--radius-outer) - var(--radius-padding));
+            --banner-radius: var(--radius-outer);
+            --nav-radius: var(--radius-inner);
+            --nav-inset: 2.1vw;
         }
-        
-        @layer base {
-            font-family { font-family: 'Inter', sans-serif; }
-            h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
-        }
-
-        body { font-family: 'Inter', sans-serif; background: #fff; color: #111; padding-top: var(--nav-height); }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #111111; overflow-x: hidden; }
         
         .global-padding {
             padding-left: var(--global-padding-desktop);
             padding-right: var(--global-padding-desktop);
         }
-        
-        @media (max-width: 1024px) {
-            :root {
-                --global-padding-desktop: 0px;
-                --global-padding-tablet: 0px;
-                --global-padding-mobile: 0px;
+        @media (max-width: 1279px) and (min-width: 768px) {
+            .global-padding {
+                padding-left: var(--global-padding-tablet);
+                padding-right: var(--global-padding-tablet);
             }
-            .glass-nav {
-                padding-left: 6vw !important;
-                padding-right: 6vw !important;
-            }
-            .ty-card-section {
-                padding-left: 6vw !important;
-                padding-right: 6vw !important;
+        }
+        @media (max-width: 767px) {
+            .global-padding {
+                padding-left: var(--global-padding-mobile);
+                padding-right: var(--global-padding-mobile);
             }
         }
 
-        /* Permanently Docked Squared Navbar */
         .glass-nav {
-            @apply fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-2xl border-b border-black/5 flex items-center justify-between;
-            height: var(--nav-height);
+            @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm flex items-center justify-between;
+            height: 50px;
+            border-radius: var(--nav-radius) !important;
+            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
+            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
         }
 
-        .btn-back {
-            @apply flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.1em] text-[#666] hover:text-black transition-all duration-300;
+        @media (max-width: 1279px) {
+            .glass-nav {
+                padding-left: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset));
+                padding-right: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset));
+            }
         }
 
-        /* Removed Animations as requested */
-        .reveal { 
-            opacity: 1 !important; 
-            transform: none !important; 
+        @media (max-width: 860px) {
+            .glass-nav {
+                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset));
+                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset));
+            }
         }
-        /* Ensure media is visible even if JS fails */
-        @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; }
+        
+        .project-content-block img, .project-content-block video {
+            width: 100%;
+            display: block;
+        }
+
+        .beading-frame {
+            position: absolute;
+            inset: calc(-1 * var(--nav-inset));
+            border-top: var(--nav-inset) solid rgba(0, 0, 0, 0.03);
+            border-left: var(--nav-inset) solid rgba(0, 0, 0, 0.03);
+            border-right: var(--nav-inset) solid rgba(0, 0, 0, 0.03);
+            border-radius: var(--radius-outer);
+            pointer-events: none;
+            z-index: -1;
         }
     </style>
 </head>
-<body>
+<body class="bg-white">
 
-    <header class="glass-nav global-padding">
-        <a href="/" class="text-[15px] font-extrabold tracking-tight flex items-center gap-2 hover:opacity-70 transition-opacity">
-            <div class="w-6 h-6 bg-[#111] rounded-full"></div>
-            yadsid.com
-        </a>
-        <a href="/#projects" class="bg-[#111] text-white px-7 py-2 rounded-full text-[12px] font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg shadow-black/10">
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Back to Projects
-        </a>
+    <!-- Simple Nav -->
+    <header class="fixed z-50 w-full" style="top: var(--hero-outer-padding); left: 0; padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
+        <nav class="glass-nav relative w-full">
+            <div class="beading-frame"></div>
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-[#111] rounded-full"></div>
+                <span class="text-[15px] font-extrabold tracking-tight">yadsid.com</span>
+            </a>
+            <a href="index.html#projects" class="text-[13px] font-medium text-[#111] hover:text-black transition-colors">
+                ← Back to Projects
+            </a>
+        </nav>
     </header>
 
-    <div id="app"></div>
+    <!-- Project Header -->
+    <section class="w-full global-padding" style="padding-top: 160px; padding-bottom: 2rem;">
+        <div class="max-w-4xl">
+            <span id="proj-category" class="text-[11px] font-bold uppercase tracking-widest text-[#AAA] mb-2 block">Loading...</span>
+            <h1 id="proj-title" class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight leading-[1.0] mb-4">Loading...</h1>
+        </div>
+    </section>
 
-    <!-- Reusable Footer Area -->
-    <div id="thank-you-section" class="hidden">
-        <section class="global-padding py-[6vw] ty-card-section">
-            <div class="bg-[#111] rounded-[40px] p-[6%] text-white thank-you-card flex flex-col md:flex-row items-center justify-between gap-10 overflow-hidden relative" 
-                 style="background-image: var(--card-banner, none); background-size: cover; background-position: center;">
-                <!-- Banner Overlay if needed -->
-                <div class="absolute inset-0 bg-black/40 z-0" style="display: var(--card-overlay, none);"></div>
-                
-                <div class="ty-text relative z-10">
-                    <h2 class="text-[clamp(28px,4.2vw,54px)] font-bold mb-[1.5vw] leading-[1.1] font-heading tracking-tight">Do you like what you see?</h2>
-                    <p class="text-white/70 text-[15px] mb-[2.5vw] max-w-xl leading-relaxed font-light">
-                        I'm currently available for new projects and collaborations. Let's create something extraordinary together.
-                    </p>
-                    <div class="flex flex-wrap gap-4 ty-buttons">
-                        <a href="/#contact" class="bg-white text-black px-8 py-3.5 rounded-full text-[13px] font-bold hover:scale-105 transition-transform">Let's Talk</a>
-                        <a href="/" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3.5 rounded-full text-[13px] font-bold hover:bg-white/20 transition-all">More Projects</a>
-                    </div>
-                </div>
-                <div class="ty-icons flex gap-5 md:flex-col relative z-10">
-                    <a href="#" class="w-14 h-14 bg-white/5 border border-white/10 rounded-full flex items-center justify-center font-bold text-[18px] hover:bg-white hover:text-black transition-all">in</a>
-                    <a href="#" class="w-14 h-14 bg-white/5 border border-white/10 rounded-full flex items-center justify-center font-bold text-[18px] hover:bg-white hover:text-black transition-all">Bē</a>
-                </div>
+    <!-- Content Blocks Container -->
+    <section id="project-blocks" class="w-full global-padding" style="padding-bottom: 100px; padding-top: 2rem;">
+        <!-- Dynamic blocks injected here -->
+    </section>
+
+    <footer class="py-[4.7vw] w-full border-t border-[#F2F2F2]">
+        <div class="flex flex-col md:flex-row items-center justify-between text-[11px] font-medium text-[#888] global-padding">
+            <div class="font-bold text-[#111] text-[13px] mb-4 md:mb-0">yadsid.com</div>
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="hover:text-black transition-colors">Home</a>
+                <a href="index.html#projects" class="hover:text-black transition-colors">Work</a>
+                <a href="index.html#contact" class="hover:text-black transition-colors">Contact</a>
             </div>
-        </section>
-    </div>
-
-    <footer class="py-[5vw] text-center border-t border-[#EEE]">
-        <p class="text-[11px] text-[#888] tracking-widest uppercase">© 2026 Yadhu Sidharthan. All rights reserved.</p>
+        </div>
     </footer>
 
-    <script src="/lib/motion.js"></script>
     <script>
-        async function loadProject() {
-            try {
-                const params = new URLSearchParams(window.location.search);
-                const id = params.get('id');
-                if (!id) return;
-
-                const [projRes, catRes] = await Promise.all([
-                    fetch('/api/projects/' + id).catch(() => ({ ok: false })),
-                    fetch('/api/categories').catch(() => ({ ok: false }))
-                ]);
-                
-                if (!projRes.ok) {
-                    document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Project not found.</div>`;
-                    return;
-                }
-
-                const project = await projRes.json();
-                const allCategories = catRes.ok ? await catRes.json() : [];
-                
-                const categoryNames = (project.categoryIds || []).map(cid => {
-                    const c = allCategories.find(cat => cat.id === cid);
-                    return c ? c.name : '';
-                }).filter(n => n).join(', ') || 'Design';
-
-                document.title = (project.title || 'Project') + ' | Yadhu Sidharthan';
-                const blocks = [...(project.blocks || [])].sort((a,b) => a.order - b.order);
-                const thankYouSection = document.getElementById('thank-you-section');
-                if (thankYouSection) {
-                    const card = thankYouSection.querySelector('.thank-you-card');
-                    const overlay = thankYouSection.querySelector('.bg-black\\/40');
-                    
-                    if (project.cardBanner) {
-                        card.style.setProperty('--card-banner', `url(${project.cardBanner})`);
-                    }
-                    if (project.cardOverlay) {
-                        card.style.setProperty('--card-overlay', 'block');
-                    }
-                }
-
-                const thankYouHTML = thankYouSection?.innerHTML || '';
-                
-                const contentHTML = `
-                    <div class="global-padding pt-[2rem] pb-[1rem] reveal" id="hero-content">
-                        <h1 class="text-[clamp(16px,2.2vw,30px)] font-bold leading-none tracking-tight mb-1 font-heading max-w-5xl">${project.title || 'Untitled'}</h1>
-                        <p class="text-[#333] text-[clamp(16px,1.2vw,18px)] max-w-3xl leading-relaxed mb-[2rem] font-light">${project.description || ''}</p>
-                    </div>
-                    
-                    <div class="flex flex-col gap-0 global-padding">
-                        ${blocks.map(b => {
-                            if (!b || (!b.content && b.type !== 'spacing' && b.type !== 'divider')) return '';
-                            const radiusClass = (b.radiusTop ? 'rounded-t-[var(--radius-outer)]' : '') + ' ' + (b.radiusBottom ? 'rounded-b-[var(--radius-outer)]' : '');
-                            const gapStyle = b.hasGap ? 'margin-top: 4vw; margin-bottom: 4vw;' : 'margin: 0;';
-                            const content = b.content || '';
-                            
-                            if (b.type === 'image') return `<img src="${content}" class="w-full ${radiusClass} object-cover reveal" style="${gapStyle}">`;
-                            if (b.type === 'video') return `<video src="${content}" class="w-full ${radiusClass} reveal" style="${gapStyle}" autoplay loop muted playsinline></video>`;
-                            if (b.type === 'spacing') return `<div style="height: 4vw; min-height: 40px;"></div>`;
-                            if (b.type === 'divider') return `<div class="global-padding"><hr class="border-[#E5E5E5] w-full"></div>`;
-                            return `<div class="global-padding text-[clamp(16px,1.2vw,20px)] leading-[1.8] text-[#333] reveal" style="${gapStyle}">${content.replace(/\n/g,'<br>')}</div>`;
-                        }).join('')}
-                        
-                        ${(project.images || []).map(img => {
-                            return `<div class="w-full py-4"><img src="${img}" class="w-full rounded-[var(--radius-outer)] object-cover reveal" style="margin: 0;"></div>`;
-                        }).join('')}
-                    </div>
-                    ${thankYouHTML}
-                `;
-
-                document.getElementById('app').innerHTML = contentHTML;
-
-                // Animations removed as requested. Reveal everything immediately.
-                document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-            } catch (e) {
-                console.error(e);
-                document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Error loading project.</div>`;
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            if (!projectId) {
+                window.location.href = 'index.html';
+                return;
             }
-        }
-        loadProject();
+
+            try {
+                const res = await fetch('/api/projects/' + projectId);
+                if (!res.ok) throw new Error('Project not found');
+                const project = await res.json();
+
+                document.title = `${project.title} | Yadhu Sidharthan`;
+                document.getElementById('proj-title').textContent = project.title;
+                document.getElementById('proj-category').textContent = (project.categoryNames && project.categoryNames.length) ? project.categoryNames.join(' & ') : 'Project';
+
+                const blocksContainer = document.getElementById('project-blocks');
+                if (project.blocks && project.blocks.length) {
+                    const sorted = project.blocks.sort((a,b) => a.order - b.order);
+                    blocksContainer.innerHTML = sorted.map(b => {
+                        let content = '';
+                        const radiusClass = `${b.radiusTop ? 'rounded-t-[32px]' : ''} ${b.radiusBottom ? 'rounded-b-[32px]' : ''}`;
+                        const gapClass = b.hasGap ? 'mb-8' : '';
+
+                        if (b.type === 'text') {
+                            content = `<div class="max-w-3xl text-[clamp(14px,1vw,16px)] text-[#444] leading-[1.8] py-8">${b.content.replace(/\n/g, '<br>')}</div>`;
+                        } else if (b.type === 'image') {
+                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}">
+                                          <img src="${b.content}" alt="Project detail">
+                                       </div>`;
+                        } else if (b.type === 'video') {
+                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}">
+                                          <video src="${b.content}" muted loop autoplay playsinline></video>
+                                       </div>`;
+                        } else if (b.type === 'spacing') {
+                            content = `<div class="h-12"></div>`;
+                        } else if (b.type === 'divider') {
+                            content = `<hr class="border-[#E5E5E5] my-8">`;
+                        }
+                        return content;
+                    }).join('');
+                } else {
+                    blocksContainer.innerHTML = '<div class="py-20 text-center text-gray-400">No content available for this project.</div>';
+                }
+
+            } catch (err) {
+                console.error(err);
+                document.body.innerHTML = `<div class="min-h-screen flex items-center justify-center flex-col gap-4">
+                    <h1 class="text-4xl font-bold">Project Not Found</h1>
+                    <a href="index.html" class="text-blue-500 hover:underline">Back to Home</a>
+                </div>`;
+            }
+        });
     </script>
+
 </body>
 </html>

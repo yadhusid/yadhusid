@@ -390,10 +390,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Short Description</label>
-                    <textarea id="projDesc" placeholder="Brief description of the project..."></textarea>
-                </div>
-                <div class="form-group">
                     <label>Cover Image</label>
                     <div class="file-upload-wrapper">
                         <input type="file" id="projImage" class="file-upload-input" accept="image/*" onchange="handleCoverUpload(this)">
@@ -485,10 +481,6 @@
                     <div class="form-group">
                         <label>Edit Title</label>
                         <input type="text" id="modalProjTitleEdit">
-                    </div>
-                    <div class="form-group">
-                        <label>Edit Description</label>
-                        <input type="text" id="modalProjDescEdit">
                     </div>
                 </div>
                 <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
@@ -735,13 +727,6 @@
         }
 
         function updateStats() {
-            const tabsEl = document.getElementById('categoryFilter');
-            const gridEl = document.getElementById('projectsGrid');
-
-            if (!tabsEl || !gridEl) {
-                console.log('Portfolio elements not found, skipping initialization.');
-            }
-            
             const catEl = document.getElementById('stat-cats');
             const projEl = document.getElementById('stat-projs');
             const catLen = (allCategories && allCategories.length) ? allCategories.length : 0;
@@ -783,7 +768,8 @@
         // Close dropdown when clicking outside
         window.onclick = function(event) {
             if (!event.target.closest('.custom-dropdown')) {
-                document.getElementById('dropdownOptions').classList.remove('show');
+                const dropdown = document.getElementById('dropdownOptions');
+                if (dropdown) dropdown.classList.remove('show');
             }
         }
 
@@ -812,23 +798,6 @@
                     <span onclick="removeCategoryFromProject('${c.id}')" style="cursor:pointer; color:var(--danger); font-weight:bold; font-size:16px; margin-left:2px; display:flex; align-items:center;">&times;</span>
                 </div>
             `).join('');
-        }
-
-        function previewCategoryGallery(input) {
-            const area = document.getElementById('catGalleryPreview');
-            area.innerHTML = '';
-            if (input.files) {
-                Array.from(input.files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const div = document.createElement('div');
-                        div.style.cssText = 'width:80px; height:80px; border-radius:12px; overflow:hidden; border:1px solid var(--border); background:#000; flex-shrink:0; position:relative;';
-                        div.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
-                        area.appendChild(div);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
         }
 
         async function addCategory() {
@@ -903,30 +872,22 @@
         async function addProject() {
             const title = document.getElementById('projTitle').value.trim();
             const categoryIds = selectedProjCategories.map(c => c.id);
-            const description = document.getElementById('projDesc').value.trim();
             const coverFile = document.getElementById('projImage').files[0];
             if (!title || !categoryIds.length) return showToast('Title and at least one category are required.', true);
 
             const fd = new FormData();
             fd.append('title', title);
             categoryIds.forEach(id => fd.append('categoryIds', id));
-            fd.append('description', description);
             
             if (coverFile) {
                 fd.append('coverImage', coverFile);
                 fd.append('coverImageZoom', coverSettings.zoom);
                 
                 // Convert pixel offsets back to percentages for the backend
-                // The backend uses object-position (0-100%)
                 const currentW = coverSettings.imgW * coverSettings.zoom;
                 const currentH = coverSettings.imgH * coverSettings.zoom;
-                
-                // Available travel space
                 const travelX = currentW - 180;
                 const travelY = currentH - 180;
-                
-                // Percentage is (offset / travel) * 100
-                // Since our offsets are negative (0 to -travel), we invert them
                 const percX = travelX > 0 ? (Math.abs(coverSettings.x) / travelX) * 100 : 50;
                 const percY = travelY > 0 ? (Math.abs(coverSettings.y) / travelY) * 100 : 50;
                 
@@ -941,7 +902,6 @@
             const res = await fetch('/api/projects', { method: 'POST', body: fd });
             if (res.ok) {
                 document.getElementById('projTitle').value = '';
-                document.getElementById('projDesc').value = '';
                 document.getElementById('projImage').value = '';
                 removeCover(); // Reset preview
                 selectedProjCategories = [];
@@ -992,7 +952,6 @@
             
             // Populate Settings
             document.getElementById('modalProjTitleEdit').value = project.title || '';
-            document.getElementById('modalProjDescEdit').value = project.description || '';
             document.getElementById('modalProjCardOverlay').checked = !!project.cardOverlay;
 
             // Render Gallery
@@ -1059,13 +1018,11 @@
         async function saveProjectSettings() {
             if (!currentProjectId) return;
             const title = document.getElementById('modalProjTitleEdit').value.trim();
-            const description = document.getElementById('modalProjDescEdit').value.trim();
             const cardBanner = document.getElementById('modalProjCardBanner').files[0];
             const cardOverlay = document.getElementById('modalProjCardOverlay').checked;
 
             const fd = new FormData();
             fd.append('title', title);
-            fd.append('description', description);
             if (cardBanner) fd.append('cardBanner', cardBanner);
             fd.append('cardOverlay', cardOverlay);
 
@@ -1101,12 +1058,9 @@
                     if (file.type.startsWith('video/')) fd.append('type', 'video');
                     else fd.append('type', 'image');
                     fd.append('image', file);
-                    
-                    // Radius & Spacing toggles
                     fd.append('radiusTop', document.getElementById('blockRadTop').checked);
                     fd.append('radiusBottom', document.getElementById('blockRadBot').checked);
                     fd.append('hasGap', document.getElementById('blockHasGap').checked);
-                    
                     await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
                 }
                 
@@ -1124,8 +1078,6 @@
                 } else {
                     fd.append('content', type); // default for spacing/divider
                 }
-
-                // Radius & Spacing toggles
                 fd.append('radiusTop', document.getElementById('blockRadTop').checked);
                 fd.append('radiusBottom', document.getElementById('blockRadBot').checked);
                 fd.append('hasGap', document.getElementById('blockHasGap').checked);
@@ -1190,11 +1142,10 @@
                 const tempImg = new Image();
                 tempImg.onload = () => {
                     const aspect = tempImg.width / tempImg.height;
-                    // Size image to cover 180x180
-                    if (aspect > 1) { // Wide
+                    if (aspect > 1) {
                         coverSettings.imgH = 180;
                         coverSettings.imgW = 180 * aspect;
-                    } else { // Tall or Square
+                    } else {
                         coverSettings.imgW = 180;
                         coverSettings.imgH = 180 / aspect;
                     }
@@ -1202,16 +1153,13 @@
                     img.src = e.target.result;
                     img.style.width = coverSettings.imgW + 'px';
                     img.style.height = coverSettings.imgH + 'px';
-                    
                     container.style.display = 'block';
                     controls.style.display = 'flex';
                     uploadBtnText.textContent = 'Change Cover Image';
                     
-                    // Reset to center
                     coverSettings.zoom = 1;
                     coverSettings.x = -(coverSettings.imgW - 180) / 2;
                     coverSettings.y = -(coverSettings.imgH - 180) / 2;
-                    
                     document.getElementById('coverZoom').value = 1;
                     updateCoverStyle();
                 };
@@ -1224,11 +1172,7 @@
             const img = document.getElementById('coverPreviewImg');
             const zoom = document.getElementById('coverZoom').value;
             coverSettings.zoom = parseFloat(zoom);
-            
             document.getElementById('zoomVal').textContent = coverSettings.zoom.toFixed(1) + 'x';
-            
-            // Apply scale and translate
-            // We use transform-origin 0 0 for easier pixel math
             img.style.transformOrigin = '0 0';
             img.style.transform = `translate(${coverSettings.x}px, ${coverSettings.y}px) scale(${coverSettings.zoom})`;
         }
@@ -1245,36 +1189,24 @@
 
         function handleCoverDrag(e) {
             if (!isDraggingCover) return;
-            
             const dx = e.clientX - lastMouseX;
             const dy = e.clientY - lastMouseY;
-            
-            // 1:1 pixel movement
             coverSettings.x += dx;
             coverSettings.y += dy;
-            
-            // Boundary checks: don't allow showing empty space
-            // Container is 180x180
             const currentW = coverSettings.imgW * coverSettings.zoom;
             const currentH = coverSettings.imgH * coverSettings.zoom;
-            
-            // Clamp x between -(currentW - 180) and 0
             const minX = Math.min(0, 180 - currentW);
             const minY = Math.min(0, 180 - currentH);
-            
             coverSettings.x = Math.max(minX, Math.min(0, coverSettings.x));
             coverSettings.y = Math.max(minY, Math.min(0, coverSettings.y));
-            
             lastMouseX = e.clientX;
             lastMouseY = e.clientY;
-            
             updateCoverStyle();
         }
 
         function stopCoverDrag() {
             isDraggingCover = false;
             document.getElementById('coverPreviewContainer').classList.remove('active-drag');
-            document.body.style.cursor = 'default';
             document.removeEventListener('mousemove', handleCoverDrag);
             document.removeEventListener('mouseup', stopCoverDrag);
         }
@@ -1285,7 +1217,7 @@
             document.getElementById('coverPreviewContainer').style.display = 'none';
             document.getElementById('coverControls').style.display = 'none';
             document.getElementById('uploadBtnText').textContent = 'Upload Project Cover';
-            coverSettings = { zoom: 1, x: 50, y: 50 };
+            coverSettings = { zoom: 1, x: 0, y: 0, imgW: 0, imgH: 0 };
         }
 
         // -- Project Reordering Logic --
@@ -1293,11 +1225,8 @@
 
         function handleProjDragStart(e, id) {
             draggedProjId = id;
-            const row = e.currentTarget;
-            row.classList.add('dragging');
+            e.currentTarget.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
-            
-            // Create a transparent image for the ghost so we can style the row ourselves
             const img = new Image();
             img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
             e.dataTransfer.setDragImage(img, 0, 0);
@@ -1307,10 +1236,8 @@
             e.preventDefault();
             const row = e.currentTarget;
             if (row.classList.contains('dragging')) return;
-            
             const rect = row.getBoundingClientRect();
             const midpoint = rect.top + rect.height / 2;
-            
             if (e.clientY < midpoint) {
                 row.style.borderTop = '2px solid var(--accent)';
                 row.style.borderBottom = 'none';
@@ -1334,31 +1261,18 @@
                 item.style.borderTop = 'none';
                 item.style.borderBottom = 'none';
             });
-
             if (draggedProjId === targetId) return;
-
             const projects = [...allProjects];
             const draggedIdx = projects.findIndex(p => p.id === draggedProjId);
             const targetIdx = projects.findIndex(p => p.id === targetId);
-            
             const rect = e.currentTarget.getBoundingClientRect();
             const midpoint = rect.top + rect.height / 2;
             const dropAfter = e.clientY > midpoint;
-
             const [draggedItem] = projects.splice(draggedIdx, 1);
             let finalTargetIdx = targetIdx;
-            
-            // If dropping after the target, we need to adjust the index
-            // But since we already spliced out the item, the array is shorter
-            // Actually, simply using targetIdx is fine if we drop before.
-            // If drop after, use targetIdx + 1.
             if (dropAfter) finalTargetIdx++;
-            
-            // Correct for index change after splice
             if (draggedIdx < finalTargetIdx) finalTargetIdx--;
-
             projects.splice(finalTargetIdx, 0, draggedItem);
-
             allProjects = projects;
             renderProjects();
             saveProjectOrder();
@@ -1372,220 +1286,29 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ projectIds })
                 });
-                if (res.ok) {
-                    showToast('Project order saved');
-                }
+                if (res.ok) showToast('Project order saved');
             } catch (err) {
                 showToast('Failed to save order', true);
             }
         }
-        function setDevice(dev, btn) {
-            const group = btn.parentElement;
-            group.querySelectorAll('.btn-sm').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const container = document.getElementById('canvas-container');
-            if (dev === 'mobile') container.style.width = '375px';
-            else if (dev === 'tablet') container.style.width = '768px';
-            else container.style.width = '100%';
-        }
 
-        function focusSection(id) {
-            const iframe = document.getElementById('visual-iframe');
-            if(iframe.contentWindow) {
-                iframe.contentWindow.postMessage({
-                    source: 'cms-dashboard',
-                    action: 'scroll-to-section',
-                    id: id
-                }, '*');
-            }
-        }
-
-        window.addEventListener('message', (e) => {
-            if (e.data.source === 'cms-engine') {
-                if (e.data.action === 'element-selected') {
-                    renderProperties(e.data.data);
-                }
-            }
-        });
-
-        function renderProperties(data) {
-            const panel = document.getElementById('properties-content');
-            if (!data || data.type === 'global') {
-                panel.innerHTML = `
-                    <div class="cms-section">
-                        <h4 style="font-size: 0.75rem; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; letter-spacing: 1px;">Global Styles</h4>
-                        <label style="font-size: 10px;">Banner Radius</label>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.5rem;">
-                            <input type="number" placeholder="TL" onchange="updateIframeRadius('tl', this.value)">
-                            <input type="number" placeholder="TR" onchange="updateIframeRadius('tr', this.value)">
-                            <input type="number" placeholder="BL" onchange="updateIframeRadius('bl', this.value)">
-                            <input type="number" placeholder="BR" onchange="updateIframeRadius('br', this.value)">
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = `<div class="cms-section">`;
-            
-            // Context Header
-            let title = data.tagName || 'Element';
-            if (data.isBanner) title = 'Hero Banner';
-            if (data.tagName === 'A' && data.className.includes('btn')) title = 'Button';
-            
-            html += `<h4 style="font-size: 0.75rem; text-transform: uppercase; color: var(--success); margin-bottom: 1rem; letter-spacing: 1px;">Edit ${title}</h4>`;
-
-            // Text Editing
-            if (data.type === 'text') {
-                html += `
-                    <label>Content</label>
-                    <textarea oninput="updateContent('${data.id}', this.value)" style="height: 120px;">${data.content}</textarea>
-                `;
-                if (data.tagName === 'A') {
-                    html += `
-                        <label style="margin-top:1rem;">Link Destination</label>
-                        <input type="text" value="${data.href || ''}" oninput="updateLink('${data.id}', this.value)" placeholder="#section or https://...">
-                    `;
-                }
-            }
-
-            // Media Editing
-            if (data.type === 'media') {
-                if (data.isBanner) {
-                    html += `
-                        <label>Banner Image</label>
-                        <button class="btn-sm" style="width:100%; margin-bottom:1rem;" onclick="triggerIframeMedia('${data.id}')">Replace Image</button>
-                        <label>Glass Overlay</label>
-                        <div style="display:flex; gap:10px;">
-                            <button class="btn-sm" onclick="toggleOverlay('${data.id}', true)">ON</button>
-                            <button class="btn-sm" onclick="toggleOverlay('${data.id}', false)">OFF</button>
-                        </div>
-                    `;
-                } else {
-                    html += `
-                        <label>Image Source</label>
-                        <input type="text" value="${data.src || ''}" oninput="updateMediaSrc('${data.id}', this.value)" placeholder="Image URL">
-                        <button class="btn-sm" style="width:100%; margin-top:0.5rem;" onclick="triggerIframeMedia('${data.id}')">Upload New</button>
-                    `;
-                }
-            }
-
-            // Spacing / Gap Tool
-            html += `
-                <div class="cms-section" style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
-                    <h4 style="font-size: 0.65rem; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; letter-spacing: 1.5px;">Spacing Management</h4>
-                    <label>Section Gap (px)</label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <input type="number" value="${data.paddingBottom || 0}" oninput="updateSectionGap('${data.id}', this.value)" style="padding: 0.6rem; font-size: 0.8rem;">
-                        <span style="font-size: 0.7rem; color: var(--muted);">PX</span>
-                    </div>
-                </div>
-            `;
-            
-            html += `</div>`;
-            panel.innerHTML = html;
-        }
-
-        function updateSectionGap(id, val) {
-            const iframe = document.getElementById('visual-iframe');
-            if(iframe.contentWindow) {
-                iframe.contentWindow.postMessage({
-                    source: 'cms-dashboard',
-                    action: 'update-spacing',
-                    id: id,
-                    value: val + 'px'
-                }, '*');
-            }
-        }
-
-        // Dashboard -> Iframe Commands
-        function updateContent(id, val) {
-            sendToIframe('update-content', { id, val });
-        }
-        function updateLink(id, val) {
-            sendToIframe('update-link', { id, val });
-        }
-        function triggerIframeMedia(id) {
-            sendToIframe('trigger-media', { id });
-        }
-        function sendToIframe(action, data) {
-            const iframe = document.getElementById('visual-iframe');
-            iframe.contentWindow.postMessage({
-                source: 'cms-dashboard',
-                action: action,
-                data: data
-            }, '*');
-        }
-
-        function updateIframeRadius(corner, value) {
-            sendToIframe('update-radius', { corner, value });
-        }
-
-        function addSkillToIframe() {
-            const name = document.getElementById('cms-new-skill').value.trim();
-            if (!name) return;
-            sendToIframe('add-skill', { name });
-            document.getElementById('cms-new-skill').value = '';
-        }
-
-        async function publishVisualEditor() {
-            const btn = document.getElementById('publishVisualBtn');
-            const originalText = btn.textContent;
-            btn.textContent = 'Publishing...';
-            
-            const iframe = document.getElementById('visual-iframe');
-            const clone = iframe.contentWindow.document.documentElement.cloneNode(true);
-            
-            // Remove CMS UI
-            const cmsElements = clone.querySelectorAll('.cms-sidebar, .cms-floating-toolbar, .cms-bottom-toolbar, script[src*="cms.js"], link[href*="cms.css"]');
-            cmsElements.forEach(el => el.remove());
-            
-            clone.querySelector('body').classList.remove('cms-enabled', 'cms-mode-tablet', 'cms-mode-mobile');
-            
-            clone.querySelectorAll('.editable').forEach(el => {
-                el.classList.remove('editable');
-                el.removeAttribute('contenteditable');
-            });
-            clone.querySelectorAll('.editable-media').forEach(el => {
-                el.classList.remove('editable-media');
-                el.removeAttribute('title');
-            });
-            
-            const projectsGrid = clone.querySelector('#projectsGrid');
-            if (projectsGrid) projectsGrid.innerHTML = '<!-- Content will load from portfolio.js -->';
-            
-            const categoryFilter = clone.querySelector('#categoryFilter');
-            if (categoryFilter) categoryFilter.innerHTML = '<!-- Dynamic from portfolio.js -->';
-            
-            clone.querySelectorAll('.cms-del-skill').forEach(el => el.remove());
-
-            const finalHTML = '<!DOCTYPE html>\n<html lang="en" class="scroll-smooth">\n' + clone.innerHTML + '\n</html>';
-            
-            try {
-                const res = await fetch('/admin/save-cms', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ html: finalHTML })
+        function previewGallery(input) {
+            const area = document.getElementById('galleryPreviewArea');
+            area.innerHTML = '';
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.style.cssText = 'width:50px; height:50px; border-radius:8px; overflow:hidden; border:1px solid var(--border);';
+                        div.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+                        area.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
                 });
-                if (res.ok) {
-                    btn.textContent = 'Published!';
-                    btn.style.background = '#10b981';
-                    showToast('Website Updated Successfully!');
-                } else {
-                    btn.textContent = 'Error!';
-                    btn.style.background = '#dc2626';
-                }
-            } catch (err) {
-                btn.textContent = 'Error!';
-                btn.style.background = '#dc2626';
             }
-            
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.background = '';
-            }, 2000);
         }
+
     </script>
 </body>
 </html>
