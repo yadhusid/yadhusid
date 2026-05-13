@@ -12,10 +12,22 @@
     <script>
         tailwind.config = {
             theme: {
+                screens: {
+                    'md': '861px',    /* Tablet and up */
+                    'lg': '1218px',   /* Desktop and up */
+                },
                 extend: {
                     fontFamily: {
                         heading: ['Outfit', 'sans-serif'],
                         body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        figma: {
+                            orange: '#FF4B2B',
+                            pink: '#FF416C',
+                            yellow: '#FFB347',
+                            tag: '#F0F0F0',
+                        }
                     },
                     borderRadius: {
                         'figma': '24px',
@@ -30,6 +42,11 @@
             --global-padding-tablet: clamp(8vw, 9vw, 10vw);
             --global-padding-mobile: 5.2vw;
             --hero-outer-padding: 0.9vw;
+            --nav-offset: 2.1vw;
+            --grid-gap: 1.8vw;
+            --scroll-offset: 80px;
+
+            /* Parallel Radii Logic */
             --radius-outer: 32px;
             --radius-padding: 12px;
             --radius-inner: calc(var(--radius-outer) - var(--radius-padding));
@@ -38,6 +55,11 @@
             --nav-inset: 2.1vw;
         }
         body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #111111; overflow-x: hidden; }
+        
+        @layer utilities {
+            .font-heading { font-family: 'Outfit', sans-serif; }
+            h1, h2, h3, h4 { @apply font-heading tracking-tight; }
+        }
         
         .global-padding {
             padding-left: var(--global-padding-desktop);
@@ -56,58 +78,146 @@
             }
         }
 
+        header {
+            transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         .glass-nav {
-            @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm flex items-center justify-between;
+            @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm flex flex-col justify-start overflow-hidden;
             height: 50px;
             border-radius: var(--nav-radius) !important;
-            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
-            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
+            transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-radius 0.4s ease;
+            z-index: 100;
         }
 
-        @media (max-width: 1279px) {
-            .glass-nav {
-                padding-left: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset));
-                padding-right: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset));
+        .glass-nav.active {
+            height: 340px;
+            border-radius: 24px !important;
+        }
+
+        .nav-main-row {
+            @apply flex items-center justify-between w-full;
+            height: 50px;
+            min-height: 50px;
+            flex-shrink: 0;
+            color: #111111;
+            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+        }
+
+        #mobile-menu-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px 0;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        .glass-nav.active #mobile-menu-content {
+            display: flex;
+            opacity: 100;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        @media (min-width: 768px) {
+            #mobile-menu-content {
+                display: none !important;
             }
         }
 
-        @media (max-width: 860px) {
-            .glass-nav {
-                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset));
-                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset));
-            }
+        header.scrolled {
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            padding: 0 !important;
+        }
+        header.scrolled .glass-nav {
+            border-radius: 0 !important;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            width: 100%;
+            max-width: 100%;
+        }
+        header.scrolled .beading-frame {
+            display: none;
+        }
+        header.scrolled .nav-main-row {
+            padding-left: var(--global-padding-desktop) !important;
+            padding-right: var(--global-padding-desktop) !important;
+        }
+
+        .nav-link:hover {
+            color: #FF416C;
+        }
+
+        /* Beading Frame Logic */
+        .beading-frame {
+            position: absolute;
+            inset: calc(-1 * var(--nav-inset));
+            border-top: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-left: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-right: var(--nav-inset) solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--banner-radius);
+            pointer-events: none;
+            z-index: -1;
         }
         
         .project-content-block img, .project-content-block video {
             width: 100%;
             display: block;
         }
-
-        .beading-frame {
-            position: absolute;
-            inset: calc(-1 * var(--nav-inset));
-            border-top: var(--nav-inset) solid rgba(0, 0, 0, 0.03);
-            border-left: var(--nav-inset) solid rgba(0, 0, 0, 0.03);
-            border-right: var(--nav-inset) solid rgba(0, 0, 0, 0.03);
-            border-radius: var(--radius-outer);
-            pointer-events: none;
-            z-index: -1;
-        }
     </style>
 </head>
 <body class="bg-white">
 
-    <!-- Simple Nav -->
-    <header class="fixed z-50 w-full" style="top: var(--hero-outer-padding); left: 0; padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
-        <nav class="glass-nav relative w-full">
+    <header class="fixed z-50 transition-all duration-300" style="top: var(--hero-outer-padding); 
+                   left: var(--hero-outer-padding); 
+                   right: var(--hero-outer-padding);
+                   padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
+        <nav class="glass-nav relative" id="main-nav">
             <div class="beading-frame"></div>
-            <a href="index.html" class="flex items-center gap-2">
-                <div class="w-6 h-6 bg-[#111] rounded-full"></div>
-                <span class="text-[15px] font-extrabold tracking-tight">yadsid.com</span>
-            </a>
-            <a href="index.html#projects" class="text-[13px] font-medium text-[#111] hover:text-black transition-colors">
-                ← Back to Projects
-            </a>
+            <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
+                <div class="flex items-center gap-2 flex-nowrap min-w-fit">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-6 h-6 bg-[#111] rounded-full flex-shrink-0"></div>
+                        <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none">yadsid.com</div>
+                    </a>
+                </div>
+                
+                <div class="flex items-center gap-6 lg:gap-10">
+                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-[#111]">
+                        <li><a href="index.html#home" class="nav-link">Home</a></li>
+                        <li><a href="index.html#expertise" class="nav-link">Core Skills</a></li>
+                        <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                    </ul>
+                    <div class="flex items-center gap-2 md:gap-4">
+                        <a href="index.html#contact" class="hidden md:block bg-[#111] text-white px-6 py-2 rounded-full text-[13px] font-medium">
+                            Let's Talk
+                        </a>
+                        <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
+                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="mobile-menu-content">
+                <a href="index.html#home" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
+                <a href="index.html#expertise" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
+                <a href="index.html#projects" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
+                <a href="index.html#contact" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
+            </div>
         </nav>
     </header>
 
@@ -136,6 +246,25 @@
     </footer>
 
     <script>
+        // Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mainNav = document.getElementById('main-nav');
+        
+        function toggleMenu() {
+            mainNav.classList.toggle('active');
+        }
+        if (hamburger) hamburger.addEventListener('click', toggleMenu);
+
+        // Header Scrolled State
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
