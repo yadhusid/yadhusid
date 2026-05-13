@@ -103,19 +103,19 @@
             min-height: 50px;
             flex-shrink: 0;
             color: #111111;
-            padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
-            padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+            padding-left: var(--global-padding-desktop) !important;
+            padding-right: var(--global-padding-desktop) !important;
         }
         @media (max-width: 1279px) and (min-width: 861px) {
             .nav-main-row {
-                padding-left: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
-                padding-right: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-left: var(--global-padding-tablet) !important;
+                padding-right: var(--global-padding-tablet) !important;
             }
         }
         @media (max-width: 860px) {
             .nav-main-row {
-                padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
-                padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
+                padding-left: var(--global-padding-mobile) !important;
+                padding-right: var(--global-padding-mobile) !important;
             }
         }
 
@@ -230,12 +230,9 @@
 </head>
 <body class="bg-white">
 
-    <header class="fixed z-50 transition-all duration-300" style="top: var(--hero-outer-padding); 
-                   left: var(--hero-outer-padding); 
-                   right: var(--hero-outer-padding);
-                   padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
-        <nav class="glass-nav relative" id="main-nav">
-            <div class="beading-frame"></div>
+    <header class="fixed z-50 transition-all duration-300" style="top: 0; left: 0; right: 0; padding: 0;">
+        <nav class="glass-nav relative" id="main-nav" style="border-radius: 0 !important; border-left: none; border-right: none; border-top: none;">
+            <div class="beading-frame" style="display: none;"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
                     <a href="index.html" class="flex items-center gap-2">
