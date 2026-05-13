@@ -310,7 +310,7 @@ class VisualCMS {
                     clone.querySelectorAll('.cms-del-skill').forEach(el => el.remove());
 
                     // We need to keep the HTML structure intact
-                    const finalHTML = '<!DOCTYPE html>\\n<html lang="en" class="scroll-smooth">\\n' + clone.innerHTML + '\\n</html>';
+                    const finalHTML = '<!DOCTYPE html>\n<html lang="en" class="scroll-smooth">\n' + clone.innerHTML + '\n</html>';
                     
                     const res = await fetch('/admin/save-cms', {
                         method: 'POST',

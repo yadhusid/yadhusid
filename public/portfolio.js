@@ -1,101 +1,104 @@
-// portfolio.js — dynamically loads categories and projects from the backend API
+let allProjects = [];
+let allCategories = [];
 
-(async function () {
-    let allProjects = [];
-    let allCategories = [];
-    let activeCategory = 'all';
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchCategories();
+    await fetchProjects();
+});
 
-    const tabsEl = document.getElementById('project-categories');
-    const gridEl = document.getElementById('projectsGrid');
+async function fetchCategories() {
+    try {
+        const res = await fetch('/api/categories');
+        allCategories = await res.json();
+        renderCategories();
+    } catch (err) {
+        console.error('Error fetching categories:', err);
+    }
+}
 
-    if (!tabsEl || !gridEl) return; // Exit if not on portfolio page
+async function fetchProjects() {
+    try {
+        const res = await fetch('/api/projects');
+        allProjects = await res.json();
+        renderProjects();
+    } catch (err) {
+        console.error('Error fetching projects:', err);
+    }
+}
 
-    // ── Fetch data ─────────────────────────────────────────────────────────────
-    async function fetchData() {
-        try {
-            const [catRes, projRes] = await Promise.all([
-                fetch('/api/categories'),
-                fetch('/api/projects')
-            ]);
+function renderCategories() {
+    const filterContainer = document.getElementById('project-categories');
+    if (!filterContainer) return;
 
-            if (!catRes.ok || !projRes.ok) throw new Error('API request failed');
+    // Keep "All Works" button
+    let html = `<button class="bg-black text-white px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all" onclick="filterProjects('all', this)">All Works</button>`;
+    
+    allCategories.forEach(cat => {
+        html += `<button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all" onclick="filterProjects('${cat.id}', this)">${cat.name}</button>`;
+    });
 
-            allCategories = await catRes.json();
-            allProjects = await projRes.json();
+    filterContainer.innerHTML = html;
+}
 
-            renderTabs();
-            renderProjects('all');
-        } catch (err) {
-            console.error('FetchData failed:', err);
-            gridEl.innerHTML = `
-                <div style="grid-column:1/-1;text-align:center;color:#a0a0ab;padding:3rem 0;">
-                    <p style="font-size:1.1rem;margin-bottom:0.5rem;">Your portfolio is ready. Add projects in the CMS to see them here.</p>
-                </div>`;
-            if (tabsEl) tabsEl.style.display = 'none';
-        }
+function filterProjects(categoryId, btn) {
+    // Update active button styles
+    const buttons = document.querySelectorAll('#project-categories button');
+    buttons.forEach(b => {
+        b.classList.remove('bg-black', 'text-white');
+        b.classList.add('bg-[#F2F2F2]', 'text-[#111]');
+    });
+    btn.classList.remove('bg-[#F2F2F2]', 'text-[#111]');
+    btn.classList.add('bg-black', 'text-white');
+
+    if (categoryId === 'all') {
+        renderProjects(allProjects);
+    } else {
+        const filtered = allProjects.filter(p => p.categoryIds && p.categoryIds.includes(categoryId));
+        renderProjects(filtered);
+    }
+}
+
+function renderProjects(projects = allProjects) {
+    const grid = document.getElementById('projectsGrid');
+    if (!grid) return;
+
+    // Only show published projects for public view
+    const published = projects.filter(p => p.status === 'published');
+
+    if (published.length === 0) {
+        grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-400">Coming Soon</div>';
+        return;
     }
 
-    // ── Render category filter tabs ────────────────────────────────────────────
-    function renderTabs() {
-        if (!allCategories.length) return;
-        const tabs = [{ id: 'all', name: 'All Works' }, ...allCategories];
-        tabsEl.innerHTML = tabs.map(c => {
-            const isActive = c.id === activeCategory;
-            return `
-            <button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all${isActive ? ' !bg-black !text-white' : ''}" 
-                    data-id="${c.id}" 
-                    onclick="filterCategory('${c.id}', this)">
-                ${c.name}
-            </button>`;
-        }).join('');
-    }
+    grid.innerHTML = published.map(p => {
+        const cats = p.categoryIds ? p.categoryIds.map(id => {
+            const c = allCategories.find(cat => (cat.id === id || cat._id === id));
+            return c ? c.name : '';
+        }).filter(n => n).join(' & ') : 'Project';
 
-    // ── Render project cards ───────────────────────────────────────────────────
-    function renderProjects(categoryId) {
-        let filtered = categoryId === 'all'
-            ? allProjects
-            : allProjects.filter(p => p.categoryIds && p.categoryIds.includes(categoryId));
-
-        // Filter only published projects for the public view
-        filtered = filtered.filter(p => p.status === 'published');
-
-        if (!filtered.length) {
-            gridEl.innerHTML = `<div class="col-span-full py-20 text-center text-gray-400 font-medium tracking-widest text-sm">No projects in this category yet.</div>`;
-            return;
-        }
-
-        const bgColors = ['bg-[#0d0d0d]', 'bg-[#0a0a0a]', 'bg-[#050505]', 'bg-[#111111]'];
-
-        gridEl.innerHTML = filtered.map((p, i) => {
-            const cat = allCategories.find(c => p.categoryIds && p.categoryIds.includes(c.id));
-            const bgColor = bgColors[i % bgColors.length];
-            const isDark = true; // All are dark now
-            const textColor = 'text-white';
-            const hrColor = 'bg-[#FF4B2B]'; // Signature accent
-            const descColor = 'text-white/50';
-
-            return `
-            <a href="/project.html?id=${p.id}" class="bg-white aspect-[3/2.2] w-full rounded-[24px] overflow-hidden relative group cursor-pointer transition-all duration-500 block border border-black/5 hover:shadow-xl">
-                ${p.coverImage
-                    ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105">`
-                    : '<div class="absolute inset-0 bg-[#f8f8f8]"></div>'}
-                
-                <!-- Hover Overlay (Smooth Bottom-Docked Blend) -->
-                <div class="absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6 z-10">
-                    <div class="translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                        <h3 class="text-lg font-bold text-white tracking-tight leading-tight">${p.title}</h3>
-                    </div>
+        return `
+            <a href="project.html?id=${p.id}" class="group block relative overflow-hidden rounded-[24px] bg-[#F9F9F9] border border-[#F2F2F2] transition-all duration-500 hover:shadow-2xl hover:shadow-black/5" style="transform: translateZ(0);">
+                <div class="aspect-[3/2.2] overflow-hidden relative">
+                    ${p.coverImage 
+                        ? `<img src="${p.coverImage}" 
+                             alt="${p.title}" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                             style="object-position: ${p.coverImageX || 50}% ${p.coverImageY || 50}%; transform: scale(${p.coverImageZoom || 1});">`
+                        : `<div class="w-full h-full bg-[#EEE] flex items-center justify-center text-[#AAA] font-medium uppercase tracking-widest text-[10px]">No Cover</div>`
+                    }
+                    ${p.cardOverlay ? `<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>` : ''}
                 </div>
-            </a>`;
-        }).join('');
-    }
+                
+                <div class="p-6 md:p-8 flex flex-col gap-1">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#AAA]">${cats}</span>
+                    <h3 class="text-[20px] font-bold tracking-tight text-[#111] group-hover:text-black transition-colors">${p.title}</h3>
+                </div>
 
-    // ── Expose filter function globally (used in onclick) ──────────────────────
-    window.filterCategory = function (id, btn) {
-        activeCategory = id;
-        renderTabs(); // Re-render to update tab styles
-        renderProjects(id);
-    };
-
-    fetchData();
-})();
+                ${p.cardBanner ? `
+                    <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-cover bg-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1.5 group-hover:translate-y-0" 
+                         style="background-image: url('${p.cardBanner}');"></div>
+                ` : ''}
+            </a>
+        `;
+    }).join('');
+}
