@@ -172,23 +172,28 @@
 
                 document.getElementById('app').innerHTML = contentHTML;
 
-                if (window.Motion) {
-                    const { animate, inView } = Motion;
-                    inView(".reveal", ({ target }) => {
-                        animate(target, { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, easing: "ease-out" });
-                    });
-                } else {
-                    // IntersectionObserver Fallback
-                    const obs = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                                obs.unobserve(entry.target);
+                // IntersectionObserver Trigger for Animations
+                const revealElements = document.querySelectorAll('.reveal');
+                const obs = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const target = entry.target;
+                            if (window.Motion && window.Motion.animate) {
+                                Motion.animate(target, { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, easing: "ease-out" });
+                            } else {
+                                target.classList.add('visible');
                             }
-                        });
-                    }, { threshold: 0.1 });
-                    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-                }
+                            obs.unobserve(target);
+                        }
+                    });
+                }, { threshold: 0.05 });
+                
+                revealElements.forEach(el => obs.observe(el));
+
+                // Final safety: Show all after 3s if still hidden
+                setTimeout(() => {
+                    revealElements.forEach(el => el.classList.add('visible'));
+                }, 3000);
             } catch (e) {
                 console.error(e);
                 document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Error loading project.</div>`;
