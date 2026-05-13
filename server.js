@@ -74,6 +74,8 @@ const ProjectSchema = new mongoose.Schema({
     coverImageY: { type: Number, default: 50 },
     images: [String], // Media Gallery Bulk Storage
     blocks: [BlockSchema],
+    cardBanner: String,
+    cardOverlay: { type: Boolean, default: false },
     order: { type: Number, default: 0 },
     status: { type: String, enum: ['draft', 'published'], default: 'draft' },
     createdAt: { type: Date, default: Date.now }
@@ -277,12 +279,30 @@ app.post('/api/projects', requireAuth, upload.single('coverImage'), async (req, 
             coverImageZoom: req.body.coverImageZoom || 1,
             coverImageX: req.body.coverImageX || 50,
             coverImageY: req.body.coverImageY || 50,
+            cardBanner: req.body.cardBanner || '',
+            cardOverlay: req.body.cardOverlay === 'true',
             blocks: []
         });
         await project.save();
         res.json(project);
     } catch (err) {
         res.status(500).json({ error: 'Could not save project' });
+    }
+});
+
+app.patch('/api/projects/:id', requireAuth, upload.single('cardBanner'), async (req, res) => {
+    try {
+        const updates = { ...req.body };
+        if (req.file) updates.cardBanner = req.file.path;
+        if (updates.categoryIds) {
+            updates.categoryIds = Array.isArray(updates.categoryIds) ? updates.categoryIds : [updates.categoryIds];
+        }
+        if (updates.cardOverlay !== undefined) updates.cardOverlay = updates.cardOverlay === 'true';
+
+        const project = await Project.findByIdAndUpdate(req.params.id, updates, { new: true });
+        res.json(project);
+    } catch (err) {
+        res.status(500).json({ error: 'Could not update project' });
     }
 });
 

@@ -55,15 +55,10 @@
             @apply flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.1em] text-[#666] hover:text-black transition-all duration-300;
         }
 
-        /* Motion Ready Class */
+        /* Removed Animations as requested */
         .reveal { 
-            opacity: 0; 
-            transform: translateY(20px); 
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .reveal.visible { 
             opacity: 1 !important; 
-            transform: translateY(0) !important; 
+            transform: none !important; 
         }
         /* Ensure media is visible even if JS fails */
         @media (prefers-reduced-motion: reduce) {
@@ -88,19 +83,23 @@
 
     <!-- Reusable Footer Area -->
     <div id="thank-you-section" class="hidden">
-        <section class="global-padding py-[12vw]">
-            <div class="bg-[#111] rounded-[48px] p-[8%] text-white thank-you-card flex flex-col md:flex-row items-center justify-between gap-12">
-                <div class="ty-text">
-                    <h2 class="text-[clamp(36px,5.5vw,72px)] font-bold mb-[2vw] leading-none font-heading tracking-tighter">Do you like what you see?</h2>
-                    <p class="text-white/60 text-[16px] mb-[3.5vw] max-w-2xl leading-relaxed">
+        <section class="global-padding py-[6vw]">
+            <div class="bg-[#111] rounded-[40px] p-[6%] text-white thank-you-card flex flex-col md:flex-row items-center justify-between gap-10 overflow-hidden relative" 
+                 style="background-image: var(--card-banner, none); background-size: cover; background-position: center;">
+                <!-- Banner Overlay if needed -->
+                <div class="absolute inset-0 bg-black/40 z-0" style="display: var(--card-overlay, none);"></div>
+                
+                <div class="ty-text relative z-10">
+                    <h2 class="text-[clamp(28px,4.2vw,54px)] font-bold mb-[1.5vw] leading-[1.1] font-heading tracking-tight">Do you like what you see?</h2>
+                    <p class="text-white/70 text-[15px] mb-[2.5vw] max-w-xl leading-relaxed font-light">
                         I'm currently available for new projects and collaborations. Let's create something extraordinary together.
                     </p>
                     <div class="flex flex-wrap gap-4 ty-buttons">
-                        <a href="/#contact" class="bg-white text-black px-10 py-4 rounded-full text-[14px] font-bold hover:scale-105 transition-transform">Let's Talk</a>
-                        <a href="/" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-4 rounded-full text-[14px] font-bold hover:bg-white/20 transition-all">More Projects</a>
+                        <a href="/#contact" class="bg-white text-black px-8 py-3.5 rounded-full text-[13px] font-bold hover:scale-105 transition-transform">Let's Talk</a>
+                        <a href="/" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3.5 rounded-full text-[13px] font-bold hover:bg-white/20 transition-all">More Projects</a>
                     </div>
                 </div>
-                <div class="ty-icons flex gap-5 md:flex-col">
+                <div class="ty-icons flex gap-5 md:flex-col relative z-10">
                     <a href="#" class="w-14 h-14 bg-white/5 border border-white/10 rounded-full flex items-center justify-center font-bold text-[18px] hover:bg-white hover:text-black transition-all">in</a>
                     <a href="#" class="w-14 h-14 bg-white/5 border border-white/10 rounded-full flex items-center justify-center font-bold text-[18px] hover:bg-white hover:text-black transition-all">Bē</a>
                 </div>
@@ -140,13 +139,32 @@
 
                 document.title = (project.title || 'Project') + ' | Yadhu Sidharthan';
                 const blocks = [...(project.blocks || [])].sort((a,b) => a.order - b.order);
-                const thankYouHTML = document.getElementById('thank-you-section')?.innerHTML || '';
+                const thankYouSection = document.getElementById('thank-you-section');
+                if (thankYouSection) {
+                    const card = thankYouSection.querySelector('.thank-you-card');
+                    const overlay = thankYouSection.querySelector('.bg-black/40');
+                    
+                    if (project.cardBanner) {
+                        card.style.setProperty('--card-banner', `url(${project.cardBanner})`);
+                    }
+                    if (project.cardOverlay) {
+                        card.style.setProperty('--card-overlay', 'block');
+                    }
+                }
+
+                const thankYouHTML = thankYouSection?.innerHTML || '';
                 
                 const contentHTML = `
-                    <div class="global-padding py-[10vw] reveal" id="hero-content">
-                        <span class="inline-block px-4 py-1.5 bg-black/5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 text-[#666]">${categoryNames}</span>
-                        <h1 class="text-[clamp(44px,7.5vw,110px)] font-bold leading-[0.85] tracking-tighter mb-10 font-heading max-w-5xl">${project.title || 'Untitled'}</h1>
-                        <p class="text-[#333] text-[clamp(18px,1.6vw,22px)] max-w-3xl leading-relaxed mb-12 font-light">${project.description || ''}</p>
+                    <div class="global-padding py-[6vw] reveal" id="hero-content">
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            ${project.categoryIds.map(c => `
+                                <span class="px-4 py-1.5 bg-black/5 rounded-full text-[10px] font-bold uppercase tracking-widest text-[#666]">
+                                    ${c.name}
+                                </span>
+                            `).join('')}
+                        </div>
+                        <h1 class="text-[clamp(24px,4vw,55px)] font-bold leading-[1.1] tracking-tight mb-8 font-heading max-w-5xl">${project.title || 'Untitled'}</h1>
+                        <p class="text-[#333] text-[clamp(16px,1.2vw,18px)] max-w-3xl leading-relaxed mb-10 font-light">${project.description || ''}</p>
                     </div>
                     
                     <div class="flex flex-col gap-0 global-padding">
@@ -172,28 +190,8 @@
 
                 document.getElementById('app').innerHTML = contentHTML;
 
-                // IntersectionObserver Trigger for Animations
-                const revealElements = document.querySelectorAll('.reveal');
-                const obs = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const target = entry.target;
-                            if (window.Motion && window.Motion.animate) {
-                                Motion.animate(target, { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, easing: "ease-out" });
-                            } else {
-                                target.classList.add('visible');
-                            }
-                            obs.unobserve(target);
-                        }
-                    });
-                }, { threshold: 0.05 });
-                
-                revealElements.forEach(el => obs.observe(el));
-
-                // Final safety: Show all after 3s if still hidden
-                setTimeout(() => {
-                    revealElements.forEach(el => el.classList.add('visible'));
-                }, 3000);
+                // Animations removed as requested. Reveal everything immediately.
+                document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
             } catch (e) {
                 console.error(e);
                 document.getElementById('app').innerHTML = `<div class="global-padding py-20 text-center">Error loading project.</div>`;

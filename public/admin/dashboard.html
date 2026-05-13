@@ -399,19 +399,33 @@
                         <input type="file" id="projImage" class="file-upload-input" accept="image/*" onchange="handleCoverUpload(this)">
                         <div class="file-upload-btn" id="uploadBtnText">Upload Project Cover</div>
                     </div>
-                    
                     <div class="cover-preview-wrapper" id="coverPreviewWrapper">
                         <div class="cover-preview-container" id="coverPreviewContainer" onmousedown="startCoverDrag(event)">
                             <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
                             <img id="coverPreviewImg" class="cover-preview-img" src="" alt="preview">
                         </div>
-                        
                         <div class="cover-controls" id="coverControls">
                             <div class="zoom-control">
                                 <div class="control-header"><span>Zoom Factor</span> <span class="val" id="zoomVal">1.0x</span></div>
                                 <input type="range" id="coverZoom" min="1" max="4" step="0.01" value="1" oninput="updateCoverStyle()">
                             </div>
                             <div style="font-size: 11px; color: var(--muted); margin-top: 5px;">Click & drag to reposition</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Bottom Card Banner (Optional)</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="projCardBanner" class="file-upload-input" accept="image/*">
+                            <div class="file-upload-btn">Upload Card Banner</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Card Overlay</label>
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--input-bg); border-radius:12px;">
+                            <input type="checkbox" id="projCardOverlay" style="width:20px; height:20px;">
+                            <span style="font-size:0.8rem; color:var(--muted);">Enable dark overlay on banner</span>
                         </div>
                     </div>
                 </div>
@@ -464,6 +478,37 @@
             <button class="modal-close" onclick="closeBlockModal()">×</button>
             <h3 id="modalProjectTitle">Project Content</h3>
             <p style="color:#a0a0ab;font-size:0.9rem;margin-bottom:1.5rem;">Add images and text blocks that will appear on the project detail page (Behance-style).</p>
+
+            <div style="background:var(--card); border:1px solid var(--border); border-radius:24px; padding:2rem; margin-bottom:2rem;">
+                <h4 style="margin-bottom:1rem;font-size:0.9rem;color:#a0a0ab;text-transform:uppercase;letter-spacing:1px;">Project Settings</h4>
+                <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1rem;">
+                    <div class="form-group">
+                        <label>Edit Title</label>
+                        <input type="text" id="modalProjTitleEdit">
+                    </div>
+                    <div class="form-group">
+                        <label>Edit Description</label>
+                        <input type="text" id="modalProjDescEdit">
+                    </div>
+                </div>
+                <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                    <div class="form-group">
+                        <label>Update Card Banner</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="modalProjCardBanner" class="file-upload-input" accept="image/*">
+                            <div class="file-upload-btn">Upload New Banner</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Card Overlay</label>
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--input-bg); border-radius:12px;">
+                            <input type="checkbox" id="modalProjCardOverlay" style="width:20px; height:20px;">
+                            <span style="font-size:0.8rem; color:var(--muted);">Enable dark overlay</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-sm" style="margin-top:1rem; background:var(--success); color:#000;" onclick="saveProjectSettings()">Update Project Settings</button>
+            </div>
 
             <div class="form-row" style="align-items:flex-start;">
                 <div style="flex:1;min-width:300px;">
@@ -889,6 +934,10 @@
                 fd.append('coverImageY', percY);
             }
 
+            const cardBannerFile = document.getElementById('projCardBanner').files[0];
+            if (cardBannerFile) fd.append('cardBanner', cardBannerFile);
+            fd.append('cardOverlay', document.getElementById('projCardOverlay').checked);
+
             const res = await fetch('/api/projects', { method: 'POST', body: fd });
             if (res.ok) {
                 document.getElementById('projTitle').value = '';
@@ -941,6 +990,11 @@
             const res = await fetch('/api/projects/' + currentProjectId);
             const project = await res.json();
             
+            // Populate Settings
+            document.getElementById('modalProjTitleEdit').value = project.title || '';
+            document.getElementById('modalProjDescEdit').value = project.description || '';
+            document.getElementById('modalProjCardOverlay').checked = !!project.cardOverlay;
+
             // Render Gallery
             const galleryArea = document.getElementById('existingGallery');
             if (project.images && project.images.length) {
@@ -951,7 +1005,7 @@
                     </div>
                 `).join('');
             } else {
-                galleryArea.innerHTML = '<p style="color:#555; font-size:11px; margin:0;">Gallery is empty</p>';
+                galleryArea.innerHTML = '<p style="color:#666; font-size:12px;">Gallery is empty.</p>';
             }
 
             const list = document.getElementById('blockList');
@@ -1000,6 +1054,36 @@
                     showToast('Blocks reordered!');
                 }
             });
+        }
+
+        async function saveProjectSettings() {
+            if (!currentProjectId) return;
+            const title = document.getElementById('modalProjTitleEdit').value.trim();
+            const description = document.getElementById('modalProjDescEdit').value.trim();
+            const cardBanner = document.getElementById('modalProjCardBanner').files[0];
+            const cardOverlay = document.getElementById('modalProjCardOverlay').checked;
+
+            const fd = new FormData();
+            fd.append('title', title);
+            fd.append('description', description);
+            if (cardBanner) fd.append('cardBanner', cardBanner);
+            fd.append('cardOverlay', cardOverlay);
+
+            try {
+                const res = await fetch('/api/projects/' + currentProjectId, {
+                    method: 'PATCH',
+                    body: fd
+                });
+                if (res.ok) {
+                    showToast('Project settings updated!');
+                    await loadProjects(); // Refresh main list
+                    await loadBlocks();   // Refresh modal
+                } else {
+                    showToast('Failed to update project', true);
+                }
+            } catch (err) {
+                showToast('Error saving settings', true);
+            }
         }
 
         async function addBlock(type) {
