@@ -152,22 +152,22 @@
                     <div class="flex flex-col gap-0 global-padding">
                         ${blocks.map(b => {
                             if (!b || (!b.content && b.type !== 'spacing' && b.type !== 'divider')) return '';
-                            const radiusClass = \`\${b.radiusTop ? 'rounded-t-[var(--radius-outer)]' : ''} \${b.radiusBottom ? 'rounded-b-[var(--radius-outer)]' : ''}\`;
+                            const radiusClass = (b.radiusTop ? 'rounded-t-[var(--radius-outer)]' : '') + ' ' + (b.radiusBottom ? 'rounded-b-[var(--radius-outer)]' : '');
                             const gapStyle = b.hasGap ? 'margin-top: 4vw; margin-bottom: 4vw;' : 'margin: 0;';
                             const content = b.content || '';
                             
-                            if (b.type === 'image') return \`<img src="\${content}" class="w-full \${radiusClass} object-cover reveal" style="\${gapStyle}">\`;
-                            if (b.type === 'video') return \`<video src="\${content}" class="w-full \${radiusClass} reveal" style="\${gapStyle}" autoplay loop muted playsinline></video>\`;
-                            if (b.type === 'spacing') return \`<div style="height: 4vw; min-height: 40px;"></div>\`;
-                            if (b.type === 'divider') return \`<div class="global-padding"><hr class="border-[#E5E5E5] w-full"></div>\`;
-                            return \`<div class="global-padding text-[clamp(16px,1.2vw,20px)] leading-[1.8] text-[#333] reveal" style="\${gapStyle}">\${content.replace(/\\n/g,'<br>')}</div>\`;
+                            if (b.type === 'image') return `<img src="${content}" class="w-full ${radiusClass} object-cover reveal" style="${gapStyle}">`;
+                            if (b.type === 'video') return `<video src="${content}" class="w-full ${radiusClass} reveal" style="${gapStyle}" autoplay loop muted playsinline></video>`;
+                            if (b.type === 'spacing') return `<div style="height: 4vw; min-height: 40px;"></div>`;
+                            if (b.type === 'divider') return `<div class="global-padding"><hr class="border-[#E5E5E5] w-full"></div>`;
+                            return `<div class="global-padding text-[clamp(16px,1.2vw,20px)] leading-[1.8] text-[#333] reveal" style="${gapStyle}">${content.replace(/\n/g,'<br>')}</div>`;
                         }).join('')}
                         
-                        \${(project.images || []).map(img => {
-                            return \`<div class="w-full py-4"><img src="\${img}" class="w-full rounded-[var(--radius-outer)] object-cover reveal" style="margin: 0;"></div>\`;
+                        ${(project.images || []).map(img => {
+                            return `<div class="w-full py-4"><img src="${img}" class="w-full rounded-[var(--radius-outer)] object-cover reveal" style="margin: 0;"></div>`;
                         }).join('')}
                     </div>
-                    \${thankYouHTML}
+                    ${thankYouHTML}
                 `;
 
                 document.getElementById('app').innerHTML = contentHTML;
