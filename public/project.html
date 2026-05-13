@@ -9,10 +9,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
         :root {
-            --global-padding-desktop: 11vw;
-            --global-padding-tablet: clamp(8vw, 9vw, 10vw);
-            --global-padding-mobile: 5.2vw;
-            --nav-height: 80px;
+            --global-padding-desktop: 12.1vw;
+            --global-padding-tablet: 0px;
+            --global-padding-mobile: 0px;
+            --nav-height: 64px;
 
             /* Parallel Radii */
             --radius-outer: 32px;
@@ -32,16 +32,19 @@
             padding-right: var(--global-padding-desktop);
         }
         
-        @media (max-width: 1279px) and (min-width: 768px) {
-            .global-padding {
-                padding-left: var(--global-padding-tablet);
-                padding-right: var(--global-padding-tablet);
+        @media (max-width: 1024px) {
+            :root {
+                --global-padding-desktop: 0px;
+                --global-padding-tablet: 0px;
+                --global-padding-mobile: 0px;
             }
-        }
-        @media (max-width: 767px) {
-            .global-padding {
-                padding-left: var(--global-padding-mobile);
-                padding-right: var(--global-padding-mobile);
+            .glass-nav {
+                padding-left: 6vw !important;
+                padding-right: 6vw !important;
+            }
+            .ty-card-section {
+                padding-left: 6vw !important;
+                padding-right: 6vw !important;
             }
         }
 
@@ -69,13 +72,13 @@
 <body>
 
     <header class="glass-nav global-padding">
-        <a href="/#projects" class="bg-[#111] text-white px-8 py-2.5 rounded-full text-[12px] font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg shadow-black/10">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Back to Projects
-        </a>
         <a href="/" class="text-[15px] font-extrabold tracking-tight flex items-center gap-2 hover:opacity-70 transition-opacity">
             <div class="w-6 h-6 bg-[#111] rounded-full"></div>
             yadsid.com
+        </a>
+        <a href="/#projects" class="bg-[#111] text-white px-7 py-2 rounded-full text-[12px] font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg shadow-black/10">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to Projects
         </a>
     </header>
 
@@ -83,7 +86,7 @@
 
     <!-- Reusable Footer Area -->
     <div id="thank-you-section" class="hidden">
-        <section class="global-padding py-[6vw]">
+        <section class="global-padding py-[6vw] ty-card-section">
             <div class="bg-[#111] rounded-[40px] p-[6%] text-white thank-you-card flex flex-col md:flex-row items-center justify-between gap-10 overflow-hidden relative" 
                  style="background-image: var(--card-banner, none); background-size: cover; background-position: center;">
                 <!-- Banner Overlay if needed -->
