@@ -75,7 +75,7 @@
             const descColor = 'text-white/50';
 
             return `
-            <a href="/project.html?id=${p.id}" class="bg-white h-[380px] rounded-[24px] overflow-hidden relative group cursor-pointer transition-all duration-500 block border border-black/5 hover:shadow-xl">
+            <a href="/project.html?id=${p.id}" class="bg-white h-[320px] rounded-[24px] overflow-hidden relative group cursor-pointer transition-all duration-500 block border border-black/5 hover:shadow-xl">
                 ${p.coverImage
                     ? `<img src="${p.coverImage}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105">`
                     : '<div class="absolute inset-0 bg-[#f8f8f8]"></div>'}
