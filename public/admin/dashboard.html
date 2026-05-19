@@ -223,8 +223,10 @@
         <div class="rail-item" onclick="showPage('projects', this)" title="Projects">
             <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
         </div>
-        <div class="rail-item" onclick="showPage('categories', this)" title="Categories">
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M7 7h10M7 12h10M7 17h10"/></svg>
+        <div class="rail-item" onclick="toggleWorkspaceView('stage')" title="Visual Editor">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
         </div>
         <div class="rail-item" style="margin-top:auto;" onclick="window.open('/', '_blank')" title="View Site">
             <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -247,7 +249,6 @@
                 <div class="title" id="workspace-title">Management Grid</div>
             </div>
             <div style="display:flex; gap:1rem;">
-                <button class="btn-primary" id="main-editor-toggle" onclick="toggleWorkspaceView('stage')">Enter Visual Editor</button>
             </div>
         </header>
 
@@ -268,20 +269,8 @@
                         </div>
                     </div>
                     
-                    <div class="form-card" style="background:rgba(59, 130, 246, 0.03); border-color:rgba(59, 130, 246, 0.1);">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <h3 style="margin-bottom:0.5rem;">Visual Stage Ready</h3>
-                                <p style="color:var(--muted); font-size:0.8rem;">You can now edit your homepage layout directly in the Visual Editor.</p>
-                            </div>
-                            <button class="btn-primary" style="background:var(--accent2); color:#fff;" onclick="toggleWorkspaceView('stage')">Launch Stage</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Categories Page -->
-                <div class="page" id="page-categories">
-                    <div class="form-card">
+                    <!-- Categories Management Section (Moved from page-categories) -->
+                    <div class="form-card" style="margin-top: 2rem;">
                         <h3>Manage Categories</h3>
                         <div class="form-group">
                             <label>New Category Name</label>
@@ -532,7 +521,7 @@
                 rail.style.display = 'none';
                 backBtn.style.display = 'block';
                 title.textContent = 'Visual Stage Editor';
-                mainToggle.style.display = 'none';
+                if (mainToggle) mainToggle.style.display = 'none';
                 
                 // Initialize Stage
                 const iframe = document.getElementById('visual-iframe');
@@ -545,7 +534,7 @@
                 rail.style.display = 'flex';
                 backBtn.style.display = 'none';
                 title.textContent = 'Management Grid';
-                mainToggle.style.display = 'block';
+                if (mainToggle) mainToggle.style.display = 'block';
             }
         }
 
@@ -560,8 +549,8 @@
             if (targetPage) targetPage.classList.add('active');
             if (el) el.classList.add('active');
             
+            if (name === 'overview') loadCategories();
             if (name === 'projects') loadProjects();
-            if (name === 'categories') loadCategories();
             updateStats();
             toggleWorkspaceView('management');
         }
