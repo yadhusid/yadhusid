@@ -31,9 +31,18 @@ app.use((req, res, next) => {
 let otps = {}; // Temp store for password reset OTPs
 
 // ─── MongoDB Connection ──────────────────────────────────────────────────────
+let isOfflineMode = false;
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('📦 Connected to MongoDB Atlas'))
-    .catch(err => console.error('❌ MongoDB Connection Error:', err));
+    .catch(err => {
+        console.error('❌ MongoDB Connection Error:', err);
+        console.log('⚠️ Network/DNS error detected. Falling back to Local Mock DB for development/sandbox preview.');
+        isOfflineMode = true;
+        const mock = require('./mock_db.js');
+        User = mock.User;
+        Category = mock.Category;
+        Project = mock.Project;
+    });
 
 // ─── Models ──────────────────────────────────────────────────────────────────
 const UserSchema = new mongoose.Schema({
@@ -41,7 +50,7 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true },
     recoveryEmail: { type: String, default: 'yadhusid@gmail.com' }
 });
-const User = mongoose.model('User', UserSchema);
+let User = mongoose.model('User', UserSchema);
 
 const CategorySchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -51,7 +60,7 @@ const CategorySchema = new mongoose.Schema({
 });
 CategorySchema.virtual('id').get(function(){ return this._id.toHexString(); });
 CategorySchema.set('toJSON', { virtuals: true });
-const Category = mongoose.model('Category', CategorySchema);
+let Category = mongoose.model('Category', CategorySchema);
 
 const BlockSchema = new mongoose.Schema({
     type: { type: String, enum: ['text', 'image', 'video', 'spacing', 'divider'], required: true },
@@ -84,7 +93,7 @@ const ProjectSchema = new mongoose.Schema({
 ProjectSchema.virtual('id').get(function(){ return this._id.toHexString(); });
 ProjectSchema.set('toJSON', { virtuals: true });
 ProjectSchema.set('toObject', { virtuals: true });
-const Project = mongoose.model('Project', ProjectSchema);
+let Project = mongoose.model('Project', ProjectSchema);
 
 // ─── Cloudinary & Multer ──────────────────────────────────────────────────────
 cloudinary.config({
@@ -451,6 +460,11 @@ app.delete('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, 
     }
 });
 
+// Upload media for CMS visual editing
+app.post('/api/upload-media', requireAuth, upload.single('file'), (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    res.json({ url: req.file.path });
+});
 
 // Update Project Status
 app.patch('/api/projects/:id/status', requireAuth, async (req, res) => {
@@ -533,7 +547,16 @@ app.put('/api/projects/reorder', requireAuth, async (req, res) => {
 
 // ─── Start Server ─────────────────────────────────────────────────────────────
 app.listen(PORT, async () => {
-    await ensureAdmin();
+    const checkConnection = setInterval(async () => {
+        if (mongoose.connection.readyState === 1 || isOfflineMode) {
+            clearInterval(checkConnection);
+            try {
+                await ensureAdmin();
+            } catch (err) {
+                console.error('Error during ensureAdmin:', err);
+            }
+        }
+    }, 500);
     console.log(`\n✅ Portfolio CMS running at http://localhost:${PORT}`);
     console.log(`🔐 Admin panel: http://localhost:${PORT}/admin/login.html`);
 });

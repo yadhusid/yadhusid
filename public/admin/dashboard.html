@@ -227,7 +227,7 @@
         <div class="rail-item" onclick="showPage('projects', this)" title="Projects">
             <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
         </div>
-        <div class="rail-item" onclick="toggleWorkspaceView('stage')" title="Visual Editor">
+        <div class="rail-item" onclick="showPage('editor', this)" title="Visual Editor">
             <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>
@@ -473,39 +473,31 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Stage View -->
-            <div id="stage-view" class="stage-view">
-                <!-- Layer Tree -->
-                <aside class="side-panel">
-                    <div class="panel-header"><h4>Layer Tree</h4></div>
-                    <div id="layer-tree-list">
-                        <div class="layer-item active" onclick="focusStageSection('hero')">Hero Section</div>
-                        <div class="layer-item" onclick="focusStageSection('expertise')">Core Skills</div>
-                        <div class="layer-item" onclick="focusStageSection('projects')">Projects Grid</div>
-                        <div class="layer-item" onclick="focusStageSection('contact')">Contact Area</div>
-                    </div>
-                </aside>
-
-                <!-- Center Stage -->
-                <div class="stage-container">
-                    <div class="freeze-badge">DEVELOPMENT FREEZE • STATIC CANVAS</div>
-                    <iframe id="visual-iframe" class="stage-iframe" src="about:blank"></iframe>
-                </div>
-
-                <!-- Inspector -->
-                <aside id="inspector-panel" class="inspector-panel">
-                    <div class="panel-header"><h4>Inspector</h4></div>
-                    <div id="properties-panel" style="flex:1; overflow-y:auto;">
-                        <div style="padding:3rem; text-align:center; color:var(--muted); font-size:0.7rem; font-weight:600;">
-                            Select an element on the stage to edit.
+                <!-- Visual Editor Page -->
+                <div class="page" id="page-editor" style="max-width: 100%; height: calc(100vh - 12rem);">
+                    <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; height: 100%;">
+                        <!-- Left Panel: Iframe -->
+                        <div style="position: relative; border-radius: 24px; border: 1px solid var(--border); overflow: hidden; background: #000; height: 100%;">
+                            <div class="freeze-badge" style="position: absolute; top: 1rem; left: 50%; transform: translateX(-50%); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); padding: 4px 12px; border-radius: 50px; font-size: 9px; font-weight: 800; color: var(--accent2); letter-spacing: 1px; backdrop-filter: blur(8px); z-index: 100; pointer-events: none;">DEVELOPMENT FREEZE • STATIC CANVAS</div>
+                            <iframe id="visual-iframe" src="about:blank" style="width: 100%; height: 100%; border: none;"></iframe>
+                        </div>
+                        
+                        <!-- Right Panel: Inspector -->
+                        <div class="form-card" style="display: flex; flex-direction: column; height: 100%; margin-bottom: 0; padding: 2rem; overflow: hidden;">
+                            <h3>Inspector</h3>
+                            <div id="properties-panel" style="flex: 1; overflow-y: auto; margin-bottom: 1.5rem; padding-right: 5px;">
+                                <div style="padding: 2rem; text-align: center; color: var(--muted); font-size: 0.8rem; font-weight: 600;">
+                                    Select an element on the stage to edit.
+                                </div>
+                            </div>
+                            <div style="padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.5rem;">
+                                <button class="btn-primary" id="publish-changes-btn" style="width: 100%;" onclick="publishChanges(event)">Publish Changes</button>
+                                <span style="font-size: 10px; color: var(--muted); text-align: center;">Changes are saved locally and go live on clicking Publish.</span>
+                            </div>
                         </div>
                     </div>
-                    <div style="padding:1.5rem; border-top:1px solid var(--border); background:#050505;">
-                        <button class="btn-primary" style="width:100%;" onclick="publishChanges(event)">Publish Changes</button>
-                    </div>
-                </aside>
+                </div>
             </div>
         </div>
     </main>
@@ -605,40 +597,6 @@
         }
 
         // ———— Workspace Navigation ————
-        function toggleWorkspaceView(mode) {
-            const mgmt = document.getElementById('management-view');
-            const stage = document.getElementById('stage-view');
-            const rail = document.querySelector('.sidebar-rail');
-            const backBtn = document.getElementById('back-btn-wrap');
-            const title = document.getElementById('workspace-title');
-            const mainToggle = document.getElementById('main-editor-toggle');
-            const viewSiteBtn = document.getElementById('top-bar-viewsite');
-
-            if (mode === 'stage') {
-                mgmt.classList.add('hidden');
-                stage.classList.add('active');
-                rail.style.display = 'none';
-                backBtn.style.display = 'block';
-                title.textContent = 'Visual Stage Editor';
-                if (mainToggle) mainToggle.style.display = 'none';
-                if (viewSiteBtn) viewSiteBtn.style.display = 'none';
-                
-                // Initialize Stage
-                const iframe = document.getElementById('visual-iframe');
-                if (iframe.src === 'about:blank') {
-                    iframe.src = '/?edit=true&embedded=true';
-                }
-            } else {
-                mgmt.classList.remove('hidden');
-                stage.classList.remove('active');
-                rail.style.display = 'flex';
-                backBtn.style.display = 'none';
-                title.textContent = 'Management Grid';
-                if (mainToggle) mainToggle.style.display = 'block';
-                if (viewSiteBtn) viewSiteBtn.style.display = 'flex';
-            }
-        }
-
         function showPage(name, el) {
             const pages = document.querySelectorAll('.page');
             const railItems = document.querySelectorAll('.rail-item');
@@ -650,11 +608,19 @@
             if (targetPage) targetPage.classList.add('active');
             if (el) el.classList.add('active');
             
-            if (name === 'overview') loadCategories();
-            if (name === 'projects') loadProjects();
-            if (name === 'settings') loadSettings();
+            const title = document.getElementById('workspace-title');
+            if (name === 'editor') {
+                if (title) title.textContent = 'Visual Stage Editor';
+                const iframe = document.getElementById('visual-iframe');
+                // Set the iframe URL dynamically
+                iframe.src = '/index.html?edit=true&embedded=true';
+            } else {
+                if (title) title.textContent = 'Management Grid';
+                if (name === 'overview') loadCategories();
+                if (name === 'projects') loadProjects();
+                if (name === 'settings') loadSettings();
+            }
             updateStats();
-            toggleWorkspaceView('management');
         }
 
         function focusStageSection(sectionId) {
@@ -1082,39 +1048,150 @@
                     body: JSON.stringify({ html: e.data.html })
                 });
                 if (res.ok) showToast('Published Successfully!');
-                const publishBtn = document.querySelector('.inspector-panel .btn-primary');
-                publishBtn.textContent = 'Publish Changes';
-                publishBtn.disabled = false;
+                const publishBtn = document.getElementById('publish-changes-btn');
+                if (publishBtn) {
+                    publishBtn.textContent = 'Publish Changes';
+                    publishBtn.disabled = false;
+                }
             }
         });
+
+        let currentSelectedData = null;
+        let originalContent = '';
+        let originalHref = '';
 
         function renderInspector(data) {
             const panel = document.getElementById('properties-panel');
             if (!data || data.type === 'global') {
-                panel.innerHTML = `<div style="padding:3rem; text-align:center; color:var(--muted); font-size:0.7rem;">Select element to edit.</div>`;
+                currentSelectedData = null;
+                panel.innerHTML = `<div style="padding:3rem; text-align:center; color:var(--muted); font-size:0.8rem; font-weight:600;">Select an element on the stage to edit.</div>`;
                 return;
             }
-            panel.innerHTML = `
-                <div style="padding:1.5rem;">
-                    <label>${data.tagName} Properties</label>
-                    ${data.type === 'text' ? `<textarea oninput="updateStageContent('${data.id}', this.value)">${data.content}</textarea>` : ''}
-                    ${data.tagName === 'A' ? `<input type="text" value="${data.href || ''}" oninput="updateStageLink('${data.id}', this.value)">` : ''}
-                    <div style="margin-top:1rem;">
-                        <label>Font Size</label>
-                        <input type="text" value="${data.style.fontSize}" onchange="updateStageStyle('${data.id}', 'fontSize', this.value)">
+            
+            currentSelectedData = data;
+            
+            if (data.type === 'banner') {
+                panel.innerHTML = `
+                    <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
+                        <div>
+                            <label>Selected Banner Container</label>
+                            <div style="width: 100%; height: 120px; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; position: relative;">
+                                ${data.bannerImage ? `<img src="${data.bannerImage}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Mesh Gradient Background</div>`}
+                            </div>
+                        </div>
+                        <div>
+                            <label>Upload Banner Image</label>
+                            <input type="file" id="inspectorBannerFile" accept="image/*" style="font-size: 0.85rem;">
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                            <button class="btn-primary" id="inspector-apply-banner-btn" onclick="applyBannerChanges()" style="flex: 1; padding: 0.8rem 1rem; font-size: 0.85rem;">Apply</button>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            } else {
+                originalContent = data.content;
+                originalHref = data.href || '';
+                
+                panel.innerHTML = `
+                    <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
+                        <div>
+                            <label>Selected Text Element (${data.tagName})</label>
+                            <textarea id="inspectorTextValue" style="width: 100%; min-height: 120px; font-size: 0.85rem; padding: 12px; background: var(--input-bg); border-radius: 12px; color: #fff; border: 1px solid var(--border); resize: vertical; overflow-y: auto;">${data.content}</textarea>
+                        </div>
+                        ${data.tagName === 'A' ? `
+                        <div>
+                            <label>Link Destination (URL / Email / Phone)</label>
+                            <input type="text" id="inspectorLinkValue" value="${data.href || ''}" style="width: 100%; font-size: 0.85rem; padding: 12px; background: var(--input-bg); border-radius: 12px; color: #fff; border: 1px solid var(--border);">
+                        </div>
+                        ` : ''}
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                            <button class="btn-primary" onclick="applyInspectorChanges()" style="flex: 1; padding: 0.8rem 1rem; font-size: 0.85rem;">Apply</button>
+                            <button class="btn-sm" onclick="undoInspectorChanges()" style="padding: 0.8rem 1.2rem; font-size: 0.85rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border);">Undo</button>
+                        </div>
+                    </div>
+                `;
+            }
         }
 
-        function updateStageContent(id, val) {
-            document.getElementById('visual-iframe').contentWindow.postMessage({ source: 'cms-dashboard', action: 'update-content', data: { id, val } }, '*');
+        function applyInspectorChanges() {
+            if (!currentSelectedData) return;
+            const newContent = document.getElementById('inspectorTextValue').value;
+            const linkInput = document.getElementById('inspectorLinkValue');
+            const newHref = linkInput ? linkInput.value : '';
+            
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({
+                source: 'cms-dashboard',
+                action: 'update-content',
+                id: currentSelectedData.id,
+                data: { val: newContent, href: newHref }
+            }, '*');
+            
+            originalContent = newContent;
+            originalHref = newHref;
+            showToast('Changes applied locally');
         }
-        function updateStageLink(id, val) {
-            document.getElementById('visual-iframe').contentWindow.postMessage({ source: 'cms-dashboard', action: 'update-link', data: { id, val } }, '*');
+
+        function undoInspectorChanges() {
+            if (!currentSelectedData) return;
+            
+            document.getElementById('inspectorTextValue').value = originalContent;
+            const linkInput = document.getElementById('inspectorLinkValue');
+            if (linkInput) linkInput.value = originalHref;
+            
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({
+                source: 'cms-dashboard',
+                action: 'update-content',
+                id: currentSelectedData.id,
+                data: { val: originalContent, href: originalHref }
+            }, '*');
+            
+            showToast('Reverted to last applied');
         }
-        function updateStageStyle(id, property, value) {
-            document.getElementById('visual-iframe').contentWindow.postMessage({ source: 'cms-dashboard', action: 'update-style', data: { id, property, value } }, '*');
+
+        async function applyBannerChanges() {
+            if (!currentSelectedData) return;
+            const fileInput = document.getElementById('inspectorBannerFile');
+            if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                alert('Please select an image file first.');
+                return;
+            }
+            
+            const btn = document.getElementById('inspector-apply-banner-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Uploading...';
+            btn.disabled = true;
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                
+                const res = await fetch('/api/upload-media', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!res.ok) throw new Error('Upload failed');
+                const result = await res.json();
+                
+                const iframe = document.getElementById('visual-iframe');
+                iframe.contentWindow.postMessage({
+                    source: 'cms-dashboard',
+                    action: 'update-banner',
+                    id: currentSelectedData.id,
+                    data: { val: result.url }
+                }, '*');
+                
+                showToast('Banner applied locally');
+                currentSelectedData.bannerImage = result.url;
+                renderInspector(currentSelectedData);
+            } catch (err) {
+                alert('Failed to upload banner: ' + err.message);
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
         }
 
         // ———— Reordering ————

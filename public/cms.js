@@ -15,56 +15,20 @@ class VisualCMS {
     init() {
         console.log("[CMS] Starting Engine...");
         document.body.classList.add('cms-enabled');
-        this.injectUI();
+        this.injectCSS();
         this.makeElementsEditable();
+        this.generateUniqueIds();
         this.bindEvents();
-        this.initCoreSkills();
-        this.initProjectCategories();
         
-        if (!window.Sortable) {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js';
-            script.onload = () => {
-                this.initCoreSkills();
-                this.initProjectCategories();
-            };
-            document.head.appendChild(script);
-        }
-
         window.parent.postMessage({ source: 'cms-engine', action: 'canvas-ready' }, '*');
     }
 
-    injectUI() {
-        const isEmbedded = window.location.href.includes('embedded=true');
-        if (!isEmbedded) {
-            // Full CMS UI (Floating controls if not inside iframe)
-            this.bottomToolbar = document.createElement('div');
-            this.bottomToolbar.className = 'cms-bottom-toolbar';
-            this.bottomToolbar.innerHTML = `
-                <div class="cms-toolbar-brand">YADHU CMS</div>
-                <button class="cms-save-btn">Publish Changes</button>
-            `;
-            document.body.appendChild(this.bottomToolbar);
-        }
-
-        this.floatingToolbar = document.createElement('div');
-        this.floatingToolbar.className = 'cms-floating-toolbar';
-        this.floatingToolbar.innerHTML = `
-            <button class="cms-format-btn" data-command="bold">B</button>
-            <button class="cms-format-btn" data-command="italic">I</button>
-            <button class="cms-format-btn" data-command="createLink">🔗</button>
-        `;
-        document.body.appendChild(this.floatingToolbar);
-
+    injectCSS() {
         const style = document.createElement('style');
         style.innerHTML = `
             .cms-hover { outline: 2px solid rgba(59, 130, 246, 0.4) !important; outline-offset: -2px !important; }
             .cms-selected { outline: 2px solid #3b82f6 !important; outline-offset: -2px !important; box-shadow: 0 0 0 1000px rgba(59, 130, 246, 0.05) !important; }
-            .editable:hover { cursor: pointer; }
-            .cms-floating-toolbar { position: absolute; background: #000; border: 1px solid rgba(255,255,255,0.1); padding: 5px; border-radius: 8px; display: none; z-index: 10000; }
-            .cms-floating-toolbar.active { display: flex; gap: 5px; }
-            .cms-format-btn { background: none; border: none; color: #fff; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
-            .cms-format-btn:hover { background: rgba(255,255,255,0.1); }
+            .editable:hover, .editable-banner:hover { cursor: pointer; }
         `;
         document.head.appendChild(style);
     }
@@ -72,8 +36,15 @@ class VisualCMS {
     makeElementsEditable() {
         const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span:not(.cms-format-btn), a.btn-invert, button:not([class*="cms-"])');
         textElements.forEach(el => {
+            if (el.closest('#project-categories') || el.closest('#projectsGrid')) {
+                return;
+            }
             el.classList.add('editable');
-            el.setAttribute('contenteditable', 'true');
+        });
+
+        const banners = document.querySelectorAll('#hero-banner-container, #contact-banner-container');
+        banners.forEach(b => {
+            b.classList.add('editable-banner');
         });
 
         const allLinks = document.querySelectorAll('a');
@@ -82,7 +53,6 @@ class VisualCMS {
                 const href = link.getAttribute('href');
                 if (href && !href.startsWith('#') && !href.includes('edit=true')) {
                     e.preventDefault();
-                    alert("Navigation disabled in editor.");
                 }
             });
         });
@@ -96,15 +66,24 @@ class VisualCMS {
                     const sec = document.getElementById(id);
                     if (sec) sec.scrollIntoView({ behavior: 'smooth' });
                 }
-                if (action === 'update-content' && el) el.innerHTML = data.val;
-                if (action === 'update-link' && el) el.setAttribute('href', data.val);
-                if (action === 'update-style' && el) el.style[data.property] = data.value;
+                if (action === 'update-content' && el) {
+                    el.innerHTML = data.val;
+                    if (data.href && el.tagName === 'A') {
+                        el.setAttribute('href', data.href);
+                    }
+                }
+                if (action === 'update-banner' && el) {
+                    const mediaLayer = el.querySelector('.media-layer');
+                    if (mediaLayer) {
+                        mediaLayer.innerHTML = `<img src="${data.val}" class="w-full h-full object-cover">`;
+                    }
+                }
                 if (action === 'get-html') {
                     const clone = document.documentElement.cloneNode(true);
-                    clone.querySelectorAll('.cms-sidebar, .cms-floating-toolbar, .cms-bottom-toolbar, script[src*="cms.js"], .editable').forEach(el => {
-                        el.classList.remove('editable');
+                    clone.querySelectorAll('.cms-sidebar, .cms-floating-toolbar, .cms-bottom-toolbar, script[src*="cms.js"], .editable, .cms-hover, .cms-selected, .editable-banner').forEach(el => {
+                        el.classList.remove('editable', 'cms-hover', 'cms-selected', 'editable-banner');
                         el.removeAttribute('contenteditable');
-                        if (el.tagName === 'SCRIPT' || el.classList.contains('cms-floating-toolbar')) el.remove();
+                        if (el.tagName === 'SCRIPT' && el.src.includes('cms.js')) el.remove();
                     });
                     window.parent.postMessage({ action: 'html-response', html: '<!DOCTYPE html>\n' + clone.outerHTML }, '*');
                 }
@@ -112,36 +91,46 @@ class VisualCMS {
         });
     }
 
-    bindEvents() {
-        document.addEventListener('mouseover', (e) => {
-            const el = e.target.closest('.editable');
-            if (el) el.classList.add('cms-hover');
-        });
-        document.addEventListener('mouseout', (e) => {
-            const el = e.target.closest('.editable');
-            if (el) el.classList.remove('cms-hover');
-        });
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.cms-floating-toolbar')) return;
-            document.querySelectorAll('.cms-selected').forEach(el => el.classList.remove('cms-selected'));
-            const editable = e.target.closest('.editable');
-            if (editable) {
-                this.selectedElement = editable;
-                this.selectedElement.classList.add('cms-selected');
-                this.positionFloatingToolbar(this.selectedElement);
-                this.notifyDashboard('text', this.selectedElement);
-            } else {
-                this.floatingToolbar.classList.remove('active');
-                this.notifyDashboard('global', null);
+    generateUniqueIds() {
+        const editables = document.querySelectorAll('.editable, .editable-banner');
+        editables.forEach((el, index) => {
+            if (!el.id) {
+                el.id = `cms-auto-${index}`;
             }
         });
     }
 
-    positionFloatingToolbar(el) {
-        const rect = el.getBoundingClientRect();
-        this.floatingToolbar.classList.add('active');
-        this.floatingToolbar.style.top = `${rect.top + window.scrollY - 40}px`;
-        this.floatingToolbar.style.left = `${rect.left + window.scrollX}px`;
+    bindEvents() {
+        document.addEventListener('mouseover', (e) => {
+            const el = e.target.closest('.editable') || e.target.closest('.editable-banner');
+            if (el) el.classList.add('cms-hover');
+        });
+        document.addEventListener('mouseout', (e) => {
+            const el = e.target.closest('.editable') || e.target.closest('.editable-banner');
+            if (el) el.classList.remove('cms-hover');
+        });
+        document.addEventListener('click', (e) => {
+            const editable = e.target.closest('.editable');
+            const banner = e.target.closest('.editable-banner');
+            
+            document.querySelectorAll('.cms-selected').forEach(el => el.classList.remove('cms-selected'));
+            
+            if (editable) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.selectedElement = editable;
+                this.selectedElement.classList.add('cms-selected');
+                this.notifyDashboard('text', this.selectedElement);
+            } else if (banner) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.selectedElement = banner;
+                this.selectedElement.classList.add('cms-selected');
+                this.notifyDashboard('banner', this.selectedElement);
+            } else {
+                this.notifyDashboard('global', null);
+            }
+        });
     }
 
     notifyDashboard(type, el) {
@@ -150,15 +139,16 @@ class VisualCMS {
             data.id = el.id;
             data.tagName = el.tagName;
             data.content = el.innerHTML;
+            if (type === 'banner') {
+                const img = el.querySelector('.media-layer img');
+                data.bannerImage = img ? img.src : '';
+            }
             const style = window.getComputedStyle(el);
             data.style = { fontSize: style.fontSize, borderRadius: style.borderRadius };
             if (el.tagName === 'A') data.href = el.getAttribute('href');
         }
         window.parent.postMessage({ source: 'cms-engine', action: 'element-selected', data: data }, '*');
     }
-
-    initCoreSkills() { /* logic if needed */ }
-    initProjectCategories() { /* logic if needed */ }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -852,23 +852,37 @@
         // Initialize Motion animations
         const { animate, scroll, inView } = Motion;
 
-        // Reveal sections on scroll
-        inView("section", ({ target }) => {
-            animate(target, { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, easing: "ease-out" });
-        });
-
-        // Hover effects for buttons
-        document.querySelectorAll("a, button").forEach(el => {
-            el.addEventListener("mouseenter", () => {
-                animate(el, { scale: 1.05 }, { duration: 0.2 });
+        const isEditMode = window.location.href.includes('edit=true');
+        if (!isEditMode) {
+            // Reveal sections on scroll
+            inView("section", ({ target }) => {
+                animate(target, { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, easing: "ease-out" });
             });
-            el.addEventListener("mouseleave", () => {
-                animate(el, { scale: 1 }, { duration: 0.2 });
-            });
-        });
 
-        // Specific hero animation
-        animate("#hero-banner-container", { scale: [0.95, 1], opacity: [0, 1] }, { duration: 1.2, easing: "ease-out" });
+            // Hover effects for buttons
+            document.querySelectorAll("a, button").forEach(el => {
+                el.addEventListener("mouseenter", () => {
+                    animate(el, { scale: 1.05 }, { duration: 0.2 });
+                });
+                el.addEventListener("mouseleave", () => {
+                    animate(el, { scale: 1 }, { duration: 0.2 });
+                });
+            });
+
+            // Specific hero animation
+            animate("#hero-banner-container", { scale: [0.95, 1], opacity: [0, 1] }, { duration: 1.2, easing: "ease-out" });
+        } else {
+            // Immediately reveal for stable editing
+            document.querySelectorAll('section').forEach(sec => {
+                sec.style.opacity = '1';
+                sec.style.transform = 'translateY(0)';
+            });
+            const heroBanner = document.getElementById('hero-banner-container');
+            if (heroBanner) {
+                heroBanner.style.opacity = '1';
+                heroBanner.style.transform = 'scale(1)';
+            }
+        }
     </script>
 
 
