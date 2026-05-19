@@ -185,6 +185,24 @@
         .compact-grid .item-row button {
             align-self: flex-end !important;
         }
+        .compact-grid .item-row > div:first-child {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.8rem !important;
+            width: 100% !important;
+        }
+        .compact-grid .item-row .item-thumb {
+            width: 100% !important;
+            height: 120px !important;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+        .compact-grid .item-row div[style*="display:flex; gap:0.5rem"] {
+            display: flex !important;
+            justify-content: flex-end !important;
+            width: 100% !important;
+            margin-top: auto;
+        }
         .compact-list {
             display: flex !important;
             flex-direction: column !important;
@@ -354,8 +372,18 @@
                         </div>
                     </div>
                     <div class="form-card">
-                        <h3>Project List</h3>
-                        <div id="projList"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                            <h3>Project List</h3>
+                            <div style="display:flex; gap:0.5rem;">
+                                <button class="btn-sm active" id="btn-proj-list" onclick="setProjectView('list')" title="List View" style="padding:0.4rem 0.6rem; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                                </button>
+                                <button class="btn-sm" id="btn-proj-grid" onclick="setProjectView('grid')" title="Grid View" style="padding:0.4rem 0.6rem; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="projList" class="compact-list"></div>
                     </div>
                 </div>
             </div>
@@ -687,7 +715,8 @@
                      ondragstart="handleProjDragStart(event, '${p.id}')" 
                      ondragover="handleProjDragOver(event)" 
                      ondragleave="handleProjDragLeave(event)"
-                     ondrop="handleProjDrop(event, '${p.id}')">
+                     ondrop="handleProjDrop(event, '${p.id}')"
+                     style="cursor: grab;">
                     <div style="display:flex; align-items:center; gap:1rem;">
                         ${p.coverImage ? `<img src="${p.coverImage}" class="item-thumb">` : `<div class="item-thumb" style="background:#222"></div>`}
                         <div>
@@ -863,10 +892,27 @@
 
         // ———— Reordering ————
         let draggedProjId = null;
-        function handleProjDragStart(e, id) { draggedProjId = id; }
-        function handleProjDragOver(e) { e.preventDefault(); }
-        function handleProjDragLeave(e) {}
-        function handleProjDrop(e, targetId) {
+        function handleProjDragStart(e, id) {
+            draggedProjId = id;
+            e.currentTarget.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        function handleProjDragOver(e) {
+            e.preventDefault();
+            const row = e.currentTarget;
+            if (row.classList.contains('dragging')) return;
+            row.style.border = '1px dashed var(--accent2)';
+        }
+        function handleProjDragLeave(e) {
+            const row = e.currentTarget;
+            row.style.border = '1px solid transparent';
+        }
+        async function handleProjDrop(e, targetId) {
+            e.preventDefault();
+            const row = e.currentTarget;
+            row.style.border = '1px solid transparent';
+            
+            if (draggedProjId === targetId) return;
             const projects = [...allProjects];
             const draggedIdx = projects.findIndex(p => p.id === draggedProjId);
             const targetIdx = projects.findIndex(p => p.id === targetId);
@@ -874,11 +920,37 @@
             projects.splice(targetIdx, 0, draggedItem);
             allProjects = projects;
             renderProjects();
-            fetch('/api/projects/reorder', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ projectIds: allProjects.map(p => p.id) })
-            });
+            
+            try {
+                const res = await fetch('/api/projects/reorder', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ projectIds: allProjects.map(p => p.id) })
+                });
+                if (res.ok) {
+                    showToast('Project order saved');
+                } else {
+                    showToast('Failed to save order', true);
+                }
+            } catch (err) {
+                showToast('Failed to save order', true);
+            }
+        }
+
+        // Project View Modes
+        let projectViewMode = 'list';
+        function setProjectView(view) {
+            projectViewMode = view;
+            const list = document.getElementById('projList');
+            if (view === 'grid') {
+                list.className = 'compact-grid';
+                document.getElementById('btn-proj-grid').classList.add('active');
+                document.getElementById('btn-proj-list').classList.remove('active');
+            } else {
+                list.className = 'compact-list';
+                document.getElementById('btn-proj-list').classList.add('active');
+                document.getElementById('btn-proj-grid').classList.remove('active');
+            }
         }
 
         // Category Reordering & View Modes
