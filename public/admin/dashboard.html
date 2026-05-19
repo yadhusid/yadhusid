@@ -1062,9 +1062,24 @@
 
         function renderInspector(data) {
             const panel = document.getElementById('properties-panel');
+            
+            // Common Insertion Toolbar
+            const insertionToolbar = `
+                <div style="display:flex; gap:0.5rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border);">
+                    <button class="btn-sm" onclick="insertElement('space')" style="flex:1; padding:0.5rem; font-size:0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border);" title="Add Spacing Below">+ Space</button>
+                    <button class="btn-sm" onclick="insertElement('line')" style="flex:1; padding:0.5rem; font-size:0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border);" title="Add Line Below">+ Line</button>
+                    <button class="btn-sm" onclick="insertElement('text')" style="flex:1; padding:0.5rem; font-size:0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border);" title="Add Text Below">+ Text</button>
+                </div>
+            `;
+            
             if (!data || data.type === 'global') {
                 currentSelectedData = null;
-                panel.innerHTML = `<div style="padding:3rem; text-align:center; color:var(--muted); font-size:0.8rem; font-weight:600;">Select an element on the stage to edit.</div>`;
+                panel.innerHTML = `
+                    <div style="padding:1rem;">
+                        ${insertionToolbar}
+                        <div style="padding:2rem 1rem; text-align:center; color:var(--muted); font-size:0.8rem; font-weight:600;">Select an element on the stage to edit.</div>
+                    </div>
+                `;
                 return;
             }
             
@@ -1073,6 +1088,7 @@
             if (data.type === 'banner') {
                 panel.innerHTML = `
                     <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
+                        ${insertionToolbar}
                         <div>
                             <label>Selected Banner Container</label>
                             <div style="width: 100%; height: 120px; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; position: relative;">
@@ -1088,12 +1104,28 @@
                         </div>
                     </div>
                 `;
+            } else if (data.type === 'hr') {
+                panel.innerHTML = `
+                    <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
+                        ${insertionToolbar}
+                        <div>
+                            <label>Selected Separator Line</label>
+                            <div style="width: 100%; height: 40px; border-radius: 12px; border: 1px dashed var(--border); background: var(--input-bg); display: flex; align-items: center; justify-content: center; margin-top:0.5rem;">
+                                <hr style="width:80%; border-color:#fff; opacity:0.2;">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                            <button class="btn-sm" onclick="deleteElement()" style="flex: 1; padding: 0.8rem 1rem; font-size: 0.85rem; background: rgba(255,65,108,0.1); border: 1px solid rgba(255,65,108,0.3); color:#FF416C;">Delete Line</button>
+                        </div>
+                    </div>
+                `;
             } else {
                 originalContent = data.content;
                 originalHref = data.href || '';
                 
                 panel.innerHTML = `
                     <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
+                        ${insertionToolbar}
                         <div>
                             <label>Selected Text Element (${data.tagName})</label>
                             <textarea id="inspectorTextValue" style="width: 100%; min-height: 120px; font-size: 0.85rem; padding: 12px; background: var(--input-bg); border-radius: 12px; color: #fff; border: 1px solid var(--border); resize: vertical; overflow-y: auto;">${data.content}</textarea>
@@ -1104,6 +1136,10 @@
                             <input type="text" id="inspectorLinkValue" value="${data.href || ''}" style="width: 100%; font-size: 0.85rem; padding: 12px; background: var(--input-bg); border-radius: 12px; color: #fff; border: 1px solid var(--border);">
                         </div>
                         ` : ''}
+                        <div>
+                            <label>Font Size</label>
+                            <input type="text" id="inspectorFontSize" value="${data.style.fontSize || ''}" onchange="updateStageStyle('fontSize', this.value)" style="width: 100%; font-size: 0.85rem; padding: 12px; background: var(--input-bg); border-radius: 12px; color: #fff; border: 1px solid var(--border); margin-top:0.3rem;">
+                        </div>
                         <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
                             <button class="btn-primary" onclick="applyInspectorChanges()" style="flex: 1; padding: 0.8rem 1rem; font-size: 0.85rem;">Apply</button>
                             <button class="btn-sm" onclick="undoInspectorChanges()" style="padding: 0.8rem 1.2rem; font-size: 0.85rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border);">Undo</button>
@@ -1111,6 +1147,40 @@
                     </div>
                 `;
             }
+        }
+
+        function insertElement(type) {
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({
+                source: 'cms-dashboard',
+                action: 'insert-element',
+                id: currentSelectedData ? currentSelectedData.id : null,
+                data: { elementType: type }
+            }, '*');
+            showToast('Element inserted below selection');
+        }
+
+        function deleteElement() {
+            if (!currentSelectedData) return;
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({
+                source: 'cms-dashboard',
+                action: 'delete-element',
+                id: currentSelectedData.id
+            }, '*');
+            showToast('Element removed');
+            renderInspector(null);
+        }
+
+        function updateStageStyle(property, value) {
+            if (!currentSelectedData) return;
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({
+                source: 'cms-dashboard',
+                action: 'update-style',
+                id: currentSelectedData.id,
+                data: { property, value }
+            }, '*');
         }
 
         function applyInspectorChanges() {

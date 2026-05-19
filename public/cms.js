@@ -34,7 +34,7 @@ class VisualCMS {
     }
 
     makeElementsEditable() {
-        const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span:not(.cms-format-btn), a.btn-invert, button:not([class*="cms-"])');
+        const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span:not(.cms-format-btn), a.btn-invert, button:not([class*="cms-"]), hr');
         textElements.forEach(el => {
             if (el.closest('#project-categories') || el.closest('#projectsGrid')) {
                 return;
@@ -66,22 +66,73 @@ class VisualCMS {
                     const sec = document.getElementById(id);
                     if (sec) sec.scrollIntoView({ behavior: 'smooth' });
                 }
+                
                 if (action === 'update-content' && el) {
                     el.innerHTML = data.val;
                     if (data.href && el.tagName === 'A') {
                         el.setAttribute('href', data.href);
                     }
+                    
+                    // Synchronization Logic for Navigation Menu
+                    if (el.tagName === 'H2') {
+                        if (el.closest('#expertise')) {
+                            const navLink = document.querySelector('a.nav-scroll[href="#expertise"]');
+                            if (navLink) navLink.innerHTML = data.val;
+                        } else if (el.closest('#projects')) {
+                            const navLink = document.querySelector('a.nav-scroll[href="#projects"]');
+                            if (navLink) navLink.innerHTML = data.val;
+                        }
+                    }
                 }
+                
+                if (action === 'update-style' && el && data.property) {
+                    el.style[data.property] = data.value;
+                }
+                
                 if (action === 'update-banner' && el) {
                     const mediaLayer = el.querySelector('.media-layer');
                     if (mediaLayer) {
                         mediaLayer.innerHTML = `<img src="${data.val}" class="w-full h-full object-cover">`;
                     }
                 }
+                
+                if (action === 'insert-element') {
+                    const targetEl = el || this.selectedElement;
+                    if (!targetEl) {
+                        alert('Please select an element first to insert below it.');
+                        return;
+                    }
+                    
+                    let newHtml = '';
+                    if (data.elementType === 'space') {
+                        newHtml = `<div style="height: 50px;" class="editable cms-inserted"></div>`;
+                    } else if (data.elementType === 'line') {
+                        newHtml = `<hr class="border-[#E5E5E5] editable cms-inserted" style="margin: 24px 0;">`;
+                    } else if (data.elementType === 'text') {
+                        newHtml = `<p class="text-[clamp(14px,1vw,16px)] text-[#666] leading-[1.6] editable cms-inserted">New Text Block</p>`;
+                    }
+                    
+                    if (newHtml) {
+                        targetEl.insertAdjacentHTML('afterend', newHtml);
+                        const newlyInserted = targetEl.nextElementSibling;
+                        if (newlyInserted) {
+                            newlyInserted.id = `cms-auto-new-${Date.now()}`;
+                        }
+                    }
+                }
+                
+                if (action === 'delete-element' && el) {
+                    if (this.selectedElement === el) {
+                        this.selectedElement = null;
+                        this.notifyDashboard('global', null);
+                    }
+                    el.remove();
+                }
+                
                 if (action === 'get-html') {
                     const clone = document.documentElement.cloneNode(true);
-                    clone.querySelectorAll('.cms-sidebar, .cms-floating-toolbar, .cms-bottom-toolbar, script[src*="cms.js"], .editable, .cms-hover, .cms-selected, .editable-banner').forEach(el => {
-                        el.classList.remove('editable', 'cms-hover', 'cms-selected', 'editable-banner');
+                    clone.querySelectorAll('.cms-sidebar, .cms-floating-toolbar, .cms-bottom-toolbar, script[src*="cms.js"], .editable, .cms-hover, .cms-selected, .editable-banner, .cms-inserted').forEach(el => {
+                        el.classList.remove('editable', 'cms-hover', 'cms-selected', 'editable-banner', 'cms-inserted');
                         el.removeAttribute('contenteditable');
                         if (el.tagName === 'SCRIPT' && el.src.includes('cms.js')) el.remove();
                     });
@@ -120,7 +171,8 @@ class VisualCMS {
                 e.stopPropagation();
                 this.selectedElement = editable;
                 this.selectedElement.classList.add('cms-selected');
-                this.notifyDashboard('text', this.selectedElement);
+                const type = editable.tagName === 'HR' ? 'hr' : 'text';
+                this.notifyDashboard(type, this.selectedElement);
             } else if (banner) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -148,6 +200,7 @@ class VisualCMS {
             if (el.tagName === 'A') data.href = el.getAttribute('href');
         }
         window.parent.postMessage({ source: 'cms-engine', action: 'element-selected', data: data }, '*');
+
     }
 }
 
