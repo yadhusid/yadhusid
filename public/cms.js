@@ -20,6 +20,8 @@ class VisualCMS {
         this.makeElementsEditable();
         this.generateUniqueIds();
         this.bindEvents();
+        this.bindGlobalEvents();
+        this.bindMessageListener();
         
         window.parent.postMessage({ source: 'cms-engine', action: 'canvas-ready' }, '*');
     }
@@ -70,7 +72,9 @@ class VisualCMS {
                 }
             });
         });
+    }
 
+    bindMessageListener() {
         window.addEventListener('message', (e) => {
             if (e.data.source === 'cms-dashboard') {
                 const { action, data, id } = e.data;
@@ -243,7 +247,9 @@ class VisualCMS {
         document.querySelectorAll('.editable, .editable-banner').forEach(el => {
             this.bindDragEvents(el);
         });
+    }
 
+    bindGlobalEvents() {
         document.addEventListener('mouseover', (e) => {
             const el = e.target.closest('.editable') || e.target.closest('.editable-banner');
             if (el) el.classList.add('cms-hover');
