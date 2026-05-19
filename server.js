@@ -203,6 +203,33 @@ app.post('/api/change-password', requireAuth, async (req, res) => {
     }
 });
 
+// User settings data
+app.get('/api/user-settings', requireAuth, async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.session.username }).select('-password');
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Update recovery email
+app.post('/api/update-recovery-email', requireAuth, async (req, res) => {
+    const { recoveryEmail } = req.body;
+    if (!recoveryEmail) return res.status(400).json({ error: 'Recovery email is required' });
+    try {
+        const user = await User.findOne({ username: req.session.username });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        
+        user.recoveryEmail = recoveryEmail;
+        await user.save();
+        res.json({ success: true, message: 'Recovery email updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // ─── Category Routes ──────────────────────────────────────────────────────────
 app.get('/api/categories', async (req, res) => {
     try {
