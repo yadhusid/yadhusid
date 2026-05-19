@@ -348,50 +348,35 @@
                                 </div>
                             </div>
                             
-                            <div style="background:rgba(0,0,0,0.2); padding:2rem; border-radius:var(--radius-outer); border:1px solid var(--border); display:flex; flex-direction:column; justify-content:space-between;">
-                                <div>
-                                    <label style="text-align:center; display:block; margin-bottom:1.5rem;">Card Preview & Cover Upload</label>
-                                    
-                                    <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-bottom: 2rem;">
-                                        <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0;">
-                                            <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
-                                            <img id="coverPreviewImg" class="preview-img" src="" style="display:none;">
-                                            <div class="card-overlay-sim">
-                                                <div class="cat" id="previewCat">CATEGORY</div>
-                                                <div class="title" id="previewTitle">Project Title</div>
+                            <div style="background:rgba(0,0,0,0.2); padding:2rem; border-radius:var(--radius-outer); border:1px solid var(--border); height: fit-content;">
+                                <h3>Cover Thumbnail</h3>
+                                
+                                <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+                                    <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 304px; height: 334px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
+                                        <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
+                                        <img id="coverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+                                        <div class="card-overlay-sim">
+                                            <div class="cat" id="previewCat">CATEGORY</div>
+                                            <div class="title" id="previewTitle">Project Title</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.8rem; flex: 1; min-width: 200px;">
+                                        <input type="file" id="projImage" onchange="handleCoverUpload(this)" style="display: none;">
+                                        <button class="btn-sm" onclick="document.getElementById('projImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                            Upload Cover
+                                        </button>
+                                        
+                                        <!-- Zoom Slider -->
+                                        <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 4px;">
+                                            <label style="font-size: 9px; color: var(--muted); font-weight: 800; text-transform: uppercase;">Zoom Level</label>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="range" id="coverZoomSlider" min="1" max="3" step="0.05" value="1" oninput="updateCoverTransform()" style="width: 100%; accent-color: white;">
+                                                <span id="coverZoomVal" style="font-size: 10px; color: var(--muted); min-width: 24px;">1.0x</span>
                                             </div>
                                         </div>
-                                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-                                            <input type="file" id="projImage" onchange="handleCoverUpload(this)" style="display: none;">
-                                            <button class="btn-sm" onclick="document.getElementById('projImage').click()" style="display: flex; align-items: center; gap: 8px;">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                                                Upload Cover
-                                            </button>
-                                            <span style="font-size: 10px; color: var(--muted); line-height: 1.4;">Ratio used for project list on homepage. Drag to reposition cover.</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Banner Simulation -->
-                                <div style="border-top: 1px solid var(--border); padding-top: 2rem; margin-top: auto;">
-                                    <label style="text-align:center; display:block; margin-bottom:1.5rem; font-size:10px; color:var(--muted); font-weight:800;">BOTTOM PAGE BANNER & OVERLAY</label>
-                                    
-                                    <div class="form-row" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
-                                        <div class="file-upload-wrapper">
-                                            <input type="file" id="projCardBanner" class="file-upload-input" accept="image/*" onchange="handleBannerPreview(this)" style="display: none;">
-                                            <div class="btn-sm" style="text-align:center;" onclick="document.getElementById('projCardBanner').click()">Upload Banner</div>
-                                        </div>
-                                        <div style="display:flex; align-items:center; gap:8px; padding:0.8rem; background:var(--input-bg); border-radius:12px; border: 1px solid var(--border);">
-                                            <input type="checkbox" id="projCardOverlay" style="width:16px; height:16px; accent-color: white;" onchange="updateBannerOverlay()">
-                                            <span style="font-size:10px; color:var(--muted); font-weight: 800;">DARK OVERLAY</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="banner-preview-box">
-                                        <img id="bannerPreviewImg" src="" style="display:none; width:100%; height:100%; object-fit:cover;">
-                                        <div class="banner-overlay-sim" id="bannerOverlay">
-                                            <div class="banner-text-sim">Next Project: <span id="bannerProjTitle">Title</span></div>
-                                        </div>
+                                        
+                                        <span style="font-size: 10px; color: var(--muted); line-height: 1.4;">Drag the image inside the preview container to reposition it.</span>
                                     </div>
                                 </div>
                             </div>
@@ -895,12 +880,68 @@
             });
         }
 
+        let isDraggingCover = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let coverImageX = 50; // percentage (0 - 100)
+        let coverImageY = 50; // percentage (0 - 100)
+
+        function startCoverDrag(e) {
+            const img = document.getElementById('coverPreviewImg');
+            if (img.style.display === 'none') return;
+            
+            isDraggingCover = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            
+            document.getElementById('coverPreviewContainer').style.cursor = 'grabbing';
+            
+            document.addEventListener('mousemove', dragCover);
+            document.addEventListener('mouseup', stopCoverDrag);
+            e.preventDefault();
+        }
+
+        function dragCover(e) {
+            if (!isDraggingCover) return;
+            
+            const dx = e.clientX - lastMouseX;
+            const dy = e.clientY - lastMouseY;
+            
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            
+            const zoom = parseFloat(document.getElementById('coverZoomSlider').value) || 1;
+            const sensitivity = 0.3 / zoom;
+            
+            coverImageX = Math.max(0, Math.min(100, coverImageX - dx * sensitivity));
+            coverImageY = Math.max(0, Math.min(100, coverImageY - dy * sensitivity));
+            
+            updateCoverTransform();
+        }
+
+        function stopCoverDrag() {
+            isDraggingCover = false;
+            document.getElementById('coverPreviewContainer').style.cursor = 'grab';
+            document.removeEventListener('mousemove', dragCover);
+            document.removeEventListener('mouseup', stopCoverDrag);
+        }
+
+        function updateCoverTransform() {
+            const img = document.getElementById('coverPreviewImg');
+            const slider = document.getElementById('coverZoomSlider');
+            const zoomVal = document.getElementById('coverZoomVal');
+            
+            const zoom = parseFloat(slider.value) || 1;
+            zoomVal.textContent = zoom.toFixed(1) + 'x';
+            
+            img.style.objectPosition = `${coverImageX}% ${coverImageY}%`;
+            img.style.transform = `scale(${zoom})`;
+        }
+
         async function addProject(status = 'draft') {
             const title = document.getElementById('projTitle').value.trim();
             const categoryIds = selectedProjCategories.map(c => c.id);
             const coverFile = document.getElementById('projImage').files[0];
-            const bannerFile = document.getElementById('projCardBanner').files[0];
-            const overlay = document.getElementById('projCardOverlay').checked;
 
             if (!title) {
                 showToast('Please enter a project title', true);
@@ -915,8 +956,12 @@
             fd.append('title', title);
             categoryIds.forEach(id => fd.append('categoryIds', id));
             if (coverFile) fd.append('coverImage', coverFile);
-            if (bannerFile) fd.append('cardBanner', bannerFile);
-            fd.append('cardOverlay', overlay);
+            
+            // Repositioning & Zoom parameters
+            fd.append('coverImageZoom', document.getElementById('coverZoomSlider').value);
+            fd.append('coverImageX', coverImageX);
+            fd.append('coverImageY', coverImageY);
+            
             fd.append('status', status);
 
             selectedGalleryFiles.forEach(file => {
@@ -932,13 +977,6 @@
                 selectedGalleryFiles = [];
                 renderGalleryThumbnails();
                 removeCover();
-                
-                // Reset banner preview
-                document.getElementById('projCardBanner').value = '';
-                const bannerImg = document.getElementById('bannerPreviewImg');
-                bannerImg.style.display = 'none';
-                bannerImg.src = '';
-                
                 loadProjects();
             } else {
                 const errData = await res.json();
@@ -1000,7 +1038,6 @@
         function updatePreviewText() {
             const title = document.getElementById('projTitle').value || 'Project Title';
             document.getElementById('previewTitle').textContent = title;
-            document.getElementById('bannerProjTitle').textContent = title;
         }
 
         function handleCoverUpload(input) {
@@ -1011,29 +1048,23 @@
                 const img = document.getElementById('coverPreviewImg');
                 img.src = e.target.result;
                 img.style.display = 'block';
+                coverImageX = 50;
+                coverImageY = 50;
+                document.getElementById('coverZoomSlider').value = 1;
+                updateCoverTransform();
             };
             reader.readAsDataURL(file);
         }
 
         function removeCover() {
             document.getElementById('projImage').value = '';
-            document.getElementById('coverPreviewImg').style.display = 'none';
-        }
-
-        function handleBannerPreview(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('bannerPreviewImg').src = e.target.result;
-                document.getElementById('bannerPreviewImg').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function updateBannerOverlay() {
-            const active = document.getElementById('projCardOverlay').checked;
-            document.getElementById('bannerOverlay').classList.toggle('active', active);
+            const img = document.getElementById('coverPreviewImg');
+            img.style.display = 'none';
+            img.src = '';
+            coverImageX = 50;
+            coverImageY = 50;
+            document.getElementById('coverZoomSlider').value = 1;
+            updateCoverTransform();
         }
 
         // ———— CMS Handshake ————
