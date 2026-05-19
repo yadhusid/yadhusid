@@ -228,8 +228,11 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>
         </div>
-        <div class="rail-item" style="margin-top:auto;" onclick="window.open('/', '_blank')" title="View Site">
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        <div class="rail-item" style="margin-top:auto;" onclick="showPage('settings', this)" title="Settings">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
         </div>
         <div class="rail-item" onclick="logout()" title="Logout">
             <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
@@ -248,7 +251,11 @@
                 </div>
                 <div class="title" id="workspace-title">Management Grid</div>
             </div>
-            <div style="display:flex; gap:1rem;">
+            <div style="display:flex; gap:1rem; align-items:center;">
+                <button class="btn-primary" id="top-bar-viewsite" onclick="window.open('/', '_blank')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#fff; display:flex; align-items:center; gap:8px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    View Site
+                </button>
             </div>
         </header>
 
@@ -373,6 +380,47 @@
                             </div>
                         </div>
                         <div id="projList" class="compact-list"></div>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div class="page" id="page-settings">
+                    <div class="form-card">
+                        <h3>Reset / Update Password</h3>
+                        <div class="form-group" style="margin-bottom:1.5rem;">
+                            <label>Current Password</label>
+                            <input type="password" id="settingsCurrentPass" placeholder="Enter current password...">
+                        </div>
+                        <div class="form-group" style="margin-bottom:1.5rem;">
+                            <label>New Password</label>
+                            <input type="password" id="settingsNewPass" placeholder="Enter new password...">
+                        </div>
+                        <div class="form-group" style="margin-bottom:1.5rem;">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="settingsConfirmPass" placeholder="Confirm new password...">
+                        </div>
+                        <button class="btn-primary" onclick="updatePassword()" style="width:100%;">Update Password</button>
+                    </div>
+
+                    <div class="form-card">
+                        <h3>Security System</h3>
+                        <div style="display:flex; flex-direction:column; gap:1.2rem; margin-top:0.5rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid var(--border);">
+                                <div>
+                                    <div style="font-weight:600; font-size:0.9rem;">Email Authentication</div>
+                                    <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Require OTP confirmation code sent to recovery email for sensitive changes.</div>
+                                </div>
+                                <input type="checkbox" id="settingsEmailAuth" checked style="width:20px; height:20px; accent-color:white;">
+                            </div>
+                            
+                            <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid var(--border);">
+                                <div>
+                                    <div style="font-weight:600; font-size:0.9rem;">Automatic Session Timeout</div>
+                                    <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Automatically log out after 24 hours of inactivity.</div>
+                                </div>
+                                <input type="checkbox" id="settingsSessionTimeout" checked style="width:20px; height:20px; accent-color:white;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -514,6 +562,7 @@
             const backBtn = document.getElementById('back-btn-wrap');
             const title = document.getElementById('workspace-title');
             const mainToggle = document.getElementById('main-editor-toggle');
+            const viewSiteBtn = document.getElementById('top-bar-viewsite');
 
             if (mode === 'stage') {
                 mgmt.classList.add('hidden');
@@ -522,6 +571,7 @@
                 backBtn.style.display = 'block';
                 title.textContent = 'Visual Stage Editor';
                 if (mainToggle) mainToggle.style.display = 'none';
+                if (viewSiteBtn) viewSiteBtn.style.display = 'none';
                 
                 // Initialize Stage
                 const iframe = document.getElementById('visual-iframe');
@@ -535,6 +585,7 @@
                 backBtn.style.display = 'none';
                 title.textContent = 'Management Grid';
                 if (mainToggle) mainToggle.style.display = 'block';
+                if (viewSiteBtn) viewSiteBtn.style.display = 'flex';
             }
         }
 
@@ -1009,6 +1060,41 @@
                 }
             } catch (err) {
                 showToast('Failed to save order', true);
+            }
+        }
+
+        async function updatePassword() {
+            const currentPassword = document.getElementById('settingsCurrentPass').value;
+            const newPassword = document.getElementById('settingsNewPass').value;
+            const confirmPassword = document.getElementById('settingsConfirmPass').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showToast('Please fill all password fields', true);
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showToast('Passwords do not match', true);
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast('Password updated successfully');
+                    document.getElementById('settingsCurrentPass').value = '';
+                    document.getElementById('settingsNewPass').value = '';
+                    document.getElementById('settingsConfirmPass').value = '';
+                } else {
+                    showToast(data.error || 'Failed to update password', true);
+                }
+            } catch (err) {
+                showToast('Failed to update password', true);
             }
         }
     </script>
