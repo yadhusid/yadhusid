@@ -1119,6 +1119,21 @@
                         </div>
                     </div>
                 `;
+            } else if (data.type === 'space') {
+                panel.innerHTML = `
+                    <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
+                        ${insertionToolbar}
+                        <div>
+                            <label>Selected Spacing Block</label>
+                            <div style="width: 100%; height: 60px; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.2); background: rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: center; margin-top:0.5rem;">
+                                <span style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Blank Space</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                            <button class="btn-sm" onclick="deleteElement()" style="flex: 1; padding: 0.8rem 1rem; font-size: 0.85rem; background: rgba(255,65,108,0.1); border: 1px solid rgba(255,65,108,0.3); color:#FF416C;">Delete Space</button>
+                        </div>
+                    </div>
+                `;
             } else {
                 originalContent = data.content;
                 originalHref = data.href || '';
@@ -1127,8 +1142,11 @@
                     <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
                         ${insertionToolbar}
                         <div>
-                            <label>Selected Text Element (${data.tagName})</label>
-                            <textarea id="inspectorTextValue" style="width: 100%; min-height: 120px; font-size: 0.85rem; padding: 12px; background: var(--input-bg); border-radius: 12px; color: #fff; border: 1px solid var(--border); resize: vertical; overflow-y: auto;">${data.content}</textarea>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <label>Selected Text Element (${data.tagName})</label>
+                                <button onclick="deleteElement()" style="background:none; border:none; color:#FF416C; font-size:0.75rem; font-weight:600; cursor:pointer;">Delete Text</button>
+                            </div>
+                            <textarea id="inspectorTextValue" oninput="updateStageContentLive(this.value)" style="width: 100%; min-height: 120px; font-size: 0.85rem; padding: 12px; background: var(--input-bg); border-radius: 12px; color: #fff; border: 1px solid var(--border); resize: vertical; overflow-y: auto;">${data.content}</textarea>
                         </div>
                         ${data.tagName === 'A' ? `
                         <div>
@@ -1183,19 +1201,24 @@
             }, '*');
         }
 
-        function applyInspectorChanges() {
+        function updateStageContentLive(newContent) {
             if (!currentSelectedData) return;
-            const newContent = document.getElementById('inspectorTextValue').value;
+            const iframe = document.getElementById('visual-iframe');
             const linkInput = document.getElementById('inspectorLinkValue');
             const newHref = linkInput ? linkInput.value : '';
-            
-            const iframe = document.getElementById('visual-iframe');
             iframe.contentWindow.postMessage({
                 source: 'cms-dashboard',
                 action: 'update-content',
                 id: currentSelectedData.id,
                 data: { val: newContent, href: newHref }
             }, '*');
+        }
+
+        function applyInspectorChanges() {
+            if (!currentSelectedData) return;
+            const newContent = document.getElementById('inspectorTextValue').value;
+            const linkInput = document.getElementById('inspectorLinkValue');
+            const newHref = linkInput ? linkInput.value : '';
             
             originalContent = newContent;
             originalHref = newHref;

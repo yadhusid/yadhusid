@@ -29,22 +29,27 @@ class VisualCMS {
             .cms-hover { outline: 2px solid rgba(59, 130, 246, 0.4) !important; outline-offset: -2px !important; }
             .cms-selected { outline: 2px solid #3b82f6 !important; outline-offset: -2px !important; box-shadow: 0 0 0 1000px rgba(59, 130, 246, 0.05) !important; }
             .editable:hover, .editable-banner:hover { cursor: pointer; }
+            hr.editable { padding: 20px 0; margin-top: -20px; background-clip: content-box; cursor: pointer; }
+            .cms-drag-over-top { border-top: 4px solid #3b82f6 !important; }
+            .cms-drag-over-bottom { border-bottom: 4px solid #3b82f6 !important; }
         `;
         document.head.appendChild(style);
     }
 
     makeElementsEditable() {
-        const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span:not(.cms-format-btn), a.btn-invert, button:not([class*="cms-"]), hr');
+        const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span:not(.cms-format-btn), a.btn-invert, button:not([class*="cms-"]), hr, div.cms-inserted');
         textElements.forEach(el => {
             if (el.closest('#project-categories') || el.closest('#projectsGrid')) {
                 return;
             }
             el.classList.add('editable');
+            el.setAttribute('draggable', 'true');
         });
 
         const banners = document.querySelectorAll('#hero-banner-container, #contact-banner-container');
         banners.forEach(b => {
             b.classList.add('editable-banner');
+            b.setAttribute('draggable', 'true');
         });
 
         const allLinks = document.querySelectorAll('a');
@@ -105,11 +110,11 @@ class VisualCMS {
                     
                     let newHtml = '';
                     if (data.elementType === 'space') {
-                        newHtml = `<div style="height: 50px;" class="editable cms-inserted"></div>`;
+                        newHtml = `<div style="height: 50px;" class="editable cms-inserted" draggable="true"></div>`;
                     } else if (data.elementType === 'line') {
-                        newHtml = `<hr class="border-[#E5E5E5] editable cms-inserted" style="margin: 24px 0;">`;
+                        newHtml = `<hr class="border-[#E5E5E5] editable cms-inserted" style="margin: 24px 0;" draggable="true">`;
                     } else if (data.elementType === 'text') {
-                        newHtml = `<p class="text-[clamp(14px,1vw,16px)] text-[#666] leading-[1.6] editable cms-inserted">New Text Block</p>`;
+                        newHtml = `<p class="text-[clamp(14px,1vw,16px)] text-[#666] leading-[1.6] max-w-2xl mb-10 editable cms-inserted" draggable="true">New Text Block</p>`;
                     }
                     
                     if (newHtml) {
@@ -117,6 +122,7 @@ class VisualCMS {
                         const newlyInserted = targetEl.nextElementSibling;
                         if (newlyInserted) {
                             newlyInserted.id = `cms-auto-new-${Date.now()}`;
+                            this.bindDragEvents(newlyInserted);
                         }
                     }
                 }
@@ -134,6 +140,7 @@ class VisualCMS {
                     clone.querySelectorAll('.cms-sidebar, .cms-floating-toolbar, .cms-bottom-toolbar, script[src*="cms.js"], .editable, .cms-hover, .cms-selected, .editable-banner, .cms-inserted').forEach(el => {
                         el.classList.remove('editable', 'cms-hover', 'cms-selected', 'editable-banner', 'cms-inserted');
                         el.removeAttribute('contenteditable');
+                        el.removeAttribute('draggable');
                         if (el.tagName === 'SCRIPT' && el.src.includes('cms.js')) el.remove();
                     });
                     window.parent.postMessage({ action: 'html-response', html: '<!DOCTYPE html>\n' + clone.outerHTML }, '*');
@@ -151,7 +158,66 @@ class VisualCMS {
         });
     }
 
+    bindDragEvents(el) {
+        el.addEventListener('dragstart', (e) => {
+            this.draggedElement = el;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', el.id);
+            setTimeout(() => el.style.opacity = '0.5', 0);
+        });
+
+        el.addEventListener('dragend', (e) => {
+            el.style.opacity = '1';
+            document.querySelectorAll('.cms-drag-over-top, .cms-drag-over-bottom').forEach(node => {
+                node.classList.remove('cms-drag-over-top', 'cms-drag-over-bottom');
+            });
+            this.draggedElement = null;
+        });
+
+        el.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const rect = el.getBoundingClientRect();
+            const midpoint = rect.top + rect.height / 2;
+            
+            document.querySelectorAll('.cms-drag-over-top, .cms-drag-over-bottom').forEach(node => {
+                if (node !== el) node.classList.remove('cms-drag-over-top', 'cms-drag-over-bottom');
+            });
+
+            if (e.clientY < midpoint) {
+                el.classList.add('cms-drag-over-top');
+                el.classList.remove('cms-drag-over-bottom');
+            } else {
+                el.classList.add('cms-drag-over-bottom');
+                el.classList.remove('cms-drag-over-top');
+            }
+        });
+
+        el.addEventListener('dragleave', (e) => {
+            el.classList.remove('cms-drag-over-top', 'cms-drag-over-bottom');
+        });
+
+        el.addEventListener('drop', (e) => {
+            e.preventDefault();
+            el.classList.remove('cms-drag-over-top', 'cms-drag-over-bottom');
+            
+            if (this.draggedElement && this.draggedElement !== el) {
+                const rect = el.getBoundingClientRect();
+                const midpoint = rect.top + rect.height / 2;
+                if (e.clientY < midpoint) {
+                    el.parentNode.insertBefore(this.draggedElement, el);
+                } else {
+                    el.parentNode.insertBefore(this.draggedElement, el.nextSibling);
+                }
+            }
+        });
+    }
+
     bindEvents() {
+        document.querySelectorAll('.editable, .editable-banner').forEach(el => {
+            this.bindDragEvents(el);
+        });
+
         document.addEventListener('mouseover', (e) => {
             const el = e.target.closest('.editable') || e.target.closest('.editable-banner');
             if (el) el.classList.add('cms-hover');
@@ -171,7 +237,11 @@ class VisualCMS {
                 e.stopPropagation();
                 this.selectedElement = editable;
                 this.selectedElement.classList.add('cms-selected');
-                const type = editable.tagName === 'HR' ? 'hr' : 'text';
+                
+                let type = 'text';
+                if (editable.tagName === 'HR') type = 'hr';
+                if (editable.tagName === 'DIV' && !editable.textContent.trim() && !editable.children.length) type = 'space';
+                
                 this.notifyDashboard(type, this.selectedElement);
             } else if (banner) {
                 e.preventDefault();
