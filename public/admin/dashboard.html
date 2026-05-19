@@ -164,6 +164,35 @@
         .banner-overlay-sim.active { background: rgba(0,0,0,0.5); }
         .banner-text-sim { color: #fff; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem; text-align: center; }
         .remove-cover-btn { position: absolute; top: 1rem; right: 1rem; background: var(--danger); color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+        
+        /* Categories View Toggle & Layouts */
+        .btn-sm.active {
+            background: rgba(255,255,255,0.15) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            color: #fff !important;
+        }
+        .compact-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+            gap: 1rem !important;
+        }
+        .compact-grid .item-row {
+            margin-bottom: 0 !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1rem !important;
+        }
+        .compact-grid .item-row button {
+            align-self: flex-end !important;
+        }
+        .compact-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.8rem !important;
+        }
+        .compact-list .item-row {
+            margin-bottom: 0 !important;
+        }
     </style>
 
 </head>
@@ -245,8 +274,18 @@
                         </div>
                     </div>
                     <div class="form-card">
-                        <h3>Existing Categories</h3>
-                        <div id="catList"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                            <h3>Existing Categories</h3>
+                            <div style="display:flex; gap:0.5rem;">
+                                <button class="btn-sm active" id="btn-cat-list" onclick="setCategoryView('list')" title="List View" style="padding:0.4rem 0.6rem; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                                </button>
+                                <button class="btn-sm" id="btn-cat-grid" onclick="setCategoryView('grid')" title="Grid View" style="padding:0.4rem 0.6rem; display:flex; align-items:center; justify-content:center;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="catList" class="compact-list"></div>
                     </div>
                 </div>
 
@@ -563,7 +602,12 @@
         function renderCategories() {
             const list = document.getElementById('catList');
             list.innerHTML = allCategories.map(c => `
-                <div class="item-row">
+                <div class="item-row" draggable="true" 
+                     ondragstart="handleCatDragStart(event, '${c.id}')" 
+                     ondragover="handleCatDragOver(event)" 
+                     ondragleave="handleCatDragLeave(event)"
+                     ondrop="handleCatDrop(event, '${c.id}')"
+                     style="cursor: grab;">
                     <div>
                         <div class="item-name">${c.name}</div>
                         <div class="item-meta">Slug: ${c.slug}</div>
@@ -835,6 +879,68 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ projectIds: allProjects.map(p => p.id) })
             });
+        }
+
+        // Category Reordering & View Modes
+        let categoryViewMode = 'list';
+        function setCategoryView(view) {
+            categoryViewMode = view;
+            const list = document.getElementById('catList');
+            if (view === 'grid') {
+                list.className = 'compact-grid';
+                document.getElementById('btn-cat-grid').classList.add('active');
+                document.getElementById('btn-cat-list').classList.remove('active');
+            } else {
+                list.className = 'compact-list';
+                document.getElementById('btn-cat-list').classList.add('active');
+                document.getElementById('btn-cat-grid').classList.remove('active');
+            }
+        }
+
+        let draggedCatId = null;
+        function handleCatDragStart(e, id) {
+            draggedCatId = id;
+            e.currentTarget.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        function handleCatDragOver(e) {
+            e.preventDefault();
+            const row = e.currentTarget;
+            if (row.classList.contains('dragging')) return;
+            row.style.border = '1px dashed var(--accent2)';
+        }
+        function handleCatDragLeave(e) {
+            const row = e.currentTarget;
+            row.style.border = '1px solid transparent';
+        }
+        async function handleCatDrop(e, targetId) {
+            e.preventDefault();
+            const row = e.currentTarget;
+            row.style.border = '1px solid transparent';
+            
+            if (draggedCatId === targetId) return;
+            const categories = [...allCategories];
+            const draggedIdx = categories.findIndex(c => c.id === draggedCatId);
+            const targetIdx = categories.findIndex(c => c.id === targetId);
+            const [draggedItem] = categories.splice(draggedIdx, 1);
+            categories.splice(targetIdx, 0, draggedItem);
+            allCategories = categories;
+            renderCategories();
+            
+            try {
+                const res = await fetch('/api/categories/reorder', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ categoryIds: allCategories.map(c => c.id) })
+                });
+                if (res.ok) {
+                    showToast('Category order saved');
+                } else {
+                    showToast('Failed to save order', true);
+                }
+            } catch (err) {
+                showToast('Failed to save order', true);
+            }
         }
     </script>
 </body>

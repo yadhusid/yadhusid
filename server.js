@@ -46,7 +46,8 @@ const User = mongoose.model('User', UserSchema);
 const CategorySchema = new mongoose.Schema({
     name: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
-    images: [String]
+    images: [String],
+    order: { type: Number, default: 0 }
 });
 CategorySchema.virtual('id').get(function(){ return this._id.toHexString(); });
 CategorySchema.set('toJSON', { virtuals: true });
@@ -205,7 +206,7 @@ app.post('/api/change-password', requireAuth, async (req, res) => {
 // ─── Category Routes ──────────────────────────────────────────────────────────
 app.get('/api/categories', async (req, res) => {
     try {
-        const categories = await Category.find();
+        const categories = await Category.find().sort({ order: 1 });
         res.json(categories);
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
@@ -231,6 +232,26 @@ app.delete('/api/categories/:id', requireAuth, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: 'Could not delete category' });
+    }
+});
+
+app.put('/api/categories/reorder', requireAuth, async (req, res) => {
+    try {
+        const { categoryIds } = req.body;
+        if (!Array.isArray(categoryIds)) return res.status(400).json({ error: 'Invalid categoryIds array' });
+        
+        const bulkOps = categoryIds.map((id, index) => ({
+            updateOne: {
+                filter: { _id: id },
+                update: { order: index }
+            }
+        }));
+        
+        await Category.bulkWrite(bulkOps);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Category Reorder Error:', err);
+        res.status(500).json({ error: 'Could not reorder categories' });
     }
 });
 
