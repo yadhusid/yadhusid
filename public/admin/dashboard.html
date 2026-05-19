@@ -324,26 +324,56 @@
                                     </div>
                                     <div id="selectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Cover Image</label>
-                                    <input type="file" id="projImage" onchange="handleCoverUpload(this)">
+
+                                <!-- Project Gallery Images -->
+                                <div class="form-group" style="margin-top: 1.5rem;">
+                                    <label>Project Gallery Images</label>
+                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <input type="file" id="galleryUploadInput" multiple accept="image/*" onchange="handleGalleryUpload(this)" style="display: none;">
+                                        <button class="btn-sm" onclick="document.getElementById('galleryUploadInput').click()" style="display: flex; align-items: center; gap: 8px;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                            Upload Images
+                                        </button>
+                                        <span style="font-size:0.75rem; color:var(--muted);">Multi-select or single upload supported.</span>
+                                    </div>
+                                    <div class="gallery-thumb-row" id="galleryThumbRow" style="display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; margin-top: 10px; min-height: 84px; border: 1px dashed var(--border); border-radius: 14px; background: rgba(0,0,0,0.1); padding-left: 10px; align-items: center;">
+                                        <span id="galleryEmptyText" style="font-size:0.75rem; color:var(--muted); margin: auto;">No gallery images uploaded yet.</span>
+                                    </div>
                                 </div>
-                                <button class="btn-primary" style="width:100%;" onclick="addProject()">Create Project</button>
+
+                                <!-- Save Draft / Publish Buttons -->
+                                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                                    <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; flex: 1;" onclick="addProject('draft')">Save Draft</button>
+                                    <button class="btn-primary" style="flex: 1;" onclick="addProject('published')">Publish</button>
+                                </div>
                             </div>
                             
-                            <div style="background:rgba(0,0,0,0.2); padding:2rem; border-radius:var(--radius-outer); border:1px solid var(--border);">
-                                <label style="text-align:center; display:block; margin-bottom:1.5rem;">Card Preview (304x334)</label>
-                                <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)">
-                                    <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
-                                    <img id="coverPreviewImg" class="preview-img" src="" style="display:none;">
-                                    <div class="card-overlay-sim">
-                                        <div class="cat" id="previewCat">CATEGORY</div>
-                                        <div class="title" id="previewTitle">Project Title</div>
+                            <div style="background:rgba(0,0,0,0.2); padding:2rem; border-radius:var(--radius-outer); border:1px solid var(--border); display:flex; flex-direction:column; justify-content:space-between;">
+                                <div>
+                                    <label style="text-align:center; display:block; margin-bottom:1.5rem;">Card Preview & Cover Upload</label>
+                                    
+                                    <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                                        <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0;">
+                                            <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
+                                            <img id="coverPreviewImg" class="preview-img" src="" style="display:none;">
+                                            <div class="card-overlay-sim">
+                                                <div class="cat" id="previewCat">CATEGORY</div>
+                                                <div class="title" id="previewTitle">Project Title</div>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                                            <input type="file" id="projImage" onchange="handleCoverUpload(this)" style="display: none;">
+                                            <button class="btn-sm" onclick="document.getElementById('projImage').click()" style="display: flex; align-items: center; gap: 8px;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                                Upload Cover
+                                            </button>
+                                            <span style="font-size: 10px; color: var(--muted); line-height: 1.4;">Ratio used for project list on homepage. Drag to reposition cover.</span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Banner Simulation -->
-                                <div style="margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+                                <div style="border-top: 1px solid var(--border); padding-top: 2rem; margin-top: auto;">
                                     <label style="text-align:center; display:block; margin-bottom:1.5rem; font-size:10px; color:var(--muted); font-weight:800;">BOTTOM PAGE BANNER & OVERLAY</label>
                                     
                                     <div class="form-row" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
@@ -358,7 +388,7 @@
                                     </div>
 
                                     <div class="banner-preview-box">
-                                        <img id="bannerPreviewImg" src="" style="display:none;">
+                                        <img id="bannerPreviewImg" src="" style="display:none; width:100%; height:100%; object-fit:cover;">
                                         <div class="banner-overlay-sim" id="bannerOverlay">
                                             <div class="banner-text-sim">Next Project: <span id="bannerProjTitle">Title</span></div>
                                         </div>
@@ -809,12 +839,77 @@
                 </div>`).join('');
         }
 
-        async function addProject() {
+        let selectedGalleryFiles = [];
+
+        function handleGalleryUpload(input) {
+            const files = Array.from(input.files);
+            files.forEach(file => {
+                if (!selectedGalleryFiles.some(f => f.name === file.name && f.size === file.size)) {
+                    selectedGalleryFiles.push(file);
+                }
+            });
+            renderGalleryThumbnails();
+            input.value = '';
+        }
+
+        function removeGalleryFile(index) {
+            selectedGalleryFiles.splice(index, 1);
+            renderGalleryThumbnails();
+        }
+
+        function renderGalleryThumbnails() {
+            const container = document.getElementById('galleryThumbRow');
+            const emptyText = document.getElementById('galleryEmptyText');
+            
+            const thumbnails = container.querySelectorAll('.gallery-thumb-wrapper');
+            thumbnails.forEach(el => el.remove());
+
+            if (selectedGalleryFiles.length === 0) {
+                emptyText.style.display = 'block';
+                return;
+            }
+            emptyText.style.display = 'none';
+
+            selectedGalleryFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                const wrapper = document.createElement('div');
+                wrapper.className = 'gallery-thumb-wrapper';
+                wrapper.style = 'position: relative; width: 64px; height: 64px; border-radius: 10px; border: 1px solid var(--border); overflow: hidden; background: #000; flex-shrink: 0;';
+
+                const img = document.createElement('img');
+                img.style = 'width: 100%; height: 100%; object-fit: cover;';
+                
+                const deleteBtn = document.createElement('div');
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.style = 'position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,0.6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);';
+                deleteBtn.onclick = () => removeGalleryFile(index);
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(deleteBtn);
+                container.appendChild(wrapper);
+
+                reader.onload = (e) => {
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function addProject(status = 'draft') {
             const title = document.getElementById('projTitle').value.trim();
             const categoryIds = selectedProjCategories.map(c => c.id);
             const coverFile = document.getElementById('projImage').files[0];
             const bannerFile = document.getElementById('projCardBanner').files[0];
             const overlay = document.getElementById('projCardOverlay').checked;
+
+            if (!title) {
+                showToast('Please enter a project title', true);
+                return;
+            }
+            if (categoryIds.length === 0) {
+                showToast('Please select at least one category', true);
+                return;
+            }
 
             const fd = new FormData();
             fd.append('title', title);
@@ -822,12 +917,32 @@
             if (coverFile) fd.append('coverImage', coverFile);
             if (bannerFile) fd.append('cardBanner', bannerFile);
             fd.append('cardOverlay', overlay);
+            fd.append('status', status);
+
+            selectedGalleryFiles.forEach(file => {
+                fd.append('galleryImages', file);
+            });
 
             const res = await fetch('/api/projects', { method: 'POST', body: fd });
             if (res.ok) {
+                showToast(`Project successfully saved as ${status}!`);
                 document.getElementById('projTitle').value = '';
+                selectedProjCategories = [];
+                renderSelectedCategories();
+                selectedGalleryFiles = [];
+                renderGalleryThumbnails();
                 removeCover();
+                
+                // Reset banner preview
+                document.getElementById('projCardBanner').value = '';
+                const bannerImg = document.getElementById('bannerPreviewImg');
+                bannerImg.style.display = 'none';
+                bannerImg.src = '';
+                
                 loadProjects();
+            } else {
+                const errData = await res.json();
+                showToast(errData.error || 'Failed to create project', true);
             }
         }
 

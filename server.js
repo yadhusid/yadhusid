@@ -322,25 +322,36 @@ app.get('/api/projects/:id', async (req, res) => {
     }
 });
 
-app.post('/api/projects', requireAuth, upload.single('coverImage'), async (req, res) => {
-    const { title, description, categoryIds } = req.body;
+const projectFields = upload.fields([
+    { name: 'coverImage', maxCount: 1 },
+    { name: 'galleryImages', maxCount: 20 }
+]);
+
+app.post('/api/projects', requireAuth, projectFields, async (req, res) => {
+    const { title, description, categoryIds, coverImageZoom, coverImageX, coverImageY, cardOverlay, status } = req.body;
     if (!title || !categoryIds) return res.status(400).json({ error: 'Title and categories required' });
     try {
+        const coverFile = req.files && req.files.coverImage ? req.files.coverImage[0].path : null;
+        const galleryFiles = req.files && req.files.galleryImages ? req.files.galleryImages.map(f => f.path) : [];
+
         const project = new Project({
             title,
             description: description || '',
             categoryIds: Array.isArray(categoryIds) ? categoryIds : [categoryIds],
-            coverImage: req.file ? req.file.path : null,
-            coverImageZoom: req.body.coverImageZoom || 1,
-            coverImageX: req.body.coverImageX || 50,
-            coverImageY: req.body.coverImageY || 50,
-            cardBanner: req.body.cardBanner || '',
-            cardOverlay: req.body.cardOverlay === 'true',
+            coverImage: coverFile,
+            coverImageZoom: coverImageZoom || 1,
+            coverImageX: coverImageX || 50,
+            coverImageY: coverImageY || 50,
+            images: galleryFiles,
+            cardBanner: '',
+            cardOverlay: cardOverlay === 'true',
+            status: status || 'draft',
             blocks: []
         });
         await project.save();
         res.json(project);
     } catch (err) {
+        console.error('Project creation error:', err);
         res.status(500).json({ error: 'Could not save project' });
     }
 });
