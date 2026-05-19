@@ -365,18 +365,47 @@ app.post('/api/projects', requireAuth, projectFields, async (req, res) => {
     }
 });
 
-app.patch('/api/projects/:id', requireAuth, upload.single('cardBanner'), async (req, res) => {
+app.patch('/api/projects/:id', requireAuth, projectFields, async (req, res) => {
     try {
         const updates = { ...req.body };
-        if (req.file) updates.cardBanner = req.file.path;
+        
         if (updates.categoryIds) {
             updates.categoryIds = Array.isArray(updates.categoryIds) ? updates.categoryIds : [updates.categoryIds];
         }
-        if (updates.cardOverlay !== undefined) updates.cardOverlay = updates.cardOverlay === 'true';
+        
+        const project = await Project.findById(req.params.id);
+        if (!project) return res.status(404).json({ error: 'Not found' });
+        
+        if (req.files && req.files.coverImage) {
+            updates.coverImage = req.files.coverImage[0].path;
+        } else if (updates.removeCover === 'true') {
+            updates.coverImage = null;
+        }
+        
+        let newGallery = [];
+        if (updates.existingGallery) {
+            try {
+                newGallery = JSON.parse(updates.existingGallery);
+            } catch (e) { console.error(e); }
+        } else {
+            newGallery = project.gallery || [];
+        }
+        
+        if (req.files && req.files.galleryImages) {
+            const uploadedUrls = req.files.galleryImages.map(f => f.path);
+            newGallery = newGallery.concat(uploadedUrls);
+        }
+        updates.gallery = newGallery;
+        
+        // Ensure numeric types for cover positions
+        if (updates.coverImageZoom !== undefined) updates.coverImageZoom = parseFloat(updates.coverImageZoom) || 1;
+        if (updates.coverImageX !== undefined) updates.coverImageX = parseFloat(updates.coverImageX) || 0;
+        if (updates.coverImageY !== undefined) updates.coverImageY = parseFloat(updates.coverImageY) || 0;
 
-        const project = await Project.findByIdAndUpdate(req.params.id, updates, { new: true });
-        res.json(project);
+        const updatedProject = await Project.findByIdAndUpdate(req.params.id, updates, { new: true });
+        res.json(updatedProject);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Could not update project' });
     }
 });
