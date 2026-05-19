@@ -83,7 +83,7 @@ function renderProjects(projects = allProjects) {
                         ? `<img src="${p.coverImage}" 
                              alt="${p.title}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                             style="object-position: ${p.coverImageX || 50}% ${p.coverImageY || 50}%; transform: scale(${p.coverImageZoom || 1});">`
+                             style="transform: scale(${p.coverImageZoom || 1}) translate(${(p.coverImageX === 50 || !p.coverImageX) ? 0 : p.coverImageX}px, ${(p.coverImageY === 50 || !p.coverImageY) ? 0 : p.coverImageY}px); transform-origin: center center;">`
                         : `<div class="w-full h-full bg-[#EEE] flex items-center justify-center text-[#AAA] font-medium uppercase tracking-widest text-[10px]">No Cover</div>`
                     }
                     ${p.cardOverlay ? `<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>` : ''}

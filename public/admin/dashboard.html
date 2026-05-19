@@ -142,14 +142,18 @@
         .custom-dropdown-option:hover { background: rgba(255,255,255,0.05); color: #fff; }
 
         /* Preview Cards */
-        .homepage-card-preview { width: 100%; max-width: 260px; aspect-ratio: 304 / 334; margin: 0 auto 1.5rem; background: #000; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: grab; }
-        .preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .homepage-card-preview { width: 300px; height: 220px; margin: 0 auto 1.5rem; background: #000; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: grab; }
+        .preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: center center; }
         .card-overlay-sim { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; }
         .card-overlay-sim .cat { font-size: 7px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
         .card-overlay-sim .title { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 800; margin-top: 4px; }
 
         .split-project-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2.5rem; }
-        @media (max-width: 1024px) { .split-project-grid { grid-template-columns: 1fr; } }
+        .split-project-grid > .inputs-col { padding-right: 2.5rem; border-right: 1px solid var(--border); }
+        @media (max-width: 1024px) { 
+            .split-project-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .split-project-grid > .inputs-col { padding-right: 0; border-right: none; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+        }
 
         /* Block Modal */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; }
@@ -348,11 +352,11 @@
                                 </div>
                             </div>
                             
-                            <div style="background:rgba(0,0,0,0.2); padding:2rem; border-radius:var(--radius-outer); border:1px solid var(--border); height: fit-content;">
+                            <div style="height: fit-content; padding-left: 0.5rem;">
                                 <h3>Cover Thumbnail</h3>
                                 
                                 <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
-                                    <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 304px; height: 334px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
+                                    <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 300px; height: 220px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
                                         <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
                                         <img id="coverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
                                         <div class="card-overlay-sim">
@@ -883,8 +887,8 @@
         let isDraggingCover = false;
         let lastMouseX = 0;
         let lastMouseY = 0;
-        let coverImageX = 50; // percentage (0 - 100)
-        let coverImageY = 50; // percentage (0 - 100)
+        let coverImageX = 0; // translation offset X in px
+        let coverImageY = 0; // translation offset Y in px
 
         function startCoverDrag(e) {
             const img = document.getElementById('coverPreviewImg');
@@ -911,10 +915,8 @@
             lastMouseY = e.clientY;
             
             const zoom = parseFloat(document.getElementById('coverZoomSlider').value) || 1;
-            const sensitivity = 0.3 / zoom;
-            
-            coverImageX = Math.max(0, Math.min(100, coverImageX - dx * sensitivity));
-            coverImageY = Math.max(0, Math.min(100, coverImageY - dy * sensitivity));
+            coverImageX += dx / zoom;
+            coverImageY += dy / zoom;
             
             updateCoverTransform();
         }
@@ -934,8 +936,7 @@
             const zoom = parseFloat(slider.value) || 1;
             zoomVal.textContent = zoom.toFixed(1) + 'x';
             
-            img.style.objectPosition = `${coverImageX}% ${coverImageY}%`;
-            img.style.transform = `scale(${zoom})`;
+            img.style.transform = `scale(${zoom}) translate(${coverImageX}px, ${coverImageY}px)`;
         }
 
         async function addProject(status = 'draft') {
@@ -1048,8 +1049,8 @@
                 const img = document.getElementById('coverPreviewImg');
                 img.src = e.target.result;
                 img.style.display = 'block';
-                coverImageX = 50;
-                coverImageY = 50;
+                coverImageX = 0;
+                coverImageY = 0;
                 document.getElementById('coverZoomSlider').value = 1;
                 updateCoverTransform();
             };
@@ -1061,8 +1062,8 @@
             const img = document.getElementById('coverPreviewImg');
             img.style.display = 'none';
             img.src = '';
-            coverImageX = 50;
-            coverImageY = 50;
+            coverImageX = 0;
+            coverImageY = 0;
             document.getElementById('coverZoomSlider').value = 1;
             updateCoverTransform();
         }
