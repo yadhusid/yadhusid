@@ -150,29 +150,36 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-app.post('/api/auth/forgot-password', (req, res) => {
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    otps['yadhusid@gmail.com'] = otp;
-    console.log(`\n🔑 [AUTH] RESET OTP for yadhusid@gmail.com: ${otp}\n`);
-    res.json({ success: true, message: 'OTP sent' });
+app.post('/api/auth/forgot-password', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: 'yadhusid' });
+        const email = user ? user.recoveryEmail : 'yadhusid@gmail.com';
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        otps[email] = otp;
+        console.log(`\n🔑 [AUTH] RESET OTP for ${email}: ${otp}\n`);
+        res.json({ success: true, message: 'OTP sent' });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 app.post('/api/auth/reset-password', async (req, res) => {
     const { otp, newPassword } = req.body;
-    if (otps['yadhusid@gmail.com'] === otp) {
-        try {
-            const user = await User.findOne({ username: 'yadhusid' });
-            if (!user) return res.status(404).json({ error: 'User not found' });
-            
+    try {
+        const user = await User.findOne({ username: 'yadhusid' });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        
+        const email = user.recoveryEmail || 'yadhusid@gmail.com';
+        if (otps[email] === otp) {
             user.password = await bcrypt.hash(newPassword, 10);
             await user.save();
-            delete otps['yadhusid@gmail.com'];
+            delete otps[email];
             res.json({ success: true });
-        } catch (err) {
-            res.status(500).json({ error: 'Database error' });
+        } else {
+            res.status(400).json({ error: 'Invalid or expired OTP' });
         }
-    } else {
-        res.status(400).json({ error: 'Invalid or expired OTP' });
+    } catch (err) {
+        res.status(500).json({ error: 'Database error' });
     }
 });
 

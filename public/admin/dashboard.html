@@ -387,19 +387,41 @@
                 <div class="page" id="page-settings">
                     <div class="form-card">
                         <h3>Reset / Update Password</h3>
-                        <div class="form-group" style="margin-bottom:1.5rem;">
-                            <label>Current Password</label>
-                            <input type="password" id="settingsCurrentPass" placeholder="Enter current password...">
+                        
+                        <div id="settingsNormalChange">
+                            <div class="form-group" style="margin-bottom:1.5rem;">
+                                <label>Current Password</label>
+                                <input type="password" id="settingsCurrentPass" placeholder="Enter current password...">
+                            </div>
+                            <div class="form-group" style="margin-bottom:1.5rem;">
+                                <label>New Password</label>
+                                <input type="password" id="settingsNewPass" placeholder="Enter new password...">
+                            </div>
+                            <div class="form-group" style="margin-bottom:1.5rem;">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="settingsConfirmPass" placeholder="Confirm new password...">
+                            </div>
+                            <button class="btn-primary" onclick="updatePassword()" style="width:100%; margin-bottom:1.5rem;">Update Password</button>
+                            <div style="text-align:center;">
+                                <a href="javascript:void(0)" onclick="triggerEmailReset()" style="font-size:0.75rem; color:var(--muted); text-decoration:none; display:inline-block; transition:color 0.2s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Forgot current password? Reset via Email Verification</a>
+                            </div>
                         </div>
-                        <div class="form-group" style="margin-bottom:1.5rem;">
-                            <label>New Password</label>
-                            <input type="password" id="settingsNewPass" placeholder="Enter new password...">
+
+                        <div id="settingsEmailReset" style="display:none;">
+                            <p style="font-size:0.8rem; color:var(--muted); margin-bottom:1.5rem; line-height:1.6;">A verification OTP has been sent to your recovery email. Enter it below to set a new password.</p>
+                            <div class="form-group" style="margin-bottom:1.5rem;">
+                                <label>6-Digit Verification OTP</label>
+                                <input type="text" id="settingsResetOtp" placeholder="000000" maxlength="6">
+                            </div>
+                            <div class="form-group" style="margin-bottom:1.5rem;">
+                                <label>New Password</label>
+                                <input type="password" id="settingsResetNewPass" placeholder="Enter new password...">
+                            </div>
+                            <button class="btn-primary" onclick="submitEmailReset()" style="width:100%; margin-bottom:1.5rem;">Reset Password</button>
+                            <div style="text-align:center;">
+                                <a href="javascript:void(0)" onclick="cancelEmailReset()" style="font-size:0.75rem; color:var(--muted); text-decoration:none; display:inline-block; transition:color 0.2s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">← Back to Normal Update</a>
+                            </div>
                         </div>
-                        <div class="form-group" style="margin-bottom:1.5rem;">
-                            <label>Confirm New Password</label>
-                            <input type="password" id="settingsConfirmPass" placeholder="Confirm new password...">
-                        </div>
-                        <button class="btn-primary" onclick="updatePassword()" style="width:100%;">Update Password</button>
                     </div>
 
                     <div class="form-card">
@@ -407,7 +429,7 @@
                         <div class="form-group" style="margin-bottom:1.5rem;">
                             <label>Recovery Email ID</label>
                             <div style="display:flex; gap:1rem;">
-                                <input type="email" id="settingsRecoveryEmail" placeholder="e.g. name@domain.com">
+                                <input type="password" id="settingsRecoveryEmail" placeholder="e.g. name@domain.com">
                                 <button class="btn-primary" onclick="updateRecoveryEmail()" style="flex-shrink:0;">Save Email</button>
                             </div>
                             <span style="font-size:0.75rem; color:var(--muted); display:block; margin-top:0.5rem;">All verification tokens (OTPs) and password reset instructions will be sent here.</span>
@@ -1140,6 +1162,47 @@
                 }
             } catch (err) {
                 showToast('Failed to save recovery email', true);
+            }
+        }
+
+        function triggerEmailReset() {
+            document.getElementById('settingsNormalChange').style.display = 'none';
+            document.getElementById('settingsEmailReset').style.display = 'block';
+            fetch('/api/auth/forgot-password', { method: 'POST' });
+            showToast('Verification OTP logged to console');
+        }
+
+        function cancelEmailReset() {
+            document.getElementById('settingsNormalChange').style.display = 'block';
+            document.getElementById('settingsEmailReset').style.display = 'none';
+        }
+
+        async function submitEmailReset() {
+            const otp = document.getElementById('settingsResetOtp').value.trim();
+            const newPassword = document.getElementById('settingsResetNewPass').value;
+
+            if (!otp || !newPassword) {
+                showToast('Please fill all fields', true);
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp, newPassword })
+                });
+                if (res.ok) {
+                    showToast('Password reset successfully!');
+                    cancelEmailReset();
+                    document.getElementById('settingsResetOtp').value = '';
+                    document.getElementById('settingsResetNewPass').value = '';
+                } else {
+                    const data = await res.json();
+                    showToast(data.error || 'Invalid OTP or error', true);
+                }
+            } catch (err) {
+                showToast('Failed to reset password', true);
             }
         }
     </script>
