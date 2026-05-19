@@ -2,6 +2,7 @@ class VisualCMS {
     constructor() {
         this.isActive = window.location.href.includes('edit=true');
         this.selectedElement = null;
+        this.historyStack = [];
         if (this.isActive) {
             console.log("[CMS] Initialization Active");
             if (document.readyState === 'loading') {
@@ -22,6 +23,13 @@ class VisualCMS {
         
         window.parent.postMessage({ source: 'cms-engine', action: 'canvas-ready' }, '*');
     }
+    
+    saveState() {
+        // Strip out volatile UI classes before saving state so undo doesn't get stuck in a hover/selected state
+        document.querySelectorAll('.cms-selected, .cms-hover').forEach(el => el.classList.remove('cms-selected', 'cms-hover'));
+        this.historyStack.push(document.body.innerHTML);
+        if (this.historyStack.length > 30) this.historyStack.shift();
+    }
 
     injectCSS() {
         const style = document.createElement('style');
@@ -29,7 +37,8 @@ class VisualCMS {
             .cms-hover { outline: 2px solid rgba(59, 130, 246, 0.4) !important; outline-offset: -2px !important; }
             .cms-selected { outline: 2px solid #3b82f6 !important; outline-offset: -2px !important; box-shadow: 0 0 0 1000px rgba(59, 130, 246, 0.05) !important; }
             .editable:hover, .editable-banner:hover { cursor: pointer; }
-            hr.editable { padding: 20px 0; margin-top: -20px; background-clip: content-box; cursor: pointer; }
+            hr.editable { height: 40px !important; border: none !important; background-color: transparent !important; position: relative; cursor: pointer; margin: 24px 0 !important; }
+            hr.editable::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: #E5E5E5; }
             .cms-drag-over-top { border-top: 4px solid #3b82f6 !important; }
             .cms-drag-over-bottom { border-bottom: 4px solid #3b82f6 !important; }
         `;
@@ -67,34 +76,48 @@ class VisualCMS {
                 const { action, data, id } = e.data;
                 const el = id ? document.getElementById(id) : null;
                 
+                if (action === 'undo' && this.historyStack.length > 0) {
+                    document.body.innerHTML = this.historyStack.pop();
+                    this.makeElementsEditable();
+                    this.generateUniqueIds();
+                    this.bindEvents();
+                    this.selectedElement = null;
+                    this.notifyDashboard('global', null);
+                    return;
+                }
+                
                 if (action === 'scroll-to-section') {
                     const sec = document.getElementById(id);
                     if (sec) sec.scrollIntoView({ behavior: 'smooth' });
                 }
                 
                 if (action === 'update-content' && el) {
-                    el.innerHTML = data.val;
-                    if (data.href && el.tagName === 'A') {
-                        el.setAttribute('href', data.href);
-                    }
-                    
-                    // Synchronization Logic for Navigation Menu
-                    if (el.tagName === 'H2') {
-                        if (el.closest('#expertise')) {
-                            const navLink = document.querySelector('a.nav-scroll[href="#expertise"]');
-                            if (navLink) navLink.innerHTML = data.val;
-                        } else if (el.closest('#projects')) {
-                            const navLink = document.querySelector('a.nav-scroll[href="#projects"]');
-                            if (navLink) navLink.innerHTML = data.val;
+                    if (el.innerHTML !== data.val || (data.href && el.getAttribute('href') !== data.href)) {
+                        this.saveState();
+                        el.innerHTML = data.val;
+                        if (data.href && el.tagName === 'A') {
+                            el.setAttribute('href', data.href);
+                        }
+                        
+                        if (el.tagName === 'H2') {
+                            if (el.closest('#expertise')) {
+                                const navLink = document.querySelector('a.nav-scroll[href="#expertise"]');
+                                if (navLink) navLink.innerHTML = data.val;
+                            } else if (el.closest('#projects')) {
+                                const navLink = document.querySelector('a.nav-scroll[href="#projects"]');
+                                if (navLink) navLink.innerHTML = data.val;
+                            }
                         }
                     }
                 }
                 
                 if (action === 'update-style' && el && data.property) {
+                    this.saveState();
                     el.style[data.property] = data.value;
                 }
                 
                 if (action === 'update-banner' && el) {
+                    this.saveState();
                     const mediaLayer = el.querySelector('.media-layer');
                     if (mediaLayer) {
                         mediaLayer.innerHTML = `<img src="${data.val}" class="w-full h-full object-cover">`;
@@ -107,14 +130,15 @@ class VisualCMS {
                         alert('Please select an element first to insert below it.');
                         return;
                     }
+                    this.saveState();
                     
                     let newHtml = '';
                     if (data.elementType === 'space') {
-                        newHtml = `<div style="height: 50px;" class="editable cms-inserted" draggable="true"></div>`;
+                        newHtml = `<div style="height: 25px;" class="editable cms-inserted" draggable="true"></div>`;
                     } else if (data.elementType === 'line') {
                         newHtml = `<hr class="border-[#E5E5E5] editable cms-inserted" style="margin: 24px 0;" draggable="true">`;
                     } else if (data.elementType === 'text') {
-                        newHtml = `<p class="text-[clamp(14px,1vw,16px)] text-[#666] leading-[1.6] max-w-2xl mb-10 editable cms-inserted" draggable="true">New Text Block</p>`;
+                        newHtml = `<p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light editable cms-inserted" style="margin-bottom:clamp(16px,1.8vw,36px)" draggable="true">New Text Block</p>`;
                     }
                     
                     if (newHtml) {
@@ -128,6 +152,7 @@ class VisualCMS {
                 }
                 
                 if (action === 'delete-element' && el) {
+                    this.saveState();
                     if (this.selectedElement === el) {
                         this.selectedElement = null;
                         this.notifyDashboard('global', null);
@@ -202,6 +227,7 @@ class VisualCMS {
             el.classList.remove('cms-drag-over-top', 'cms-drag-over-bottom');
             
             if (this.draggedElement && this.draggedElement !== el) {
+                this.saveState();
                 const rect = el.getBoundingClientRect();
                 const midpoint = rect.top + rect.height / 2;
                 if (e.clientY < midpoint) {
