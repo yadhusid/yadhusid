@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const path = require('path');
@@ -104,12 +105,18 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'portfolio_uploads',
-    allowedFormats: ['jpeg', 'png', 'jpg', 'webp', 'gif']
+  params: async (req, file) => {
+    const isVideo = file.mimetype.startsWith('video/');
+    const isGif = file.mimetype === 'image/gif';
+    return {
+      folder: 'portfolio_uploads',
+      resource_type: isVideo ? 'video' : 'image',
+      allowedFormats: isVideo ? ['mp4', 'webm'] : ['jpeg', 'png', 'jpg', 'webp', 'gif'],
+      transformation: isGif ? [] : undefined
+    };
   }
 });
-const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
+const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } });
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '50mb' }));
@@ -119,7 +126,12 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'yadhu-portfolio-secret-2026',
     resave: false,
     saveUninitialized: false,
-    proxy: true, // Required for secure cookies behind proxy (Render)
+    proxy: true, // Required for secure cookies behind proxy (Vercel/Render)
+    store: process.env.MONGODB_URI ? MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        ttl: 24 * 60 * 60, // 1 day in seconds
+        autoRemove: 'native'
+    }) : undefined,
     cookie: { 
         maxAge: 24 * 60 * 60 * 1000,
         secure: process.env.NODE_ENV === 'production',
@@ -526,8 +538,29 @@ async function ensureAdmin() {
     }
 }
 
+// ─── CMS Homepage Content Model ───────────────────────────────────────────────
+// Persists homepage HTML to MongoDB instead of filesystem (required for serverless/Vercel)
+const HomepageSchema = new mongoose.Schema({
+    key: { type: String, default: 'index', unique: true },
+    html: { type: String, required: true },
+    updatedAt: { type: Date, default: Date.now }
+});
+let Homepage;
+try { Homepage = mongoose.model('Homepage'); } catch(e) { Homepage = mongoose.model('Homepage', HomepageSchema); }
+
+// Serve dynamic homepage from MongoDB if available, otherwise from file
+app.get('/', async (req, res) => {
+    try {
+        const record = await Homepage.findOne({ key: 'index' });
+        if (record && record.html) {
+            return res.type('html').send(record.html);
+        }
+    } catch(e) { /* fall through to static file */ }
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // ─── Visual Editor Saving ──────────────────────────────────────────────────
-app.post('/admin/save-cms', requireAuth, (req, res) => {
+app.post('/admin/save-cms', requireAuth, async (req, res) => {
     const { html } = req.body;
     console.log('[CMS] Save attempt received. HTML Length:', html?.length || 0);
     
@@ -544,13 +577,27 @@ app.post('/admin/save-cms', requireAuth, (req, res) => {
             .replace(/contenteditable="true"/g, '')
             .replace(/spellcheck="false"/g, '');
 
-        const indexPath = path.join(__dirname, 'public', 'index.html');
-        fs.writeFileSync(indexPath, cleanedHtml, 'utf8');
-        console.log('✅ index.html updated successfully (cleaned)');
+        // Primary: Save to MongoDB (works on Vercel serverless)
+        await Homepage.findOneAndUpdate(
+            { key: 'index' },
+            { html: cleanedHtml, updatedAt: new Date() },
+            { upsert: true, new: true }
+        );
+        console.log('✅ Homepage HTML saved to MongoDB (Vercel-compatible)');
+
+        // Secondary: Also try filesystem save for local/traditional deployments
+        try {
+            const indexPath = path.join(__dirname, 'public', 'index.html');
+            fs.writeFileSync(indexPath, cleanedHtml, 'utf8');
+            console.log('✅ index.html also updated on filesystem');
+        } catch (fsErr) {
+            console.log('ℹ️ Filesystem write skipped (read-only environment):', fsErr.message);
+        }
+
         res.json({ success: true });
     } catch (err) {
         console.error('❌ Error saving CMS changes:', err);
-        res.status(500).json({ error: 'FileSystem Error: ' + err.message });
+        res.status(500).json({ error: 'Save Error: ' + err.message });
     }
 });
 
