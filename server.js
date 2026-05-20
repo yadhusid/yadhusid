@@ -678,3 +678,5 @@ app.put('/api/projects/:projectId/blocks/reorder', requireAuth, async (req, res)
         res.status(500).json({ error: 'Could not reorder blocks' });
     }
 });
+
+module.exports = app;
