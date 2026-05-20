@@ -15,11 +15,8 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Domain & SSL Middleware ──────────────────────────────────────────────────
 app.use((req, res, next) => {
-    // Redirect WWW to Non-WWW
-    if (req.headers.host && req.headers.host.slice(0, 4) === 'www.') {
-        const newHost = req.headers.host.slice(4);
-        return res.redirect(301, `${req.protocol}://${newHost}${req.originalUrl}`);
-    }
+    // Removed WWW to Non-WWW redirect because Vercel handles domain canonicalization
+    // and having it here was causing an infinite redirect loop.
     
     // Force HTTPS on Render (optional but recommended)
     if (process.env.NODE_ENV === 'production' && req.headers['x-forwarded-proto'] !== 'https') {
