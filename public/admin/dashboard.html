@@ -14,14 +14,14 @@
             --panel-w: 240px;
             --inspector-w: 300px;
             --topbar-h: 64px;
-            --border: #222222;
+            --border: #333333;
             --accent: #ffffff;
             --accent2: #3b82f6;
             --danger: #ef4444;
             --success: #10b981;
             --muted: #888888;
-            --input-bg: #141414;
-            --card: #141414;
+            --input-bg: #2a2a2a;
+            --card: #181818;
             
             /* Box Shadow for depth */
             --shadow-subtle: 0 4px 12px rgba(0,0,0,0.4);
@@ -166,7 +166,7 @@
         .card-overlay-sim .cat { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
         .card-overlay-sim .title { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 800; margin-top: 4px; }
 
-        .split-project-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2.5rem; }
+        .split-project-grid { display: grid; grid-template-columns: 1fr auto; gap: 2.5rem; }
         .split-project-grid > .inputs-col { padding-right: 2.5rem; border-right: 1px solid var(--border); }
         @media (max-width: 1024px) { 
             .split-project-grid { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -177,12 +177,11 @@
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; }
         .modal-overlay.open { display: flex; }
         .modal { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; width: 95%; max-width: 1000px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-subtle); }
-
-        .modal-close { background: var(--danger); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; font-weight: bold; cursor: pointer; margin-left: auto; display: block; margin-bottom: -32px; position: relative; z-index: 10; }
+        .modal-close { display: none; /* Replaced by global .btn-close */ }
         
         /* Banner Simulation */
         .banner-preview-box { width: 100%; aspect-ratio: 16/9; background: #111; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid var(--border); }
-        .banner-preview-box img { width: 100%; height: 100%; object-fit: cover; }
+        .banner-preview-box img, .banner-preview-box video { width: 100%; height: 100%; object-fit: cover; }
         .banner-overlay-sim { position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; }
         .banner-overlay-sim.active { background: rgba(0,0,0,0.5); }
         .banner-text-sim { color: #fff; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem; text-align: center; }
@@ -288,31 +287,31 @@
                 
                 <!-- Overview Page -->
                 <div class="page active" id="page-overview">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-label">Published Projects</div>
-                            <div class="stat-num" id="stat-projs">0</div>
+                    <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1.5rem; margin-bottom: 2.5rem;">
+                        <div class="stats-grid" style="margin-bottom: 0;">
+                            <div class="stat-card">
+                                <div class="stat-label">Published Projects</div>
+                                <div class="stat-num" id="stat-projs">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Total Categories</div>
+                                <div class="stat-num" id="stat-cats">0</div>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Total Categories</div>
-                            <div class="stat-num" id="stat-cats">0</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Categories Management Section (Moved from page-categories) -->
-                    <div class="form-card" style="margin-top: 2rem;">
-                        <h3>Manage Categories</h3>
-                        <div class="form-group">
-                            <label>New Category Name</label>
-                            <div style="display:flex; gap:1rem;">
-                                <input type="text" id="catName" placeholder="e.g. Interaction Design">
+                        
+                        <!-- Categories Management Section (Moved from page-categories) -->
+                        <div class="form-card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: center;">
+                            <h3 style="border-bottom: none; padding-bottom: 0; margin-bottom: 1rem;">Manage Categories</h3>
+                            <div style="display:flex; gap:1rem; width: 100%;">
+                                <input type="text" id="catName" placeholder="e.g. Interaction Design" style="flex: 1;">
                                 <button class="btn-primary" onclick="addCategory()" style="flex-shrink:0;">Add</button>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="form-card">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-                            <h3>Existing Categories</h3>
+                            <h3 style="border-bottom: none; padding-bottom: 0; margin-bottom: 0;">Existing Categories</h3>
                             <div style="display:flex; gap:0.5rem;">
                                 <button class="btn-sm active" id="btn-cat-list" onclick="setCategoryView('list')" title="List View" style="padding:0.4rem 0.6rem; display:flex; align-items:center; justify-content:center;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
@@ -332,11 +331,11 @@
                         <div class="split-project-grid">
                             <div class="inputs-col">
                                 <h3>Create Project</h3>
-                                <div class="form-group">
+                                <div class="form-group col" style="align-items: flex-start;">
                                     <label>Title</label>
                                     <input type="text" id="projTitle" placeholder="Project name..." oninput="updatePreviewText()">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col" style="align-items: flex-start;">
                                     <label>Category</label>
                                     <div class="custom-dropdown">
                                         <div class="custom-dropdown-selected" onclick="toggleCustomDropdown()">
@@ -349,17 +348,16 @@
                                 </div>
 
                                 <!-- Project Gallery Images -->
-                                <div class="form-group" style="margin-top: 1.5rem;">
+                                <div class="form-group col" style="margin-top: 1.5rem; align-items: flex-start;">
                                     <label>Project Gallery Images</label>
-                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                    <div style="display: flex; gap: 1rem; align-items: center; width: 100%;">
                                         <input type="file" id="galleryUploadInput" multiple accept="image/*" onchange="handleGalleryUpload(this)" style="display: none;">
-                                        <button class="btn-sm" onclick="document.getElementById('galleryUploadInput').click()" style="display: flex; align-items: center; gap: 8px;">
+                                        <button class="btn-sm" onclick="document.getElementById('galleryUploadInput').click()" style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--input-bg);">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                                            Upload Images
+                                            Upload
                                         </button>
-                                        <span style="font-size:0.75rem; color:var(--muted);">Multi-select or single upload supported.</span>
                                     </div>
-                                    <div class="gallery-thumb-row" id="galleryThumbRow" style="display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; margin-top: 10px; min-height: 84px; border: 1px dashed var(--border); border-radius: 14px; background: rgba(0,0,0,0.1); padding-left: 10px; align-items: center;">
+                                    <div class="gallery-thumb-row" id="galleryThumbRow" style="display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; margin-top: 10px; min-height: 84px; border: 1px dashed var(--border); border-radius: 14px; background: rgba(0,0,0,0.1); padding-left: 10px; align-items: center; width: 100%;">
                                         <span id="galleryEmptyText" style="font-size:0.75rem; color:var(--muted); margin: auto;">No gallery images uploaded yet.</span>
                                     </div>
                                 </div>
@@ -371,10 +369,10 @@
                                 </div>
                             </div>
                             
-                            <div style="height: fit-content; padding-left: 0.5rem;">
-                                <h3>Cover Thumbnail</h3>
+                            <div style="height: fit-content; padding-left: 0.5rem; display: flex; flex-direction: column; align-items: center;">
+                                <h3 style="align-self: flex-start; margin-bottom: 2rem;">Cover Thumbnail</h3>
                                 
-                                <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+                                <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center; justify-content: center; width: 300px;">
                                     <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 300px; height: 220px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
                                         <div class="btn-close" style="position: absolute; top: 1rem; right: 1rem; z-index: 10;" onclick="removeCover(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                                         <img id="coverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
@@ -383,7 +381,7 @@
                                             <div class="title" id="previewTitle">Project Title</div>
                                         </div>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; gap: 0.8rem; flex: 1; min-width: 200px;">
+                                    <div style="display: flex; flex-direction: column; gap: 0.8rem; width: 100%;">
                                         <input type="file" id="projImage" onchange="handleCoverUpload(this)" style="display: none;">
                                         <button class="btn-sm" onclick="document.getElementById('projImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%;">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
@@ -399,7 +397,7 @@
                                             </div>
                                         </div>
                                         
-                                        <span style="font-size: 10px; color: var(--muted); line-height: 1.4;">Drag the image inside the preview container to reposition it.</span>
+                                        <span style="font-size: 10px; color: var(--muted); line-height: 1.4; text-align: center;">Drag the image inside the preview container to reposition it.</span>
                                     </div>
                                 </div>
                             </div>
@@ -542,17 +540,17 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h3 style="margin: 0; font-size: 1.25rem;">Project Editor</h3>
-                    <button class="btn-close" onclick="closeBlockModal()" style="position: static; margin: 0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                    <button class="btn-close" onclick="closeBlockModal()" style="position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; margin: 0; width: 44px; height: 44px; min-width: 44px; border: 2px solid var(--border); box-shadow: var(--shadow-subtle); background: var(--card);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 20px; height: 20px;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
                 </div>
 
                 <!-- Top Section: Metadata & Cover -->
                 <div class="inputs-col" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-                    <div class="form-group">
+                    <div class="form-group col">
                         <label>Edit Title</label>
                         <input type="text" id="modalProjTitleEdit" oninput="updateModalPreviewText()">
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group col">
                         <label>Category</label>
                         <div class="custom-dropdown">
                             <div class="custom-dropdown-selected" onclick="toggleModalCustomDropdown()">
@@ -565,13 +563,10 @@
                     </div>
 
                     <!-- Cover Thumbnail Config -->
-                    <div class="form-group">
-                        <label style="display: flex; justify-content: space-between; align-items: center;">
-                            Cover Thumbnail
-                            <div class="btn-close" onclick="removeModalCover(event)" style="position: static; display: flex; width: 32px; height: 32px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
-                        </label>
-                        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; justify-content: center;">
-                            <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 100%; max-width: 320px; height: 200px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
+                    <div class="form-group col">
+                        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; justify-content: center; width: 100%;">
+                            <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 100%; height: 200px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
+                                <div class="btn-close" onclick="removeModalCover(event)" style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 28px; height: 28px; min-width: 28px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                                 <img id="modalCoverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
                                 <div class="card-overlay-sim">
                                     <div class="cat" id="modalPreviewCat">CATEGORY</div>
@@ -580,7 +575,7 @@
                             </div>
                             <div style="display: flex; gap: 1rem; width: 100%; align-items: center;">
                                 <input type="file" id="modalProjImage" onchange="handleModalCoverUpload(this)" style="display: none;">
-                                <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                                <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; border: 1px solid var(--border); background: var(--input-bg);">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                                     Upload Cover
                                 </button>
@@ -597,14 +592,13 @@
 
                 <!-- Middle Section: Sequential Content Blocks -->
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between;">
-                        <h4 style="margin: 0; font-size:1rem; color:#fff; text-transform:uppercase; letter-spacing:1px;">Content Blocks</h4>
+                    <div style="display: flex; gap: 1rem; align-items: center; justify-content: flex-end;">
                         <div style="display: flex; gap: 12px; align-items: center; background: rgba(255,255,255,0.02); padding: 0.4rem 0.8rem; border-radius: 8px; border: 1px solid var(--border);">
-                            <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor: pointer;">
+                            <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor: pointer; min-width: auto; margin: 0;">
                                 <input type="checkbox" id="modalBlockRadTop" onchange="updateSelectedBlockCorners()" disabled> Top Round
                             </label>
-                            <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor: pointer;">
-                                <input type="checkbox" id="modalBlockRadBot" onchange="updateSelectedBlockCorners()" disabled> Bot Round
+                            <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor: pointer; min-width: auto; margin: 0;">
+                                <input type="checkbox" id="modalBlockRadBot" onchange="updateSelectedBlockCorners()" disabled> Bottom Round
                             </label>
                         </div>
                     </div>
@@ -1142,17 +1136,18 @@
                 const highlightOutline = isSelected ? 'outline: 3px solid #3b82f6; outline-offset: 4px;' : '';
 
                 if (b.type === 'text') {
-                    content = `<div style="max-width: 48rem; font-size: clamp(14px,1vw,16px); color: #444; line-height: 1.8; padding: 2rem 0; ${highlightOutline}">${b.content.replace(/\n/g, '<br>')}</div>`;
+                    // Styled to match the secondary heading text style on the home page
+                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; font-family: 'Outfit', sans-serif; font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 500; color: #111; line-height: 1.6; padding: 2rem 0; ${highlightOutline}">${b.content.replace(/\n/g, '<br>')}</div>`;
                 } else if (b.type === 'media' || b.type === 'image' || b.type === 'video') {
-                    content = `<div style="overflow: hidden; width: 100%; display: block; ${radiusClass} ${marginClass} ${highlightOutline}">
+                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; overflow: hidden; width: 100%; display: block; ${radiusClass} ${marginClass} ${highlightOutline}">
                                   ${b.url && b.url.match(/\.(mp4|webm)$/i) ? 
-                                    `<video src="${b.url}" muted loop autoplay playsinline style="width: 100%; display: block;"></video>` : 
-                                    `<img src="${b.url}" alt="Project detail" style="width: 100%; display: block;">`}
+                                    `<video src="${b.url}" muted loop autoplay playsinline style="width: 100%; display: block; pointer-events: none;"></video>` : 
+                                    `<img src="${b.url}" alt="Project detail" style="width: 100%; display: block; pointer-events: none;">`}
                                </div>`;
                 } else if (b.type === 'spacing') {
-                    content = `<div style="height: 3rem; background: ${isSelected ? 'rgba(59, 130, 246, 0.1)' : 'transparent'}; ${highlightOutline}"></div>`;
+                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; height: 3rem; background: ${isSelected ? 'rgba(59, 130, 246, 0.1)' : 'transparent'}; ${highlightOutline}"></div>`;
                 } else if (b.type === 'divider') {
-                    content = `<hr style="border: none; border-top: 1px solid #E5E5E5; margin: 2rem 0; ${highlightOutline}">`;
+                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; padding: 1rem 0;"><hr style="border: none; border-top: 1px solid #E5E5E5; margin: 0; ${highlightOutline}"></div>`;
                 }
                 return content;
             }).join('');
@@ -1526,17 +1521,21 @@
                     <div style="padding:1rem; display:flex; flex-direction:column; gap:1.2rem;">
                         ${insertionToolbar}
                         <div>
-                            <label>Selected Banner Container</label>
-                            <div style="width: 100%; height: 120px; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; position: relative;">
-                                ${data.bannerImage ? `<img src="${data.bannerImage}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Mesh Gradient Background</div>`}
+                            <label style="display:flex; justify-content:space-between; align-items:center;">
+                                Selected Banner
+                                ${data.bannerImage ? `<div class="btn-close" onclick="removeInspectorBanner()" style="position:static; width:24px; height:24px; min-width:24px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>` : ''}
+                            </label>
+                            <div id="inspectorBannerPreviewContainer" style="width: 100%; height: 120px; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 1rem;">
+                                ${data.bannerImage ? (data.bannerImage.match(/\.(mp4|webm)$/i) ? `<video src="${data.bannerImage}" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>` : `<img src="${data.bannerImage}" style="width: 100%; height: 100%; object-fit: cover;">`) : `<div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px;">Mesh Gradient</div>`}
                             </div>
-                        </div>
-                        <div>
-                            <label>Upload Banner Image</label>
-                            <input type="file" id="inspectorBannerFile" accept="image/*" style="font-size: 0.85rem;">
+                            <input type="file" id="inspectorBannerFile" accept="image/*, video/mp4, video/webm" style="display: none;" onchange="previewInspectorBanner(this)">
+                            <button class="btn-sm" onclick="document.getElementById('inspectorBannerFile').click()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--border); background: var(--input-bg);">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                Upload Banner
+                            </button>
                         </div>
                         <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
-                            <button class="btn-primary" id="inspector-apply-banner-btn" onclick="applyBannerChanges()" style="flex: 1; padding: 0.8rem 1rem; font-size: 0.85rem;">Apply</button>
+                            <button class="btn-primary" id="inspector-apply-banner-btn" onclick="applyBannerChanges()" style="flex: 1; padding: 0.8rem 1rem; font-size: 0.85rem;">Apply Changes</button>
                         </div>
                     </div>
                 `;
@@ -1671,6 +1670,38 @@
             // Clear inspector since element might no longer exist or properties might have changed
             renderInspector(null);
             showToast('Reverted previous action');
+        }
+
+        // ———— Banner Inspection ————
+        function removeInspectorBanner() {
+            if (!currentSelectedData) return;
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({
+                source: 'cms-dashboard',
+                action: 'update-banner',
+                id: currentSelectedData.id,
+                data: { val: '' }
+            }, '*');
+            
+            showToast('Banner removed');
+            currentSelectedData.bannerImage = '';
+            renderInspector(currentSelectedData);
+        }
+
+        function previewInspectorBanner(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                const file = input.files[0];
+                reader.onload = function(e) {
+                    const container = document.getElementById('inspectorBannerPreviewContainer');
+                    if (file.type.startsWith('video/')) {
+                        container.innerHTML = `<video src="${e.target.result}" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>`;
+                    } else {
+                        container.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         async function applyBannerChanges() {
