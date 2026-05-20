@@ -9,28 +9,37 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         :root {
-            --bg: #000000;
+            --bg: #0A0A0A;
             --rail-w: 64px;
             --panel-w: 240px;
             --inspector-w: 300px;
             --topbar-h: 64px;
-            --border: rgba(255,255,255,0.06);
+            --border: #222222;
             --accent: #ffffff;
             --accent2: #3b82f6;
             --danger: #ef4444;
             --success: #10b981;
-            --muted: #71717a;
-            --input-bg: rgba(255,255,255,0.04);
-            --card: #0a0a0a;
+            --muted: #888888;
+            --input-bg: #141414;
+            --card: #141414;
             
+            /* Box Shadow for depth */
+            --shadow-subtle: 0 4px 12px rgba(0,0,0,0.4);
+
             /* Parallel Radii */
-            --radius-outer: 24px;
-            --radius-padding: 8px;
+            --radius-outer: 12px;
+            --radius-padding: 4px;
             --radius-inner: calc(var(--radius-outer) - var(--radius-padding));
         }
 
         * { margin:0; padding:0; box-sizing:border-box; transition: none !important; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #444444; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555555; }
 
         /* 1. Sidebar Rail */
         .sidebar-rail {
@@ -42,14 +51,14 @@
             color: var(--muted); margin-bottom: 1rem; cursor: pointer; transition: all 0.2s;
         }
         .rail-item:hover, .rail-item.active { background: rgba(255,255,255,0.05); color: #fff; }
-        .rail-item svg { width: 18px; height: 18px; }
+        .rail-item svg { width: 20px; height: 20px; stroke-width: 2px; }
 
         /* 2. Main Workspace */
         .workspace-main { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--bg); }
         
         .top-bar {
             height: var(--topbar-h); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; background: #000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; background: var(--bg);
         }
         .top-bar .title { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         
@@ -66,7 +75,7 @@
         .stage-view.active { display: flex; }
         
         .side-panel {
-            width: var(--panel-w); background: #080808; border-right: 1px solid var(--border);
+            width: var(--panel-w); background: var(--bg); border-right: 1px solid var(--border);
             display: flex; flex-direction: column; overflow-y: auto;
         }
         .panel-header { padding: 1.25rem; border-bottom: 1px solid var(--border); }
@@ -89,63 +98,72 @@
         }
 
         .inspector-panel {
-            width: var(--inspector-w); background: #080808; border-left: 1px solid var(--border);
+            width: var(--inspector-w); background: var(--bg); border-left: 1px solid var(--border);
             display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s ease;
         }
         .inspector-panel.active { transform: translateX(0); }
 
         /* Legacy Dashboard Components (Optimized) */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
-        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 2rem; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-subtle); }
         .stat-num { font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem; }
         .stat-label { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
 
-        .form-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; margin-bottom: 2.5rem; }
-        .form-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.2rem; margin-bottom: 1.5rem; }
+        .form-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-subtle); }
+        .form-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.2rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
 
-        .form-group { margin-bottom: 1.25rem; }
-        label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 0.75rem; font-weight: 700; }
+        .form-group { margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 16px; }
+        .form-group.col { flex-direction: column; align-items: flex-start; }
+        label { font-size: 14px; color: var(--muted); font-weight: 500; margin: 0; flex-shrink: 0; min-width: 150px; }
         input[type=text], input[type=password], select, textarea, input[type=number] {
-            width: 100%; padding: 1rem 1.2rem; background: var(--input-bg);
-            border: 1px solid transparent; border-radius: 14px; color: #fff;
-            font-size: 0.9rem; outline: none;
+            width: 100%; padding: 10px 14px; background: var(--input-bg);
+            border: 1px solid var(--border); border-radius: 8px; color: #fff;
+            font-size: 14px; outline: none; flex: 1;
         }
-        input:focus, select:focus, textarea:focus { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent2); }
 
-        .btn-primary { background: #fff; color: #000; border: none; padding: 1rem 2rem; border-radius: 50px; font-weight: 800; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.9rem; transition: transform 0.2s; }
-        .btn-primary:hover { transform: scale(1.02); }
-        .btn-sm { padding: 0.6rem 1.2rem; background: var(--input-bg); border: none; border-radius: 12px; color: #fff; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
-        .btn-danger { background: var(--danger); color: #fff; border: none; padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        /* Buttons */
+        .btn-primary { background: var(--accent2); color: #fff; border: none; padding: 10px 20px; min-height: 40px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-primary:hover { filter: brightness(1.1); }
+        .btn-sm { padding: 10px 20px; min-height: 40px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-sm:hover { background: rgba(255,255,255,0.05); }
+        .btn-sm.active { background: rgba(255,255,255,0.1) !important; border-color: rgba(255,255,255,0.2) !important; color: #fff !important; }
+        .btn-danger { background: var(--danger); color: #fff; border: none; padding: 10px 20px; min-height: 40px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-danger:hover { filter: brightness(1.1); }
+        
+        .btn-close { width: 32px; height: 32px; min-width: 32px; border-radius: 50%; background: #222222; border: 1px solid var(--border); color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+        .btn-close:hover { background: #333333; color: #fff; }
+        .btn-close svg { width: 16px; height: 16px; }
 
-        .item-row { display: flex; align-items: center; justify-content: space-between; background: var(--input-bg); border-radius: 16px; padding: 1.2rem; margin-bottom: 0.8rem; border: 1px solid transparent; }
+        .item-row { display: flex; align-items: center; justify-content: space-between; background: var(--input-bg); border-radius: 8px; padding: 1.2rem; margin-bottom: 0.8rem; border: 1px solid var(--border); }
         .item-name { font-weight: 700; font-size: 0.95rem; }
         .item-meta { color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem; }
-        .item-thumb { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+        .item-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
 
         .btn-view-toggle {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px;
-            padding: 0.6rem 1rem; font-size: 0.75rem; font-weight: 800; color: var(--muted);
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
+            background: transparent; border: 1px solid var(--border); border-radius: 8px;
+            padding: 8px 16px; font-size: 14px; font-weight: 600; color: var(--muted);
+            display: flex; align-items: center; gap: 8px; cursor: pointer; min-height: 40px;
         }
-        .btn-view-toggle:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+        .btn-view-toggle:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
 
         /* Toast */
-        .toast { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; background: var(--success); border-radius: 16px; color: #000; font-weight: 800; font-size: 0.9rem; transform: translateY(100px); opacity: 0; z-index: 2000; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .toast { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; background: var(--success); border-radius: 8px; color: #fff; font-weight: 600; font-size: 14px; transform: translateY(100px); opacity: 0; z-index: 2000; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .toast.show { transform: translateY(0); opacity: 1; }
         
         /* Dropdowns */
-        .custom-dropdown { position: relative; width: 100%; }
-        .custom-dropdown-selected { width: 100%; padding: 1rem 1.2rem; background: var(--input-bg); border-radius: 14px; border: 1px solid transparent; color: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        .custom-dropdown-options { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: #0a0a0a; border: 1px solid var(--border); border-radius: 16px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; padding: 6px; }
+        .custom-dropdown { position: relative; width: 100%; flex: 1; }
+        .custom-dropdown-selected { width: 100%; padding: 10px 14px; background: var(--input-bg); border-radius: 8px; border: 1px solid var(--border); color: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+        .custom-dropdown-options { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--card); border: 1px solid var(--border); border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; padding: 6px; box-shadow: var(--shadow-subtle); }
         .custom-dropdown-options.show { display: block; }
-        .custom-dropdown-option { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; color: var(--muted); }
+        .custom-dropdown-option { padding: 10px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; color: var(--muted); }
         .custom-dropdown-option:hover { background: rgba(255,255,255,0.05); color: #fff; }
 
         /* Preview Cards */
-        .homepage-card-preview { width: 300px; height: 220px; margin: 0 auto 1.5rem; background: #000; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: grab; }
+        .homepage-card-preview { width: 300px; height: 220px; margin: 0 auto 1.5rem; background: #000; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: grab; }
         .preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: center center; }
         .card-overlay-sim { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; }
-        .card-overlay-sim .cat { font-size: 7px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+        .card-overlay-sim .cat { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
         .card-overlay-sim .title { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 800; margin-top: 4px; }
 
         .split-project-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2.5rem; }
@@ -158,7 +176,8 @@
         /* Block Modal */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; }
         .modal-overlay.open { display: flex; }
-        .modal { background: var(--bg); border: 1px solid var(--border); border-radius: 32px; padding: 2.5rem; width: 95%; max-width: 1000px; max-height: 90vh; overflow-y: auto; }
+        .modal { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; width: 95%; max-width: 1000px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-subtle); }
+
         .modal-close { background: var(--danger); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; font-weight: bold; cursor: pointer; margin-left: auto; display: block; margin-bottom: -32px; position: relative; z-index: 10; }
         
         /* Banner Simulation */
@@ -357,7 +376,7 @@
                                 
                                 <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
                                     <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 300px; height: 220px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
-                                        <div class="remove-cover-btn" onclick="removeCover(event)">&times;</div>
+                                        <div class="btn-close" style="position: absolute; top: 1rem; right: 1rem; z-index: 10;" onclick="removeCover(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                                         <img id="coverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
                                         <div class="card-overlay-sim">
                                             <div class="cat" id="previewCat">CATEGORY</div>
@@ -523,7 +542,7 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h3 style="margin: 0; font-size: 1.25rem;">Project Editor</h3>
-                    <button class="modal-close" onclick="closeBlockModal()" style="position: static; margin: 0;">×</button>
+                    <button class="btn-close" onclick="closeBlockModal()" style="position: static; margin: 0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
                 </div>
 
                 <!-- Top Section: Metadata & Cover -->
@@ -549,7 +568,7 @@
                     <div class="form-group">
                         <label style="display: flex; justify-content: space-between; align-items: center;">
                             Cover Thumbnail
-                            <div class="remove-cover-btn" onclick="removeModalCover(event)" style="position: static; display: inline-flex; width: 20px; height: 20px;">&times;</div>
+                            <div class="btn-close" onclick="removeModalCover(event)" style="position: static; display: flex; width: 32px; height: 32px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                         </label>
                         <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; justify-content: center;">
                             <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 100%; max-width: 320px; height: 200px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
@@ -782,7 +801,7 @@
             container.innerHTML = selectedProjCategories.map(c => `
                 <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); padding:6px 14px; border-radius:50px; font-size:11px; font-weight:600; display:flex; align-items:center; gap:8px;">
                     ${c.name}
-                    <span onclick="removeCategoryFromProject('${c.id}')" style="cursor:pointer; color:var(--danger);">&times;</span>
+                    <span class="btn-close" onclick="removeCategoryFromProject('${c.id}')" style="width: 20px; height: 20px; min-width: 20px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></span>
                 </div>
             `).join('');
         }
@@ -883,8 +902,9 @@
                 img.style = 'width: 100%; height: 100%; object-fit: cover;';
                 
                 const deleteBtn = document.createElement('div');
-                deleteBtn.innerHTML = '&times;';
-                deleteBtn.style = 'position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,0.6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);';
+                deleteBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
+                deleteBtn.className = 'btn-close';
+                deleteBtn.style = 'position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; min-width: 24px; z-index: 10;';
                 deleteBtn.onclick = () => removeGalleryFile(index);
 
                 wrapper.appendChild(img);
@@ -1093,7 +1113,7 @@
             container.innerHTML = modalSelectedCategories.map(c => `
                 <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); padding:6px 14px; border-radius:50px; font-size:11px; font-weight:600; display:flex; align-items:center; gap:8px;">
                     ${c.name}
-                    <span onclick="removeCategoryFromModalProject('${c.id}')" style="cursor:pointer; color:var(--danger);">&times;</span>
+                    <span class="btn-close" onclick="removeCategoryFromModalProject('${c.id}')" style="width: 20px; height: 20px; min-width: 20px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></span>
                 </div>
             `).join('');
         }
@@ -1174,7 +1194,7 @@
                 div.style.cssText = "position: relative; width: 64px; height: 64px; border-radius: 8px; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1);";
                 div.innerHTML = `
                     <img src="${url}" style="width:100%; height:100%; object-fit:cover;">
-                    <div onclick="removeModalGalleryFile(${i}, true)" style="position:absolute; top:2px; right:2px; background:rgba(0,0,0,0.6); color:white; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; font-size:10px; cursor:pointer;">&times;</div>
+                    <div class="btn-close" onclick="removeModalGalleryFile(${i}, true)" style="position:absolute; top:4px; right:4px; width: 24px; height: 24px; min-width: 24px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                 `;
                 row.appendChild(div);
             });
@@ -1186,7 +1206,7 @@
                 reader.onload = (e) => {
                     div.innerHTML = `
                         <img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">
-                        <div onclick="removeModalGalleryFile(${i}, false)" style="position:absolute; top:2px; right:2px; background:rgba(0,0,0,0.6); color:white; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; font-size:10px; cursor:pointer;">&times;</div>
+                        <div class="btn-close" onclick="removeModalGalleryFile(${i}, false)" style="position:absolute; top:4px; right:4px; width: 24px; height: 24px; min-width: 24px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                     `;
                 };
                 reader.readAsDataURL(file);
