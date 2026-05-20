@@ -5,3 +5,8 @@ node_modules/
 database.json
 .gemini/
 db.json
+.vercel
+  
+update_*.js  
+test_*.js  
+.env.prod 
