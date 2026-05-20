@@ -505,15 +505,29 @@
     </main>
 
     <!-- Block Builder Modal -->
-    <!-- Block Builder Modal -->
-    <div class="modal-overlay" id="blockModal">
-        <div class="modal" style="max-width: 1000px; padding: 2rem;">
-            <button class="modal-close" onclick="closeBlockModal()" style="position: sticky; top: -10px; float: right; right: -10px; z-index: 100; margin-bottom: -30px;">×</button>
-            <h3 id="modalProjectTitle" style="margin-bottom: 2rem;">Edit Project</h3>
+    <!-- Full-Screen Split Workspace (Live Editor) -->
+    <div id="blockWorkspace" style="display: none; position: fixed; inset: 0; z-index: 1000; background: var(--bg); flex-direction: row; overflow: hidden;">
+        <!-- Left Window: Live Preview Stage -->
+        <div class="live-preview-window" style="width: 65%; height: 100%; border-right: 1px solid var(--border); overflow-y: auto; background: #ffffff; position: relative;">
+            <div style="padding: 40px; font-family: 'Inter', sans-serif; color: #111;">
+                <h1 id="livePreviewTitle" style="font-size: clamp(32px,4vw,48px); font-weight: bold; text-align: center; margin-bottom: 2rem; font-family: 'Outfit', sans-serif;">Project Title</h1>
+                <div id="livePreviewBlocks" style="display: flex; flex-direction: column; max-width: 1200px; margin: 0 auto; gap: 0;">
+                    <!-- Blocks injected here instantly by JS -->
+                </div>
+            </div>
+        </div>
 
-            <div class="split-project-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
-                <!-- Left Column: Inputs & Gallery -->
-                <div class="inputs-col" style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <!-- Right Window: Configuration Sidebar -->
+        <div class="config-sidebar" style="width: 35%; height: 100%; display: flex; flex-direction: column; background: var(--bg); position: relative;">
+            <div style="flex: 1; overflow-y: auto; padding: 2rem;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h3 style="margin: 0; font-size: 1.25rem;">Project Editor</h3>
+                    <button class="modal-close" onclick="closeBlockModal()" style="position: static; margin: 0;">×</button>
+                </div>
+
+                <!-- Top Section: Metadata & Cover -->
+                <div class="inputs-col" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
                     <div class="form-group">
                         <label>Edit Title</label>
                         <input type="text" id="modalProjTitleEdit" oninput="updateModalPreviewText()">
@@ -531,96 +545,72 @@
                         <div id="modalSelectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
                     </div>
 
+                    <!-- Cover Thumbnail Config -->
                     <div class="form-group">
-                        <label>Project Gallery Images</label>
-                        <div style="display: flex; gap: 1rem; align-items: center;">
-                            <input type="file" id="modalGalleryUploadInput" multiple accept="image/*" onchange="handleModalGalleryUpload(this)" style="display: none;">
-                            <button class="btn-sm" onclick="document.getElementById('modalGalleryUploadInput').click()" style="display: flex; align-items: center; gap: 8px;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                                Upload Images
-                            </button>
-                            <span style="font-size:0.75rem; color:var(--muted);">Multi-select supported.</span>
-                        </div>
-                        <div class="gallery-thumb-row" id="modalGalleryThumbRow" style="display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; margin-top: 10px; min-height: 84px; border: 1px dashed var(--border); border-radius: 14px; background: rgba(0,0,0,0.1); padding-left: 10px; align-items: center;">
-                            <span id="modalGalleryEmptyText" style="font-size:0.75rem; color:var(--muted); margin: auto;">No gallery images uploaded yet.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Column: Cover Thumbnail -->
-                <div style="height: fit-content; padding-left: 0.5rem;">
-                    <h3 style="margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted);">Cover Thumbnail</h3>
-                    <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center; justify-content: center; margin-top: 1rem;">
-                        <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 100%; max-width: 320px; height: 240px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
-                            <div class="remove-cover-btn" onclick="removeModalCover(event)">&times;</div>
-                            <img id="modalCoverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-                            <div class="card-overlay-sim">
-                                <div class="cat" id="modalPreviewCat">CATEGORY</div>
-                                <div class="title" id="modalPreviewTitle">Project Title</div>
+                        <label style="display: flex; justify-content: space-between; align-items: center;">
+                            Cover Thumbnail
+                            <div class="remove-cover-btn" onclick="removeModalCover(event)" style="position: static; display: inline-flex; width: 20px; height: 20px;">&times;</div>
+                        </label>
+                        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; justify-content: center;">
+                            <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 100%; max-width: 320px; height: 200px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
+                                <img id="modalCoverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+                                <div class="card-overlay-sim">
+                                    <div class="cat" id="modalPreviewCat">CATEGORY</div>
+                                    <div class="title" id="modalPreviewTitle">Project Title</div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 0.8rem; width: 100%; max-width: 320px;">
-                            <input type="file" id="modalProjImage" onchange="handleModalCoverUpload(this)" style="display: none;">
-                            <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                                Upload Cover
-                            </button>
-                            <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 4px;">
-                                <label style="font-size: 9px; color: var(--muted); font-weight: 800; text-transform: uppercase;">Zoom Level</label>
-                                <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="display: flex; gap: 1rem; width: 100%; align-items: center;">
+                                <input type="file" id="modalProjImage" onchange="handleModalCoverUpload(this)" style="display: none;">
+                                <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                    Upload Cover
+                                </button>
+                                <div style="display: flex; flex: 1; align-items: center; gap: 8px;">
                                     <input type="range" id="modalCoverZoomSlider" min="1" max="3" step="0.05" value="1" oninput="updateModalCoverTransform()" style="width: 100%; accent-color: white;">
                                     <span id="modalCoverZoomVal" style="font-size: 10px; color: var(--muted); min-width: 24px;">1.0x</span>
                                 </div>
                             </div>
-                            <span style="font-size: 10px; color: var(--muted); line-height: 1.4; text-align: center;">Drag the image inside the preview container to reposition it.</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <hr style="border: none; height: 1px; background: var(--border); margin: 2.5rem 0;">
+                <hr style="border: none; height: 1px; background: var(--border); margin: 2rem 0;">
 
-            <!-- Block Sequence Section -->
-            <div style="display: flex; gap: 2rem; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem;">
-                <h4 style="margin: 0; font-size:1rem; color:#fff; text-transform:uppercase; letter-spacing:1px; flex-shrink: 0;">Sequential Content Blocks</h4>
-                
-                <!-- Block Corner Controls (Only active when block selected) -->
-                <div style="display: flex; gap: 12px; align-items: center; background: rgba(255,255,255,0.02); padding: 0.5rem 1rem; border-radius: 12px; border: 1px solid var(--border);">
-                    <span style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-right: 8px;">Selected Block Corners:</span>
-                    <label style="display:flex; align-items:center; gap:6px; font-size:12px; cursor: pointer;">
-                        <input type="checkbox" id="modalBlockRadTop" onchange="updateSelectedBlockCorners()" disabled> Top Round
-                    </label>
-                    <label style="display:flex; align-items:center; gap:6px; font-size:12px; cursor: pointer;">
-                        <input type="checkbox" id="modalBlockRadBot" onchange="updateSelectedBlockCorners()" disabled> Bot Round
-                    </label>
-                </div>
-            </div>
-            
-            <!-- Removed the standalone Media Image upload and Bulk Storage sections -->
-            
-            <!-- Block List -->
-            <div class="block-list" id="blockList" style="min-height: 150px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; margin-bottom: 2rem;"></div>
-
-            <!-- Block Insertion Toolbar -->
-            <div style="display: flex; gap: 2rem; align-items: flex-start; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem;">
-                <div style="flex:1;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted);">Add Text Block</label>
-                    <textarea id="blockText" rows="3" placeholder="Write a paragraph..." style="width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; color: #fff; resize: vertical; margin-bottom: 0.5rem;"></textarea>
-                    <button class="btn-sm" style="width: 100%;" onclick="addBlock('text')">+ Insert Text</button>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted);">Layout Spacers</label>
-                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
-                        <button class="btn-sm" onclick="addBlock('spacing')">+ Insert Spacing</button>
-                        <button class="btn-sm" onclick="addBlock('divider')">+ Insert Divider</button>
+                <!-- Middle Section: Sequential Content Blocks -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between;">
+                        <h4 style="margin: 0; font-size:1rem; color:#fff; text-transform:uppercase; letter-spacing:1px;">Content Blocks</h4>
+                        <div style="display: flex; gap: 12px; align-items: center; background: rgba(255,255,255,0.02); padding: 0.4rem 0.8rem; border-radius: 8px; border: 1px solid var(--border);">
+                            <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor: pointer;">
+                                <input type="checkbox" id="modalBlockRadTop" onchange="updateSelectedBlockCorners()" disabled> Top Round
+                            </label>
+                            <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor: pointer;">
+                                <input type="checkbox" id="modalBlockRadBot" onchange="updateSelectedBlockCorners()" disabled> Bot Round
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="block-list" id="blockList" style="min-height: 120px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 1rem;"></div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem;">
+                        <textarea id="blockText" rows="2" placeholder="Write a paragraph..." style="width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem; color: #fff; resize: vertical;"></textarea>
+                        
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button class="btn-sm" style="flex: 1;" onclick="addBlock('text')">+ Text</button>
+                            <input type="file" id="modalBlockImageUpload" multiple accept="image/*" onchange="addMediaBlocks(this)" style="display: none;">
+                            <button class="btn-sm" style="flex: 1;" onclick="document.getElementById('modalBlockImageUpload').click()">+ Image</button>
+                            <button class="btn-sm" style="flex: 1;" onclick="addBlock('spacing')">+ Space</button>
+                            <button class="btn-sm" style="flex: 1;" onclick="addBlock('divider')">+ Divider</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
-            <!-- Save Draft / Publish Buttons -->
-            <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
-                <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; flex: 1; padding: 1rem;" onclick="saveProjectModal('draft')">Save as Draft</button>
+            <!-- Bottom Section: Global Actions -->
+            <div style="padding: 1.5rem; background: var(--card); border-top: 1px solid var(--border); display: flex; gap: 1rem; position: sticky; bottom: 0;">
+                <button class="btn-sm" style="background: transparent; border: 1px solid var(--border); color: #fff; padding: 1rem;" onclick="closeBlockModal()">Cancel</button>
+                <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; flex: 1; padding: 1rem;" onclick="saveProjectModal('draft')">Save Draft</button>
                 <button class="btn-primary" style="flex: 1; padding: 1rem;" onclick="saveProjectModal('published')">Publish</button>
             </div>
         </div>
@@ -660,15 +650,23 @@
             
             const title = document.getElementById('workspace-title');
             if (name === 'editor') {
-                if (title) title.textContent = 'Visual Stage Editor';
+                if (title) title.textContent = 'Visual Editor';
                 const iframe = document.getElementById('visual-iframe');
                 // Set the iframe URL dynamically
                 iframe.src = '/index.html?edit=true&embedded=true';
             } else {
-                if (title) title.textContent = 'Management Grid';
-                if (name === 'overview') loadCategories();
-                if (name === 'projects') loadProjects();
-                if (name === 'settings') loadSettings();
+                if (name === 'overview') {
+                    if (title) title.textContent = 'Overview';
+                    loadCategories();
+                } else if (name === 'projects') {
+                    if (title) title.textContent = 'Projects';
+                    loadProjects();
+                } else if (name === 'settings') {
+                    if (title) title.textContent = 'Settings';
+                    loadSettings();
+                } else {
+                    if (title) title.textContent = 'Management Grid';
+                }
             }
             updateStats();
         }
@@ -1017,6 +1015,7 @@
 
         async function openBlockModal(projectId, title) {
             currentProjectId = projectId;
+            document.getElementById('blockWorkspace').style.display = 'flex';
             document.getElementById('modalProjectTitle').textContent = 'Edit Project';
             document.getElementById('blockModal').classList.add('open');
             modalSelectedBlockId = null;
@@ -1061,6 +1060,7 @@
         }
 
         function closeBlockModal() {
+            document.getElementById('blockWorkspace').style.display = 'none';
             document.getElementById('blockModal').classList.remove('open');
         }
 
@@ -1101,8 +1101,41 @@
         function updateModalPreviewText() {
             const title = document.getElementById('modalProjTitleEdit').value || 'Project Title';
             document.getElementById('modalPreviewTitle').textContent = title;
+            document.getElementById('livePreviewTitle').textContent = title;
             const catNames = modalSelectedCategories.length ? modalSelectedCategories.map(c => c.name).join(', ') : 'CATEGORY';
             document.getElementById('modalPreviewCat').textContent = catNames.toUpperCase();
+        }
+
+        // --- Live Preview Rendering ---
+        function renderLivePreview() {
+            const container = document.getElementById('livePreviewBlocks');
+            if (!modalCurrentProject) return;
+            
+            const sortedBlocks = [...(modalCurrentProject.blocks || [])].sort((a,b) => a.order - b.order);
+            
+            container.innerHTML = sortedBlocks.map(b => {
+                let content = '';
+                const radiusClass = `${b.layout && b.layout.topRound ? 'border-top-left-radius: 32px; border-top-right-radius: 32px;' : ''} ${b.layout && b.layout.bottomRound ? 'border-bottom-left-radius: 32px; border-bottom-right-radius: 32px;' : ''}`;
+                const marginClass = 'margin-bottom: 32px;';
+                
+                const isSelected = modalSelectedBlockId === (b._id || b.id);
+                const highlightOutline = isSelected ? 'outline: 3px solid #3b82f6; outline-offset: 4px;' : '';
+
+                if (b.type === 'text') {
+                    content = `<div style="max-width: 48rem; font-size: clamp(14px,1vw,16px); color: #444; line-height: 1.8; padding: 2rem 0; ${highlightOutline}">${b.content.replace(/\n/g, '<br>')}</div>`;
+                } else if (b.type === 'media' || b.type === 'image' || b.type === 'video') {
+                    content = `<div style="overflow: hidden; width: 100%; display: block; ${radiusClass} ${marginClass} ${highlightOutline}">
+                                  ${b.url && b.url.match(/\.(mp4|webm)$/i) ? 
+                                    `<video src="${b.url}" muted loop autoplay playsinline style="width: 100%; display: block;"></video>` : 
+                                    `<img src="${b.url}" alt="Project detail" style="width: 100%; display: block;">`}
+                               </div>`;
+                } else if (b.type === 'spacing') {
+                    content = `<div style="height: 3rem; background: ${isSelected ? 'rgba(59, 130, 246, 0.1)' : 'transparent'}; ${highlightOutline}"></div>`;
+                } else if (b.type === 'divider') {
+                    content = `<hr style="border: none; border-top: 1px solid #E5E5E5; margin: 2rem 0; ${highlightOutline}">`;
+                }
+                return content;
+            }).join('');
         }
 
         // --- Modal Gallery Logic ---
@@ -1228,7 +1261,7 @@
 
         // --- Block Logic ---
         async function loadBlocks() {
-            if (!modalCurrentProject || modalCurrentProject.id !== currentProjectId) {
+            if (!modalCurrentProject || (modalCurrentProject.id && modalCurrentProject.id !== currentProjectId) || (modalCurrentProject._id && modalCurrentProject._id !== currentProjectId)) {
                 const res = await fetch('/api/projects/' + currentProjectId);
                 modalCurrentProject = await res.json();
             }
@@ -1236,7 +1269,7 @@
             const list = document.getElementById('blockList');
             list.innerHTML = (modalCurrentProject.blocks || []).map(b => {
                 let thumbHtml = '';
-                if (b.type === 'media' && b.url) {
+                if ((b.type === 'media' || b.type === 'image') && b.url) {
                     if (b.url.match(/\.(mp4|webm)$/i)) {
                         thumbHtml = `<div style="width:40px; height:40px; background:#222; border-radius:6px; display:flex; align-items:center; justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>`;
                     } else {
@@ -1270,6 +1303,7 @@
                 modalSelectedBlockId = null;
             }
             updateBlockCornersUI();
+            renderLivePreview();
         }
         
         function selectBlock(id) {
@@ -1327,11 +1361,32 @@
         async function addBlock(type) {
             const fd = new FormData();
             fd.append('type', type);
-            if (type === 'text') fd.append('content', document.getElementById('blockText').value);
-            // We removed media upload from the block form, so no image files are appended here
+            if (type === 'text') {
+                const val = document.getElementById('blockText').value.trim();
+                if (!val) return;
+                fd.append('content', val);
+            }
             
             await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
             if (type === 'text') document.getElementById('blockText').value = '';
+            
+            // force fresh fetch
+            const res = await fetch('/api/projects/' + currentProjectId);
+            modalCurrentProject = await res.json();
+            loadBlocks();
+        }
+        
+        async function addMediaBlocks(input) {
+            const files = Array.from(input.files);
+            if (!files.length) return;
+            
+            for (let f of files) {
+                const fd = new FormData();
+                fd.append('type', 'image');
+                fd.append('image', f);
+                await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
+            }
+            input.value = '';
             
             // force fresh fetch
             const res = await fetch('/api/projects/' + currentProjectId);
