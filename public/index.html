@@ -119,7 +119,7 @@
         .glass-nav {
             @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm flex flex-col justify-start overflow-hidden;
             height: 50px;
-            border-radius: var(--nav-radius) !important;
+            border-radius: 50px !important;
             transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
                         border-radius 0.4s ease;
             z-index: 100;
@@ -167,27 +167,10 @@
         }
 
         /* Scrolled state: dock to top edge */
-        header.scrolled {
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            padding: 0 !important;
-        }
-        header.scrolled .glass-nav {
-            border-radius: 0 !important;
-            border-left: none;
-            border-right: none;
-            border-top: none;
-            width: 100%;
-            max-width: 100%;
-        }
-        header.scrolled .beading-frame {
-            display: none;
-        }
-        header.scrolled .nav-main-row {
-            padding-left: var(--global-padding-desktop) !important;
-            padding-right: var(--global-padding-desktop) !important;
-        }
+        
+        
+        
+        
 
         .btn-invert:hover {
             background-color: white !important;
@@ -216,15 +199,12 @@
                 padding-left: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
                 padding-right: calc(var(--global-padding-tablet) - var(--hero-outer-padding) - var(--nav-inset)) !important;
             }
-            header.scrolled .nav-main-row {
-                padding-left: var(--global-padding-tablet) !important;
-                padding-right: var(--global-padding-tablet) !important;
-            }
+            
         }
 
         @media (max-width: 860px) {
             :root {
-                --radius-outer: 24px;
+                --radius-outer: 32px;
                 --radius-padding: 8px;
                 --radius-inner: calc(var(--radius-outer) - var(--radius-padding));
                 --banner-radius: var(--radius-outer);
@@ -235,13 +215,8 @@
                 padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
                 padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding) - var(--nav-inset)) !important;
             }
-            header.scrolled .nav-main-row {
-                padding-left: var(--global-padding-mobile) !important;
-                padding-right: var(--global-padding-mobile) !important;
-            }
-            header.scrolled .glass-nav {
-                border-radius: 0 !important;
-            }
+            
+            
         }
 
         /* Beading Frame Logic */
@@ -388,7 +363,7 @@
         }
         .glass-nav{display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;border-width:1px;border-color:rgb(255 255 255 / 0.2);background-color:rgb(255 255 255 / 0.8);--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
             height: 50px;
-            border-radius: var(--nav-radius) !important;
+            border-radius: 50px !important;
             transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
                         border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
                         padding 0.5s cubic-bezier(0.4, 0, 0.2, 1)}
@@ -438,27 +413,10 @@
         /* Hamburger Animation Removed */
 
         /* Scrolled state: dock to top edge */
-        header.scrolled {
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            padding: 0 !important;
-        }
-        header.scrolled .glass-nav {
-            border-radius: 0 !important;
-            border-left: none;
-            border-right: none;
-            border-top: none;
-            width: 100%;
-            max-width: 100%;
-        }
-        header.scrolled .beading-frame {
-            display: none;
-        }
-        header.scrolled .nav-main-row {
-            padding-left: var(--global-padding-desktop) !important;
-            padding-right: var(--global-padding-desktop) !important;
-        }
+        
+        
+        
+        
 
         /* Hover Inversion Removed */
         .btn-invert:hover {
@@ -485,7 +443,7 @@
 
         @media (max-width: 1279px) and (min-width: 861px) {
             :root {
-                --radius-outer: 24px;
+                --radius-outer: 32px;
                 --radius-padding: 8px;
                 --radius-inner: calc(var(--radius-outer) - var(--radius-padding));
                 --banner-radius: var(--radius-outer);
@@ -496,13 +454,8 @@
                 
                 
             }
-            header.scrolled .glass-nav .nav-main-row {
-                padding-left: var(--global-padding-desktop) !important;
-                padding-right: var(--global-padding-desktop) !important;
-            }
-            header.scrolled .glass-nav {
-                border-radius: 0 !important;
-            }
+            
+            
         }
 
         /* Beading Frame Logic */
@@ -617,7 +570,7 @@
             <div class="beading-frame"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
-                    <div class="w-6 h-6 bg-[#111] rounded-full flex-shrink-0"></div>
+                    <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-6 h-6 flex-shrink-0">
                     <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center" style="margin: 0; padding: 0;">yadsid.com</div>
                 </div>
                 
@@ -655,7 +608,7 @@
 
     <!-- Hero Section -->
     <section id="home" data-section-id="hero" class="w-full" style="padding: var(--hero-outer-padding); overflow: hidden;">
-        <div class="reeded-gradient relative flex flex-col justify-between w-full hero-banner-height hero-top-safe-zone" style="border-radius: var(--banner-radius); padding-bottom: 30px;" id="hero-banner-container">
+        <div class="reeded-gradient relative flex flex-col justify-center w-full hero-banner-height hero-top-safe-zone" style="border-radius: var(--banner-radius); padding-bottom: 30px;" id="hero-banner-container">
             <!-- Media Layer -->
             <div class="media-layer" id="hero-media-layer">
                 <!-- Media injected here -->
@@ -664,7 +617,7 @@
             <div class="glass-overlay"></div>
             
             <!-- Left-Aligned Content Group: Heading + CTA Buttons -->
-            <div class="relative z-10 w-full flex flex-col items-start text-left hero-content-pad">
+            <div class="relative z-10 w-full flex flex-col items-start text-left hero-content-pad my-auto">
                 <p class="text-white text-lg md:text-[22px] font-light tracking-wide mb-2 md:mb-6 opacity-90 text-left">
                     Yadhu Sidharthan
                 </p>
@@ -685,7 +638,7 @@
             </div>
 
             <!-- Bottom Elements -->
-            <div class="relative w-full">
+            <div class="relative w-full" style="margin-top: auto;">
                 <div class="flex items-center justify-between relative hero-content-pad">
                     <!-- Center: Scroll Indicator -->
                     <a href="#expertise" class="scroll-arrow absolute left-1/2 bg-white rounded-full z-10 cursor-pointer shadow-sm nav-scroll flex items-center justify-center" style="padding:clamp(6px,1vw,8px);">
@@ -804,9 +757,9 @@
         </div>
     </section>
 
-    <footer class="py-[2.2vw] w-full border-t border-[#F2F2F2]">
+    <footer class="py-[1.7vw] w-full border-t border-[#F2F2F2]">
         <div class="flex flex-col md:flex-row items-center justify-between text-[11px] font-medium text-[#888] global-padding">
-            <div class="font-bold text-[#111] text-[13px] mb-4 md:mb-0">yadsid.com</div>
+            <div class="font-bold text-[#111] text-[13px] mb-4 md:mb-0 flex items-center gap-2"><img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-5 h-5 flex-shrink-0">yadsid.com</div>
             <div class="mb-4 md:mb-0">© 2026 Yadhu Sidharthan. All rights reserved.</div>
         </div>
     </footer>

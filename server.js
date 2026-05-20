@@ -556,6 +556,24 @@ app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Temporary route to sync file to DB
+app.get('/api/sync-html', async (req, res) => {
+    try {
+        const fs = require('fs');
+        const newHtml = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+        let record = await Homepage.findOne({ key: 'index' });
+        if (record) {
+            record.html = newHtml;
+            await record.save();
+        } else {
+            await Homepage.create({ key: 'index', html: newHtml });
+        }
+        res.send('Synced index.html to MongoDB successfully!');
+    } catch(e) {
+        res.status(500).send(e.toString());
+    }
+});
+
 // ─── Visual Editor Saving ──────────────────────────────────────────────────
 app.post('/admin/save-cms', requireAuth, async (req, res) => {
     const { html } = req.body;
