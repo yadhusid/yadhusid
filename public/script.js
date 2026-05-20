@@ -58,9 +58,9 @@ function toggleMenu() {
     if (!hamburger || !mainNav || !mobileMenuContent) return;
     
     hamburger.classList.toggle('active');
-    mainNav.classList.toggle('expanded');
+    mainNav.classList.toggle('active');
 
-    if (mainNav.classList.contains('expanded')) {
+    if (mainNav.classList.contains('active')) {
         mobileMenuContent.style.opacity = '1';
         mobileMenuContent.style.pointerEvents = 'auto';
         

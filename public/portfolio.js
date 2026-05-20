@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function fetchCategories() {
     try {
-        const res = await fetch('/api/categories');
+        const res = await fetch('/api/categories?t=' + Date.now());
         allCategories = await res.json();
         renderCategories();
     } catch (err) {
@@ -18,7 +18,7 @@ async function fetchCategories() {
 
 async function fetchProjects() {
     try {
-        const res = await fetch('/api/projects');
+        const res = await fetch('/api/projects?t=' + Date.now());
         allProjects = await res.json();
         renderProjects();
     } catch (err) {
