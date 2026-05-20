@@ -118,6 +118,18 @@ const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } });
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Force no-cache on admin pages and API routes so Vercel CDN never serves stale files
+app.use((req, res, next) => {
+    if (req.path.startsWith('/admin') || req.path.startsWith('/api')) {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.setHeader('Surrogate-Control', 'no-store');
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: process.env.SESSION_SECRET || 'yadhu-portfolio-secret-2026',
@@ -554,6 +566,19 @@ app.get('/', async (req, res) => {
         }
     } catch(e) { /* fall through to static file */ }
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// ─── Explicit Admin Routes (bypass Vercel CDN caching) ────────────────────────
+// Vercel CDN caches static files from /public — serving admin HTML via Express
+// ensures the no-cache headers above are applied and the LATEST code is always served.
+app.get('/admin/dashboard.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin', 'dashboard.html'));
+});
+app.get('/admin/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin', 'login.html'));
+});
+app.get('/admin/editor.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin', 'editor.html'));
 });
 
 // Temporary route to sync file to DB
