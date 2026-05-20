@@ -333,7 +333,7 @@
                                 <h3>Create Project</h3>
                                 <div class="form-group col" style="align-items: flex-start;">
                                     <label>Title</label>
-                                    <input type="text" id="projTitle" placeholder="Project name..." oninput="updatePreviewText()">
+                                    <input type="text" id="projTitle" placeholder="Project name..." oninput="updateNewProjectPreview()">
                                 </div>
                                 <div class="form-group col" style="align-items: flex-start;">
                                     <label>Category</label>
@@ -382,7 +382,7 @@
                                         </div>
                                     </div>
                                     <div style="display: flex; flex-direction: column; gap: 0.8rem; width: 100%;">
-                                        <input type="file" id="projImage" onchange="handleCoverUpload(this)" style="display: none;">
+                                        <input type="file" id="projImage" accept="image/*" onchange="handleNewCoverUpload(this)" style="display: none;">
                                         <button class="btn-sm" onclick="document.getElementById('projImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%;">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                                             Upload Cover
@@ -857,6 +857,34 @@
 
         let selectedGalleryFiles = [];
 
+        // ———— New Project Cover Upload ————
+        function handleNewCoverUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = document.getElementById('coverPreviewImg');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                coverImageX = 0;
+                coverImageY = 0;
+                document.getElementById('coverZoomSlider').value = 1;
+                updateCoverTransform();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ———— New Project Preview Text ————
+        function updateNewProjectPreview() {
+            const title = document.getElementById('projTitle').value || 'Project Title';
+            const previewTitle = document.getElementById('previewTitle');
+            if (previewTitle) previewTitle.textContent = title;
+            const catEl = document.getElementById('previewCat');
+            if (catEl && selectedProjCategories.length) {
+                catEl.textContent = selectedProjCategories.map(c => c.name).join(', ').toUpperCase();
+            }
+        }
+
         function handleGalleryUpload(input) {
             const files = Array.from(input.files);
             files.forEach(file => {
@@ -917,6 +945,18 @@
         let lastMouseY = 0;
         let coverImageX = 0; // translation offset X in px
         let coverImageY = 0; // translation offset Y in px
+
+        function removeCover(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('projImage').value = '';
+            const img = document.getElementById('coverPreviewImg');
+            img.style.display = 'none';
+            img.src = '';
+            coverImageX = 0;
+            coverImageY = 0;
+            document.getElementById('coverZoomSlider').value = 1;
+            updateCoverTransform();
+        }
 
         function startCoverDrag(e) {
             const img = document.getElementById('coverPreviewImg');
@@ -1005,7 +1045,7 @@
                 renderSelectedCategories();
                 selectedGalleryFiles = [];
                 renderGalleryThumbnails();
-                removeCover();
+                removeCover(null);
                 loadProjects();
             } else {
                 const errData = await res.json();
@@ -1030,8 +1070,7 @@
         async function openBlockModal(projectId, title) {
             currentProjectId = projectId;
             document.getElementById('blockWorkspace').style.display = 'flex';
-            document.getElementById('modalProjectTitle').textContent = 'Edit Project';
-            document.getElementById('blockModal').classList.add('open');
+            // Note: blockWorkspace is the actual workspace element (blockModal/modalProjectTitle do not exist)
             modalSelectedBlockId = null;
             modalSelectedCategories = [];
             modalGalleryFiles = [];
@@ -1075,7 +1114,6 @@
 
         function closeBlockModal() {
             document.getElementById('blockWorkspace').style.display = 'none';
-            document.getElementById('blockModal').classList.remove('open');
         }
 
         // --- Category Logic for Modal ---
@@ -1660,6 +1698,22 @@
             showToast('Changes applied locally');
         }
 
+        function undoInspectorChanges() {
+            if (!currentSelectedData) return;
+            // Restore original content in the stage iframe
+            const iframe = document.getElementById('visual-iframe');
+            iframe.contentWindow.postMessage({
+                source: 'cms-dashboard',
+                action: 'update-content',
+                id: currentSelectedData.id,
+                data: { val: originalContent, href: originalHref }
+            }, '*');
+            // Also restore textarea
+            const ta = document.getElementById('inspectorTextValue');
+            if (ta) ta.value = originalContent;
+            showToast('Text reverted');
+        }
+
         function undoGlobalChanges() {
             const iframe = document.getElementById('visual-iframe');
             iframe.contentWindow.postMessage({
@@ -1723,6 +1777,7 @@
                 
                 const res = await fetch('/api/upload-media', {
                     method: 'POST',
+                    credentials: 'include',
                     body: formData
                 });
                 

@@ -395,16 +395,16 @@ app.patch('/api/projects/:id', requireAuth, projectFields, async (req, res) => {
         if (updates.existingGallery) {
             try {
                 newGallery = JSON.parse(updates.existingGallery);
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error('existingGallery parse error:', e); }
         } else {
-            newGallery = project.gallery || [];
+            newGallery = project.images || [];
         }
         
         if (req.files && req.files.galleryImages) {
             const uploadedUrls = req.files.galleryImages.map(f => f.path);
             newGallery = newGallery.concat(uploadedUrls);
         }
-        updates.gallery = newGallery;
+        updates.images = newGallery;
         
         // Ensure numeric types for cover positions
         if (updates.coverImageZoom !== undefined) updates.coverImageZoom = parseFloat(updates.coverImageZoom) || 1;
