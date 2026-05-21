@@ -181,24 +181,7 @@ header.scrolled .beading-frame {
     display: none;
 }
 
-header.scrolled .nav-main-row {
-    padding-left: var(--global-padding-desktop) !important;
-    padding-right: var(--global-padding-desktop) !important;
-}
 
-@media (max-width: 1279px) and (min-width: 768px) {
-    header.scrolled .nav-main-row {
-        padding-left: var(--global-padding-tablet) !important;
-        padding-right: var(--global-padding-tablet) !important;
-    }
-}
-
-@media (max-width: 767px) {
-    header.scrolled .nav-main-row {
-        padding-left: var(--global-padding-mobile) !important;
-        padding-right: var(--global-padding-mobile) !important;
-    }
-}
 
 @keyframes borderGlitch {
     0% { transform: translateX(-100%); }

@@ -234,7 +234,7 @@
 </head>
 <body class="bg-white">
 
-    <header class="fixed z-50 transition-all duration-300 navbar-global" style="top: var(--hero-outer-padding); 
+    <header class="fixed z-50 transition-all duration-300 navbar-global scrolled" style="top: var(--hero-outer-padding); 
                    left: var(--hero-outer-padding); 
                    right: var(--hero-outer-padding);
                    padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
@@ -316,15 +316,7 @@
         }
         if (hamburger) hamburger.addEventListener('click', toggleMenu);
 
-        // Header Scrolled State
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 20) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+
 
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
