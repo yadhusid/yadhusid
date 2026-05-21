@@ -33,7 +33,7 @@ body {
 }
 
 /* Font Override */
-html, body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, div {
+* :not(i):not(.icon) {
     font-family: 'Outfit', sans-serif !important;
 }
 
@@ -156,6 +156,8 @@ header.scrolled {
     left: 0 !important;
     right: 0 !important;
     padding: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
 }
 
 header.scrolled .glass-nav {

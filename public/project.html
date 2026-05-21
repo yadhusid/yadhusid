@@ -240,8 +240,8 @@
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
                     <a href="/#home" class="flex items-center gap-2 group nav-scroll">
-                        <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-6 h-6 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-                        <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none transition-colors group-hover:text-[#FF416C]">yadsid.com</div>
+                        <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-[26.4px] h-[26.4px] flex-shrink-0 transition-transform duration-300 group-hover:scale-[1.15]">
+                        <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none transition-colors">yadsid.com</div>
                     </a>
                 </div>
                 
@@ -309,8 +309,7 @@
         }
         if (hamburger) hamburger.addEventListener('click', toggleMenu);
 
-        // Header Scrolled State disabled to maintain shrunk state
-        /* 
+        // Header Scrolled State
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             if (window.scrollY > 20) {
@@ -319,7 +318,6 @@
                 header.classList.remove('scrolled');
             }
         });
-        */
 
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
