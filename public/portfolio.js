@@ -87,6 +87,15 @@ function renderProjects(projects = allProjects) {
                         : `<div class="w-full h-full bg-[#EEE] flex items-center justify-center text-[#AAA] font-medium uppercase tracking-widest text-[10px]">No Cover</div>`
                     }
                     ${p.cardOverlay ? `<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>` : ''}
+                    
+                    <!-- Hover Overlay Text Stack -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6 md:p-8 z-10">
+                        <div class="translate-y-4 group-hover:translate-y-0 transition-transform duration-500 flex flex-col gap-1">
+                            <h3 class="text-[20px] font-bold tracking-tight text-white">${p.title}</h3>
+                            <hr class="border-white/20 my-2 w-8">
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-white/80">${cats}</span>
+                        </div>
+                    </div>
                 </div>
                 
 
