@@ -557,15 +557,21 @@ const HomepageSchema = new mongoose.Schema({
 let Homepage;
 try { Homepage = mongoose.model('Homepage'); } catch(e) { Homepage = mongoose.model('Homepage', HomepageSchema); }
 
-// Serve dynamic homepage from MongoDB if available, otherwise from file
+// Serve homepage: prefer deployed filesystem file, fall back to MongoDB CMS cache
 app.get(['/', '/index.html'], async (req, res) => {
+    // Primary: serve the latest deployed file (always updated by git push / Render deploy)
+    const filePath = path.join(__dirname, 'public', 'index.html');
+    if (fs.existsSync(filePath)) {
+        return res.sendFile(filePath);
+    }
+    // Fallback: serve from MongoDB if filesystem is unavailable
     try {
         const record = await Homepage.findOne({ key: 'index' });
         if (record && record.html) {
             return res.type('html').send(record.html);
         }
-    } catch(e) { /* fall through to static file */ }
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    } catch(e) { /* fall through */ }
+    res.status(404).send('Homepage not found');
 });
 
 // ─── Explicit Admin Routes (bypass Edge CDN caching) ────────────────────────
