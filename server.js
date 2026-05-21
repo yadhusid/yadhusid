@@ -548,29 +548,35 @@ async function ensureAdmin() {
 }
 
 // ─── CMS Homepage Content Model ───────────────────────────────────────────────
+// Increment this version whenever a structural/layout change is made to public/index.html via Git.
+// This invalidates old CMS MongoDB caches so they don't overwrite new frontend layouts.
+const LAYOUT_VERSION = "2.0";
+
 // Persists homepage HTML to MongoDB instead of filesystem (required for ephemeral disks / Render)
 const HomepageSchema = new mongoose.Schema({
     key: { type: String, default: 'index', unique: true },
     html: { type: String, required: true },
+    version: { type: String, default: "1.0" },
     updatedAt: { type: Date, default: Date.now }
 });
 let Homepage;
 try { Homepage = mongoose.model('Homepage'); } catch(e) { Homepage = mongoose.model('Homepage', HomepageSchema); }
 
-// Serve homepage: prefer deployed filesystem file, fall back to MongoDB CMS cache
+// Serve homepage: prefer MongoDB CMS cache ONLY if it matches the current LAYOUT_VERSION
 app.get(['/', '/index.html'], async (req, res) => {
-    // Primary: serve the latest deployed file (always updated by git push / Render deploy)
+    try {
+        const record = await Homepage.findOne({ key: 'index' });
+        // Serve from MongoDB if we have a record and its layout version is up to date
+        if (record && record.html && record.version === LAYOUT_VERSION) {
+            return res.type('html').send(record.html);
+        }
+    } catch(e) { /* fall through */ }
+    
+    // Fallback: serve the deployed file (if MongoDB is empty or version is outdated)
     const filePath = path.join(__dirname, 'public', 'index.html');
     if (fs.existsSync(filePath)) {
         return res.sendFile(filePath);
     }
-    // Fallback: serve from MongoDB if filesystem is unavailable
-    try {
-        const record = await Homepage.findOne({ key: 'index' });
-        if (record && record.html) {
-            return res.type('html').send(record.html);
-        }
-    } catch(e) { /* fall through */ }
     res.status(404).send('Homepage not found');
 });
 
@@ -626,7 +632,7 @@ app.post('/admin/save-cms', requireAuth, async (req, res) => {
         // Primary: Save to MongoDB (works on ephemeral PaaS environments like Render)
         await Homepage.findOneAndUpdate(
             { key: 'index' },
-            { html: cleanedHtml, updatedAt: new Date() },
+            { html: cleanedHtml, version: LAYOUT_VERSION, updatedAt: new Date() },
             { upsert: true, new: true }
         );
         console.log('✅ Homepage HTML saved to MongoDB (Render-compatible)');
