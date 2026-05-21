@@ -70,15 +70,19 @@ function renderProjects(projects = allProjects) {
         return;
     }
 
-    grid.innerHTML = published.map(p => {
+    grid.innerHTML = published.map((p, index) => {
         const cats = p.categoryIds ? p.categoryIds.map(id => {
             const c = allCategories.find(cat => (cat.id === id || cat._id === id));
             return c ? c.name : '';
         }).filter(n => n).join(' & ') : 'Project';
 
+        const isFeatured = index === 0;
+        const gridClasses = isFeatured ? 'md:col-span-2 md:row-span-2' : 'md:col-span-1 md:row-span-1';
+        const aspectClasses = isFeatured ? 'aspect-[3/2.2] md:aspect-auto h-full' : 'aspect-[3/2.2]';
+
         return `
-            <a href="project.html?id=${p.id}" class="group block relative overflow-hidden rounded-[24px] bg-[#F9F9F9] border border-[#F2F2F2] transition-all duration-500 hover:shadow-2xl hover:shadow-black/5" style="transform: translateZ(0);">
-                <div class="aspect-[3/2.2] overflow-hidden relative">
+            <a href="project.html?id=${p.id}" class="group block relative overflow-hidden rounded-[24px] bg-[#F9F9F9] border border-[#F2F2F2] transition-all duration-500 hover:shadow-2xl hover:shadow-black/5 ${gridClasses}" style="transform: translateZ(0);">
+                <div class="overflow-hidden relative ${aspectClasses}">
                     ${p.coverImage 
                         ? `<img src="${p.coverImage}" 
                              alt="${p.title}" 

@@ -550,7 +550,7 @@ async function ensureAdmin() {
 // ─── CMS Homepage Content Model ───────────────────────────────────────────────
 // Increment this version whenever a structural/layout change is made to public/index.html via Git.
 // This invalidates old CMS MongoDB caches so they don't overwrite new frontend layouts.
-const LAYOUT_VERSION = "2.0";
+const LAYOUT_VERSION = "2.1";
 
 // Persists homepage HTML to MongoDB instead of filesystem (required for ephemeral disks / Render)
 const HomepageSchema = new mongoose.Schema({
