@@ -723,6 +723,46 @@
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 3000);
         }
+        // ---------- AUTH & STORAGE SAFEGUARD ----------
+        function hasSession() {
+            try {
+                return document.cookie.split(';')
+                    .some(c => c.trim().startsWith('connect.sid='));
+            } catch (e) { return false; }
+        }
+
+        // ---------- ADD CATEGORY ----------
+        async function addCategory() {
+            const input = document.getElementById('catName');
+            const name = input ? input.value.trim() : '';
+            if (!name) {
+                showToast('Enter a category name', true);
+                return;
+            }
+            if (!hasSession()) {
+                showToast('Session expired – please log in again', true);
+                return;
+            }
+            try {
+                const res = await fetch('/api/categories', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ name })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast(`Category “${name}” added`);
+                    input.value = '';
+                    loadCategories();
+                } else {
+                    throw new Error(data.error || 'Add failed');
+                }
+            } catch (e) {
+                console.error(e);
+                showToast(e.message, true);
+            }
+        }
 
         async function loadAll() {
             await loadCategories();
