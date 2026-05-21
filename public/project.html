@@ -234,11 +234,8 @@
 </head>
 <body class="bg-white">
 
-    <header class="fixed z-50 transition-all duration-300 navbar-global scrolled" style="top: var(--hero-outer-padding); 
-                   left: var(--hero-outer-padding); 
-                   right: var(--hero-outer-padding);
-                   padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
-        <nav class="glass-nav relative" id="main-nav">
+    <header class="fixed z-50 w-full" style="top: 0; left: 0; right: 0; padding: 0;">
+        <nav class="glass-nav relative" id="main-nav" style="border-radius: 0; border-left: none; border-right: none; border-top: none; max-width: 100vw; width: 100vw;">
             <!-- Beading Frame: Bridges gap to banner edges -->
             <div class="beading-frame" style="display: none;"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
@@ -251,14 +248,14 @@
                 
                 <div class="flex items-center gap-6 lg:gap-10">
                     <!-- Desktop Menu -->
-                    <ul class="hidden md:flex items-center gap-2 text-[14.3px] font-medium text-[#111]">
-                        <li><a href="/#home" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a></li>
-                        <li><a href="/#expertise" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a></li>
-                        <li><a href="/#projects" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a></li>
+                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-[#111]">
+                        <li><a href="/#home" class="nav-scroll hover:text-[#FF416C] transition-colors">Home</a></li>
+                        <li><a href="/#expertise" class="nav-scroll hover:text-[#FF416C] transition-colors">Core Skills</a></li>
+                        <li><a href="/#projects" class="nav-scroll hover:text-[#FF416C] transition-colors">Projects</a></li>
                     </ul>
                     
                     <div class="flex items-center gap-2 md:gap-4">
-                        <a href="/#contact" class="hidden md:block bg-[#111] text-white px-6 py-2.5 rounded-full text-[14.3px] font-medium nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95 shadow-md hover:shadow-lg hover:bg-[#FF416C]">
+                        <a href="/#contact" class="hidden md:block bg-[#111] text-white px-5 py-2 rounded-full text-[13px] font-medium nav-scroll transition-all duration-300 hover:bg-[#FF416C] hover:-translate-y-[2px] active:scale-95 shadow-sm hover:shadow-lg">
                             Let's Talk
                         </a>
                         <!-- Mobile Hamburger -->
