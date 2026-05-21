@@ -386,6 +386,8 @@
             /* Sync with site borders */
             padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
             padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset));
+            transition: padding 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: padding;
         }
 
         @media (max-width: 1279px) {
