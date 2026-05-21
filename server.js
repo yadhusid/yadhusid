@@ -130,7 +130,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(session({
     secret: process.env.SESSION_SECRET || 'yadhu-portfolio-secret-2026',
     resave: false,
@@ -558,7 +558,7 @@ let Homepage;
 try { Homepage = mongoose.model('Homepage'); } catch(e) { Homepage = mongoose.model('Homepage', HomepageSchema); }
 
 // Serve dynamic homepage from MongoDB if available, otherwise from file
-app.get('/', async (req, res) => {
+app.get(['/', '/index.html'], async (req, res) => {
     try {
         const record = await Homepage.findOne({ key: 'index' });
         if (record && record.html) {

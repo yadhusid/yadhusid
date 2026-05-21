@@ -234,28 +234,34 @@
 </head>
 <body class="bg-white">
 
-    <header class="fixed z-50 transition-all duration-300" style="top: 0; left: 0; right: 0; padding: 0;">
-        <nav class="glass-nav relative" id="main-nav" style="border-radius: 0 !important; border-left: none; border-right: none; border-top: none;">
+    <header class="fixed z-50 transition-all duration-300 navbar-global" style="top: var(--hero-outer-padding); 
+                   left: var(--hero-outer-padding); 
+                   right: var(--hero-outer-padding);
+                   padding: var(--nav-inset) var(--nav-inset) 0 var(--nav-inset);">
+        <nav class="glass-nav relative" id="main-nav">
+            <!-- Beading Frame: Bridges gap to banner edges -->
             <div class="beading-frame" style="display: none;"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
-                    <a href="/#home" class="flex items-center gap-2 group nav-scroll">
+                    <a href="/#home" class="flex items-center gap-2 flex-nowrap min-w-fit cursor-pointer group nav-scroll">
                         <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-[26.4px] h-[26.4px] flex-shrink-0 transition-transform duration-300 group-hover:scale-[1.15]">
-                        <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none transition-colors">yadsid.com</div>
+                        <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center transition-colors" style="margin: 0; padding: 0;">yadsid.com</div>
                     </a>
                 </div>
                 
                 <div class="flex items-center gap-6 lg:gap-10">
-                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-[#111]">
-                        <li><a href="index.html#home" class="nav-link">Home</a></li>
-                        <li><a href="index.html#expertise" class="nav-link">Core Skills</a></li>
-                        <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                    <!-- Desktop Menu -->
+                    <ul class="hidden md:flex items-center gap-2 text-[14.3px] font-medium text-[#111]">
+                        <li><a href="/#home" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a></li>
+                        <li><a href="/#expertise" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a></li>
+                        <li><a href="/#projects" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a></li>
                     </ul>
+                    
                     <div class="flex items-center gap-2 md:gap-4">
-                        <a href="/#projects" class="hidden md:flex bg-[#111] text-white px-5 py-2 rounded-full text-[13px] font-medium items-center gap-2 transition-all duration-300 hover:bg-[#FF416C] hover:-translate-y-[2px] active:scale-95 shadow-sm hover:shadow-lg">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                            Back
+                        <a href="/#contact" class="hidden md:block bg-[#111] text-white px-6 py-2.5 rounded-full text-[14.3px] font-medium nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95 shadow-md hover:shadow-lg hover:bg-[#FF416C]">
+                            Let's Talk
                         </a>
+                        <!-- Mobile Hamburger -->
                         <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
                             <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
                             <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
@@ -265,11 +271,12 @@
                 </div>
             </div>
             
+            <!-- Mobile Menu Content -->
             <div id="mobile-menu-content" class="hidden flex-col items-center justify-center gap-6 py-10 opacity-0 pointer-events-none transition-all duration-500">
-                <a href="index.html#home" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
-                <a href="index.html#expertise" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
-                <a href="index.html#projects" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
-                <a href="index.html#contact" class="text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
+                <a href="/#home" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
+                <a href="/#expertise" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
+                <a href="/#projects" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
+                <a href="/#contact" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
             </div>
         </nav>
     </header>
