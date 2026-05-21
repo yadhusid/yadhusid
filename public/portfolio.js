@@ -89,10 +89,7 @@ function renderProjects(projects = allProjects) {
                     ${p.cardOverlay ? `<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>` : ''}
                 </div>
                 
-                <div class="p-6 md:p-8 flex flex-col gap-1">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#AAA]">${cats}</span>
-                    <h3 class="text-[20px] font-bold tracking-tight text-[#111] group-hover:text-black transition-colors">${p.title}</h3>
-                </div>
+
 
                 ${p.cardBanner ? `
                     <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-cover bg-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1.5 group-hover:translate-y-0" 

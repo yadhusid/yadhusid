@@ -570,20 +570,22 @@
             <div class="beading-frame"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
-                    <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-6 h-6 flex-shrink-0">
-                    <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center" style="margin: 0; padding: 0;">yadsid.com</div>
+                    <a href="#home" class="flex items-center gap-2 flex-nowrap min-w-fit cursor-pointer group nav-scroll">
+                        <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-6 h-6 flex-shrink-0 transition-transform duration-300 group-hover:scale-105 group-active:scale-95">
+                        <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center transition-colors group-hover:text-[#FF416C]" style="margin: 0; padding: 0;">yadsid.com</div>
+                    </a>
                 </div>
                 
                 <div class="flex items-center gap-6 lg:gap-10">
                     <!-- Desktop Menu: Home > Core Skills > Projects > Let's Talk -->
-                    <ul class="hidden md:flex items-center gap-4 md:gap-6 text-[13px] font-medium text-[#111]">
-                        <li><a href="#home" class="nav-scroll">Home</a></li>
-                        <li><a href="#expertise" class="nav-scroll">Core Skills</a></li>
-                        <li><a href="#projects" class="nav-scroll">Projects</a></li>
+                    <ul class="hidden md:flex items-center gap-2 text-[13px] font-medium text-[#111]">
+                        <li><a href="#home" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a></li>
+                        <li><a href="#expertise" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a></li>
+                        <li><a href="#projects" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a></li>
                     </ul>
                     
                     <div class="flex items-center gap-2 md:gap-4">
-                        <a href="#contact" class="hidden md:block bg-[#111] text-white px-6 py-2 rounded-full text-[13px] font-medium nav-scroll">
+                        <a href="#contact" class="hidden md:block bg-[#111] text-white px-6 py-2.5 rounded-full text-[13px] font-medium nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95 shadow-md hover:shadow-lg">
                             Let's Talk
                         </a>
                         <!-- Mobile Hamburger -->
@@ -613,8 +615,6 @@
             <div class="media-layer" id="hero-media-layer">
                 <!-- Media injected here -->
             </div>
-            <!-- Glass Overlay -->
-            <div class="glass-overlay"></div>
             
             <!-- Left-Aligned Content Group: Heading + CTA Buttons -->
             <div class="relative z-10 w-full flex flex-col items-start text-left hero-content-pad my-auto">
@@ -628,10 +628,10 @@
 
                 <!-- Buttons Group Left-Aligned -->
                 <div class="flex flex-wrap items-center justify-start gap-4 md:gap-6">
-                    <a href="#projects" class="bg-white text-black px-8 py-4 rounded-full text-base font-bold shadow-xl nav-scroll">
+                    <a href="#projects" class="bg-white text-black px-8 py-4 rounded-full text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95">
                         View My Work
                     </a>
-                    <a href="#contact" class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-full text-base font-bold nav-scroll">
+                    <a href="#contact" class="bg-[#111] text-white px-8 py-4 rounded-full text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95">
                         Let's Talk
                     </a>
                 </div>
@@ -641,7 +641,7 @@
             <div class="relative w-full" style="margin-top: auto;">
                 <div class="flex items-center justify-between relative hero-content-pad">
                     <!-- Center: Scroll Indicator -->
-                    <a href="#expertise" class="scroll-arrow absolute left-1/2 bg-white rounded-full z-10 cursor-pointer shadow-sm nav-scroll flex items-center justify-center" style="padding:clamp(6px,1vw,8px);">
+                    <a href="#expertise" class="scroll-arrow absolute left-1/2 bg-white rounded-full z-10 cursor-pointer shadow-sm nav-scroll flex items-center justify-center animate-bounce-slow hover:scale-105 active:scale-95 transition-transform" style="padding:clamp(6px,1vw,8px); transform: translateX(-50%);">
                         <svg style="width:clamp(12px,1.3vw,18px);height:clamp(12px,1.3vw,18px)" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
                     </a>
 
@@ -700,18 +700,16 @@
     </section>
 
     <!-- Contact Banner Section -->
-    <section id="contact" class="w-full py-[4.7vw]" style="scroll-margin-top: var(--scroll-offset);">
-        <div class="rounded-[32px] reeded-gradient p-[8%] md:p-[6%] text-white relative overflow-hidden flex flex-col md:flex-row md:items-end lg:items-end justify-between gap-16 md:gap-[4.2vw] min-h-[500px] global-margin" id="contact-banner-container">
+    <section id="contact" class="w-full py-[4.7vw] mt-[4vw]" style="scroll-margin-top: var(--scroll-offset);">
+        <div class="rounded-[32px] reeded-gradient p-[8%] md:p-[6%] text-white relative overflow-hidden flex flex-col md:flex-row md:items-start lg:items-center justify-between gap-10 md:gap-[4.2vw] min-h-[500px] global-margin" id="contact-banner-container">
             <!-- Media Layer -->
             <div class="media-layer" id="contact-media-layer">
                 <!-- Media injected here -->
             </div>
-            <!-- Glass Overlay -->
-            <div class="glass-overlay"></div>
             
             <!-- Left Column: CTA + Contact Buttons -->
-            <div class="relative z-10 w-full md:w-1/2 lg:w-1/2">
-                <h2 class="text-[clamp(42px,8.5vw,64px)] font-bold tracking-tight mb-[8vw] md:mb-[4vw] leading-[1.02] md:leading-[0.95]">
+            <div class="relative z-10 w-full md:w-1/2 lg:w-1/2 flex flex-col justify-center">
+                <h2 class="text-[clamp(32px,5vw,64px)] font-bold tracking-tight mb-[6vw] md:mb-[3vw] leading-[1.02] md:leading-[0.95] max-w-[500px]">
                     Let's Create<br>Something<br>Extraordinary
                 </h2>
                 <p class="text-white/90 text-[13px] mb-[3vw] font-medium">
@@ -719,11 +717,11 @@
                 </p>
                 <!-- Contact Buttons: Vertically stacked, full width, glassmorphic -->
                 <div class="flex flex-col gap-2.5 w-full md:max-w-[320px]">
-                    <a href="tel:+971523325687" class="bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 btn-invert w-full">
+                    <a href="tel:+971523325687" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         +971 523325687
                     </a>
-                    <a href="mailto:yadhusid@gmail.com" class="bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 btn-invert w-full lowercase">
+                    <a href="mailto:yadhusid@gmail.com" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full lowercase transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         yadhusid@gmail.com
                     </a>
@@ -745,7 +743,7 @@
                         <label class="text-[10px] uppercase tracking-widest opacity-70 ml-4">Message</label>
                         <textarea placeholder="Tell me about your project..." rows="4" class="w-full bg-white rounded-[24px] px-5 py-4 text-[13px] text-[#111] placeholder:text-[#888] focus:outline-none" id="autoGrowTextarea"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 rounded-full px-5 py-3 text-[13px] font-semibold transition-colors mt-1">
+                    <button type="submit" class="w-full bg-white text-black border border-white/30 rounded-full px-5 py-3 text-[13px] font-bold transition-all duration-300 hover:-translate-y-[2px] active:scale-95 mt-1 shadow-md hover:shadow-lg">
                         Send Message
                     </button>
                 </form>
@@ -755,7 +753,12 @@
 
     <footer class="py-[1.7vw] w-full border-t border-[#F2F2F2]">
         <div class="flex flex-col md:flex-row items-center justify-between text-[11px] font-medium text-[#888] global-padding">
-            <div class="font-bold text-[#111] text-[13px] mb-4 md:mb-0 flex items-center gap-2"><img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-5 h-5 flex-shrink-0">yadsid.com</div>
+            <div class="font-bold text-[#111] text-[13px] mb-4 md:mb-0 flex items-center gap-2">
+                <a href="#home" class="flex items-center gap-2 nav-scroll group">
+                    <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+                    <span class="transition-colors group-hover:text-[#FF416C]">yadsid.com</span>
+                </a>
+            </div>
             <div class="mb-4 md:mb-0">© 2026 Yadhu Sidharthan. All rights reserved.</div>
         </div>
     </footer>
