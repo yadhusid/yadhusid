@@ -107,19 +107,21 @@ document.querySelectorAll('.nav-scroll').forEach(link => {
 if (typeof window !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('header');
-        if (header) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 20) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            });
-            
-            // Set initial state based on current scroll position
-            if (window.scrollY > 20) {
-                header.classList.add('scrolled');
+        if (!header) return;
+
+        const SCROLL_THRESHOLD = 100; // ~2 scroll actions
+
+        function updateNavbarState() {
+            if (window.scrollY > SCROLL_THRESHOLD) {
+                header.classList.add('navbar-fixed-top', 'scrolled');
+                header.classList.remove('navbar-hero-overlay');
+            } else {
+                header.classList.remove('navbar-fixed-top', 'scrolled');
+                header.classList.add('navbar-hero-overlay');
             }
         }
+
+        window.addEventListener('scroll', updateNavbarState, { passive: true });
+        updateNavbarState(); // set correct state on load
     });
 }
