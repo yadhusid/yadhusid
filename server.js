@@ -15,8 +15,8 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Domain & SSL Middleware ──────────────────────────────────────────────────
 app.use((req, res, next) => {
-    // Removed WWW to Non-WWW redirect because Vercel handles domain canonicalization
-    // and having it here was causing an infinite redirect loop.
+    // Removed WWW to Non-WWW redirect because Render handles domain canonicalization natively.
+    // If you ever need manual redirects in the future, implement them here.
     
     // Force HTTPS on Render (optional but recommended)
     if (process.env.NODE_ENV === 'production' && req.headers['x-forwarded-proto'] !== 'https') {
@@ -119,7 +119,7 @@ const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } });
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Force no-cache on admin pages and API routes so Vercel CDN never serves stale files
+// Force no-cache on admin pages and API routes so Render CDN/Edge never serves stale files
 app.use((req, res, next) => {
     if (req.path.startsWith('/admin') || req.path.startsWith('/api')) {
         res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -135,7 +135,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'yadhu-portfolio-secret-2026',
     resave: false,
     saveUninitialized: false,
-    proxy: true, // Required for secure cookies behind proxy (Vercel/Render)
+    proxy: true, // Required for secure cookies behind proxy (Render/PaaS)
     store: process.env.MONGODB_URI ? MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
         ttl: 24 * 60 * 60, // 1 day in seconds
@@ -548,7 +548,7 @@ async function ensureAdmin() {
 }
 
 // ─── CMS Homepage Content Model ───────────────────────────────────────────────
-// Persists homepage HTML to MongoDB instead of filesystem (required for serverless/Vercel)
+// Persists homepage HTML to MongoDB instead of filesystem (required for ephemeral disks / Render)
 const HomepageSchema = new mongoose.Schema({
     key: { type: String, default: 'index', unique: true },
     html: { type: String, required: true },
@@ -568,8 +568,8 @@ app.get(['/', '/index.html'], async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ─── Explicit Admin Routes (bypass Vercel CDN caching) ────────────────────────
-// Vercel CDN caches static files from /public — serving admin HTML via Express
+// ─── Explicit Admin Routes (bypass Edge CDN caching) ────────────────────────
+// CDN caches static files from /public — serving admin HTML via Express
 // ensures the no-cache headers above are applied and the LATEST code is always served.
 app.get('/admin/dashboard.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'dashboard.html'));
@@ -617,13 +617,13 @@ app.post('/admin/save-cms', requireAuth, async (req, res) => {
             .replace(/contenteditable="true"/g, '')
             .replace(/spellcheck="false"/g, '');
 
-        // Primary: Save to MongoDB (works on Vercel serverless)
+        // Primary: Save to MongoDB (works on ephemeral PaaS environments like Render)
         await Homepage.findOneAndUpdate(
             { key: 'index' },
             { html: cleanedHtml, updatedAt: new Date() },
             { upsert: true, new: true }
         );
-        console.log('✅ Homepage HTML saved to MongoDB (Vercel-compatible)');
+        console.log('✅ Homepage HTML saved to MongoDB (Render-compatible)');
 
         // Secondary: Also try filesystem save for local/traditional deployments
         try {

@@ -17,7 +17,7 @@ To provide a secure, visual backend interface where the user can manage their po
   - Upload media (cover images, block images) automatically synced to Cloudinary.
   - Manage and reorder Categories.
   - Update account passwords via OTP recovery.
-- Serverless deployment optimized for Vercel.
+- Serverless deployment optimized for Render.com.
 
 **User Roles & Security:**
 - Single Admin user access.
@@ -44,12 +44,12 @@ To provide a secure, visual backend interface where the user can manage their po
   - **`/admin/login.html`**: The admin login portal.
   - **`styles.css`** / **`script.js`**: Core frontend styling and logic.
 - **`server.js`**: The heart of the backend. Contains all API routes (`/api/login`, `/api/projects`, `/api/categories`), database connection logic, Mongoose schemas, and Cloudinary configuration.
-- **`vercel.json`**: Routing and serverless configuration for Vercel deployment.
+- **`Render.com.json`**: Routing and serverless configuration for Render.com deployment.
 
 ---
 
 ## 4. Environment Variables
-*Note: This project relies on environment variables stored locally in a `.env` file and remotely in the Vercel Dashboard.*
+*Note: This project relies on environment variables stored locally in a `.env` file and remotely in the Render.com Dashboard.*
 
 **Required Variables:**
 - `MONGODB_URI`: The connection string to the MongoDB Atlas database.
@@ -63,17 +63,17 @@ To provide a secure, visual backend interface where the user can manage their po
 ---
 
 ## 5. Deployment & Hosting
-- **Hosting Provider:** Vercel.com (Serverless).
-- **Configuration:** The `vercel.json` file controls the build. It maps the `/api/*` and `/admin/save-cms` routes to the Node.js backend (`server.js`), while routing everything else statically from the `/public` folder for maximum speed.
-- **Redeploying:** Any commit pushed to the GitHub repository's `main` branch will trigger an automatic Vercel build. Alternatively, running `vercel --prod` locally will push a direct deployment.
-- **Build/Install Commands:** Managed automatically by Vercel's Node.js preset. 
+- **Hosting Provider:** Render.com.com (Serverless).
+- **Configuration:** The `Render.com.json` file controls the build. It maps the `/api/*` and `/admin/save-cms` routes to the Node.js backend (`server.js`), while routing everything else statically from the `/public` folder for maximum speed.
+- **Redeploying:** Any commit pushed to the GitHub repository's `main` branch will trigger an automatic Render.com build. Alternatively, running `Render.com --prod` locally will push a direct deployment.
+- **Build/Install Commands:** Managed automatically by Render.com's Node.js preset. 
 
 ---
 
 ## 6. Domain & DNS
 - **Domain:** `yadsid.com` and `www.yadsid.com`.
 - **Registrar/DNS Provider:** Atom.com.
-- **Setup:** The domain is connected to Vercel via A-records and CNAME records pointing to Vercel's IP addresses (`76.76.21.21` and `76.76.21.93`). If migrating in the future, these DNS records on Atom.com will need to be updated to match the new host.
+- **Setup:** The domain is connected to Render.com via A-records and CNAME records pointing to Render.com's IP addresses (`76.76.21.21` and `76.76.21.93`). If migrating in the future, these DNS records on Atom.com will need to be updated to match the new host.
 
 ---
 
@@ -92,7 +92,7 @@ To provide a secure, visual backend interface where the user can manage their po
 ## 8. Cloudinary / Media Storage
 - **Configuration:** Initialized in `server.js` using the `CLOUDINARY_*` environment variables.
 - **Upload Logic:** When a user uploads an image via the CMS, the file is intercepted by `multer` (in memory) within `server.js` and pushed securely to the Cloudinary API. 
-- **Storage:** Cloudinary returns a permanent, optimized image URL which is then saved into the MongoDB `Projects` collection. No images are saved directly to the Vercel filesystem (which is read-only).
+- **Storage:** Cloudinary returns a permanent, optimized image URL which is then saved into the MongoDB `Projects` collection. No images are saved directly to the Render.com filesystem (which is read-only).
 
 ---
 
@@ -108,7 +108,7 @@ To provide a secure, visual backend interface where the user can manage their po
 - **Login:** Enter the Admin username and password. Inputs are automatically trimmed of invisible spaces to prevent autofill errors.
 - **Managing Categories:** You can add new categories, delete old ones, or drag-and-drop to reorder them in the Overview tab.
 - **Managing Projects:** Use the Projects tab to create new portfolio entries. You can assign categories, upload cover images, toggle "Published/Draft" status, and build custom layouts using text and image blocks.
-- **Limitation to Note:** Because Vercel caches files aggressively, API endpoints (like fetching categories) have been equipped with "cache-busting" timestamps to ensure the CMS always reflects immediate changes. 
+- **Limitation to Note:** Because Render.com caches files aggressively, API endpoints (like fetching categories) have been equipped with "cache-busting" timestamps to ensure the CMS always reflects immediate changes. 
 
 ---
 
@@ -127,12 +127,12 @@ To restart this project on a fresh machine:
 4. **Environment Setup:** Create a new file named `.env` in the root folder. Copy the keys listed in Section 4 and paste your actual secret credentials next to them. 
 5. **Run Locally:** Execute `node server.js`. The site will be live at `http://localhost:3000`.
 6. **Testing:** Open `http://localhost:3000/admin/login.html` to test the CMS, and `http://localhost:3000/` to test the homepage.
-7. **Deploying:** Ensure the Vercel CLI is installed (`npm i -g vercel`), link the project using `vercel link`, and deploy using `vercel --prod`. Ensure all ENV variables are added to the Vercel dashboard.
+7. **Deploying:** Ensure the Render.com CLI is installed (`npm i -g Render.com`), link the project using `Render.com link`, and deploy using `Render.com --prod`. Ensure all ENV variables are added to the Render.com dashboard.
 
 ---
 
 ## 13. Important Warnings
 - **CRITICAL:** **NEVER commit the `.env` file to GitHub.** This contains your database passwords and Cloudinary secrets. If exposed, bad actors can delete or alter your data.
-- **CRITICAL:** Do not delete the MongoDB Atlas cluster or Cloudinary account. Vercel only hosts the *code*; your actual data and images live on MongoDB and Cloudinary. 
-- **Read-Only Filesystem:** Vercel's serverless environment does not allow saving files directly to the server. All media uploads must go through Cloudinary, and all data changes must go through MongoDB. Attempting to use `fs.writeFileSync` in production will fail or be erased on the next deploy.
+- **CRITICAL:** Do not delete the MongoDB Atlas cluster or Cloudinary account. Render.com only hosts the *code*; your actual data and images live on MongoDB and Cloudinary. 
+- **Read-Only Filesystem:** Render.com's serverless environment does not allow saving files directly to the server. All media uploads must go through Cloudinary, and all data changes must go through MongoDB. Attempting to use `fs.writeFileSync` in production will fail or be erased on the next deploy.
 - **Local Scripts:** Files like `test_login.js`, `update_index.js`, and `update_mongo.js` are temporary debug scripts and have been added to `.gitignore`. They are not required for production.
