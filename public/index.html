@@ -402,14 +402,6 @@
             }
         }
 
-        .mobile-links{pointer-events:none;display:flex;flex-direction:column;gap:1.5rem;padding-top:2rem;padding-bottom:2rem;padding-left:2rem;padding-right:2rem;opacity:0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(-10px)}
-
-        .glass-nav.expanded .mobile-links{pointer-events:auto;opacity:1;
-            transform: translateY(0);
-            transition-delay: 0.25s /* Delay reveal until container starts expanding */}
-
         /* Hamburger Animation Removed */
 
         /* Scrolled state: dock to top edge */
@@ -600,10 +592,10 @@
             
             <!-- Mobile Menu Content (Accordion) -->
             <div id="mobile-menu-content">
-                <a href="#home" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Home</a>
-                <a href="#expertise" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Core Skills</a>
-                <a href="#projects" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Projects</a>
-                <a href="#contact" class="nav-scroll text-2xl font-bold tracking-tighter" onclick="toggleMenu()">Let's Talk</a>
+                <a href="#home" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Home</a>
+                <a href="#expertise" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Core Skills</a>
+                <a href="#projects" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Projects</a>
+                <a href="#contact" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Let's Talk</a>
             </div>
         </nav>
     </header>
