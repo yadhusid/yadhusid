@@ -108,7 +108,7 @@ const storage = new CloudinaryStorage({
     return {
       folder: 'portfolio_uploads',
       resource_type: isVideo ? 'video' : 'image',
-      allowedFormats: isVideo ? ['mp4', 'webm'] : ['jpeg', 'png', 'jpg', 'webp', 'gif'],
+      allowedFormats: isVideo ? ['mp4', 'webm'] : ['jpeg', 'png', 'jpg', 'webp', 'gif', 'avif'],
       transformation: isGif ? [] : undefined
     };
   }

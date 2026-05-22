@@ -25,6 +25,7 @@
             --muted: #888888;
             --input-bg: #2a2a2a;
             --card: #181818;
+            --card-bg: #141414;
             
             /* Box Shadow for depth */
             --shadow-subtle: 0 4px 12px rgba(0,0,0,0.4);
@@ -345,16 +346,16 @@
 
                 <!-- Projects Page -->
                 <div class="page" id="page-projects">
-                    <div class="form-card">
+                    <div class="form-card" style="padding: 1.5rem;">
                         <div class="split-project-grid">
                             <div class="inputs-col">
-                                <h3>Create Project</h3>
-                                <div class="form-group col" style="align-items: flex-start;">
-                                    <label>Title</label>
+                                <h3 style="margin-bottom: 1rem;">Create Project</h3>
+                                <div class="form-group col" style="align-items: flex-start; margin-bottom: 0.5rem;">
+                                    <label style="margin-bottom: 0.2rem;">Title</label>
                                     <input type="text" id="projTitle" placeholder="Project name..." oninput="updateNewProjectPreview()">
                                 </div>
-                                <div class="form-group col" style="align-items: flex-start;">
-                                    <label>Category</label>
+                                <div class="form-group col" style="align-items: flex-start; margin-bottom: 0.5rem;">
+                                    <label style="margin-bottom: 0.2rem;">Category</label>
                                     <div class="custom-dropdown">
                                         <div class="custom-dropdown-selected" onclick="toggleCustomDropdown()">
                                             <span id="dropdownSelectedText">Select Categories...</span>
@@ -362,11 +363,11 @@
                                         </div>
                                         <div class="custom-dropdown-options" id="dropdownOptions"></div>
                                     </div>
-                                    <div id="selectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+                                    <div id="selectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:5px;"></div>
                                 </div>
 
                                 <!-- Project Gallery Images -->
-                                <div class="form-group col" style="margin-top: 1.5rem; align-items: flex-start;">
+                                <div class="form-group col" style="margin-top: 0.5rem; align-items: flex-start;">
                                     <label>Project Gallery Images</label>
                                     <div style="display: flex; gap: 1rem; align-items: center; width: 100%;">
                                         <input type="file" id="galleryUploadInput" multiple accept="image/*" onchange="handleGalleryUpload(this)" style="display: none;">
@@ -388,7 +389,7 @@
                             </div>
                             
                             <div style="height: fit-content; padding-left: 0.5rem; display: flex; flex-direction: column; align-items: center;">
-                                <h3 style="align-self: flex-start; margin-bottom: 2rem;">Cover Thumbnail</h3>
+                                <h3 style="align-self: flex-start; margin-bottom: 0.5rem;">Cover Thumbnail</h3>
                                 
                                 <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center; justify-content: center; width: 300px;">
                                     <div class="homepage-card-preview" id="coverPreviewContainer" onmousedown="startCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 300px; height: 220px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
@@ -421,9 +422,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-card">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-                            <h3>Project List</h3>
+                    <div class="form-card" style="padding: 1.5rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                            <h3 style="margin:0;">Project List</h3>
                             <div style="display:flex; gap:0.5rem;">
                                 <button class="btn-sm active" id="btn-proj-list" onclick="setProjectView('list')" title="List View" style="padding:0.4rem 0.6rem; display:flex; align-items:center; justify-content:center;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
@@ -433,6 +434,7 @@
                                 </button>
                             </div>
                         </div>
+                        <div id="projectCategoryFilters" style="display: flex; gap: 0.5rem; overflow-x: auto; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);"></div>
                         <div id="projList" class="compact-list"></div>
                     </div>
                 </div>
@@ -513,10 +515,6 @@
                 <div class="page" id="page-editor" style="max-width: 100%; height: calc(100vh - 12rem);">
                     <!-- Top Action Bar -->
                     <div style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                        <a href="/" target="_blank" class="btn-sm" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border); padding: 0.8rem 1.5rem; text-decoration: none; color: white;">
-                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 16px; height: 16px; display: inline; margin-right: 6px; vertical-align: text-bottom;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                            Website Preview
-                        </a>
                         <button class="btn-primary" id="publish-homepage-btn" style="padding: 0.8rem 1.5rem;" onclick="saveHomepageData()">Publish Homepage</button>
                     </div>
 
@@ -550,31 +548,11 @@
                                     </div>
                                 </div>
 
-                                <!-- 3. Projects Section -->
-                                <div class="section-card" onclick="selectHomepageSection('projects')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                        <h4 style="margin: 0; font-size: 1rem;">3. Projects Gallery</h4>
-                                        <span style="font-size: 10px; padding: 2px 8px; background: rgba(255,255,255,0.1); border-radius: 12px;">Auto-Generated</span>
-                                    </div>
-                                    <div style="width: 100%; height: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                        <div style="background: rgba(255,255,255,0.05); border-radius: 6px;"></div>
-                                        <div style="background: rgba(255,255,255,0.05); border-radius: 6px;"></div>
-                                    </div>
-                                </div>
-
-                                <!-- 4. Contact Section -->
+                                <!-- 3. Contact Section -->
                                 <div class="section-card" onclick="selectHomepageSection('contact')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                        <h4 style="margin: 0; font-size: 1rem;">4. Contact</h4>
+                                        <h4 style="margin: 0; font-size: 1rem;">3. Contact</h4>
                                         <span style="font-size: 10px; padding: 2px 8px; background: rgba(255,255,255,0.1); border-radius: 12px;">Footer Area</span>
-                                    </div>
-                                </div>
-
-                                <!-- 5. Footer -->
-                                <div class="section-card" onclick="selectHomepageSection('footer')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <h4 style="margin: 0; font-size: 1rem;">5. Global Footer</h4>
-                                        <span style="font-size: 10px; padding: 2px 8px; background: rgba(255,255,255,0.1); border-radius: 12px;">Links</span>
                                     </div>
                                 </div>
                             </div>
@@ -590,50 +568,52 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </main>
 
-    <!-- Block Builder Modal -->
-    <!-- Full-Screen Split Workspace (Live Editor) -->
-    <div id="blockWorkspace" style="display: none; position: fixed; inset: 0; z-index: 1000; background: var(--bg); flex-direction: row; overflow: hidden;">
-        <!-- Left Window: Block Wireframe List -->
-        <div class="live-preview-window" style="width: 65%; height: 100%; border-right: 1px solid var(--border); overflow-y: auto; background: var(--card-bg); position: relative; padding: 2rem;">
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h3 style="margin: 0; font-size: 1.25rem;">Project Wireframe</h3>
-                <div style="display: flex; gap: 1rem;">
-                    <button class="btn-sm" id="websitePreviewBtn" onclick="openWebsitePreview()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border); padding: 0.8rem 1.5rem; text-decoration: none; color: white;">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 16px; height: 16px; display: inline; margin-right: 6px; vertical-align: text-bottom;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                        Website Preview
-                    </button>
-                    <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 1.5rem;" onclick="saveProjectModal('draft')">Save Draft</button>
-                    <button class="btn-primary" style="padding: 0.8rem 1.5rem;" onclick="saveProjectModal('published')">Publish</button>
-                </div>
-            </div>
+                <!-- Block Builder Modal / Editor -->
+                <div class="page" id="page-block-editor" style="max-width: 100%; height: calc(100vh - 12rem); display: none;">
+                    <div style="display: grid; grid-template-columns: 6fr 4fr; gap: 2rem; height: 100%;">
+                        <!-- Left Window: Block Wireframe List -->
+                        <div class="live-preview-window" style="height: 100%; border-radius: 24px; overflow-y: auto; background: var(--card-bg); border: 1px solid var(--border); position: relative; padding: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                                <h3 style="margin: 0; font-size: 1.25rem;">Project Wireframe</h3>
+                                <div style="display: flex; gap: 1rem;">
+                                    <button class="btn-sm" id="websitePreviewBtn" onclick="openWebsitePreview()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border); padding: 0.8rem 1.5rem; text-decoration: none; color: white;">
+                                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 16px; height: 16px; display: inline; margin-right: 6px; vertical-align: text-bottom;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                        Website Preview
+                                    </button>
+                                    <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 1.5rem;" onclick="saveProjectModal('draft')">Save Draft</button>
+                                    <button class="btn-primary" style="padding: 0.8rem 1.5rem;" onclick="saveProjectModal('published')">Publish</button>
+                                </div>
+                            </div>
 
-            <div style="font-family: 'Inter', sans-serif; color: #fff;">
-                <div id="livePreviewBlocks" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <!-- Blocks injected here instantly by JS as wireframes -->
-                </div>
-            </div>
-        </div>
+                            <div style="font-family: 'Inter', sans-serif; color: #fff;">
+                                <div id="livePreviewBlocks" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                                    <!-- Blocks injected here instantly by JS as wireframes -->
+                                </div>
+                                
+                                <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; gap: 0.5rem;">
+                                    <button class="btn-sm" onclick="addBlock('text')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Text</button>
+                                    <button class="btn-sm" onclick="addBlock('image')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Image</button>
+                                    <button class="btn-sm" onclick="addBlock('video')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Video</button>
+                                    <button class="btn-sm" onclick="addBlock('spacing')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Spacer</button>
+                                    <button class="btn-sm" onclick="addBlock('divider')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Line</button>
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- Right Window: Configuration Sidebar -->
-        <div class="config-sidebar" style="width: 35%; height: 100%; display: flex; flex-direction: column; background: var(--bg); position: relative;">
-            <div style="flex: 1; overflow-y: auto; padding: 2rem;">
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h3 style="margin: 0; font-size: 1.25rem;">Project Editor</h3>
-                    <button class="btn-close" onclick="closeBlockModal()" style="position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; margin: 0; width: 44px; height: 44px; min-width: 44px; border: 2px solid var(--border); box-shadow: var(--shadow-subtle); background: var(--card);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 20px; height: 20px;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
-                </div>
+                        <!-- Right Window: Configuration Sidebar -->
+                        <div class="config-sidebar form-card" style="height: 100%; display: flex; flex-direction: column; padding: 2rem; margin: 0; background: var(--bg); position: relative; overflow-y: auto;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                                <h3 style="margin: 0; font-size: 1.25rem;">Project Editor</h3>
+                                <button class="btn-close" onclick="closeBlockModal()" style="margin: 0; width: 44px; height: 44px; min-width: 44px; border: 1px solid var(--border); box-shadow: var(--shadow-subtle); background: var(--card); border-radius: 50%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                            </div>
 
-                <!-- Top Section: Metadata & Cover -->
-                <div class="inputs-col" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-                    <div class="form-group col">
-                        <label>Edit Title</label>
-                        <input type="text" id="modalProjTitleEdit" oninput="updateModalPreviewText()">
-                    </div>
+                            <!-- Top Section: Metadata & Cover -->
+                            <div class="inputs-col" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+                                <div class="form-group col">
+                                    <label>Edit Title</label>
+                                    <input type="text" id="modalProjTitleEdit" oninput="updateModalPreviewText()">
+                                </div>
                     
                     <div class="form-group col">
                         <label>Category</label>
@@ -679,13 +659,6 @@
                     <!-- Dynamic Inspector Content -->
                 </div>
 
-            </div>
-
-            <!-- Bottom Section: Global Actions -->
-            <div style="padding: 1.5rem; background: var(--card); border-top: 1px solid var(--border); display: flex; gap: 1rem; position: sticky; bottom: 0;">
-                <button class="btn-sm" style="background: transparent; border: 1px solid var(--border); color: #fff; padding: 1rem;" onclick="closeBlockModal()">Cancel</button>
-                <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; flex: 1; padding: 1rem;" onclick="saveProjectModal('draft')">Save Draft</button>
-                <button class="btn-primary" style="flex: 1; padding: 1rem;" onclick="saveProjectModal('published')">Publish</button>
             </div>
         </div>
     </div>
@@ -1036,20 +1009,46 @@
             }).join(', ');
         }
 
+        let currentProjectFilter = 'all';
+
+        function renderCategoryFilters() {
+            const container = document.getElementById('projectCategoryFilters');
+            if (!container) return;
+            let html = `<button class="btn-sm ${currentProjectFilter === 'all' ? 'active' : ''}" onclick="filterProjectsByCategory('all')" style="white-space: nowrap; border-radius: 100px; font-size: 11px; padding: 0.3rem 0.8rem; background: ${currentProjectFilter === 'all' ? 'var(--accent)' : 'transparent'}; color: ${currentProjectFilter === 'all' ? '#000' : 'var(--muted)'}; border: 1px solid ${currentProjectFilter === 'all' ? 'var(--accent)' : 'var(--border)'};">All Projects</button>`;
+            
+            allCategories.forEach(cat => {
+                const isActive = currentProjectFilter === cat.id;
+                html += `<button class="btn-sm ${isActive ? 'active' : ''}" onclick="filterProjectsByCategory('${cat.id}')" style="white-space: nowrap; border-radius: 100px; font-size: 11px; padding: 0.3rem 0.8rem; background: ${isActive ? 'var(--accent)' : 'transparent'}; color: ${isActive ? '#000' : 'var(--muted)'}; border: 1px solid ${isActive ? 'var(--accent)' : 'var(--border)'};">${cat.name}</button>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function filterProjectsByCategory(catId) {
+            currentProjectFilter = catId;
+            renderCategoryFilters();
+            renderProjects();
+        }
+
         function renderProjects() {
             const list = document.getElementById('projList');
-            list.innerHTML = allProjects.map(p => `
+            let displayProjects = [...allProjects];
+            
+            if (currentProjectFilter !== 'all') {
+                displayProjects = displayProjects.filter(p => (p.categoryIds || []).includes(currentProjectFilter));
+            }
+
+            list.innerHTML = displayProjects.map(p => `
                 <div class="item-row" draggable="true" 
                      ondragstart="handleProjDragStart(event, '${p.id}')" 
                      ondragover="handleProjDragOver(event)" 
                      ondragleave="handleProjDragLeave(event)"
                      ondrop="handleProjDrop(event, '${p.id}')"
-                     style="cursor: grab;">
+                     style="cursor: grab; display:flex; align-items:center; justify-content:space-between; padding:0.5rem 1rem; border-bottom:1px solid var(--border);">
                     <div style="display:flex; align-items:center; gap:1rem;">
-                        ${p.coverImage ? `<img src="${p.coverImage}" class="item-thumb">` : `<div class="item-thumb" style="background:#222"></div>`}
+                        ${p.coverImage ? `<img src="${p.coverImage}" class="item-thumb" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">` : `<div class="item-thumb" style="width:40px; height:40px; background:#222; border-radius:4px;"></div>`}
                         <div>
-                            <div class="item-name">${p.title}</div>
-                            <div class="item-meta">${getCatNames(p.categoryIds)}</div>
+                            <div class="item-name" style="font-size:0.9rem; font-weight:600;">${p.title}</div>
+                            <div class="item-meta" style="font-size:0.75rem; color:var(--muted);">${getCatNames(p.categoryIds)}</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items: center;">
@@ -1060,7 +1059,7 @@
                                     <span style="position: absolute; content: ''; height: 10px; width: 10px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; transform: ${p.status === 'published' ? 'translateX(10px)' : 'translateX(0)'};"></span>
                                 </span>
                             </label>
-                            <span style="font-size: 10px; color: ${p.status === 'published' ? '#4CAF50' : '#888'}; font-weight: bold; width: 30px;">${p.status === 'published' ? 'LIVE' : 'DRAFT'}</span>
+                            <span style="font-size: 10px; color: ${p.status === 'published' ? '#4CAF50' : '#888'}; font-weight: bold;">${p.status === 'published' ? 'LIVE' : 'DRAFT'}</span>
                         </div>
                         <button class="btn-sm" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')" title="Edit Blocks" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -1307,8 +1306,8 @@
 
         async function openBlockModal(projectId, title) {
             currentProjectId = projectId;
-            document.getElementById('blockWorkspace').style.display = 'flex';
-            // Note: blockWorkspace is the actual workspace element (blockModal/modalProjectTitle do not exist)
+            showPage('block-editor');
+            
             modalSelectedBlockId = null;
             modalSelectedCategories = [];
             modalGalleryFiles = [];
@@ -1317,6 +1316,24 @@
             
             const res = await fetch('/api/projects/' + projectId);
             modalCurrentProject = await res.json();
+            
+            // Auto-convert gallery to blocks if blocks array is empty
+            if (!modalCurrentProject.blocks || modalCurrentProject.blocks.length === 0) {
+                if (modalCurrentProject.gallery && modalCurrentProject.gallery.length > 0) {
+                    modalCurrentProject.blocks = modalCurrentProject.gallery.map((imgUrl, i) => ({
+                        id: 'block_' + Date.now() + '_' + i,
+                        type: 'image',
+                        url: imgUrl,
+                        order: i
+                    }));
+                    // Save to backend immediately
+                    await fetch('/api/projects/' + projectId + '/blocks-bulk', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ blocks: modalCurrentProject.blocks })
+                    });
+                }
+            }
             
             document.getElementById('modalProjTitleEdit').value = modalCurrentProject.title || '';
             
@@ -1351,7 +1368,9 @@
         }
 
         function closeBlockModal() {
-            document.getElementById('blockWorkspace').style.display = 'none';
+            showPage('projects');
+            currentProjectId = null;
+            modalCurrentProject = null;
         }
 
         // --- Category Logic for Modal ---
@@ -2429,12 +2448,13 @@
 
         async function loadHomepageData() {
             try {
-                const res = await fetch('/index.html?t=' + Date.now());
+                const res = await fetch('/?t=' + Date.now());
                 const html = await res.text();
                 const match = html.match(/window\.CMS_DATA\s*=\s*(\{.*?\});/);
                 if (match && match[1]) {
                     currentHomepageData = JSON.parse(match[1]);
                 }
+                if (!currentHomepageData.contact) currentHomepageData.contact = { phones: [], email: '', behance: '', linkedin: '' };
                 selectHomepageSection('hero'); // default
             } catch (err) {
                 console.error("Error loading homepage data:", err);
@@ -2502,20 +2522,67 @@
                         </div>
                     </div>
                 `;
-            } else if (section === 'projects') {
-                titleEl.textContent = 'Projects Gallery';
-                contentEl.innerHTML = `
-                    <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">This section automatically displays your published projects.</p>
-                    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; margin-top: 1rem;">
-                        <span style="font-size: 12px; color: #fff;">To manage projects, use the <strong>Projects</strong> tab in the sidebar.</span>
-                    </div>
-                `;
             } else if (section === 'contact') {
                 titleEl.textContent = 'Contact Section';
-                contentEl.innerHTML = `<p style="font-size: 13px; color: var(--muted);">Contact settings coming soon.</p>`;
-            } else if (section === 'footer') {
-                titleEl.textContent = 'Footer Section';
-                contentEl.innerHTML = `<p style="font-size: 13px; color: var(--muted);">Footer settings coming soon.</p>`;
+                const contact = currentHomepageData.contact || { phones: [], email: '', behance: '', linkedin: '' };
+                
+                let phonesHtml = '';
+                (contact.phones || []).forEach((phone, index) => {
+                    phonesHtml += `
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <input type="text" value="${phone}" onchange="updateContactPhone(${index}, this.value)" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                            <button onclick="removeContactPhone(${index})" style="background: none; border: 1px solid #FF416C; color: #FF416C; border-radius: 8px; padding: 0 0.8rem; cursor: pointer;">Remove</button>
+                        </div>
+                    `;
+                });
+
+                contentEl.innerHTML = `
+                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                        <label>Phone Numbers</label>
+                        <div id="contactPhonesList">${phonesHtml}</div>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                            <input type="text" id="newContactPhoneInput" placeholder="e.g. +971 50 123 4567" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                            <button class="btn-sm" onclick="addContactPhone()" style="padding: 0 1rem; border: 1px solid var(--border); background: transparent; border-radius: 8px;">Add Phone</button>
+                        </div>
+                    </div>
+                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                        <label>Email Address</label>
+                        <input type="email" value="${contact.email || ''}" onchange="updateContactField('email', this.value)" placeholder="e.g. hello@example.com" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                    </div>
+                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                        <label>Behance URL</label>
+                        <input type="url" value="${contact.behance || ''}" onchange="updateContactField('behance', this.value)" placeholder="https://behance.net/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                    </div>
+                    <div class="form-group col">
+                        <label>LinkedIn URL</label>
+                        <input type="url" value="${contact.linkedin || ''}" onchange="updateContactField('linkedin', this.value)" placeholder="https://linkedin.com/in/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                    </div>
+                `;
+            }
+        }
+
+        // --- Contact Field Handlers ---
+        function updateContactField(field, value) {
+            if (!currentHomepageData.contact) currentHomepageData.contact = { phones: [], email: '', behance: '', linkedin: '' };
+            currentHomepageData.contact[field] = value;
+        }
+        function addContactPhone() {
+            const val = document.getElementById('newContactPhoneInput').value.trim();
+            if (!val) return;
+            if (!currentHomepageData.contact) currentHomepageData.contact = { phones: [], email: '', behance: '', linkedin: '' };
+            if (!currentHomepageData.contact.phones) currentHomepageData.contact.phones = [];
+            currentHomepageData.contact.phones.push(val);
+            if (activeHomepageSection === 'contact') selectHomepageSection('contact');
+        }
+        function updateContactPhone(index, val) {
+            if (currentHomepageData.contact && currentHomepageData.contact.phones) {
+                currentHomepageData.contact.phones[index] = val;
+            }
+        }
+        function removeContactPhone(index) {
+            if (currentHomepageData.contact && currentHomepageData.contact.phones) {
+                currentHomepageData.contact.phones.splice(index, 1);
+                if (activeHomepageSection === 'contact') selectHomepageSection('contact');
             }
         }
 
@@ -2530,6 +2597,7 @@
             
             try {
                 const res = await fetch('/api/upload-media', { method: 'POST', body: fd });
+                if (!res.ok) throw new Error('Upload failed');
                 const data = await res.json();
                 
                 if (!currentHomepageData.hero) currentHomepageData.hero = {};
@@ -2539,7 +2607,8 @@
                 if (activeHomepageSection === 'hero') selectHomepageSection('hero'); // re-render
                 showToast("Media uploaded! Don't forget to Publish.");
             } catch (err) {
-                showToast('Upload failed', true);
+                console.error(err);
+                showToast('Upload failed. Try again.', true);
             }
         }
 
