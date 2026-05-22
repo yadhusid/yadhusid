@@ -84,8 +84,8 @@ const ProjectSchema = new mongoose.Schema({
     blocks: [BlockSchema],
     cardBanner: String,
     cardOverlay: { type: Boolean, default: false },
-    order: { type: Number, default: 0 },
     status: { type: String, enum: ['draft', 'published'], default: 'draft' },
+    order: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now }
 });
 ProjectSchema.virtual('id').get(function(){ return this._id.toHexString(); });
@@ -290,6 +290,18 @@ app.post('/api/categories', requireAuth, async (req, res) => {
     }
 });
 
+app.put('/api/categories/:id', requireAuth, async (req, res) => {
+    try {
+        const { name } = req.body;
+        if (!name) return res.status(400).json({ error: 'Name required' });
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const category = await Category.findByIdAndUpdate(req.params.id, { name, slug }, { new: true });
+        res.json(category);
+    } catch (err) {
+        res.status(500).json({ error: 'Could not update category' });
+    }
+});
+
 app.delete('/api/categories/:id', requireAuth, async (req, res) => {
     try {
         await Category.findByIdAndDelete(req.params.id);
@@ -322,9 +334,10 @@ app.put('/api/categories/reorder', requireAuth, async (req, res) => {
 // ─── Project Routes ───────────────────────────────────────────────────────────
 app.get('/api/projects', async (req, res) => {
     try {
-        const { category } = req.query;
+        const { category, all } = req.query;
         let query = {};
         if (category) query.categoryIds = category;
+        if (all !== 'true') query.status = { $ne: 'draft' };
         const projects = await Project.find(query).sort({ order: 1, createdAt: -1 });
         res.json(projects);
     } catch (err) {
