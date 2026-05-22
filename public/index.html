@@ -856,6 +856,37 @@
                 heroBanner.style.transform = 'scale(1)';
             }
         }
+        
+        // Hydrate from CMS_DATA (Structured Content)
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.CMS_DATA) {
+                const data = window.CMS_DATA;
+                
+                // Hero Banner
+                if (data.hero) {
+                    const mediaLayer = document.getElementById('hero-media-layer');
+                    if (mediaLayer && data.hero.mediaUrl) {
+                        if (data.hero.mediaType === 'video') {
+                            mediaLayer.innerHTML = `<video src="${data.hero.mediaUrl}" muted autoplay loop playsinline class="media-element w-full h-full object-cover"></video>`;
+                        } else {
+                            mediaLayer.innerHTML = `<img src="${data.hero.mediaUrl}" class="media-element w-full h-full object-cover" alt="Hero Banner">`;
+                        }
+                    }
+                }
+
+                // Core Skills
+                if (data.coreSkills && Array.isArray(data.coreSkills)) {
+                    const skillsContainer = document.getElementById('core-skills-container');
+                    if (skillsContainer && data.coreSkills.length > 0) {
+                        skillsContainer.innerHTML = data.coreSkills.map(skill => `
+                            <span class="bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                                <div class="w-1.5 h-1.5 bg-current rounded-full flex-shrink-0"></div> ${skill}
+                            </span>
+                        `).join('');
+                    }
+                }
+            }
+        });
     </script>
 
 

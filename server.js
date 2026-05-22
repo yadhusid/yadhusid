@@ -568,7 +568,8 @@ const LAYOUT_VERSION = "2.3";
 // Persists homepage HTML to MongoDB instead of filesystem (required for ephemeral disks / Render)
 const HomepageSchema = new mongoose.Schema({
     key: { type: String, default: 'index', unique: true },
-    html: { type: String, required: true },
+    html: { type: String, required: false },
+    data: { type: Object, default: {} },
     version: { type: String, default: "1.0" },
     updatedAt: { type: Date, default: Date.now },
     coreSkills: { type: [String], default: ["UI/UX", "PRINT", "CREATIVE DIRECTION"] }
@@ -576,22 +577,36 @@ const HomepageSchema = new mongoose.Schema({
 let Homepage;
 try { Homepage = mongoose.model('Homepage'); } catch(e) { Homepage = mongoose.model('Homepage', HomepageSchema); }
 
-// Serve homepage: prefer MongoDB CMS cache ONLY if it matches the current LAYOUT_VERSION
+// Serve homepage: inject MongoDB CMS data into static index.html
 app.get(['/', '/index.html'], async (req, res) => {
     try {
-        const record = await Homepage.findOne({ key: 'index' });
-        // Serve from MongoDB if we have a record
-        if (record && record.html) {
-            return res.type('html').send(record.html);
+        const filePath = path.join(__dirname, 'public', 'index.html');
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).send('Homepage not found');
         }
-    } catch(e) { /* fall through */ }
-    
-    // Fallback: serve the deployed file (if MongoDB is empty or version is outdated)
-    const filePath = path.join(__dirname, 'public', 'index.html');
-    if (fs.existsSync(filePath)) {
-        return res.sendFile(filePath);
+        
+        let htmlContent = fs.readFileSync(filePath, 'utf8');
+        const record = await Homepage.findOne({ key: 'index' });
+        
+        // Build injection payload
+        let cmsData = {};
+        if (record) {
+            cmsData = record.data || {};
+            if (!cmsData.coreSkills && record.coreSkills) cmsData.coreSkills = record.coreSkills;
+            // Migration fallback: if data is empty but html exists, we can't easily parse it on server, 
+            // but the new system relies on structured data.
+        }
+        
+        const scriptInjection = `<script>window.CMS_DATA = ${JSON.stringify(cmsData)};</script>`;
+        htmlContent = htmlContent.replace('</head>', `${scriptInjection}\n</head>`);
+        
+        return res.type('html').send(htmlContent);
+    } catch(e) { 
+        console.error("Error serving homepage:", e);
+        const filePath = path.join(__dirname, 'public', 'index.html');
+        if (fs.existsSync(filePath)) return res.sendFile(filePath);
+        return res.status(500).send('Internal Error');
     }
-    res.status(404).send('Homepage not found');
 });
 
 // ─── Explicit Admin Routes (bypass Edge CDN caching) ────────────────────────
@@ -625,45 +640,25 @@ app.get('/api/sync-html', async (req, res) => {
     }
 });
 
-// ─── Visual Editor Saving ──────────────────────────────────────────────────
-app.post('/admin/save-cms', requireAuth, async (req, res) => {
-    const { html } = req.body;
-    console.log('[CMS] Save attempt received. HTML Length:', html?.length || 0);
+// ─── Homepage CMS Data Saving ──────────────────────────────────────────────────
+app.post('/api/homepage/data', requireAuth, async (req, res) => {
+    const { data } = req.body;
+    console.log('[CMS] Saving structured homepage data');
     
-    if (!html) return res.status(400).json({ error: 'HTML content required' });
+    if (!data) return res.status(400).json({ error: 'Data required' });
 
     try {
-        // Robust cleaning of CMS-specific artifacts before saving
-        const cleanedHtml = html
-            .replace(/<div[^>]*class="[^"]*cms-floating-toolbar[^"]*"[\s\S]*?<\/div>/g, '')
-            .replace(/<div[^>]*class="[^"]*cms-bottom-toolbar[^"]*"[\s\S]*?<\/div>/g, '')
-            .replace(/<div[^>]*class="[^"]*cms-sidebar[^"]*"[\s\S]*?<\/div>/g, '')
-            .replace(/\s*cms-(hover|selected|enabled|active-element|active-item)\s*/g, ' ')
-            .replace(/style="[^"]*outline:[^"]*"/g, '')
-            .replace(/contenteditable="true"/g, '')
-            .replace(/spellcheck="false"/g, '');
-
-        // Primary: Save to MongoDB (works on ephemeral PaaS environments like Render)
         await Homepage.findOneAndUpdate(
             { key: 'index' },
-            { html: cleanedHtml, version: LAYOUT_VERSION, updatedAt: new Date() },
+            { $set: { data: data, updatedAt: new Date() } },
             { upsert: true, new: true }
         );
-        console.log('✅ Homepage HTML saved to MongoDB (Render-compatible)');
-
-        // Secondary: Also try filesystem save for local/traditional deployments
-        try {
-            const indexPath = path.join(__dirname, 'public', 'index.html');
-            fs.writeFileSync(indexPath, cleanedHtml, 'utf8');
-            console.log('✅ index.html also updated on filesystem');
-        } catch (fsErr) {
-            console.log('ℹ️ Filesystem write skipped (read-only environment):', fsErr.message);
-        }
+        console.log('✅ Homepage structured data saved to MongoDB');
 
         res.json({ success: true });
     } catch (err) {
-        console.error('❌ Error saving CMS changes:', err);
-        res.status(500).json({ error: 'Save Error: ' + err.message });
+        console.error('❌ Error saving CMS data:', err);
+        res.status(500).json({ error: 'Failed to save changes' });
     }
 });
 

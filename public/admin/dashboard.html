@@ -509,28 +509,59 @@
                     </div>
                 </div>
 
-                <!-- Visual Editor Page -->
+                <!-- Homepage Section Editor -->
                 <div class="page" id="page-editor" style="max-width: 100%; height: calc(100vh - 12rem);">
                     <div style="display: grid; grid-template-columns: 7fr 3fr; gap: 2rem; height: 100%;">
-                        <!-- Left Panel: Iframe -->
+                        <!-- Left Panel: Reference Preview -->
                         <div style="position: relative; border-radius: 24px; border: 1px solid var(--border); overflow: hidden; background: #000; height: 100%;">
-                            <iframe id="visual-iframe" src="about:blank" style="width: 100%; height: 100%; border: none;"></iframe>
+                            <iframe id="homepage-preview-iframe" src="/" style="width: 100%; height: 100%; border: none; pointer-events: none;"></iframe>
+                            <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); padding: 4px 12px; border-radius: 20px; font-size: 11px; color: #fff; font-weight: 600; border: 1px solid rgba(255,255,255,0.1);">Live Preview (Reference Only)</div>
                         </div>
                         
-                        <!-- Right Panel: Inspector -->
+                        <!-- Right Panel: Section Controls -->
                         <div class="form-card" style="display: flex; flex-direction: column; height: 100%; margin-bottom: 0; padding: 2rem; overflow: hidden;">
-                            <h3>Inspector</h3>
-                            <div id="properties-panel" style="flex: 1; overflow-y: auto; margin-bottom: 1.5rem; padding-right: 5px;">
-                                <div style="padding: 2rem; text-align: center; color: var(--muted); font-size: 0.8rem; font-weight: 600;">
-                                    Select an element on the stage to edit.
+                            <h3>Homepage Content</h3>
+                            
+                            <div style="flex: 1; overflow-y: auto; margin-bottom: 1.5rem; padding-right: 5px; display: flex; flex-direction: column; gap: 1.5rem;">
+                                
+                                <!-- Hero Section Controls -->
+                                <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;">
+                                    <h4 style="margin-top: 0; font-size: 1rem; color: #fff;">Hero Banner</h4>
+                                    
+                                    <div class="form-group col" style="margin-top: 1rem;">
+                                        <label>Banner Media (Image or Video)</label>
+                                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                                            <div id="hero-media-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                                <span style="font-size: 12px; color: var(--muted);">No media uploaded</span>
+                                            </div>
+                                            <input type="file" id="heroMediaUpload" accept="image/*,video/*" onchange="uploadHeroMedia(this)" style="display: none;">
+                                            <button class="btn-sm" onclick="document.getElementById('heroMediaUpload').click()" style="background: transparent; border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px;">Upload Media</button>
+                                        </div>
+                                    </div>
                                 </div>
+                                
+                                <!-- Core Skills Controls -->
+                                <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;">
+                                    <h4 style="margin-top: 0; font-size: 1rem; color: #fff;">Core Skills</h4>
+                                    <p style="font-size: 12px; color: var(--muted); margin-bottom: 1rem;">Add/remove skills displayed in the marquee.</p>
+                                    <div class="form-group col">
+                                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                            <input type="text" id="newSkillInput" placeholder="e.g. UX DESIGN" style="flex: 1;">
+                                            <button class="btn-primary" onclick="addCoreSkill()" style="padding: 0 1rem; border-radius: 8px;">Add</button>
+                                        </div>
+                                        <div id="skillsListEditor" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <!-- Skills rendered here -->
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
+                            
+                            <!-- Save Actions -->
                             <div style="padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.5rem;">
                                 <div style="display: flex; gap: 1rem;">
-                                    <button class="btn-sm" onclick="undoGlobalChanges()" style="flex: 1; padding: 0.8rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border);">Undo</button>
-                                    <button class="btn-primary" id="publish-changes-btn" style="flex: 2; padding: 0.8rem;" onclick="publishChanges(event)">Publish Changes</button>
+                                    <button class="btn-primary" id="publish-homepage-btn" style="flex: 2; padding: 0.8rem;" onclick="saveHomepageData()">Publish Homepage</button>
                                 </div>
-                                <span style="font-size: 10px; color: var(--muted); text-align: center;">Changes are saved locally and go live on clicking Publish.</span>
                             </div>
                         </div>
                     </div>
@@ -658,10 +689,12 @@
             
             const title = document.getElementById('workspace-title');
             if (name === 'editor') {
-                if (title) title.textContent = 'Visual Editor';
-                const iframe = document.getElementById('visual-iframe');
-                // Set the iframe URL dynamically
-                iframe.src = '/index.html?edit=true&embedded=true';
+                if (title) title.textContent = 'Homepage Content';
+                const iframe = document.getElementById('homepage-preview-iframe');
+                if (iframe && !iframe.src.includes('index.html')) {
+                    iframe.src = '/index.html?embedded=true';
+                }
+                loadHomepageData();
             } else {
                 if (name === 'overview') {
                     if (title) title.textContent = 'Overview';
@@ -2325,6 +2358,112 @@
                 }
             } catch (err) {
                 showToast('Failed to reset password', true);
+            }
+        }
+        // ———— Homepage Editor Logic ————
+        let currentHomepageData = { hero: {}, coreSkills: [] };
+
+        async function loadHomepageData() {
+            try {
+                // To fetch the current structured JSON without executing the HTML template, 
+                // we can fetch the skills API which we will repurpose, or fetch the actual HTML and parse window.CMS_DATA.
+                // We'll fetch the index.html as text and extract the CMS_DATA JSON via regex since we injected it.
+                const res = await fetch('/index.html?t=' + Date.now());
+                const html = await res.text();
+                const match = html.match(/window\.CMS_DATA\s*=\s*(\{.*?\});/);
+                if (match && match[1]) {
+                    currentHomepageData = JSON.parse(match[1]);
+                }
+                renderHomepageEditor();
+            } catch (err) {
+                console.error("Error loading homepage data:", err);
+            }
+        }
+
+        function renderHomepageEditor() {
+            // Render Hero
+            const heroBox = document.getElementById('hero-media-preview-box');
+            if (currentHomepageData.hero && currentHomepageData.hero.mediaUrl) {
+                if (currentHomepageData.hero.mediaType === 'video') {
+                    heroBox.innerHTML = `<video src="${currentHomepageData.hero.mediaUrl}" muted autoplay loop style="width:100%; height:100%; object-fit:cover;"></video>`;
+                } else {
+                    heroBox.innerHTML = `<img src="${currentHomepageData.hero.mediaUrl}" style="width:100%; height:100%; object-fit:cover;">`;
+                }
+            } else {
+                heroBox.innerHTML = `<span style="font-size: 12px; color: var(--muted);">No media uploaded</span>`;
+            }
+
+            // Render Core Skills
+            const skillsList = document.getElementById('skillsListEditor');
+            skillsList.innerHTML = '';
+            (currentHomepageData.coreSkills || []).forEach((skill, index) => {
+                const el = document.createElement('div');
+                el.style.cssText = 'background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 12px; display: flex; align-items: center; gap: 8px;';
+                el.innerHTML = `
+                    <span>${skill}</span>
+                    <button onclick="removeCoreSkill(${index})" style="background:none; border:none; color:#FF416C; cursor:pointer; font-weight:bold;">&times;</button>
+                `;
+                skillsList.appendChild(el);
+            });
+        }
+
+        async function uploadHeroMedia(input) {
+            if (!input.files || input.files.length === 0) return;
+            const file = input.files[0];
+            const isVideo = file.type.startsWith('video/');
+            
+            showToast('Uploading media...');
+            const fd = new FormData();
+            fd.append('file', file);
+            
+            try {
+                const res = await fetch('/api/upload-media', { method: 'POST', body: fd });
+                const data = await res.json();
+                
+                if (!currentHomepageData.hero) currentHomepageData.hero = {};
+                currentHomepageData.hero.mediaUrl = data.url;
+                currentHomepageData.hero.mediaType = isVideo ? 'video' : 'image';
+                
+                renderHomepageEditor();
+                showToast('Media uploaded! Don\\'t forget to Publish.');
+            } catch (err) {
+                showToast('Upload failed', true);
+            }
+        }
+
+        function addCoreSkill() {
+            const input = document.getElementById('newSkillInput');
+            const val = input.value.trim().toUpperCase();
+            if (!val) return;
+            
+            if (!currentHomepageData.coreSkills) currentHomepageData.coreSkills = [];
+            currentHomepageData.coreSkills.push(val);
+            input.value = '';
+            renderHomepageEditor();
+        }
+
+        function removeCoreSkill(index) {
+            if (currentHomepageData.coreSkills) {
+                currentHomepageData.coreSkills.splice(index, 1);
+                renderHomepageEditor();
+            }
+        }
+
+        async function saveHomepageData() {
+            try {
+                const res = await fetch('/api/homepage/data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: currentHomepageData })
+                });
+                if (res.ok) {
+                    showToast('Homepage published successfully!');
+                    document.getElementById('homepage-preview-iframe').src = '/index.html?t=' + Date.now();
+                } else {
+                    showToast('Failed to publish', true);
+                }
+            } catch (err) {
+                showToast('Error publishing', true);
             }
         }
     </script>
