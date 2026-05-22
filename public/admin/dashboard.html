@@ -1053,7 +1053,7 @@
 
         function getOptThumb(url) {
             if (!url || !url.includes('cloudinary.com')) return url;
-            return url.replace('/upload/', '/upload/w_400,q_auto,f_auto/');
+            return url.replace('/upload/', '/upload/w_600,q_auto,f_auto/');
         }
 
         function renderProjects() {
@@ -2555,6 +2555,7 @@
                     `;
                 });
 
+                contentEl.innerHTML = `
                     <div class="form-group col" style="margin-bottom: 1.5rem;">
                         <label>Contact Background Image</label>
                         <div id="contact-banner-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; position: relative;">

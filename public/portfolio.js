@@ -102,7 +102,7 @@ function renderProjects(projects = allProjects) {
     // Helper to get optimized thumbnail
     const getOptThumb = (url) => {
         if (!url || !url.includes('cloudinary.com')) return url;
-        return url.replace('/upload/', '/upload/w_800,q_auto,f_auto/');
+        return url.replace('/upload/', '/upload/w_1200,q_auto,f_auto/');
     };
 
     grid.innerHTML = published.map((p, index) => {
