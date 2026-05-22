@@ -221,25 +221,21 @@
                     </a>
                 </div>
                 
-                <div class="flex items-center gap-1">
+                <div class="flex items-center">
                     <!-- Desktop Menu -->
-                    <ul class="hidden md:flex items-center gap-1 text-[14.5px] font-medium text-[#111]">
-                        <li><a href="/#home" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a></li>
-                        <li><a href="/#expertise" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a></li>
-                        <li><a href="/#projects" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a></li>
-                    </ul>
-                    
-                    <div class="flex items-center gap-1">
-                        <a href="/#contact" class="hidden md:inline-flex items-center justify-center bg-[#111] text-white px-5 h-[38px] rounded-full text-[14.5px] font-medium nav-scroll transition-all duration-300 hover:bg-[#FF416C] hover:-translate-y-[2px] active:scale-95 shadow-sm hover:shadow-lg">
-                            Let's Talk
-                        </a>
-                        <!-- Mobile Hamburger -->
-                        <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50 ml-1">
-                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                            <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        </button>
+                    <div class="hidden md:flex items-center gap-1 text-[14.5px] font-medium text-[#111]">
+                        <a href="/#home" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a>
+                        <a href="/#expertise" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a>
+                        <a href="/#projects" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a>
+                        <a href="/#contact" class="inline-flex items-center justify-center bg-[#111] text-white px-5 h-[38px] rounded-full text-[14.5px] font-medium nav-scroll transition-all duration-300 hover:bg-[#FF416C] hover:-translate-y-[2px] active:scale-95 shadow-sm hover:shadow-lg">Let's Talk</a>
                     </div>
+                    
+                    <!-- Mobile Hamburger -->
+                    <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50 ml-2">
+                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                    </button>
                 </div>
             </div>
             
@@ -270,11 +266,7 @@
                     <span class="text-[14.5px] transition-colors group-hover:text-[#FF416C]">yadsid.com</span>
                 </a>
             </div>
-            <div class="flex items-center gap-8">
-                <a href="/#home" class="hover:text-black transition-colors">Home</a>
-                <a href="/#projects" class="hover:text-black transition-colors">Work</a>
-                <a href="/#contact" class="hover:text-black transition-colors">Contact</a>
-            </div>
+            <div class="mb-4 md:mb-0">© 2026 Yadhu Sidharthan. All rights reserved.</div>
         </div>
     </footer>
 
@@ -350,6 +342,13 @@
             }
         });
     </script>
-
+    <script>
+        // Inject CMS if URL has edit=true
+        if(window.location.search.includes('edit=true')) {
+            const script = document.createElement('script');
+            script.src = '/cms.js';
+            document.body.appendChild(script);
+        }
+    </script>
 </body>
 </html>
