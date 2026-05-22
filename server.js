@@ -580,8 +580,8 @@ try { Homepage = mongoose.model('Homepage'); } catch(e) { Homepage = mongoose.mo
 app.get(['/', '/index.html'], async (req, res) => {
     try {
         const record = await Homepage.findOne({ key: 'index' });
-        // Serve from MongoDB if we have a record and its layout version is up to date
-        if (record && record.html && record.version === LAYOUT_VERSION) {
+        // Serve from MongoDB if we have a record
+        if (record && record.html) {
             return res.type('html').send(record.html);
         }
     } catch(e) { /* fall through */ }
