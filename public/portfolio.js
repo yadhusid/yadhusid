@@ -2,9 +2,33 @@ let allProjects = [];
 let allCategories = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
+    await fetchCoreSkills();
     await fetchCategories();
     await fetchProjects();
 });
+
+async function fetchCoreSkills() {
+    try {
+        const res = await fetch('/api/homepage/skills?t=' + Date.now());
+        const skills = await res.json();
+        renderCoreSkills(skills);
+    } catch (err) {
+        console.error('Error fetching core skills:', err);
+    }
+}
+
+function renderCoreSkills(skills) {
+    const container = document.getElementById('core-skills-container');
+    if (!container || !Array.isArray(skills)) return;
+
+    let html = '';
+    skills.forEach(skill => {
+        html += `<span class="bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+                    <div class="w-1.5 h-1.5 bg-current rounded-full flex-shrink-0"></div> ${skill}
+                </span>`;
+    });
+    container.innerHTML = html;
+}
 
 async function fetchCategories() {
     try {
@@ -30,11 +54,11 @@ function renderCategories() {
     const filterContainer = document.getElementById('project-categories');
     if (!filterContainer) return;
 
-    // Keep "All Works" button
-    let html = `<button class="bg-black text-white px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all" onclick="filterProjects('all', this)">All Works</button>`;
+    // Keep "All Works" button (selected by default)
+    let html = `<button class="bg-black border border-black text-white rounded-full font-bold uppercase tracking-widest transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);" onclick="filterProjects('all', this)">All Works</button>`;
     
     allCategories.forEach(cat => {
-        html += `<button class="bg-[#F2F2F2] px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#111] hover:bg-black hover:text-white transition-all" onclick="filterProjects('${cat.id}', this)">${cat.name}</button>`;
+        html += `<button class="bg-transparent border border-[#111] rounded-full font-bold uppercase tracking-widest text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);" onclick="filterProjects('${cat.id}', this)">${cat.name}</button>`;
     });
 
     filterContainer.innerHTML = html;
@@ -44,11 +68,11 @@ function filterProjects(categoryId, btn) {
     // Update active button styles
     const buttons = document.querySelectorAll('#project-categories button');
     buttons.forEach(b => {
-        b.classList.remove('bg-black', 'text-white');
-        b.classList.add('bg-[#F2F2F2]', 'text-[#111]');
+        b.classList.remove('bg-black', 'text-white', 'border-black');
+        b.classList.add('bg-transparent', 'text-[#111]', 'border-[#111]');
     });
-    btn.classList.remove('bg-[#F2F2F2]', 'text-[#111]');
-    btn.classList.add('bg-black', 'text-white');
+    btn.classList.remove('bg-transparent', 'text-[#111]', 'border-[#111]');
+    btn.classList.add('bg-black', 'text-white', 'border-black');
 
     if (categoryId === 'all') {
         renderProjects(allProjects);

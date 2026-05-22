@@ -326,6 +326,20 @@
                         </div>
                         <div id="catList" class="compact-list"></div>
                     </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-card">
+                            <h3 style="border-bottom: none; padding-bottom: 0; margin-bottom: 1rem;">Add Core Skill</h3>
+                            <div style="display:flex; gap:1rem; width: 100%;">
+                                <input type="text" id="skillName" placeholder="e.g. UI/UX" style="flex: 1;">
+                                <button class="btn-primary" onclick="addCoreSkill()" style="flex-shrink:0;">Add</button>
+                            </div>
+                        </div>
+                        <div class="form-card">
+                            <h3 style="border-bottom: none; padding-bottom: 0; margin-bottom: 1rem;">Existing Core Skills</h3>
+                            <div id="coreSkillsList" class="compact-list"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Projects Page -->
@@ -631,6 +645,7 @@
         let currentProjectId = null;
         let allCategories = [];
         let allProjects = [];
+        let coreSkills = [];
 
         // ———— Auth check ————
         (async () => {
@@ -758,6 +773,7 @@
         }
 
         async function loadAll() {
+            await loadCoreSkills();
             await loadCategories();
             await loadProjects();
             updateStats();
@@ -779,6 +795,63 @@
         function updateStats() {
             document.getElementById('stat-projs').textContent = allProjects.length;
             document.getElementById('stat-cats').textContent = allCategories.length;
+        }
+        
+        async function loadCoreSkills() {
+            try {
+                const res = await fetch('/api/homepage/skills?t=' + Date.now());
+                coreSkills = await res.json();
+                renderCoreSkills();
+            } catch(err) {
+                console.error(err);
+            }
+        }
+        
+        function renderCoreSkills() {
+            const list = document.getElementById('coreSkillsList');
+            if(!list) return;
+            list.innerHTML = coreSkills.map((skill, idx) => `
+                <div class="item-row">
+                    <span style="font-size:0.75rem; font-weight:600; flex:1;">${skill}</span>
+                    <button class="btn-sm" onclick="deleteCoreSkill(${idx})" style="color:var(--danger); padding:0.2rem 0.5rem;">Delete</button>
+                </div>
+            `).join('');
+        }
+        
+        async function addCoreSkill() {
+            const input = document.getElementById('skillName');
+            const name = input ? input.value.trim() : '';
+            if(!name) {
+                showToast('Enter a skill name', true);
+                return;
+            }
+            coreSkills.push(name);
+            input.value = '';
+            await saveCoreSkills();
+        }
+        
+        async function deleteCoreSkill(idx) {
+            if(confirm('Delete this core skill?')) {
+                coreSkills.splice(idx, 1);
+                await saveCoreSkills();
+            }
+        }
+        
+        async function saveCoreSkills() {
+            try {
+                const res = await fetch('/api/homepage/skills', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ skills: coreSkills })
+                });
+                if(res.ok) {
+                    renderCoreSkills();
+                    showToast('Core Skills updated');
+                }
+            } catch (err) {
+                showToast('Error saving core skills', true);
+            }
         }
 
         function renderCategories() {

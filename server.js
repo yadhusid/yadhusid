@@ -550,14 +550,15 @@ async function ensureAdmin() {
 // ─── CMS Homepage Content Model ───────────────────────────────────────────────
 // Increment this version whenever a structural/layout change is made to public/index.html via Git.
 // This invalidates old CMS MongoDB caches so they don't overwrite new frontend layouts.
-const LAYOUT_VERSION = "2.1";
+const LAYOUT_VERSION = "2.2";
 
 // Persists homepage HTML to MongoDB instead of filesystem (required for ephemeral disks / Render)
 const HomepageSchema = new mongoose.Schema({
     key: { type: String, default: 'index', unique: true },
     html: { type: String, required: true },
     version: { type: String, default: "1.0" },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    coreSkills: { type: [String], default: ["UI/UX", "PRINT", "CREATIVE DIRECTION"] }
 });
 let Homepage;
 try { Homepage = mongoose.model('Homepage'); } catch(e) { Homepage = mongoose.model('Homepage', HomepageSchema); }
@@ -650,6 +651,35 @@ app.post('/admin/save-cms', requireAuth, async (req, res) => {
     } catch (err) {
         console.error('❌ Error saving CMS changes:', err);
         res.status(500).json({ error: 'Save Error: ' + err.message });
+    }
+});
+
+// ─── Core Skills API ──────────────────────────────────────────────────────────
+app.get('/api/homepage/skills', async (req, res) => {
+    try {
+        let record = await Homepage.findOne({ key: 'index' });
+        if (!record) {
+            record = await Homepage.create({ key: 'index', html: '<!-- Default -->' });
+        }
+        res.json(record.coreSkills || ["UI/UX", "PRINT", "CREATIVE DIRECTION"]);
+    } catch(err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.post('/api/homepage/skills', requireAuth, async (req, res) => {
+    const { skills } = req.body;
+    try {
+        let record = await Homepage.findOne({ key: 'index' });
+        if (!record) {
+            record = await Homepage.create({ key: 'index', html: '<!-- Default -->', coreSkills: skills });
+        } else {
+            record.coreSkills = skills;
+            await record.save();
+        }
+        res.json({ success: true, skills: record.coreSkills });
+    } catch(err) {
+        res.status(500).json({ error: 'Server error' });
     }
 });
 
