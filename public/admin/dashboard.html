@@ -138,7 +138,7 @@
         .btn-close:hover { background: #333333; color: #fff; }
         .btn-close svg { width: 16px; height: 16px; }
 
-        .item-row { display: flex; align-items: center; justify-content: space-between; background: var(--input-bg); border-radius: 8px; padding: 1.2rem; margin-bottom: 0.8rem; border: 1px solid var(--border); }
+        .item-row { display: flex; align-items: center; justify-content: space-between; background: var(--input-bg); border-radius: 8px; padding: 0.6rem 1rem; margin-bottom: 0.4rem; border: 1px solid var(--border); }
         .item-name { font-weight: 700; font-size: 0.95rem; }
         .item-meta { color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem; }
         .item-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
@@ -198,8 +198,8 @@
         }
         .compact-grid {
             display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
-            gap: 1rem !important;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+            gap: 1.5rem !important;
         }
         .compact-grid .item-row {
             margin-bottom: 0 !important;
@@ -218,7 +218,7 @@
         }
         .compact-grid .item-row .item-thumb {
             width: 100% !important;
-            height: 120px !important;
+            height: 160px !important;
             border-radius: 12px;
             object-fit: cover;
         }
@@ -544,7 +544,7 @@
         <!-- Left Window: Live Preview Stage -->
         <div class="live-preview-window" style="width: 65%; height: 100%; border-right: 1px solid var(--border); overflow-y: auto; background: #ffffff; position: relative;">
             <div style="padding: 40px; font-family: 'Inter', sans-serif; color: #111;">
-                <h1 id="livePreviewTitle" style="font-size: clamp(32px,4vw,48px); font-weight: bold; text-align: center; margin-bottom: 2rem; font-family: 'Outfit', sans-serif;">Project Title</h1>
+                <h1 id="livePreviewTitle" style="font-size: clamp(16px,2vw,24px); font-weight: bold; text-align: center; margin-bottom: 2rem; font-family: 'Inter', sans-serif; letter-spacing: -0.025em; line-height: 1.0;">Project Title</h1>
                 <div id="livePreviewBlocks" style="display: flex; flex-direction: column; max-width: 1200px; margin: 0 auto; gap: 0;">
                     <!-- Blocks injected here instantly by JS -->
                 </div>
@@ -787,7 +787,7 @@
         }
 
         async function loadProjects() {
-            const res = await fetch('/api/projects?t=' + Date.now());
+            const res = await fetch('/api/projects?all=true&t=' + Date.now());
             allProjects = await res.json();
             renderProjects();
         }
@@ -807,13 +807,34 @@
             }
         }
         
+        let editingSkillIdx = -1;
+        async function saveEditSkill(idx) {
+            const newName = document.getElementById(`edit-skill-${idx}`).value.trim();
+            if(!newName) return;
+            coreSkills[idx] = newName;
+            editingSkillIdx = -1;
+            await saveCoreSkills();
+        }
+
         function renderCoreSkills() {
             const list = document.getElementById('coreSkillsList');
             if(!list) return;
             list.innerHTML = coreSkills.map((skill, idx) => `
                 <div class="item-row">
-                    <span style="font-size:0.75rem; font-weight:600; flex:1;">${skill}</span>
-                    <button class="btn-sm" onclick="deleteCoreSkill(${idx})" style="color:var(--danger); padding:0.2rem 0.5rem;">Delete</button>
+                    ${editingSkillIdx === idx ? `
+                        <input type="text" id="edit-skill-${idx}" value="${skill}" style="flex:1; margin-right:10px; font-size:12px; padding:4px;">
+                        <button class="btn-primary" onclick="saveEditSkill(${idx})" style="padding:0.4rem 0.6rem;">Apply</button>
+                    ` : `
+                        <span style="font-size:0.75rem; font-weight:600; flex:1;">${skill}</span>
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn-sm" onclick="editingSkillIdx = ${idx}; renderCoreSkills();" title="Edit" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button class="btn-danger" onclick="deleteCoreSkill(${idx})" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            </button>
+                        </div>
+                    `}
                 </div>
             `).join('');
         }
@@ -854,6 +875,26 @@
             }
         }
 
+        let editingCatId = null;
+        async function saveEditCategory(id) {
+            const newName = document.getElementById(`edit-cat-${id}`).value.trim();
+            if(!newName) return;
+            try {
+                const res = await fetch('/api/categories/' + id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ name: newName })
+                });
+                if(res.ok) {
+                    editingCatId = null;
+                    await loadCategories();
+                }
+            } catch(e) {
+                showToast('Error saving category', true);
+            }
+        }
+
         function renderCategories() {
             const list = document.getElementById('catList');
             list.innerHTML = allCategories.map(c => `
@@ -863,13 +904,22 @@
                      ondragleave="handleCatDragLeave(event)"
                      ondrop="handleCatDrop(event, '${c.id}')"
                      style="cursor: grab;">
-                    <div>
-                        <div class="item-name">${c.name}</div>
-                        <div class="item-meta">Slug: ${c.slug}</div>
-                    </div>
-                    <button class="btn-danger" onclick="deleteCategory('${c.id}')" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                    </button>
+                    ${editingCatId === c.id ? `
+                        <input type="text" id="edit-cat-${c.id}" value="${c.name}" style="flex:1; margin-right:10px; font-size:12px; padding:4px;">
+                        <button class="btn-primary" onclick="saveEditCategory('${c.id}')" style="padding:0.4rem 0.6rem;">Apply</button>
+                    ` : `
+                        <div style="flex:1;">
+                            <div class="item-name">${c.name}</div>
+                        </div>
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn-sm" onclick="editingCatId = '${c.id}'; renderCategories();" title="Edit" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button class="btn-danger" onclick="deleteCategory('${c.id}')" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            </button>
+                        </div>
+                    `}
                 </div>`).join('');
         }
 
@@ -953,7 +1003,16 @@
                             <div class="item-meta">${getCatNames(p.categoryIds)}</div>
                         </div>
                     </div>
-                    <div style="display:flex; gap:0.5rem;">
+                    <div style="display:flex; gap:0.5rem; align-items: center;">
+                        <div style="display:flex; align-items:center; gap:0.5rem; justify-content:center; margin-right: 1rem;">
+                            <label class="switch" style="position: relative; display: inline-block; width: 34px; height: 20px;">
+                                <input type="checkbox" ${p.status === 'published' ? 'checked' : ''} onchange="toggleProjectStatus('${p.id}', this.checked)" style="opacity: 0; width: 0; height: 0; position: absolute;">
+                                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: ${p.status === 'published' ? '#4CAF50' : '#444'}; transition: .4s; border-radius: 34px;">
+                                    <span style="position: absolute; content: ''; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; transform: ${p.status === 'published' ? 'translateX(14px)' : 'translateX(0)'};"></span>
+                                </span>
+                            </label>
+                            <span style="font-size: 10px; color: ${p.status === 'published' ? '#4CAF50' : '#888'}; font-weight: bold; width: 30px;">${p.status === 'published' ? 'LIVE' : 'DRAFT'}</span>
+                        </div>
                         <button class="btn-sm" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')" title="Edit Blocks" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
@@ -962,6 +1021,27 @@
                         </button>
                     </div>
                 </div>`).join('');
+        }
+        
+        async function toggleProjectStatus(id, isPublished) {
+            try {
+                const res = await fetch('/api/projects/' + id, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ status: isPublished ? 'published' : 'draft' })
+                });
+                if(res.ok) {
+                    showToast('Project status updated');
+                    await loadProjects();
+                } else {
+                    showToast('Error updating status', true);
+                    await loadProjects(); // revert visually
+                }
+            } catch(e) {
+                showToast('Error updating status', true);
+                await loadProjects();
+            }
         }
 
         let selectedGalleryFiles = [];
@@ -1272,29 +1352,36 @@
             const container = document.getElementById('livePreviewBlocks');
             if (!modalCurrentProject) return;
             
+            const isDubaiHolding = modalCurrentProject.title && modalCurrentProject.title.toLowerCase().includes('dubai holding');
+            if (isDubaiHolding) {
+                container.style.gap = '16px';
+            } else {
+                container.style.gap = '0px';
+            }
+            
             const sortedBlocks = [...(modalCurrentProject.blocks || [])].sort((a,b) => a.order - b.order);
             
             container.innerHTML = sortedBlocks.map(b => {
                 let content = '';
-                const radiusClass = `${b.layout && b.layout.topRound ? 'border-top-left-radius: 32px; border-top-right-radius: 32px;' : ''} ${b.layout && b.layout.bottomRound ? 'border-bottom-left-radius: 32px; border-bottom-right-radius: 32px;' : ''}`;
-                const marginClass = 'margin-bottom: 32px;';
+                const radiusClass = `${b.radiusTop ? 'border-top-left-radius: 32px; border-top-right-radius: 32px;' : ''} ${b.radiusBottom ? 'border-bottom-left-radius: 32px; border-bottom-right-radius: 32px;' : ''}`;
+                const marginClass = b.hasGap ? 'margin-bottom: 32px;' : '';
                 
                 const isSelected = modalSelectedBlockId === (b._id || b.id);
                 const highlightOutline = isSelected ? 'outline: 3px solid #3b82f6; outline-offset: 4px;' : '';
 
                 if (b.type === 'text') {
-                    // Styled to match the secondary heading text style on the home page
-                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; font-family: 'Outfit', sans-serif; font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 500; color: #111; line-height: 1.6; padding: 2rem 0; ${highlightOutline}">${b.content.replace(/\n/g, '<br>')}</div>`;
-                } else if (b.type === 'media' || b.type === 'image' || b.type === 'video') {
-                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; overflow: hidden; width: 100%; display: block; ${radiusClass} ${marginClass} ${highlightOutline}">
-                                  ${b.url && b.url.match(/\.(mp4|webm)$/i) ? 
-                                    `<video src="${b.url}" muted loop autoplay playsinline style="width: 100%; display: block; pointer-events: none;"></video>` : 
-                                    `<img src="${b.url}" alt="Project detail" style="width: 100%; display: block; pointer-events: none;">`}
+                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; max-width: 48rem; font-size: clamp(14px,1vw,16px); color: #444; line-height: 1.8; padding: 2rem 0; ${highlightOutline}">${b.content.replace(/\n/g, '<br>')}</div>`;
+                } else if (b.type === 'image' || b.type === 'video') {
+                    const blockContent = b.content || b.url || '';
+                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; overflow: hidden; width: 100%; display: flex; flex-direction: column; ${radiusClass} ${marginClass} ${highlightOutline}">
+                                  ${b.type === 'video' ? 
+                                    `<video src="${blockContent}" muted loop autoplay playsinline style="width: 100%; display: block; pointer-events: none;"></video>` : 
+                                    `<img src="${blockContent}" alt="Project detail" style="width: 100%; display: block; pointer-events: none;">`}
                                </div>`;
                 } else if (b.type === 'spacing') {
                     content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; height: 3rem; background: ${isSelected ? 'rgba(59, 130, 246, 0.1)' : 'transparent'}; ${highlightOutline}"></div>`;
                 } else if (b.type === 'divider') {
-                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; padding: 1rem 0;"><hr style="border: none; border-top: 1px solid #E5E5E5; margin: 0; ${highlightOutline}"></div>`;
+                    content = `<div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; padding: 1rem 0; width: 100%; ${highlightOutline}"><hr style="border: none; border-top: 1px solid #E5E5E5; margin: 0;"></div>`;
                 }
                 return content;
             }).join('');

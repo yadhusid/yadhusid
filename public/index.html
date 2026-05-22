@@ -609,20 +609,20 @@
                     </a>
                 </div>
                 
-                <div class="flex items-center gap-6 lg:gap-10">
+                <div class="flex items-center gap-1">
                     <!-- Desktop Menu -->
-                    <ul class="hidden md:flex items-center gap-2 text-[13px] font-medium text-[#111]">
-                        <li><a href="#home" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a></li>
-                        <li><a href="#expertise" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a></li>
-                        <li><a href="#projects" class="nav-scroll px-4 py-2 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a></li>
+                    <ul class="hidden md:flex items-center gap-1 text-[14.5px] font-medium text-[#111]">
+                        <li><a href="#home" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a></li>
+                        <li><a href="#expertise" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a></li>
+                        <li><a href="#projects" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a></li>
                     </ul>
                     
-                    <div class="flex items-center gap-2 md:gap-4">
-                        <a href="#contact" class="hidden md:block bg-[#111] text-white px-4 py-2 rounded-full text-[13px] font-medium nav-scroll transition-all duration-300 hover:bg-[#FF416C] hover:-translate-y-[2px] active:scale-95 shadow-sm hover:shadow-lg">
+                    <div class="flex items-center gap-1">
+                        <a href="#contact" class="hidden md:inline-flex items-center justify-center bg-[#111] text-white px-5 h-[38px] rounded-full text-[14.5px] font-medium nav-scroll transition-all duration-300 hover:bg-[#FF416C] hover:-translate-y-[2px] active:scale-95 shadow-sm hover:shadow-lg">
                             Let's Talk
                         </a>
                         <!-- Mobile Hamburger -->
-                        <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50">
+                        <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50 ml-1">
                             <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
                             <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
                             <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
@@ -674,9 +674,11 @@
             <div class="relative w-full" style="margin-top: auto;">
                 <div class="flex items-center justify-between relative hero-content-pad">
                     <!-- Center: Scroll Indicator -->
-                    <a href="#expertise" class="scroll-arrow absolute left-1/2 bg-white rounded-full z-10 cursor-pointer shadow-sm nav-scroll flex items-center justify-center animate-bounce-slow hover:scale-105 active:scale-95 transition-transform" style="padding:clamp(6px,1vw,8px); transform: translateX(-50%);">
-                        <svg style="width:clamp(12px,1.3vw,18px);height:clamp(12px,1.3vw,18px)" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
-                    </a>
+                    <div class="absolute left-1/2 z-10" style="transform: translateX(-50%);">
+                        <a href="#expertise" class="scroll-arrow bg-white rounded-full cursor-pointer shadow-sm nav-scroll flex items-center justify-center animate-bounce transition-transform hover:bg-gray-50" style="padding:clamp(6px,1vw,8px);">
+                            <svg style="width:clamp(12px,1.3vw,18px);height:clamp(12px,1.3vw,18px)" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
+                        </a>
+                    </div>
 
                 </div>
             </div>
@@ -732,8 +734,8 @@
     </section>
 
     <!-- Contact Banner Section -->
-    <section id="contact" class="w-full pb-[4.7vw]" style="scroll-margin-top: var(--scroll-offset);">
-        <div class="rounded-[32px] reeded-gradient p-[8%] md:p-[6%] text-white relative overflow-hidden flex flex-col md:flex-row md:items-start lg:items-center justify-between gap-10 md:gap-[4.2vw] min-h-[500px] global-margin" id="contact-banner-container">
+    <section id="contact" class="w-full pb-[4vw]" style="scroll-margin-top: var(--scroll-offset);">
+        <div class="rounded-[32px] reeded-gradient p-[6%] md:p-[4%] text-white relative overflow-hidden flex flex-col md:flex-row md:items-start lg:items-center justify-between gap-8 md:gap-[4vw] min-h-[400px] global-margin" id="contact-banner-container">
             <!-- Media Layer -->
             <div class="media-layer" id="contact-media-layer">
                 <!-- Media injected here -->
@@ -775,10 +777,10 @@
 
     <footer class="py-[1.7vw] w-full border-t border-[#F2F2F2]">
         <div class="flex flex-col md:flex-row items-center justify-between text-[11px] font-medium text-[#888] global-padding">
-            <div class="font-bold text-[#111] text-[13px] mb-4 md:mb-0 flex items-center gap-2">
+            <div class="font-bold text-[#111] mb-4 md:mb-0 flex items-center gap-2">
                 <a href="#home" class="flex items-center gap-2 nav-scroll group">
-                    <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-                    <span class="transition-colors group-hover:text-[#FF416C]">yadsid.com</span>
+                    <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-[22px] h-[22px] flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+                    <span class="text-[14.5px] transition-colors group-hover:text-[#FF416C]">yadsid.com</span>
                 </a>
             </div>
             <div class="mb-4 md:mb-0">© 2026 Yadhu Sidharthan. All rights reserved.</div>
