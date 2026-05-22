@@ -205,6 +205,16 @@
             width: 100%;
             display: block;
         }
+        @keyframes fadeUpReveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateZ(0);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -307,16 +317,18 @@
                 }
                 if (project.blocks && project.blocks.length) {
                     const sorted = project.blocks.sort((a,b) => a.order - b.order);
-                    blocksContainer.innerHTML = sorted.map(b => {
+                    blocksContainer.innerHTML = sorted.map((b, i) => {
                         let content = '';
                         const radiusClass = `${b.radiusTop ? 'rounded-t-[32px]' : ''} ${b.radiusBottom ? 'rounded-b-[32px]' : ''}`;
                         const gapClass = b.hasGap ? 'mb-8' : '';
+                        const delay = (i % 20) * 100;
+                        const animStyle = `opacity: 0; animation: fadeUpReveal 0.6s ease-out ${delay}ms forwards;`;
 
                         if (b.type === 'text') {
-                            content = `<div class="max-w-3xl text-[clamp(14px,1vw,16px)] text-[#444] leading-[1.8] py-8">${b.content.replace(/\n/g, '<br>')}</div>`;
+                            content = `<div class="max-w-3xl text-[clamp(14px,1vw,16px)] text-[#444] leading-[1.8] py-8" style="${animStyle}">${b.content.replace(/\n/g, '<br>')}</div>`;
                         } else if (b.type === 'image') {
-                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}">
-                                          <img src="${b.content}" alt="Project detail">
+                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}" style="${animStyle}">
+                                          <img src="${b.content}" alt="Project detail" loading="lazy">
                                        </div>`;
                         } else if (b.type === 'video') {
                             content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}">

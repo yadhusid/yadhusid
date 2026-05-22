@@ -6,9 +6,9 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -54,7 +54,8 @@ const CategorySchema = new mongoose.Schema({
     name: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     images: [String],
-    order: { type: Number, default: 0 }
+    order: { type: Number, default: 0 },
+    projectOrder: [String]
 });
 CategorySchema.virtual('id').get(function(){ return this._id.toHexString(); });
 CategorySchema.set('toJSON', { virtuals: true });
@@ -100,20 +101,135 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req, file) => {
-    const isVideo = file.mimetype.startsWith('video/');
-    const isGif = file.mimetype === 'image/gif';
-    return {
-      folder: 'portfolio_uploads',
-      resource_type: isVideo ? 'video' : 'image',
-      allowedFormats: isVideo ? ['mp4', 'webm'] : ['jpeg', 'png', 'jpg', 'webp', 'gif', 'avif'],
-      transformation: isGif ? [] : undefined
-    };
-  }
+const multerUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
+
+// ─── Dedupe & Upload Logic ──────────────────────────────────────────────────
+const MediaSchema = new mongoose.Schema({
+    hash: { type: String, required: true, unique: true },
+    url: { type: String, required: true },
+    public_id: { type: String, required: true },
+    size: Number,
+    format: String,
+    createdAt: { type: Date, default: Date.now }
 });
-const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } });
+let Media = mongoose.model('Media', MediaSchema);
+
+async function uploadBufferToCloudinary(buffer, mimetype) {
+    return new Promise((resolve, reject) => {
+        const isVideo = mimetype.startsWith('video/');
+        const stream = cloudinary.uploader.upload_stream(
+            { resource_type: isVideo ? 'video' : 'auto', folder: 'portfolio_uploads' },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }
+        );
+        stream.end(buffer);
+    });
+}
+
+async function processFile(file) {
+    if (!file) return;
+    const hash = crypto.createHash('sha256').update(file.buffer).digest('hex');
+    let media = await Media.findOne({ hash });
+    
+    if (media) {
+        file.path = media.url;
+        file.filename = media.public_id;
+    } else {
+        const result = await uploadBufferToCloudinary(file.buffer, file.mimetype);
+        media = new Media({
+            hash,
+            url: result.secure_url,
+            public_id: result.public_id,
+            size: file.size,
+            format: result.format
+        });
+        await media.save();
+        file.path = media.url;
+        file.filename = media.public_id;
+    }
+}
+
+const dedupeAndUpload = async (req, res, next) => {
+    try {
+        const tasks = [];
+        if (req.file) {
+            tasks.push(processFile(req.file));
+        } else if (req.files) {
+            if (Array.isArray(req.files)) {
+                req.files.forEach(f => tasks.push(processFile(f)));
+            } else {
+                for (const key in req.files) {
+                    req.files[key].forEach(f => tasks.push(processFile(f)));
+                }
+            }
+        }
+        await Promise.all(tasks);
+        next();
+    } catch (err) {
+        console.error('Upload Dedupe Error:', err);
+        return res.status(500).json({ error: 'Media upload failed' });
+    }
+};
+
+const upload = {
+    single: (name) => [multerUpload.single(name), dedupeAndUpload],
+    array: (name, max) => [multerUpload.array(name, max), dedupeAndUpload],
+    fields: (fields) => [multerUpload.fields(fields), dedupeAndUpload]
+};
+
+// ─── Safe Delete Logic ────────────────────────────────────────────────────────
+function extractPublicId(url) {
+    if (!url) return null;
+    const parts = url.split('/');
+    const file = parts.pop();
+    const folder = parts.pop();
+    if (folder !== 'portfolio_uploads') return null;
+    return folder + '/' + file.split('.')[0];
+}
+
+async function isMediaInUse(urlOrId) {
+    if (!urlOrId) return false;
+    // Basic substring check
+    const hp = await Homepage.findOne({ key: 'index' });
+    if (hp && hp.data) {
+        if (hp.data.hero && hp.data.hero.mediaUrl && hp.data.hero.mediaUrl.includes(urlOrId)) return true;
+        if (hp.data.contact && hp.data.contact.bannerUrl && hp.data.contact.bannerUrl.includes(urlOrId)) return true;
+    }
+    const pInUse = await Project.findOne({
+        $or: [
+            { coverImage: { $regex: urlOrId, $options: 'i' } },
+            { images: { $regex: urlOrId, $options: 'i' } },
+            { cardBanner: { $regex: urlOrId, $options: 'i' } },
+            { "blocks.content": { $regex: urlOrId, $options: 'i' } }
+        ]
+    });
+    if (pInUse) return true;
+    return false;
+}
+
+async function safeDeleteMedia(url) {
+    if (!url) return;
+    try {
+        const public_id = extractPublicId(url);
+        if (!public_id) return;
+        
+        // Wait briefly to allow DB transactions to finish committing the removal
+        await new Promise(r => setTimeout(r, 100)); 
+        
+        const inUse = await isMediaInUse(public_id);
+        if (!inUse) {
+            await cloudinary.uploader.destroy(public_id);
+            await Media.deleteOne({ public_id });
+            console.log('Orphaned media safely deleted:', public_id);
+        } else {
+            console.log('Media still in use, skipped deletion:', public_id);
+        }
+    } catch(err) {
+        console.error('Safe delete error:', err);
+    }
+}
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '50mb' }));
@@ -331,14 +447,42 @@ app.put('/api/categories/reorder', requireAuth, async (req, res) => {
     }
 });
 
+app.put('/api/categories/:id/project-order', requireAuth, async (req, res) => {
+    try {
+        const { projectIds } = req.body;
+        if (!Array.isArray(projectIds)) return res.status(400).json({ error: 'Invalid projectIds array' });
+        await Category.findByIdAndUpdate(req.params.id, { projectOrder: projectIds });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Category Project Order Error:', err);
+        res.status(500).json({ error: 'Could not update category project order' });
+    }
+});
+
 // ─── Project Routes ───────────────────────────────────────────────────────────
 app.get('/api/projects', async (req, res) => {
     try {
         const { category, all } = req.query;
         let query = {};
+        if (!all) query.status = 'published';
         if (category) query.categoryIds = category;
-        if (all !== 'true') query.status = { $ne: 'draft' };
-        const projects = await Project.find(query).sort({ order: 1, createdAt: -1 });
+
+        let projects = await Project.find(query).sort({ order: 1 });
+        
+        if (category) {
+            const cat = await Category.findById(category);
+            if (cat && cat.projectOrder && cat.projectOrder.length > 0) {
+                projects.sort((a, b) => {
+                    let idxA = cat.projectOrder.indexOf(a._id.toString());
+                    let idxB = cat.projectOrder.indexOf(b._id.toString());
+                    if (idxA === -1) idxA = 9999;
+                    if (idxB === -1) idxB = 9999;
+                    if (idxA !== idxB) return idxA - idxB;
+                    return a.order - b.order;
+                });
+            }
+        }
+
         res.json(projects);
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
@@ -371,9 +515,20 @@ const projectFields = upload.fields([
 ]);
 
 app.post('/api/projects', requireAuth, projectFields, async (req, res) => {
-    const { title, description, categoryIds, coverImageZoom, coverImageX, coverImageY, cardOverlay, status } = req.body;
-    if (!title || !categoryIds) return res.status(400).json({ error: 'Title and categories required' });
+    const { title, description, coverImageZoom, coverImageX, coverImageY, cardOverlay, status } = req.body;
+    let { categoryIds } = req.body;
+    if (!title) return res.status(400).json({ error: 'Title required' });
+    
     try {
+        if (!categoryIds || (Array.isArray(categoryIds) && categoryIds.length === 0)) {
+            let allWorks = await Category.findOne({ name: 'All Works' });
+            if (!allWorks) {
+                allWorks = new Category({ name: 'All Works', order: 0 });
+                await allWorks.save();
+            }
+            categoryIds = [allWorks._id.toString()];
+        }
+        
         const coverFile = req.files && req.files.coverImage ? req.files.coverImage[0].path : null;
         const galleryFiles = req.files && req.files.galleryImages ? req.files.galleryImages.map(f => f.path) : [];
 
@@ -401,42 +556,50 @@ app.post('/api/projects', requireAuth, projectFields, async (req, res) => {
 
 app.patch('/api/projects/:id', requireAuth, projectFields, async (req, res) => {
     try {
-        const updates = { ...req.body };
-        
-        if (updates.categoryIds) {
-            updates.categoryIds = Array.isArray(updates.categoryIds) ? updates.categoryIds : [updates.categoryIds];
-        }
-        
+        const { title, description, coverImageZoom, coverImageX, coverImageY, cardOverlay, status, categoryIds } = req.body;
         const project = await Project.findById(req.params.id);
-        if (!project) return res.status(404).json({ error: 'Not found' });
+        if (!project) return res.status(404).json({ error: 'Project not found' });
         
+        const updates = { title, description, cardOverlay, status };
+        if (categoryIds) {
+            updates.categoryIds = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+        }
+
+        let oldCoverImage = null;
         if (req.files && req.files.coverImage) {
+            oldCoverImage = project.coverImage;
             updates.coverImage = req.files.coverImage[0].path;
-        } else if (updates.removeCover === 'true') {
+        } else if (req.body.removeCover === 'true') {
+            oldCoverImage = project.coverImage;
             updates.coverImage = null;
         }
-        
+
         let newGallery = [];
-        if (updates.existingGallery) {
+        if (req.body.existingGallery) {
             try {
-                newGallery = JSON.parse(updates.existingGallery);
+                newGallery = JSON.parse(req.body.existingGallery);
             } catch (e) { console.error('existingGallery parse error:', e); }
         } else {
             newGallery = project.images || [];
         }
-        
+
         if (req.files && req.files.galleryImages) {
-            const uploadedUrls = req.files.galleryImages.map(f => f.path);
-            newGallery = newGallery.concat(uploadedUrls);
+            const newGalleryFiles = req.files.galleryImages.map(f => f.path);
+            newGallery = newGallery.concat(newGalleryFiles);
         }
         updates.images = newGallery;
         
-        // Ensure numeric types for cover positions
-        if (updates.coverImageZoom !== undefined) updates.coverImageZoom = parseFloat(updates.coverImageZoom) || 1;
-        if (updates.coverImageX !== undefined) updates.coverImageX = parseFloat(updates.coverImageX) || 0;
-        if (updates.coverImageY !== undefined) updates.coverImageY = parseFloat(updates.coverImageY) || 0;
+        if (coverImageZoom !== undefined) updates.coverImageZoom = parseFloat(coverImageZoom) || 1;
+        if (coverImageX !== undefined) updates.coverImageX = parseFloat(coverImageX) || 0;
+        if (coverImageY !== undefined) updates.coverImageY = parseFloat(coverImageY) || 0;
 
         const updatedProject = await Project.findByIdAndUpdate(req.params.id, updates, { new: true });
+        
+        // Cleanup old cover if replaced
+        if (oldCoverImage) {
+            safeDeleteMedia(oldCoverImage);
+        }
+        
         res.json(updatedProject);
     } catch (err) {
         console.error(err);
@@ -446,7 +609,23 @@ app.patch('/api/projects/:id', requireAuth, projectFields, async (req, res) => {
 
 app.delete('/api/projects/:id', requireAuth, async (req, res) => {
     try {
+        const project = await Project.findById(req.params.id);
+        if (!project) return res.status(404).json({ error: 'Not found' });
+        
         await Project.findByIdAndDelete(req.params.id);
+        
+        // Clean up associated media
+        if (project.coverImage) safeDeleteMedia(project.coverImage);
+        if (project.cardBanner) safeDeleteMedia(project.cardBanner);
+        if (project.images) project.images.forEach(img => safeDeleteMedia(img));
+        if (project.blocks) {
+            project.blocks.forEach(b => {
+                if ((b.type === 'image' || b.type === 'video') && b.content) {
+                    safeDeleteMedia(b.content);
+                }
+            });
+        }
+        
         res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: 'Could not delete project' });
@@ -495,28 +674,37 @@ app.post('/api/projects/:id/gallery', requireAuth, upload.array('images', 10), a
 
 app.delete('/api/projects/:id/gallery', requireAuth, async (req, res) => {
     try {
-        const { imageUrl } = req.query;
+        const { url } = req.body;
         const project = await Project.findById(req.params.id);
         if (!project) return res.status(404).json({ error: 'Project not found' });
         
-        project.images = (project.images || []).filter(img => img !== imageUrl);
+        project.images = project.images.filter(img => img !== url);
         await project.save();
         
-        res.json({ success: true });
+        safeDeleteMedia(url);
+        
+        res.json(project);
     } catch (err) {
-        res.status(500).json({ error: 'Failed to delete gallery image' });
+        res.status(500).json({ error: 'Could not delete image' });
     }
 });
 
 app.delete('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, res) => {
     try {
         const project = await Project.findById(req.params.projectId);
-        if (!project) return res.status(404).json({ error: 'Not found' });
-        project.blocks = project.blocks.filter(b => {
-            if (!b._id) return true;
-            return b._id.toString() !== req.params.blockId;
-        });
+        if (!project) return res.status(404).json({ error: 'Project not found' });
+        
+        const block = project.blocks.id(req.params.blockId);
+        let blockContent = null;
+        if (block && (block.type === 'image' || block.type === 'video')) {
+            blockContent = block.content;
+        }
+
+        project.blocks.pull(req.params.blockId);
         await project.save();
+        
+        if (blockContent) safeDeleteMedia(blockContent);
+        
         res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: 'Could not delete block' });
@@ -526,7 +714,102 @@ app.delete('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, 
 // Upload media for CMS visual editing
 app.post('/api/upload-media', requireAuth, upload.single('file'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    res.json({ url: req.file.path });
+    res.json({ url: req.file.path, public_id: req.file.filename });
+});
+
+// Admin Media Cleanup Script
+app.post('/api/admin/media-cleanup', requireAuth, async (req, res) => {
+    try {
+        const { action } = req.body;
+        
+        let resources = [];
+        let next_cursor = null;
+        do {
+            const result = await cloudinary.search
+                .expression('folder:portfolio_uploads')
+                .max_results(500)
+                .next_cursor(next_cursor)
+                .execute();
+            resources = resources.concat(result.resources);
+            next_cursor = result.next_cursor;
+        } while (next_cursor);
+        
+        const referencedPublicIds = new Set();
+        
+        const hp = await Homepage.findOne({ key: 'index' });
+        if (hp && hp.data) {
+            if (hp.data.hero && hp.data.hero.mediaUrl) {
+                const pid = extractPublicId(hp.data.hero.mediaUrl);
+                if (pid) referencedPublicIds.add(pid);
+            }
+            if (hp.data.contact && hp.data.contact.bannerUrl) {
+                const pid = extractPublicId(hp.data.contact.bannerUrl);
+                if (pid) referencedPublicIds.add(pid);
+            }
+        }
+        
+        const projects = await Project.find({});
+        projects.forEach(p => {
+            if (p.coverImage) {
+                const pid = extractPublicId(p.coverImage);
+                if (pid) referencedPublicIds.add(pid);
+            }
+            if (p.cardBanner) {
+                const pid = extractPublicId(p.cardBanner);
+                if (pid) referencedPublicIds.add(pid);
+            }
+            if (p.images) {
+                p.images.forEach(img => {
+                    const pid = extractPublicId(img);
+                    if (pid) referencedPublicIds.add(pid);
+                });
+            }
+            if (p.blocks) {
+                p.blocks.forEach(b => {
+                    if ((b.type === 'image' || b.type === 'video') && b.content) {
+                        const pid = extractPublicId(b.content);
+                        if (pid) referencedPublicIds.add(pid);
+                    }
+                });
+            }
+        });
+        
+        const orphaned = [];
+        const inUse = [];
+        
+        resources.forEach(res => {
+            if (referencedPublicIds.has(res.public_id)) {
+                inUse.push(res.public_id);
+            } else {
+                orphaned.push(res.public_id);
+            }
+        });
+        
+        if (action === 'cleanup') {
+            const deleted = [];
+            for (const pid of orphaned) {
+                try {
+                    await cloudinary.uploader.destroy(pid);
+                    await Media.deleteOne({ public_id: pid });
+                    deleted.push(pid);
+                } catch(e) { console.error('Cloudinary destroy failed:', e); }
+            }
+            return res.json({ success: true, deletedCount: deleted.length, deleted });
+        }
+        
+        res.json({
+            success: true,
+            totalCloudinaryAssets: resources.length,
+            inUseCount: inUse.length,
+            orphanedCount: orphaned.length,
+            inUse,
+            orphaned
+        });
+        
+    } catch (err) {
+        console.error('Media cleanup error:', err);
+        res.status(500).json({ error: 'Failed to run cleanup' });
+    }
 });
 
 // Update Project Status
@@ -751,6 +1034,29 @@ app.put('/api/projects/:projectId/blocks/reorder', requireAuth, async (req, res)
         res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: 'Could not reorder blocks' });
+    }
+});
+
+// Bulk Insert Blocks (for auto-convert)
+app.post('/api/projects/:id/blocks-bulk', requireAuth, async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id);
+        if (!project) return res.status(404).json({ error: 'Project not found' });
+        
+        const { blocks } = req.body;
+        if (Array.isArray(blocks)) {
+            blocks.forEach(b => {
+                project.blocks.push({
+                    type: b.type,
+                    content: b.content,
+                    order: b.order || project.blocks.length
+                });
+            });
+            await project.save();
+        }
+        res.json(project.blocks);
+    } catch(err) {
+        res.status(500).json({ error: 'Could not bulk create blocks' });
     }
 });
 

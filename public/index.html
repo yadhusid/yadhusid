@@ -343,6 +343,16 @@
                 padding-bottom: 0; /* Reset for desktop */
             }
         }
+        @keyframes fadeUpReveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateZ(0);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
     </style>
     
 <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }
@@ -888,6 +898,13 @@
 
                 // Contact
                 if (data.contact) {
+                    if (data.contact.bannerUrl) {
+                        const contactMediaLayer = document.getElementById('contact-media-layer');
+                        if (contactMediaLayer) {
+                            contactMediaLayer.innerHTML = `<img src="${data.contact.bannerUrl}" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay" style="z-index: 1;" alt="Contact Banner">`;
+                        }
+                    }
+                    
                     const contactContainer = document.getElementById('contact-links-container');
                     if (contactContainer) {
                         let html = '';
@@ -932,8 +949,27 @@
                 }
             }
         });
+        // Smooth scroll for nav links to fix Let's Talk lag
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.nav-scroll').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if(href && href.startsWith('#') && href !== '#') {
+                        const targetEl = document.querySelector(href);
+                        if (targetEl) {
+                            e.preventDefault();
+                            const headerOffset = 80;
+                            const elementPosition = targetEl.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+                        }
+                    }
+                });
+            });
+        });
     </script>
-
-
 </body>
 </html>

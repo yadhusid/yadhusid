@@ -199,7 +199,7 @@
         }
         .compact-grid {
             display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
             gap: 1.5rem !important;
         }
         .compact-grid .item-row {
@@ -334,7 +334,7 @@
                             <h3 style="border-bottom: none; padding-bottom: 0; margin-bottom: 1rem;">Add Core Skill</h3>
                             <div style="display:flex; gap:1rem; width: 100%;">
                                 <input type="text" id="skillName" placeholder="e.g. UI/UX" style="flex: 1;">
-                                <button class="btn-primary" onclick="addCoreSkill()" style="flex-shrink:0;">Add</button>
+                                <button class="btn-primary" onclick="addOverviewCoreSkill()" style="flex-shrink:0;">Add</button>
                             </div>
                         </div>
                         <div class="form-card">
@@ -842,26 +842,34 @@
             const list = document.getElementById('coreSkillsList');
             if(!list) return;
             list.innerHTML = coreSkills.map((skill, idx) => `
-                <div class="item-row">
+                <div class="item-row" draggable="true"
+                     ondragstart="handleSkillDragStart(event, ${idx})"
+                     ondragover="handleSkillDragOver(event)"
+                     ondragleave="handleSkillDragLeave(event)"
+                     ondrop="handleSkillDrop(event, ${idx})"
+                     style="cursor: grab;">
                     ${editingSkillIdx === idx ? `
                         <input type="text" id="edit-skill-${idx}" value="${skill}" style="flex:1; margin-right:10px; font-size:12px; padding:4px;">
-                        <button class="btn-primary" onclick="saveEditSkill(${idx})" style="padding:0.4rem 0.6rem;">Apply</button>
                     ` : `
                         <span style="font-size:0.75rem; font-weight:600; flex:1;">${skill}</span>
-                        <div style="display:flex; gap:0.5rem;">
+                    `}
+                    <div style="display:flex; gap:0.5rem; flex-shrink:0;">
+                        ${editingSkillIdx === idx ? `
+                            <button class="btn-primary" onclick="saveEditSkill(${idx})" style="padding:0.4rem 0.6rem;">Apply</button>
+                        ` : `
                             <button class="btn-sm" onclick="editingSkillIdx = ${idx}; renderCoreSkills();" title="Edit" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                             </button>
-                            <button class="btn-danger" onclick="deleteCoreSkill(${idx})" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                            </button>
-                        </div>
-                    `}
+                        `}
+                        <button class="btn-danger" onclick="deleteCoreSkill(${idx})" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
         
-        async function addCoreSkill() {
+        async function addOverviewCoreSkill() {
             const input = document.getElementById('skillName');
             const name = input ? input.value.trim() : '';
             if(!name) {
@@ -928,20 +936,23 @@
                      style="cursor: grab;">
                     ${editingCatId === c.id ? `
                         <input type="text" id="edit-cat-${c.id}" value="${c.name}" style="flex:1; margin-right:10px; font-size:12px; padding:4px;">
-                        <button class="btn-primary" onclick="saveEditCategory('${c.id}')" style="padding:0.4rem 0.6rem;">Apply</button>
                     ` : `
                         <div style="flex:1;">
                             <div class="item-name">${c.name}</div>
                         </div>
-                        <div style="display:flex; gap:0.5rem;">
+                    `}
+                    <div style="display:flex; gap:0.5rem; flex-shrink:0;">
+                        ${editingCatId === c.id ? `
+                            <button class="btn-primary" onclick="saveEditCategory('${c.id}')" style="padding:0.4rem 0.6rem;">Apply</button>
+                        ` : `
                             <button class="btn-sm" onclick="editingCatId = '${c.id}'; renderCategories();" title="Edit" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                             </button>
-                            <button class="btn-danger" onclick="deleteCategory('${c.id}')" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                            </button>
-                        </div>
-                    `}
+                        `}
+                        <button class="btn-danger" onclick="deleteCategory('${c.id}')" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
+                    </div>
                 </div>`).join('');
         }
 
@@ -1023,19 +1034,31 @@
             container.innerHTML = html;
         }
 
-        function filterProjectsByCategory(catId) {
+        async function filterProjectsByCategory(catId) {
             currentProjectFilter = catId;
             renderCategoryFilters();
-            renderProjects();
+            
+            try {
+                let url = '/api/projects?all=true&t=' + Date.now();
+                if (catId !== 'all') {
+                    url += '&category=' + catId;
+                }
+                const res = await fetch(url);
+                allProjects = await res.json();
+                renderProjects();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function getOptThumb(url) {
+            if (!url || !url.includes('cloudinary.com')) return url;
+            return url.replace('/upload/', '/upload/w_400,q_auto,f_auto/');
         }
 
         function renderProjects() {
             const list = document.getElementById('projList');
             let displayProjects = [...allProjects];
-            
-            if (currentProjectFilter !== 'all') {
-                displayProjects = displayProjects.filter(p => (p.categoryIds || []).includes(currentProjectFilter));
-            }
 
             list.innerHTML = displayProjects.map(p => `
                 <div class="item-row" draggable="true" 
@@ -1044,22 +1067,18 @@
                      ondragleave="handleProjDragLeave(event)"
                      ondrop="handleProjDrop(event, '${p.id}')"
                      style="cursor: grab; display:flex; align-items:center; justify-content:space-between; padding:0.5rem 1rem; border-bottom:1px solid var(--border);">
-                    <div style="display:flex; align-items:center; gap:1rem;">
-                        ${p.coverImage ? `<img src="${p.coverImage}" class="item-thumb" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">` : `<div class="item-thumb" style="width:40px; height:40px; background:#222; border-radius:4px;"></div>`}
-                        <div>
-                            <div class="item-name" style="font-size:0.9rem; font-weight:600;">${p.title}</div>
-                            <div class="item-meta" style="font-size:0.75rem; color:var(--muted);">${getCatNames(p.categoryIds)}</div>
+                    <div style="display:flex; align-items:center; gap:1rem; flex:1; min-width:0;">
+                        ${p.coverImage ? `<img src="${getOptThumb(p.coverImage)}" loading="lazy" class="item-thumb" style="width:40px; height:40px; object-fit:cover; border-radius:4px; flex-shrink:0;">` : `<div class="item-thumb" style="width:40px; height:40px; background:#222; border-radius:4px; flex-shrink:0;"></div>`}
+                        <div style="min-width:0; overflow:hidden;">
+                            <div class="item-name" style="font-size:0.9rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.title}</div>
+                            <div class="item-meta" style="font-size:0.75rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${getCatNames(p.categoryIds)}</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items: center;">
-                        <div style="display:flex; align-items:center; gap:0.5rem; justify-content:center; margin-right: 1rem;">
-                            <label class="switch" style="position: relative; display: inline-block; width: 24px; height: 14px;">
-                                <input type="checkbox" ${p.status === 'published' ? 'checked' : ''} onchange="toggleProjectStatus('${p.id}', this.checked)" style="opacity: 0; width: 0; height: 0; position: absolute;">
-                                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: ${p.status === 'published' ? '#4CAF50' : '#444'}; transition: .4s; border-radius: 34px;">
-                                    <span style="position: absolute; content: ''; height: 10px; width: 10px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; transform: ${p.status === 'published' ? 'translateX(10px)' : 'translateX(0)'};"></span>
-                                </span>
-                            </label>
-                            <span style="font-size: 10px; color: ${p.status === 'published' ? '#4CAF50' : '#888'}; font-weight: bold;">${p.status === 'published' ? 'LIVE' : 'DRAFT'}</span>
+                        <div style="display:flex; align-items:center; gap:0.5rem; justify-content:center; margin-right: 0.5rem;">
+                            <button onclick="toggleProjectStatus('${p.id}', ${p.status !== 'published'})" class="btn-sm" style="font-size:10px; font-weight:bold; padding:0.4rem 0.6rem; color: ${p.status === 'published' ? '#4CAF50' : '#888'}; background: transparent; border: 1px solid ${p.status === 'published' ? 'rgba(76,175,80,0.3)' : 'rgba(136,136,136,0.3)'}; border-radius: 6px; cursor: pointer; display: inline-flex; justify-content: center; width: 60px;">
+                                ${p.status === 'published' ? 'LIVE' : 'DRAFT'}
+                            </button>
                         </div>
                         <button class="btn-sm" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')" title="Edit Blocks" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -1253,10 +1272,7 @@
                 showToast('Please enter a project title', true);
                 return;
             }
-            if (categoryIds.length === 0) {
-                showToast('Please select at least one category', true);
-                return;
-            }
+
 
             const fd = new FormData();
             fd.append('title', title);
@@ -1319,11 +1335,11 @@
             
             // Auto-convert gallery to blocks if blocks array is empty
             if (!modalCurrentProject.blocks || modalCurrentProject.blocks.length === 0) {
-                if (modalCurrentProject.gallery && modalCurrentProject.gallery.length > 0) {
-                    modalCurrentProject.blocks = modalCurrentProject.gallery.map((imgUrl, i) => ({
+                if (modalCurrentProject.images && modalCurrentProject.images.length > 0) {
+                    modalCurrentProject.blocks = modalCurrentProject.images.map((imgUrl, i) => ({
                         id: 'block_' + Date.now() + '_' + i,
                         type: 'image',
-                        url: imgUrl,
+                        content: imgUrl,
                         order: i
                     }));
                     // Save to backend immediately
@@ -1894,7 +1910,7 @@
             });
             
             // Update existing gallery URLs list if some were deleted
-            fd.append('existingGallery', JSON.stringify(modalCurrentProject.gallery || []));
+            fd.append('existingGallery', JSON.stringify(modalCurrentProject.images || []));
             
             const res = await fetch('/api/projects/' + currentProjectId, { method: 'PATCH', body: fd });
             if (res.ok) {
@@ -2237,9 +2253,12 @@
             projects.splice(targetIdx, 0, draggedItem);
             allProjects = projects;
             renderProjects();
-            
             try {
-                const res = await fetch('/api/projects/reorder', {
+                let url = '/api/projects/reorder';
+                if (currentProjectFilter !== 'all') {
+                    url = `/api/categories/${currentProjectFilter}/project-order`;
+                }
+                const res = await fetch(url, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ projectIds: allProjects.map(p => p.id) })
@@ -2536,35 +2555,51 @@
                     `;
                 });
 
-                contentEl.innerHTML = `
+                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                        <label>Contact Background Image</label>
+                        <div id="contact-banner-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; position: relative;">
+                            ${contact.bannerUrl ? `<img src="${contact.bannerUrl}" style="width: 100%; height: 100%; object-fit: cover;">` : `<span style="font-size: 12px; color: var(--muted);">No banner</span>`}
+                            ${contact.bannerUrl ? `<div class="btn-close" onclick="removeContactBanner()" style="position:absolute; top: 8px; right: 8px; width:24px; height:24px; min-width:24px; background: rgba(0,0,0,0.6);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>` : ''}
+                        </div>
+                        <input type="file" id="contactBannerUpload" accept="image/*" onchange="uploadContactBanner(this)" style="display: none;">
+                        <button class="btn-sm" onclick="document.getElementById('contactBannerUpload').click()" style="background: transparent; border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px; width: 100%;">Upload Background</button>
+                    </div>
+                    
+                    <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
+
                     <div class="form-group col" style="margin-bottom: 1.5rem;">
                         <label>Phone Numbers</label>
                         <div id="contactPhonesList">${phonesHtml}</div>
                         <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
                             <input type="text" id="newContactPhoneInput" placeholder="e.g. +971 50 123 4567" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
-                            <button class="btn-sm" onclick="addContactPhone()" style="padding: 0 1rem; border: 1px solid var(--border); background: transparent; border-radius: 8px;">Add Phone</button>
+                            <button class="btn-sm" onclick="addContactPhone()" style="padding: 0 1rem; border: 1px solid var(--border); background: transparent; border-radius: 8px;">Add</button>
                         </div>
                     </div>
                     <div class="form-group col" style="margin-bottom: 1.5rem;">
                         <label>Email Address</label>
-                        <input type="email" value="${contact.email || ''}" onchange="updateContactField('email', this.value)" placeholder="e.g. hello@example.com" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                        <input type="email" id="contactEmailInput" value="${contact.email || ''}" placeholder="e.g. hello@example.com" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
                     </div>
                     <div class="form-group col" style="margin-bottom: 1.5rem;">
                         <label>Behance URL</label>
-                        <input type="url" value="${contact.behance || ''}" onchange="updateContactField('behance', this.value)" placeholder="https://behance.net/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                        <input type="url" id="contactBehanceInput" value="${contact.behance || ''}" placeholder="https://behance.net/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
                     </div>
-                    <div class="form-group col">
+                    <div class="form-group col" style="margin-bottom: 1.5rem;">
                         <label>LinkedIn URL</label>
-                        <input type="url" value="${contact.linkedin || ''}" onchange="updateContactField('linkedin', this.value)" placeholder="https://linkedin.com/in/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
+                        <input type="url" id="contactLinkedinInput" value="${contact.linkedin || ''}" placeholder="https://linkedin.com/in/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
                     </div>
+                    
+                    <button class="btn-primary" onclick="applyContactChanges()" style="width: 100%; padding: 1rem; border-radius: 8px; margin-top: 1rem;">Apply Contact Info</button>
                 `;
             }
         }
 
         // --- Contact Field Handlers ---
-        function updateContactField(field, value) {
+        function applyContactChanges() {
             if (!currentHomepageData.contact) currentHomepageData.contact = { phones: [], email: '', behance: '', linkedin: '' };
-            currentHomepageData.contact[field] = value;
+            currentHomepageData.contact.email = document.getElementById('contactEmailInput').value;
+            currentHomepageData.contact.behance = document.getElementById('contactBehanceInput').value;
+            currentHomepageData.contact.linkedin = document.getElementById('contactLinkedinInput').value;
+            showToast('Contact info applied locally');
         }
         function addContactPhone() {
             const val = document.getElementById('newContactPhoneInput').value.trim();
@@ -2585,6 +2620,39 @@
                 if (activeHomepageSection === 'contact') selectHomepageSection('contact');
             }
         }
+        
+        async function uploadContactBanner(input) {
+            if (!input.files || input.files.length === 0) return;
+            const file = input.files[0];
+            
+            showToast('Uploading banner...');
+            const fd = new FormData();
+            fd.append('file', file);
+            
+            try {
+                const res = await fetch('/api/upload-media', { method: 'POST', body: fd });
+                if (!res.ok) throw new Error('Upload failed');
+                const data = await res.json();
+                
+                if (!currentHomepageData.contact) currentHomepageData.contact = {};
+                currentHomepageData.contact.bannerUrl = data.url;
+                currentHomepageData.contact.bannerPublicId = data.public_id;
+                
+                if (activeHomepageSection === 'contact') selectHomepageSection('contact'); // re-render
+                showToast("Banner uploaded! Don't forget to Publish.");
+            } catch (err) {
+                console.error(err);
+                showToast('Upload failed. Try again.', true);
+            }
+        }
+        
+        function removeContactBanner() {
+            if (currentHomepageData.contact) {
+                currentHomepageData.contact.bannerUrl = null;
+                currentHomepageData.contact.bannerPublicId = null;
+                if (activeHomepageSection === 'contact') selectHomepageSection('contact');
+            }
+        }
 
         async function uploadHeroMedia(input) {
             if (!input.files || input.files.length === 0) return;
@@ -2602,6 +2670,7 @@
                 
                 if (!currentHomepageData.hero) currentHomepageData.hero = {};
                 currentHomepageData.hero.mediaUrl = data.url;
+                currentHomepageData.hero.mediaPublicId = data.public_id;
                 currentHomepageData.hero.mediaType = isVideo ? 'video' : 'image';
                 
                 if (activeHomepageSection === 'hero') selectHomepageSection('hero'); // re-render

@@ -74,12 +74,17 @@ function filterProjects(categoryId, btn) {
     btn.classList.remove('bg-transparent', 'text-[#111]', 'border-[#111]');
     btn.classList.add('bg-black', 'text-white', 'border-black');
 
-    if (categoryId === 'all') {
-        renderProjects(allProjects);
-    } else {
-        const filtered = allProjects.filter(p => p.categoryIds && p.categoryIds.includes(categoryId));
-        renderProjects(filtered);
+    let url = '/api/projects?t=' + Date.now();
+    if (categoryId !== 'all') {
+        url += '&category=' + categoryId;
     }
+    
+    fetch(url)
+        .then(res => res.json())
+        .then(projects => {
+            renderProjects(projects);
+        })
+        .catch(err => console.error('Error fetching filtered projects:', err));
 }
 
 function renderProjects(projects = allProjects) {
@@ -94,6 +99,12 @@ function renderProjects(projects = allProjects) {
         return;
     }
 
+    // Helper to get optimized thumbnail
+    const getOptThumb = (url) => {
+        if (!url || !url.includes('cloudinary.com')) return url;
+        return url.replace('/upload/', '/upload/w_800,q_auto,f_auto/');
+    };
+
     grid.innerHTML = published.map((p, index) => {
         const cats = p.categoryIds ? p.categoryIds.map(id => {
             const c = allCategories.find(cat => (cat.id === id || cat._id === id));
@@ -102,14 +113,18 @@ function renderProjects(projects = allProjects) {
 
         const isFeatured = index === 0;
         const gridClasses = isFeatured ? 'md:col-span-2 md:row-span-2' : 'md:col-span-1 md:row-span-1';
-        const aspectClasses = isFeatured ? 'aspect-[3/2.2] md:aspect-auto h-full' : 'aspect-[3/2.2]';
+        const aspectClasses = isFeatured ? 'aspect-[3/2.2] md:aspect-[3/2.2] h-full' : 'aspect-[3/2.2]';
+        
+        // Calculate stagger delay based on index
+        const delay = (index % 10) * 100;
 
         return `
-            <a href="project.html?id=${p.id}" class="group block relative overflow-hidden rounded-[24px] bg-[#F9F9F9] border border-[#F2F2F2] transition-all duration-500 hover:shadow-2xl hover:shadow-black/5 ${gridClasses}" style="transform: translateZ(0);">
-                <div class="overflow-hidden relative ${aspectClasses}">
+            <a href="project.html?id=${p.id}" class="group block relative overflow-hidden rounded-[24px] bg-[#F9F9F9] border border-[#F2F2F2] transition-all duration-500 hover:shadow-2xl hover:shadow-black/5 ${gridClasses}" style="transform: translateZ(0); opacity: 0; animation: fadeUpReveal 0.6s ease-out ${delay}ms forwards;">
+                <div class="overflow-hidden relative w-full h-full ${aspectClasses}">
                     ${p.coverImage 
-                        ? `<img src="${p.coverImage}" 
+                        ? `<img src="${getOptThumb(p.coverImage)}" 
                              alt="${p.title}" 
+                             loading="lazy"
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                              style="transform: scale(${p.coverImageZoom || 1}) translate(${(p.coverImageX === 50 || !p.coverImageX) ? 0 : p.coverImageX}px, ${(p.coverImageY === 50 || !p.coverImageY) ? 0 : p.coverImageY}px); transform-origin: center center;">`
                         : `<div class="w-full h-full bg-[#EEE] flex items-center justify-center text-[#AAA] font-medium uppercase tracking-widest text-[10px]">No Cover</div>`
