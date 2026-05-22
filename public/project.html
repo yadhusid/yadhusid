@@ -342,13 +342,5 @@
             }
         });
     </script>
-    <script>
-        // Inject CMS if URL has edit=true
-        if(window.location.search.includes('edit=true')) {
-            const script = document.createElement('script');
-            script.src = '/cms.js';
-            document.body.appendChild(script);
-        }
-    </script>
 </body>
 </html>
