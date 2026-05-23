@@ -1487,8 +1487,9 @@
                                 <h4 style="margin: 0; font-size: 12px; font-weight: bold;">${label}</h4>
                                 <span style="font-size: 10px; color: var(--muted); max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${filename}">${filename}</span>
                             </div>
-                            <div style="width: 100%; display: flex; align-items: center; justify-content: center; background: #000; position: relative;">
-                                ${hasMedia ? (b.type === 'video' ? `<video src="${blockContent}" style="width:100%; height:auto; display:block; object-fit:contain; max-height:300px;"></video>` : `<img src="${blockContent}" style="width:100%; height:auto; display:block; object-fit:contain; max-height:300px;">`) : `<div style="padding: 3rem; color: var(--muted);">No media</div>`}
+                            <div style="width: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); position: relative;">
+                                ${hasMedia ? (b.type === 'video' ? `<video src="${blockContent}" style="width:100%; height:auto; display:block; object-fit:contain; max-height:300px; filter: grayscale(100%) brightness(0.4) contrast(0.5);"></video>` : `<img src="${blockContent}" style="width:100%; height:auto; display:block; object-fit:contain; max-height:300px; filter: grayscale(100%) brightness(0.4) contrast(0.5);">`) : `<div style="padding: 3rem; color: var(--muted);">No media</div>`}
+                                <div style="position: absolute; color: #fff; font-weight: bold; font-size: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px;">${label.toUpperCase()}</div>
                             </div>
                         </div>`;
                 } else if (b.type === 'spacing') {
@@ -1502,8 +1503,11 @@
                 }
 
                 content = `
-                    <div draggable="true" ondragstart="handleBlockDragStart(event, '${b._id || b.id}')" ondragend="handleBlockDragEnd(event)" ondragover="handleBlockDragOver(event)" ondragleave="handleBlockDragLeave(event)" ondrop="handleBlockDrop(event, '${b._id || b.id}')" onclick="selectBlock('${b._id || b.id}')" style="cursor: grab; width: 100%; border-radius: 12px; border: 2px solid transparent; padding: 0.5rem; transition: border-color 0.2s; ${highlightStyle}">
+                    <div draggable="true" ondragstart="handleBlockDragStart(event, '${b._id || b.id}')" ondragend="handleBlockDragEnd(event)" ondragover="handleBlockDragOver(event)" ondragleave="handleBlockDragLeave(event)" ondrop="handleBlockDrop(event, '${b._id || b.id}')" onclick="selectBlock('${b._id || b.id}')" style="position: relative; cursor: grab; width: 100%; border-radius: 12px; border: 2px solid transparent; padding: 0.5rem; transition: border-color 0.2s; ${highlightStyle}">
                         ${wireframePreview}
+                        ${isSelected ? `<button class="btn-danger" onclick="event.stopPropagation(); deleteBlock('${b._id || b.id}')" title="Delete Block" style="position:absolute; top:-5px; right:-5px; z-index:100; border-radius:50%; width:30px; height:30px; padding:0; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.5);">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>` : ''}
                     </div>
                 `;
                 return content;
@@ -1686,38 +1690,6 @@
                 const res = await fetch('/api/projects/' + currentProjectId);
                 modalCurrentProject = await res.json();
             }
-            
-            const list = document.getElementById('blockList');
-            list.innerHTML = (modalCurrentProject.blocks || []).map(b => {
-                let thumbHtml = '';
-                if ((b.type === 'media' || b.type === 'image') && b.url) {
-                    if (b.url.match(/\.(mp4|webm)$/i)) {
-                        thumbHtml = `<div style="width:40px; height:40px; background:#222; border-radius:6px; display:flex; align-items:center; justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>`;
-                    } else {
-                        thumbHtml = `<img src="${b.url}" style="width:40px; height:40px; object-fit:cover; border-radius:6px;">`;
-                    }
-                } else if (b.type === 'text') {
-                    thumbHtml = `<div style="width:40px; height:40px; background:rgba(255,255,255,0.05); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px; color:var(--muted);">T</div>`;
-                } else {
-                    thumbHtml = `<div style="width:40px; height:40px; background:rgba(255,255,255,0.02); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--muted); border: 1px dashed var(--border);">${b.type.substring(0,2).toUpperCase()}</div>`;
-                }
-                
-                const isSelected = modalSelectedBlockId === (b._id || b.id);
-                
-                return `
-                <div class="item-row" onclick="selectBlock('${b._id || b.id}')" style="background:${isSelected ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; border: 1px solid ${isSelected ? 'rgba(59, 130, 246, 0.5)' : 'transparent'}; cursor:pointer; padding: 10px 14px; margin-bottom: 8px;">
-                    <div style="display:flex; align-items:center; gap:12px; flex:1;">
-                        ${thumbHtml}
-                        <div>
-                            <div style="font-size:0.85rem; font-weight:600;">${b.type.toUpperCase()}</div>
-                            <div style="font-size:0.7rem; color:var(--muted)">${b.layout && b.layout.topRound ? 'Top Round ' : ''}${b.layout && b.layout.bottomRound ? 'Bot Round' : ''}</div>
-                        </div>
-                    </div>
-                    <button class="btn-danger" onclick="event.stopPropagation(); deleteBlock('${b._id || b.id}')" title="Delete" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                    </button>
-                </div>`
-            }).join('');
             
             // If currently selected block is deleted, reset UI
             if (modalSelectedBlockId && !(modalCurrentProject.blocks || []).find(b => (b._id || b.id) === modalSelectedBlockId)) {
