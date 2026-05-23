@@ -570,7 +570,7 @@
                 </div>
 
                 <!-- Block Builder Modal / Editor -->
-                <div class="page" id="page-block-editor" style="max-width: 100%; height: calc(100vh - 12rem); display: none;">
+                <div class="page" id="page-block-editor" style="max-width: 100%; height: calc(100vh - 12rem);">
                     <div style="display: grid; grid-template-columns: 6fr 4fr; gap: 2rem; height: 100%;">
                         <!-- Left Window: Block Wireframe List -->
                         <div class="live-preview-window" style="height: 100%; border-radius: 24px; overflow-y: auto; background: var(--card-bg); border: 1px solid var(--border); position: relative; padding: 2rem;">
@@ -806,6 +806,7 @@
             allCategories = await res.json();
             renderCategories();
             populateCategorySelect();
+            renderCategoryFilters();
         }
 
         async function loadProjects() {
@@ -1076,8 +1077,8 @@
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items: center;">
                         <div style="display:flex; align-items:center; gap:0.5rem; justify-content:center; margin-right: 0.5rem;">
-                            <button onclick="toggleProjectStatus('${p.id}', ${p.status !== 'published'})" class="btn-sm" style="font-size:10px; font-weight:bold; padding:0.4rem 0.6rem; color: ${p.status === 'published' ? '#4CAF50' : '#888'}; background: transparent; border: 1px solid ${p.status === 'published' ? 'rgba(76,175,80,0.3)' : 'rgba(136,136,136,0.3)'}; border-radius: 6px; cursor: pointer; display: inline-flex; justify-content: center; width: 60px;">
-                                ${p.status === 'published' ? 'LIVE' : 'DRAFT'}
+                            <button onclick="toggleProjectStatus('${p.id}', ${p.status !== 'published'})" class="btn-sm" style="font-size:9px; font-weight:bold; padding:0.4rem 0.2rem; color: ${p.status === 'published' ? '#4CAF50' : '#888'}; background: transparent; border: 1px solid ${p.status === 'published' ? 'rgba(76,175,80,0.3)' : 'rgba(136,136,136,0.3)'}; border-radius: 6px; cursor: pointer; display: inline-flex; justify-content: center; width: 44px; text-transform: uppercase;">
+                                ${p.status === 'published' ? 'LIVE' : 'DRFT'}
                             </button>
                         </div>
                         <button class="btn-sm" onclick="openBlockModal('${p.id}','${p.title.replace(/'/g,"\\'")}')" title="Edit Blocks" style="padding:0.4rem 0.6rem; display:inline-flex; align-items:center; justify-content:center;">
