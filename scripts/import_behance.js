@@ -112,7 +112,7 @@ async function run() {
         
         for (const projName of projects) {
             const projPath = path.join(catPath, projName);
-            const files = fs.readdirSync(projPath).filter(f => /\.(jpg|jpeg|png|webp|avif|mp4|webm)$/i.test(f)).sort();
+            const files = fs.readdirSync(projPath).filter(f => /\.(jpg|jpeg|png|webp|avif|mp4|webm|gif)$/i.test(f)).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
             
             let coverFile = null;
             const galleryFiles = [];
@@ -176,9 +176,18 @@ async function run() {
             }
             
             const galleryUrls = [];
+            const blocks = [];
             for (const gf of p.galleryFiles) {
                 const res = await uploadFile(gf);
                 galleryUrls.push(res.url);
+                blocks.push({
+                    type: res.url.toLowerCase().match(/\.(mp4|webm)$/i) ? 'video' : 'image',
+                    content: res.url,
+                    order: blocks.length,
+                    radiusTop: false,
+                    radiusBottom: false,
+                    hasGap: false
+                });
             }
             
             const proj = new Project({
@@ -186,6 +195,7 @@ async function run() {
                 categoryIds: [category._id],
                 coverImage: coverUrl,
                 images: galleryUrls,
+                blocks: blocks,
                 status: 'published',
                 order: projectOrder++
             });

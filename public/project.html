@@ -310,11 +310,7 @@
 
                 const blocksContainer = document.getElementById('project-blocks');
                 
-                // Add spacing exception for Dubai Holding Entertainment
-                if (project.title && project.title.toLowerCase().includes('dubai holding')) {
-                    blocksContainer.classList.remove('gap-0');
-                    blocksContainer.classList.add('gap-4');
-                }
+                // Gap exception removed for seamless integration
                 if (project.blocks && project.blocks.length) {
                     const sorted = project.blocks.sort((a,b) => a.order - b.order);
                     blocksContainer.innerHTML = sorted.map((b, i) => {

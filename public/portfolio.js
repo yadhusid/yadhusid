@@ -9,15 +9,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function fetchCoreSkills() {
     try {
+        let cachedString = sessionStorage.getItem('cachedSkills');
+        if (cachedString) {
+            coreSkills = JSON.parse(cachedString);
+            renderCoreSkills();
+        }
         const res = await fetch('/api/homepage/skills?t=' + Date.now());
-        const skills = await res.json();
-        renderCoreSkills(skills);
+        const fetchedSkills = await res.json();
+        const newString = JSON.stringify(fetchedSkills);
+        if (newString !== cachedString) {
+            coreSkills = fetchedSkills;
+            sessionStorage.setItem('cachedSkills', newString);
+            renderCoreSkills();
+        }
     } catch (err) {
         console.error('Error fetching core skills:', err);
     }
 }
 
-function renderCoreSkills(skills) {
+function renderCoreSkills(skills = coreSkills) {
     const container = document.getElementById('core-skills-container');
     if (!container || !Array.isArray(skills)) return;
 
@@ -32,9 +42,19 @@ function renderCoreSkills(skills) {
 
 async function fetchCategories() {
     try {
+        let cachedString = sessionStorage.getItem('cachedCats');
+        if (cachedString) {
+            allCategories = JSON.parse(cachedString);
+            renderCategories();
+        }
         const res = await fetch('/api/categories?t=' + Date.now());
-        allCategories = await res.json();
-        renderCategories();
+        const fetchedCats = await res.json();
+        const newString = JSON.stringify(fetchedCats);
+        if (newString !== cachedString) {
+            allCategories = fetchedCats;
+            sessionStorage.setItem('cachedCats', newString);
+            renderCategories();
+        }
     } catch (err) {
         console.error('Error fetching categories:', err);
     }
@@ -42,9 +62,20 @@ async function fetchCategories() {
 
 async function fetchProjects() {
     try {
+        let cachedString = sessionStorage.getItem('cachedProjects');
+        if (cachedString) {
+            allProjects = JSON.parse(cachedString);
+            renderProjects();
+        }
         const res = await fetch('/api/projects?t=' + Date.now());
-        allProjects = await res.json();
-        renderProjects();
+        const fetchedProjects = await res.json();
+        const newString = JSON.stringify(fetchedProjects);
+        
+        if (newString !== cachedString) {
+            allProjects = fetchedProjects;
+            sessionStorage.setItem('cachedProjects', newString);
+            renderProjects();
+        }
     } catch (err) {
         console.error('Error fetching projects:', err);
     }

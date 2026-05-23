@@ -1,0 +1,2961 @@
+[
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7677b6a9d231c17c7ae9",
+    "title": "Asia Water Equipment",
+    "slug": "asia-water-equipment",
+    "categoryIds": [
+      "6a0f7646b6a9d231c17c7ae8"
+    ],
+    "categoryId": "6a0f7646b6a9d231c17c7ae8",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398221/portfolio_uploads/fmq1rwm2ybqkn1y9idjt.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398223/portfolio_uploads/kfk1ycrtw4dxo7eoqwts.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7aea"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398225/portfolio_uploads/wndpl2sxvpmd2rjjdlg1.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7aeb"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398227/portfolio_uploads/nbf0fxtuzgri33x3cocm.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7aec"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398229/portfolio_uploads/axbi2jjfrjecgkj2c4am.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7aed"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398232/portfolio_uploads/uacybrofn1hr7nnfdimv.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7aee"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398234/portfolio_uploads/xydpn8ktwvr4urqcb3je.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7aef"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398237/portfolio_uploads/scu1czb4mv4kxkwx62t8.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af0"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398239/portfolio_uploads/lduxtbcxecrlz6xtj992.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af1"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398241/portfolio_uploads/amoq0nxkb9bqwrl1uxst.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af2"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398243/portfolio_uploads/hluphg3gip6uy3svudjz.jpg",
+        "order": 9,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af3"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398246/portfolio_uploads/cjfs8gshul5talonmbrd.jpg",
+        "order": 10,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af4"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398248/portfolio_uploads/tfljmvunttujia9czfkt.jpg",
+        "order": 11,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af5"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398252/portfolio_uploads/tnc3ponwwwxz50xabsui.jpg",
+        "order": 12,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af6"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398263/portfolio_uploads/iujkxgbjxrt1aluamzhj.jpg",
+        "order": 13,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7677b6a9d231c17c7af7"
+      }
+    ],
+    "order": 4,
+    "status": "published",
+    "createdAt": "2026-05-21T21:17:43.254Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f769ab6a9d231c17c7af8",
+    "title": "dynajet",
+    "slug": "dynajet",
+    "categoryIds": [
+      "6a0f7646b6a9d231c17c7ae8"
+    ],
+    "categoryId": "6a0f7646b6a9d231c17c7ae8",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398271/portfolio_uploads/plry0kzfqrbgpgvw5lpq.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398278/portfolio_uploads/ridntoatly85ua6yvrrv.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f769ab6a9d231c17c7af9"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398283/portfolio_uploads/wkrvt1zwuihchhr8p6es.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f769ab6a9d231c17c7afa"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398291/portfolio_uploads/sxpdqkwottpv8f6hazr5.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f769ab6a9d231c17c7afb"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398298/portfolio_uploads/kw5nvia2r0lyhfjma0ic.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f769ab6a9d231c17c7afc"
+      }
+    ],
+    "order": 9,
+    "status": "published",
+    "createdAt": "2026-05-21T21:18:18.552Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7702b6a9d231c17c7b0d",
+    "title": "jetstream",
+    "slug": "jetstream",
+    "categoryIds": [
+      "6a0f7646b6a9d231c17c7ae8"
+    ],
+    "categoryId": "6a0f7646b6a9d231c17c7ae8",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398364/portfolio_uploads/m1gebs04jr5bumqskbzr.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398369/portfolio_uploads/pn3hlkcv8gulwugflx2j.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7702b6a9d231c17c7b0e"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398375/portfolio_uploads/irqbljt7lyn9tywt4x2r.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7702b6a9d231c17c7b0f"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398381/portfolio_uploads/nqbqdznux2tbcyjpqdki.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7702b6a9d231c17c7b10"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398391/portfolio_uploads/hdg0rhckzs8ztptmopri.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7702b6a9d231c17c7b11"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398394/portfolio_uploads/elnt1hhhefyqbu5r5heb.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7702b6a9d231c17c7b12"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398397/portfolio_uploads/qdpyeguvltkvjsjck4kq.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7702b6a9d231c17c7b13"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398402/portfolio_uploads/pvfzrsv496ux9x2qgn1s.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7702b6a9d231c17c7b14"
+      }
+    ],
+    "order": 16,
+    "status": "published",
+    "createdAt": "2026-05-21T21:20:02.571Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f771fb6a9d231c17c7b15",
+    "title": "Plastic manufacturing",
+    "slug": "plastic-manufacturing",
+    "categoryIds": [
+      "6a0f7646b6a9d231c17c7ae8"
+    ],
+    "categoryId": "6a0f7646b6a9d231c17c7ae8",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398405/portfolio_uploads/gwcgmfr3su4qa18j3xoh.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398407/portfolio_uploads/mkg6rwvh7lujrtcx44v7.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b16"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398409/portfolio_uploads/mufbpugmqeliyxggw7tg.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b17"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398411/portfolio_uploads/sgnxh8dyazz8upfmbh9v.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b18"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398413/portfolio_uploads/ykv7sdydioqmmpcn5lav.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b19"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398414/portfolio_uploads/c6qw0rcmuawig01yemsr.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b1a"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398416/portfolio_uploads/is3gx3penft7aoa6afzs.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b1b"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398418/portfolio_uploads/hmuyk0lmpklmnr6znoed.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b1c"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398419/portfolio_uploads/mhthj60bqts7lwigur2y.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b1d"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398421/portfolio_uploads/adjf0fpu9zaklymav86t.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b1e"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398423/portfolio_uploads/lcupnrx80jwsqxqupc3o.jpg",
+        "order": 9,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b1f"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398424/portfolio_uploads/qsg05wcuz8ptq7udrttf.jpg",
+        "order": 10,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b20"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398426/portfolio_uploads/b0kllswaifovhrmxfjut.jpg",
+        "order": 11,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b21"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398427/portfolio_uploads/vy6smbc6boat8hkvsa7c.jpg",
+        "order": 12,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b22"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398429/portfolio_uploads/aete6e89v09q018pdolv.jpg",
+        "order": 13,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b23"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398432/portfolio_uploads/gqi78fyjybjrcxtvecmo.jpg",
+        "order": 14,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f771fb6a9d231c17c7b24"
+      }
+    ],
+    "order": 19,
+    "status": "published",
+    "createdAt": "2026-05-21T21:20:31.667Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7752b6a9d231c17c7b25",
+    "title": "stonage",
+    "slug": "stonage",
+    "categoryIds": [
+      "6a0f7646b6a9d231c17c7ae8"
+    ],
+    "categoryId": "6a0f7646b6a9d231c17c7ae8",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398439/portfolio_uploads/saxnrkhxwomlqykdbn2q.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398444/portfolio_uploads/svas14hxh1k3v3uwctcd.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b26"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398448/portfolio_uploads/pbqqoirpx04kjed5rmse.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b27"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398452/portfolio_uploads/mlvrz5jyq4y3riqbydpo.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b28"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398456/portfolio_uploads/uhfek6d4fda9ncxzmy7c.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b29"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398460/portfolio_uploads/fb9fm5rqywvdjjazifgx.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b2a"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398465/portfolio_uploads/uijufahzpgwnp6yrgzvn.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b2b"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398469/portfolio_uploads/vajyjgq2c5hbwaddmhwv.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b2c"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398475/portfolio_uploads/n4cvnabbirzaw8plrjko.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b2d"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398482/portfolio_uploads/r7szux88nhiowf3p58dd.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7752b6a9d231c17c7b2e"
+      }
+    ],
+    "order": 22,
+    "status": "published",
+    "createdAt": "2026-05-21T21:21:22.534Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f77d3b6a9d231c17c7b40",
+    "title": "Angry Birds branded tablet devices",
+    "slug": "angry-birds-branded-tablet-devices",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398575/portfolio_uploads/vnik3gunvkcwvzz7ayog.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398583/portfolio_uploads/ig0osgmnsfyfhjcunyax.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77d3b6a9d231c17c7b41"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398592/portfolio_uploads/g2egpotkzrkxjoud2qtm.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77d3b6a9d231c17c7b42"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398597/portfolio_uploads/ibdyzm5mdbtwm49advoz.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77d3b6a9d231c17c7b43"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398600/portfolio_uploads/sxy3pafkwjj5fedjsfgz.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77d3b6a9d231c17c7b44"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398603/portfolio_uploads/ianerstjjcnqajegth3g.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77d3b6a9d231c17c7b45"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398607/portfolio_uploads/ehqbqxx9zvdnmu0qg5wx.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77d3b6a9d231c17c7b46"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398611/portfolio_uploads/ancamhu6gk2fbd7eebsw.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77d3b6a9d231c17c7b47"
+      }
+    ],
+    "order": 3,
+    "status": "published",
+    "createdAt": "2026-05-21T21:23:31.076Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f77ecb6a9d231c17c7b48",
+    "title": "Choco Dates",
+    "slug": "choco-dates",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398614/portfolio_uploads/p8amxtgadj4tw9wddugy.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398616/portfolio_uploads/j63zyc5uagcsaddjyk1h.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b49"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398619/portfolio_uploads/pl9taoagwlesvccbyecg.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b4a"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398621/portfolio_uploads/lseynmeimircz8scdu4i.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b4b"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398624/portfolio_uploads/uw64bibw1orjuwlhf0ng.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b4c"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398626/portfolio_uploads/tkfbfvx7hwim71dkdvnx.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b4d"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398629/portfolio_uploads/mnms788vej7utad2r8sm.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b4e"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398631/portfolio_uploads/qjnlnhr4ogrr6pvibnxt.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b4f"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398633/portfolio_uploads/bla7tiae07xrgv32x0lo.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b50"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398636/portfolio_uploads/zs0ptjhawekaevogx23u.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77ecb6a9d231c17c7b51"
+      }
+    ],
+    "order": 8,
+    "status": "published",
+    "createdAt": "2026-05-21T21:23:56.022Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f77f4b6a9d231c17c7b52",
+    "title": "Coffee Bean",
+    "slug": "coffee-bean",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398640/portfolio_uploads/uxulzbedgmo5znnrfjib.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398644/portfolio_uploads/zsfqbwo1yydblxqbee1h.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f77f4b6a9d231c17c7b53"
+      }
+    ],
+    "order": 12,
+    "status": "published",
+    "createdAt": "2026-05-21T21:24:04.835Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f77f9b6a9d231c17c7b54",
+    "title": "Kids Tablet",
+    "slug": "kids-tablet",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398649/portfolio_uploads/tyg35b7tzutyilaxhfbi.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [],
+    "order": 15,
+    "status": "published",
+    "createdAt": "2026-05-21T21:24:09.281Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7806b6a9d231c17c7b55",
+    "title": "LITTLE PONY KIDS TABLET",
+    "slug": "little-pony-kids-tablet",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398657/portfolio_uploads/zs0dbomiz8djzimuwktu.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398662/portfolio_uploads/m2s0sgrwo8gu8wmnykqb.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7806b6a9d231c17c7b56"
+      }
+    ],
+    "order": 18,
+    "status": "published",
+    "createdAt": "2026-05-21T21:24:22.454Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f781fb6a9d231c17c7b57",
+    "title": "LITTLE PONY TABLET",
+    "slug": "little-pony-tablet",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398670/portfolio_uploads/nftszzgfn6xvkczjlq4u.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398675/portfolio_uploads/y3bpwqdzy3ldobnfjtv8.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f781fb6a9d231c17c7b58"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398682/portfolio_uploads/xkca6nssgwvyww0qngpr.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f781fb6a9d231c17c7b59"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398687/portfolio_uploads/ye6yavvcjfruggb5u05u.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f781fb6a9d231c17c7b5a"
+      }
+    ],
+    "order": 21,
+    "status": "published",
+    "createdAt": "2026-05-21T21:24:47.991Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7836b6a9d231c17c7b5b",
+    "title": "Louie Perfume",
+    "slug": "louie-perfume",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398692/portfolio_uploads/es90hqa6gykrriebodzz.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398694/portfolio_uploads/deyo84eoabr7z62ixqfs.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7836b6a9d231c17c7b5c"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398698/portfolio_uploads/lx1aeycp0pjrwjtulcgp.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7836b6a9d231c17c7b5d"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398699/portfolio_uploads/e865uyuqpdbm8vqeibqq.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7836b6a9d231c17c7b5e"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398705/portfolio_uploads/yi8clpmmjmsmqgkzku9a.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7836b6a9d231c17c7b5f"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398711/portfolio_uploads/vrmnydssg2qijrgb6mpt.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7836b6a9d231c17c7b60"
+      }
+    ],
+    "order": 24,
+    "status": "published",
+    "createdAt": "2026-05-21T21:25:10.716Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f783ab6a9d231c17c7b61",
+    "title": "Matrixbook Windows Laptop",
+    "slug": "matrixbook-windows-laptop",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398713/portfolio_uploads/pgegiz7jrxpuebplempt.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398715/portfolio_uploads/xtudom491llvrlb2y3l1.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f783ab6a9d231c17c7b62"
+      }
+    ],
+    "order": 27,
+    "status": "published",
+    "createdAt": "2026-05-21T21:25:14.875Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7842b6a9d231c17c7b63",
+    "title": "Quad Core Tablet",
+    "slug": "quad-core-tablet",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398717/portfolio_uploads/uhqdt7hffz831x3q7onl.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398719/portfolio_uploads/zrux4s6jzem1nswu1faz.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7842b6a9d231c17c7b64"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398722/portfolio_uploads/grwri6r3yzdskuxuvgu7.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7842b6a9d231c17c7b65"
+      }
+    ],
+    "order": 29,
+    "status": "published",
+    "createdAt": "2026-05-21T21:25:22.719Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7845b6a9d231c17c7b66",
+    "title": "Quad Core Tablet ver2",
+    "slug": "quad-core-tablet-ver2",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398725/portfolio_uploads/jcc8znyzpbu23bm7jnta.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [],
+    "order": 30,
+    "status": "published",
+    "createdAt": "2026-05-21T21:25:25.784Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7861b6a9d231c17c7b67",
+    "title": "Saporous chocolates",
+    "slug": "saporous-chocolates",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398731/portfolio_uploads/h3p8xvgh3yy1nhfm376x.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398738/portfolio_uploads/jkszw25yhul7fimzmbpr.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7861b6a9d231c17c7b68"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398742/portfolio_uploads/qzdk95nogbgbvpzpb6z2.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7861b6a9d231c17c7b69"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398746/portfolio_uploads/teursvrrdwizpwcmfkfa.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7861b6a9d231c17c7b6a"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398750/portfolio_uploads/r3jpgl6i2sbtsjmfeucr.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7861b6a9d231c17c7b6b"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398753/portfolio_uploads/szsofcpgd8ias4usq8eu.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7861b6a9d231c17c7b6c"
+      }
+    ],
+    "order": 31,
+    "status": "published",
+    "createdAt": "2026-05-21T21:25:53.855Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7870b6a9d231c17c7b6d",
+    "title": "Saporous Truffle chocolates",
+    "slug": "saporous-truffle-chocolates",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398757/portfolio_uploads/dcx0r94envoq71rxlkkz.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398759/portfolio_uploads/umc4stsqxlpixgwkjuqp.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7870b6a9d231c17c7b6e"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398760/portfolio_uploads/huizmrzslsdzikh4fiy3.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7870b6a9d231c17c7b6f"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398762/portfolio_uploads/oh1tb69okaqfcaxux7cr.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7870b6a9d231c17c7b70"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398764/portfolio_uploads/x7pgzve0upaoyrseiumx.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7870b6a9d231c17c7b71"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398768/portfolio_uploads/e0dqlkqro6qwbs3skyvx.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7870b6a9d231c17c7b72"
+      }
+    ],
+    "order": 32,
+    "status": "published",
+    "createdAt": "2026-05-21T21:26:08.425Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7883b6a9d231c17c7b73",
+    "title": "Saporous Truffle chocolates lite",
+    "slug": "saporous-truffle-chocolates-lite",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398776/portfolio_uploads/de3juobrxee0sbze8xb0.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398781/portfolio_uploads/jiv6vh572vyndbkddmji.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7883b6a9d231c17c7b74"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398784/portfolio_uploads/ktfopopxvnchm7yn1b1t.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7883b6a9d231c17c7b75"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398788/portfolio_uploads/pbsewtmsvky80ts5xybs.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7883b6a9d231c17c7b76"
+      }
+    ],
+    "order": 33,
+    "status": "published",
+    "createdAt": "2026-05-21T21:26:27.990Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7890b6a9d231c17c7b77",
+    "title": "TERAPLAST Bandage",
+    "slug": "teraplast-bandage",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398791/portfolio_uploads/f6pvl3hrqrowfgewnjaz.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398794/portfolio_uploads/ntpz0xftaggplst6hwth.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7890b6a9d231c17c7b78"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398798/portfolio_uploads/ubq5lt34fpkktp7al0h9.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7890b6a9d231c17c7b79"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398801/portfolio_uploads/tgd6wkizql3k2cqnp4ia.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7890b6a9d231c17c7b7a"
+      }
+    ],
+    "order": 34,
+    "status": "published",
+    "createdAt": "2026-05-21T21:26:40.968Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f789bb6a9d231c17c7b7b",
+    "title": "TRANSFORMERS KIDS TABLET",
+    "slug": "transformers-kids-tablet",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398807/portfolio_uploads/gxefivud4hcv5axkzw2h.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398811/portfolio_uploads/akuywyndess8dedlwis6.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f789bb6a9d231c17c7b7c"
+      }
+    ],
+    "order": 36,
+    "status": "published",
+    "createdAt": "2026-05-21T21:26:51.618Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f78dcb6a9d231c17c7b7d",
+    "title": "TRANSFORMERS TABLET",
+    "slug": "transformers-tablet",
+    "categoryIds": [
+      "6a0f77a7b6a9d231c17c7b3f"
+    ],
+    "categoryId": "6a0f77a7b6a9d231c17c7b3f",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398819/portfolio_uploads/weyrjk35vib550whcokp.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398824/portfolio_uploads/aofmkbnec5ebfirz58eo.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b7e"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398829/portfolio_uploads/zamoqiwvjhx4orloh9cb.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b7f"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398834/portfolio_uploads/exxftjsria11vh47jcuj.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b80"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398839/portfolio_uploads/ezzexfged2wopi1tijfy.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b81"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398842/portfolio_uploads/vstz0zgnpti1qsjmiwga.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b82"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398847/portfolio_uploads/icegjnltz9bbcpe0tenr.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b83"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398851/portfolio_uploads/zda3f41ptsw4vcdpg4rv.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b84"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398856/portfolio_uploads/tkh6e6lkdbvrvgzmvyb0.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b85"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398863/portfolio_uploads/lcnx0kalwe3gupyu2aqv.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b86"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398871/portfolio_uploads/znovsmibteu7ab9aggmp.jpg",
+        "order": 9,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b87"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398876/portfolio_uploads/xxquuforfl8zxxm0rxm3.jpg",
+        "order": 10,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78dcb6a9d231c17c7b88"
+      }
+    ],
+    "order": 35,
+    "status": "published",
+    "createdAt": "2026-05-21T21:27:56.790Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f78fcb6a9d231c17c7b8a",
+    "title": "IGNIS Automotive Photoshoot & AD",
+    "slug": "ignis-automotive-photoshoot-ad",
+    "categoryIds": [
+      "6a0f78ddb6a9d231c17c7b89"
+    ],
+    "categoryId": "6a0f78ddb6a9d231c17c7b89",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398882/portfolio_uploads/njoyerroixnyolec8xl3.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398885/portfolio_uploads/acebwbxjnqxxqhfhu0bl.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b8b"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398888/portfolio_uploads/bfspz7vxchbsvrspvnh0.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b8c"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398889/portfolio_uploads/hr8hogdqifuquuwbtkk1.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b8d"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398895/portfolio_uploads/n7gyty75x2yceglst9ow.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b8e"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398898/portfolio_uploads/tnrmio2yxykkzwczer0z.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b8f"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398899/portfolio_uploads/l7ds8mcijidsvf1nfsfo.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b90"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398905/portfolio_uploads/jmxeciuqctjtlh4kjj9b.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b91"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398906/portfolio_uploads/vqmnz5mmjqbfbrdnvenb.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b92"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398908/portfolio_uploads/tq15173nzdv9oxpqnvs0.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f78fcb6a9d231c17c7b93"
+      }
+    ],
+    "order": 2,
+    "status": "published",
+    "createdAt": "2026-05-21T21:28:28.055Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f791cb6a9d231c17c7b96",
+    "title": "Android OS concept",
+    "slug": "android-os-concept",
+    "categoryIds": [
+      "6a0f78fcb6a9d231c17c7b94"
+    ],
+    "categoryId": "6a0f78fcb6a9d231c17c7b94",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398918/portfolio_uploads/imbsj60ehqmcpxgm3k9a.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398925/portfolio_uploads/ibbipv6mmvjv0md1bjrh.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f791cb6a9d231c17c7b97"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398934/portfolio_uploads/smey7mcpr1ytktmw6lew.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f791cb6a9d231c17c7b98"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398940/portfolio_uploads/vm9b92kgzes1akrhir8f.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f791cb6a9d231c17c7b99"
+      }
+    ],
+    "order": 7,
+    "status": "published",
+    "createdAt": "2026-05-21T21:29:00.143Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7927b6a9d231c17c7b9a",
+    "title": "Foodco Industry",
+    "slug": "foodco-industry",
+    "categoryIds": [
+      "6a0f78fcb6a9d231c17c7b94"
+    ],
+    "categoryId": "6a0f78fcb6a9d231c17c7b94",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398942/portfolio_uploads/qxc9094i2hjnxiqozdjr.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398944/portfolio_uploads/glnvmfj9n6z0rbwefkv9.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7927b6a9d231c17c7b9b"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398946/portfolio_uploads/syyharngrhwdz8ab0ijw.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7927b6a9d231c17c7b9c"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398948/portfolio_uploads/b0wr4b2salmdlm8bh1pt.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7927b6a9d231c17c7b9d"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398952/portfolio_uploads/nmhgphezsau2zqlf8w2j.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7927b6a9d231c17c7b9e"
+      }
+    ],
+    "order": 11,
+    "status": "published",
+    "createdAt": "2026-05-21T21:29:11.675Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f794bb6a9d231c17c7ba0",
+    "title": "MGM Health Centre",
+    "slug": "mgm-health-centre",
+    "categoryIds": [
+      "6a0f78fcb6a9d231c17c7b94"
+    ],
+    "categoryId": "6a0f78fcb6a9d231c17c7b94",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398954/portfolio_uploads/myihsimmisk0zomzp7zw.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398957/portfolio_uploads/kmkxejz8ghavidnionx0.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba1"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398960/portfolio_uploads/v49jjldj10fbxwnnlqrx.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba2"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398963/portfolio_uploads/fyx7ormszacg7twmanrv.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba3"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398966/portfolio_uploads/iduizht1s7finyzxkqfo.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba4"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398967/portfolio_uploads/emrliermbpmphmcfczrf.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba5"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398970/portfolio_uploads/tf9icgpjdtmtcrwzrk5z.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba6"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398972/portfolio_uploads/mmktmwwksxbjtfflnwe2.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba7"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398975/portfolio_uploads/qjo0e2hduqccgc4cfkr1.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba8"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398978/portfolio_uploads/nsfu4xxi0jcod3lws6p6.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7ba9"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398981/portfolio_uploads/rnjhiow8mshkitck045y.jpg",
+        "order": 9,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7baa"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398983/portfolio_uploads/rtvvu1hl3pvc1in16bti.jpg",
+        "order": 10,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7bab"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398985/portfolio_uploads/ral92qkrovmsb3tj0vqt.jpg",
+        "order": 11,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7bac"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398987/portfolio_uploads/qzkf6jadhztf5opkgelx.jpg",
+        "order": 12,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f794bb6a9d231c17c7bad"
+      }
+    ],
+    "order": 17,
+    "status": "published",
+    "createdAt": "2026-05-21T21:29:47.581Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f7976b6a9d231c17c7bae",
+    "title": "Plastic Manufacturing Industry",
+    "slug": "plastic-manufacturing-industry",
+    "categoryIds": [
+      "6a0f78fcb6a9d231c17c7b94"
+    ],
+    "categoryId": "6a0f78fcb6a9d231c17c7b94",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398991/portfolio_uploads/xao1tmy03prfzh8a7wuc.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398996/portfolio_uploads/tpylyhtoheq3fb6kzbbh.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7baf"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779398999/portfolio_uploads/x4wqibir9vnb7fcbyauq.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb0"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399002/portfolio_uploads/qvnfmxuggoss0ymy5egd.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb1"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399007/portfolio_uploads/wjuyw7mphrjydqemf194.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb2"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399011/portfolio_uploads/w0q2myrinydmdwsg4xkx.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb3"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399015/portfolio_uploads/gsfxo4f8ciatzhypth9u.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb4"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399019/portfolio_uploads/fiqhki8o4ownlkptxs4v.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb5"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399023/portfolio_uploads/hpwx9zjvwdrji4omrihx.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb6"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399027/portfolio_uploads/hi9m2vubnb7zsti1ijpl.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb7"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399030/portfolio_uploads/y5wnhatg1wdf8rlvgmwq.jpg",
+        "order": 9,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f7976b6a9d231c17c7bb8"
+      }
+    ],
+    "order": 20,
+    "status": "published",
+    "createdAt": "2026-05-21T21:30:30.448Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f798cb6a9d231c17c7bb9",
+    "title": "Travel Tourism Concept_1",
+    "slug": "travel-tourism-concept_1",
+    "categoryIds": [
+      "6a0f78fcb6a9d231c17c7b94"
+    ],
+    "categoryId": "6a0f78fcb6a9d231c17c7b94",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399034/portfolio_uploads/srxky4wxe1xdheebypoy.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399040/portfolio_uploads/wifolwkpls4vssxej6u8.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f798cb6a9d231c17c7bba"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399049/portfolio_uploads/kn9nhgdr8b2nmmeytmn0.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f798cb6a9d231c17c7bbb"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399053/portfolio_uploads/jbqpo49uhqftaudwitqa.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f798cb6a9d231c17c7bbc"
+      }
+    ],
+    "order": 23,
+    "status": "published",
+    "createdAt": "2026-05-21T21:30:52.788Z",
+    "__v": 0
+  },
+  {
+    "cardOverlay": false,
+    "_id": "6a0f799db6a9d231c17c7bbd",
+    "title": "Travel Tourism Concept_2",
+    "slug": "travel-tourism-concept_2",
+    "categoryIds": [
+      "6a0f78fcb6a9d231c17c7b94"
+    ],
+    "categoryId": "6a0f78fcb6a9d231c17c7b94",
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399057/portfolio_uploads/x7yvgi8sogps2b7suiau.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399061/portfolio_uploads/atwdk1c9rod40mt9whqp.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f799db6a9d231c17c7bbe"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779399068/portfolio_uploads/nrw19hamajagtqklrqj7.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a0f799db6a9d231c17c7bbf"
+      }
+    ],
+    "order": 26,
+    "status": "published",
+    "createdAt": "2026-05-21T21:31:09.063Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a10cc4b4e20d7dc5177b433",
+    "title": "Dubai Holding Entertainment",
+    "categoryIds": [
+      "6a0f75e6b6a9d231c17c7aca"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485010/portfolio_uploads/ojelhyumpl5evtmog9af.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485012/portfolio_uploads/t17nthusl5g0obvgv5kl.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485013/portfolio_uploads/s6nkhn4ckbpbtszbbv59.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485014/portfolio_uploads/xw9fusqgby8pagjg5ofw.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485015/portfolio_uploads/km3sjmz2ctbvl15siybb.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485016/portfolio_uploads/wtoymyibithl4eefnqpb.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485018/portfolio_uploads/juu4qo3ew7f3pjzbk9ox.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485019/portfolio_uploads/am1mkdpm2bg8jdqxaydi.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485020/portfolio_uploads/jxy3afof3r4j8v8qe6oa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485021/portfolio_uploads/avjjai1nxuws2llzegof.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485023/portfolio_uploads/ndw7k97alz7xtgvcbero.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485024/portfolio_uploads/ttcmabsbphxkyxgglk5m.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485025/portfolio_uploads/jr8htnhz9eobvf3i6sin.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485027/portfolio_uploads/ekr4811jlc3nuz1mjfs1.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485028/portfolio_uploads/u7spmrwa9bi5ensh4sks.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485029/portfolio_uploads/evovrnulf9olfjslqwon.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485031/portfolio_uploads/nsjafsclsjhyogqczrbx.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485032/portfolio_uploads/c0cthtntfzwg62p9rrqw.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485033/portfolio_uploads/myup6dll0ctnb61xy8dc.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485034/portfolio_uploads/se4cetu1eieihld9gvnr.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485035/portfolio_uploads/d02hhm0yb05eyuhwyoi0.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485036/portfolio_uploads/dgyzh2qbroptix26625v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485037/portfolio_uploads/rkncifl2lhpzsly5gnhl.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485039/portfolio_uploads/s5mltlvjizjkshurxxna.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485040/portfolio_uploads/dfoqxcanvno5mqo7rxdq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485041/portfolio_uploads/unwhv6p8wlbeloyd9nyd.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485043/portfolio_uploads/defirc5lzxb7gtza0ce8.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485044/portfolio_uploads/tymdtbuhqgueopyiz0ix.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485046/portfolio_uploads/pskc58jpv5x8qv83f0w8.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485047/portfolio_uploads/yb0tibyr54wgsjkebmbh.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485048/portfolio_uploads/nqdampngfruu0jgtekar.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485050/portfolio_uploads/ruanr5bbh9c2nbqbtxrd.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485051/portfolio_uploads/xmuijedaib0dp7ohaecf.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485053/portfolio_uploads/chkdh7sxvzcs4szvdixa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485055/portfolio_uploads/z3wxzpgncgy3yq4fc88n.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485056/portfolio_uploads/tax3qhjw7ruq6q449nd4.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485058/portfolio_uploads/tm0dto7woyxqizh9yt94.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485059/portfolio_uploads/xit8aokmhbedo9db6t8k.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485061/portfolio_uploads/b7gkypuoithh2pdktq3a.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485062/portfolio_uploads/a6010czp0mozeoszqfk0.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485063/portfolio_uploads/nimcbvftuqafp6itqqej.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485065/portfolio_uploads/t5q0ojhixpq8hr2h6ec6.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485066/portfolio_uploads/fzrst7sm9bahmts0wfls.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485067/portfolio_uploads/sbpdcbxe13pmqyezhkqz.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485069/portfolio_uploads/tdgvwsfmnvsklxi5rbtz.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485070/portfolio_uploads/c6nbtj2aaeegeaoskyeq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485072/portfolio_uploads/fwamxr6raw5z8fkmjnhx.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485073/portfolio_uploads/d8gsxzleg1jzzhghn78v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485075/portfolio_uploads/jhcm0idlymtugk4bjrog.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485076/portfolio_uploads/u6b5axdehpgxwmbfu0et.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485078/portfolio_uploads/ty00lyzrzt6etzzpcnz5.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485079/portfolio_uploads/g6zszig1jnreiiyqw3ei.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485081/portfolio_uploads/qurqmabc6t7ld1rzav3c.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485083/portfolio_uploads/ddygpl1fwidrkywha9s9.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485084/portfolio_uploads/jry2psssllqrsllgsdug.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485086/portfolio_uploads/oxewhz87gkflga6jnwxa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485088/portfolio_uploads/vz2nr4saxaj53lrohwtq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485089/portfolio_uploads/xzfjlk5ju5o1pbxtaiek.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485090/portfolio_uploads/qrinyvv5vswgii0brbvw.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485092/portfolio_uploads/fbplh9koxegwvaomuqtt.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485093/portfolio_uploads/dfdyeaumuzxubjdmy5yq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485094/portfolio_uploads/z5t3tmgny2rblwvblbkf.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485096/portfolio_uploads/bfkacg4yrh0g8uceviud.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485098/portfolio_uploads/nc8fa0gdstv8y3vvxxef.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485099/portfolio_uploads/b2f70soatuopv1xjmqsm.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485101/portfolio_uploads/pklyxqnllfwxdoswyefr.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485103/portfolio_uploads/xhupnq0l7nyisjk7i5sk.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485104/portfolio_uploads/voisca2aqc4r74iffnqj.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485106/portfolio_uploads/i5blb5axyaks0q0dmiqj.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485107/portfolio_uploads/rkbqzwasiglrcz7e92sf.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485109/portfolio_uploads/entanbxpq1hocgsu8g2v.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 0,
+    "blocks": [
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485012/portfolio_uploads/t17nthusl5g0obvgv5kl.jpg",
+        "order": 0,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866a7"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485013/portfolio_uploads/s6nkhn4ckbpbtszbbv59.jpg",
+        "order": 1,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866a8"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485014/portfolio_uploads/xw9fusqgby8pagjg5ofw.jpg",
+        "order": 2,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866a9"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485015/portfolio_uploads/km3sjmz2ctbvl15siybb.jpg",
+        "order": 3,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866aa"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485016/portfolio_uploads/wtoymyibithl4eefnqpb.jpg",
+        "order": 4,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ab"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485018/portfolio_uploads/juu4qo3ew7f3pjzbk9ox.jpg",
+        "order": 5,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ac"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485019/portfolio_uploads/am1mkdpm2bg8jdqxaydi.jpg",
+        "order": 6,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ad"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485020/portfolio_uploads/jxy3afof3r4j8v8qe6oa.jpg",
+        "order": 7,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ae"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485021/portfolio_uploads/avjjai1nxuws2llzegof.jpg",
+        "order": 8,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866af"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485023/portfolio_uploads/ndw7k97alz7xtgvcbero.jpg",
+        "order": 9,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b0"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485024/portfolio_uploads/ttcmabsbphxkyxgglk5m.jpg",
+        "order": 10,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b1"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485025/portfolio_uploads/jr8htnhz9eobvf3i6sin.jpg",
+        "order": 11,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b2"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485027/portfolio_uploads/ekr4811jlc3nuz1mjfs1.jpg",
+        "order": 12,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b3"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485028/portfolio_uploads/u7spmrwa9bi5ensh4sks.jpg",
+        "order": 13,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b4"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485029/portfolio_uploads/evovrnulf9olfjslqwon.jpg",
+        "order": 14,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b5"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485031/portfolio_uploads/nsjafsclsjhyogqczrbx.jpg",
+        "order": 15,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b6"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485032/portfolio_uploads/c0cthtntfzwg62p9rrqw.jpg",
+        "order": 16,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b7"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485033/portfolio_uploads/myup6dll0ctnb61xy8dc.jpg",
+        "order": 17,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b8"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485034/portfolio_uploads/se4cetu1eieihld9gvnr.jpg",
+        "order": 18,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866b9"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485035/portfolio_uploads/d02hhm0yb05eyuhwyoi0.jpg",
+        "order": 19,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ba"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485036/portfolio_uploads/dgyzh2qbroptix26625v.jpg",
+        "order": 20,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866bb"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485037/portfolio_uploads/rkncifl2lhpzsly5gnhl.jpg",
+        "order": 21,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866bc"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485039/portfolio_uploads/s5mltlvjizjkshurxxna.jpg",
+        "order": 22,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866bd"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485040/portfolio_uploads/dfoqxcanvno5mqo7rxdq.jpg",
+        "order": 23,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866be"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485041/portfolio_uploads/unwhv6p8wlbeloyd9nyd.jpg",
+        "order": 24,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866bf"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485043/portfolio_uploads/defirc5lzxb7gtza0ce8.jpg",
+        "order": 25,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c0"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485044/portfolio_uploads/tymdtbuhqgueopyiz0ix.jpg",
+        "order": 26,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c1"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485046/portfolio_uploads/pskc58jpv5x8qv83f0w8.jpg",
+        "order": 27,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c2"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485047/portfolio_uploads/yb0tibyr54wgsjkebmbh.jpg",
+        "order": 28,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c3"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485048/portfolio_uploads/nqdampngfruu0jgtekar.jpg",
+        "order": 29,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c4"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485050/portfolio_uploads/ruanr5bbh9c2nbqbtxrd.jpg",
+        "order": 30,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c5"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485051/portfolio_uploads/xmuijedaib0dp7ohaecf.jpg",
+        "order": 31,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c6"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485053/portfolio_uploads/chkdh7sxvzcs4szvdixa.jpg",
+        "order": 32,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c7"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485055/portfolio_uploads/z3wxzpgncgy3yq4fc88n.jpg",
+        "order": 33,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c8"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485056/portfolio_uploads/tax3qhjw7ruq6q449nd4.jpg",
+        "order": 34,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866c9"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485058/portfolio_uploads/tm0dto7woyxqizh9yt94.jpg",
+        "order": 35,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ca"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485059/portfolio_uploads/xit8aokmhbedo9db6t8k.jpg",
+        "order": 36,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866cb"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485061/portfolio_uploads/b7gkypuoithh2pdktq3a.jpg",
+        "order": 37,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866cc"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485062/portfolio_uploads/a6010czp0mozeoszqfk0.jpg",
+        "order": 38,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866cd"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485063/portfolio_uploads/nimcbvftuqafp6itqqej.jpg",
+        "order": 39,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ce"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485065/portfolio_uploads/t5q0ojhixpq8hr2h6ec6.jpg",
+        "order": 40,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866cf"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485066/portfolio_uploads/fzrst7sm9bahmts0wfls.jpg",
+        "order": 41,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d0"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485067/portfolio_uploads/sbpdcbxe13pmqyezhkqz.jpg",
+        "order": 42,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d1"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485069/portfolio_uploads/tdgvwsfmnvsklxi5rbtz.jpg",
+        "order": 43,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d2"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485070/portfolio_uploads/c6nbtj2aaeegeaoskyeq.jpg",
+        "order": 44,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d3"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485072/portfolio_uploads/fwamxr6raw5z8fkmjnhx.jpg",
+        "order": 45,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d4"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485073/portfolio_uploads/d8gsxzleg1jzzhghn78v.jpg",
+        "order": 46,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d5"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485075/portfolio_uploads/jhcm0idlymtugk4bjrog.jpg",
+        "order": 47,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d6"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485076/portfolio_uploads/u6b5axdehpgxwmbfu0et.jpg",
+        "order": 48,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d7"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485078/portfolio_uploads/ty00lyzrzt6etzzpcnz5.jpg",
+        "order": 49,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d8"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485079/portfolio_uploads/g6zszig1jnreiiyqw3ei.jpg",
+        "order": 50,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866d9"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485081/portfolio_uploads/qurqmabc6t7ld1rzav3c.jpg",
+        "order": 51,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866da"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485083/portfolio_uploads/ddygpl1fwidrkywha9s9.jpg",
+        "order": 52,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866db"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485084/portfolio_uploads/jry2psssllqrsllgsdug.jpg",
+        "order": 53,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866dc"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485086/portfolio_uploads/oxewhz87gkflga6jnwxa.jpg",
+        "order": 54,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866dd"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485088/portfolio_uploads/vz2nr4saxaj53lrohwtq.jpg",
+        "order": 55,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866de"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485089/portfolio_uploads/xzfjlk5ju5o1pbxtaiek.jpg",
+        "order": 56,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866df"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485090/portfolio_uploads/qrinyvv5vswgii0brbvw.jpg",
+        "order": 57,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e0"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485092/portfolio_uploads/fbplh9koxegwvaomuqtt.jpg",
+        "order": 58,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e1"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485093/portfolio_uploads/dfdyeaumuzxubjdmy5yq.jpg",
+        "order": 59,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e2"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485094/portfolio_uploads/z5t3tmgny2rblwvblbkf.jpg",
+        "order": 60,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e3"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485096/portfolio_uploads/bfkacg4yrh0g8uceviud.jpg",
+        "order": 61,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e4"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485098/portfolio_uploads/nc8fa0gdstv8y3vvxxef.jpg",
+        "order": 62,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e5"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485099/portfolio_uploads/b2f70soatuopv1xjmqsm.jpg",
+        "order": 63,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e6"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485101/portfolio_uploads/pklyxqnllfwxdoswyefr.jpg",
+        "order": 64,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e7"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485103/portfolio_uploads/xhupnq0l7nyisjk7i5sk.jpg",
+        "order": 65,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e8"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485104/portfolio_uploads/voisca2aqc4r74iffnqj.jpg",
+        "order": 66,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866e9"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485106/portfolio_uploads/i5blb5axyaks0q0dmiqj.jpg",
+        "order": 67,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ea"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485107/portfolio_uploads/rkbqzwasiglrcz7e92sf.jpg",
+        "order": 68,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866eb"
+      },
+      {
+        "type": "image",
+        "content": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485109/portfolio_uploads/entanbxpq1hocgsu8g2v.jpg",
+        "order": 69,
+        "radiusTop": false,
+        "radiusBottom": false,
+        "hasGap": false,
+        "_id": "6a1153277dc9e3313fb866ec"
+      }
+    ],
+    "__v": 1,
+    "createdAt": "2026-05-23T07:11:35.833Z"
+  },
+  {
+    "_id": "6a10cc4d4e20d7dc5177b434",
+    "title": "Plastic Production Company_Brand Guidelines",
+    "categoryIds": [
+      "6a0f75e7b6a9d231c17c7acb"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485114/portfolio_uploads/kjjbszpvysqbvbkigbo1.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485114/portfolio_uploads/kjjbszpvysqbvbkigbo1.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485122/portfolio_uploads/uqv1uf273mpqsjwdscf7.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485127/portfolio_uploads/kxolvqj88hraekzguw1v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485132/portfolio_uploads/whs0bttvvhz1bupiiofa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485135/portfolio_uploads/djctu3psfa9r9ivdwaia.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485139/portfolio_uploads/ol9yfwh0rd0ijtjaurs5.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485142/portfolio_uploads/kecrsvhqh4h4zpcslaez.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485145/portfolio_uploads/qfrm3n80pqqfbzupc7gr.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485148/portfolio_uploads/ytsd5cwlkpic7tuycm1q.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485152/portfolio_uploads/xpsor5wvjakjy2n84oej.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485157/portfolio_uploads/gaacmtuamhq2eogh1b1c.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485161/portfolio_uploads/goythekq99kldtazvmue.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 1,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a10cc7d4e20d7dc5177b443",
+    "title": "Calendar branding",
+    "categoryIds": [
+      "6a0f7602b6a9d231c17c7ad8"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485777/portfolio_uploads/itec3n2iyqrxe8lsv4x5.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485777/portfolio_uploads/itec3n2iyqrxe8lsv4x5.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485779/portfolio_uploads/bpldzzq7sv8ems0bhbai.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485781/portfolio_uploads/gkovbfijrttsdxgh5kib.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485783/portfolio_uploads/hhkdf0pbwsw5roiblynb.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485786/portfolio_uploads/exr8z8bskb1nhwt8vbj9.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485789/portfolio_uploads/tqaips2bzfiteesjejth.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485792/portfolio_uploads/djwehjycfi3igdakrvgd.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485796/portfolio_uploads/ziqeyyelb7h81pdsiaxe.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485800/portfolio_uploads/lpxec20cvvy4sp2qlt9a.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485804/portfolio_uploads/pxzam7x4xrpacvghbxov.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485807/portfolio_uploads/hknl5v9pwghry1edrgyj.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485812/portfolio_uploads/thyqvncltx7pbvx0p3kh.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485816/portfolio_uploads/nuenuymcbyehuvxv116v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485820/portfolio_uploads/obyky2rqfxm7q3naktpe.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 2,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a10cc804e20d7dc5177b445",
+    "title": "light board",
+    "categoryIds": [
+      "6a0f7602b6a9d231c17c7ad8"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485822/portfolio_uploads/pep1bxopggyikf5r717r.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 3,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a10ccc44e20d7dc5177b45b",
+    "title": "dynajet",
+    "categoryIds": [
+      "6a0f7646b6a9d231c17c7ae8"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485871/portfolio_uploads/jzlsovnnfjdpejwcgjtl.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485871/portfolio_uploads/jzlsovnnfjdpejwcgjtl.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485876/portfolio_uploads/vzovua0zhyeex9xhlmny.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485879/portfolio_uploads/josne0say2xxyl5nwpfm.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485884/portfolio_uploads/zmmuvat0bc8po7irlgjp.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485890/portfolio_uploads/b9hserjffnocywtlp880.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 5,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a10ccf94e20d7dc5177b46c",
+    "title": "Hotzone Technologies",
+    "categoryIds": [
+      "6a0f7646b6a9d231c17c7ae8"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485893/portfolio_uploads/hhhnzknhluzn1uqafrb5.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485895/portfolio_uploads/fj6kbdqvcbulcn46hanr.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485898/portfolio_uploads/vndcdxpie88qw86bx04j.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485902/portfolio_uploads/fl1pqrjkv5yjsf4xlfbm.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485904/portfolio_uploads/dol9cfyrypvkl7okbw3z.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485907/portfolio_uploads/zarn4mzg7m9nkvzyvgjd.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485909/portfolio_uploads/ekrbe9jvk5tpvoyzoxm8.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485912/portfolio_uploads/h2parwwhmgl5tpm8hdpx.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485913/portfolio_uploads/hh2f8nk4oebymcgiphv8.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485916/portfolio_uploads/zy6zfebqhibtoxkfc5cl.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485921/portfolio_uploads/oecpg9odcf1bq0fe4xck.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485893/portfolio_uploads/hhhnzknhluzn1uqafrb5.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485926/portfolio_uploads/qs7z7gbh0v3kbs99mhel.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485931/portfolio_uploads/uy2cyqd8gi3kd3pghlqs.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485936/portfolio_uploads/pwcizywf5fkryusyypbz.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485939/portfolio_uploads/owofin1wcmra2ltvfi7e.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485943/portfolio_uploads/xtcyuszbmgeiu6jhkkhv.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 6,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a1194a1cdf9746f591881a3",
+    "title": "Dubai Holding Entertainment",
+    "categoryIds": [
+      "6a0f75e6b6a9d231c17c7aca"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485010/portfolio_uploads/ojelhyumpl5evtmog9af.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485012/portfolio_uploads/t17nthusl5g0obvgv5kl.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485013/portfolio_uploads/s6nkhn4ckbpbtszbbv59.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485014/portfolio_uploads/xw9fusqgby8pagjg5ofw.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485015/portfolio_uploads/km3sjmz2ctbvl15siybb.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485016/portfolio_uploads/wtoymyibithl4eefnqpb.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485018/portfolio_uploads/juu4qo3ew7f3pjzbk9ox.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485019/portfolio_uploads/am1mkdpm2bg8jdqxaydi.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485020/portfolio_uploads/jxy3afof3r4j8v8qe6oa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485021/portfolio_uploads/avjjai1nxuws2llzegof.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485023/portfolio_uploads/ndw7k97alz7xtgvcbero.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485024/portfolio_uploads/ttcmabsbphxkyxgglk5m.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485025/portfolio_uploads/jr8htnhz9eobvf3i6sin.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485027/portfolio_uploads/ekr4811jlc3nuz1mjfs1.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485028/portfolio_uploads/u7spmrwa9bi5ensh4sks.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485029/portfolio_uploads/evovrnulf9olfjslqwon.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485031/portfolio_uploads/nsjafsclsjhyogqczrbx.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485032/portfolio_uploads/c0cthtntfzwg62p9rrqw.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485033/portfolio_uploads/myup6dll0ctnb61xy8dc.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485034/portfolio_uploads/se4cetu1eieihld9gvnr.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485035/portfolio_uploads/d02hhm0yb05eyuhwyoi0.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485036/portfolio_uploads/dgyzh2qbroptix26625v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485037/portfolio_uploads/rkncifl2lhpzsly5gnhl.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485039/portfolio_uploads/s5mltlvjizjkshurxxna.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485040/portfolio_uploads/dfoqxcanvno5mqo7rxdq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485041/portfolio_uploads/unwhv6p8wlbeloyd9nyd.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485043/portfolio_uploads/defirc5lzxb7gtza0ce8.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485044/portfolio_uploads/tymdtbuhqgueopyiz0ix.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485046/portfolio_uploads/pskc58jpv5x8qv83f0w8.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485047/portfolio_uploads/yb0tibyr54wgsjkebmbh.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485048/portfolio_uploads/nqdampngfruu0jgtekar.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485050/portfolio_uploads/ruanr5bbh9c2nbqbtxrd.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485051/portfolio_uploads/xmuijedaib0dp7ohaecf.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485053/portfolio_uploads/chkdh7sxvzcs4szvdixa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485055/portfolio_uploads/z3wxzpgncgy3yq4fc88n.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485056/portfolio_uploads/tax3qhjw7ruq6q449nd4.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485058/portfolio_uploads/tm0dto7woyxqizh9yt94.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485059/portfolio_uploads/xit8aokmhbedo9db6t8k.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485061/portfolio_uploads/b7gkypuoithh2pdktq3a.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485062/portfolio_uploads/a6010czp0mozeoszqfk0.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485063/portfolio_uploads/nimcbvftuqafp6itqqej.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485065/portfolio_uploads/t5q0ojhixpq8hr2h6ec6.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485066/portfolio_uploads/fzrst7sm9bahmts0wfls.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485067/portfolio_uploads/sbpdcbxe13pmqyezhkqz.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485069/portfolio_uploads/tdgvwsfmnvsklxi5rbtz.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485070/portfolio_uploads/c6nbtj2aaeegeaoskyeq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485072/portfolio_uploads/fwamxr6raw5z8fkmjnhx.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485073/portfolio_uploads/d8gsxzleg1jzzhghn78v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485075/portfolio_uploads/jhcm0idlymtugk4bjrog.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485076/portfolio_uploads/u6b5axdehpgxwmbfu0et.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485078/portfolio_uploads/ty00lyzrzt6etzzpcnz5.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485079/portfolio_uploads/g6zszig1jnreiiyqw3ei.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485081/portfolio_uploads/qurqmabc6t7ld1rzav3c.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485083/portfolio_uploads/ddygpl1fwidrkywha9s9.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485084/portfolio_uploads/jry2psssllqrsllgsdug.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485086/portfolio_uploads/oxewhz87gkflga6jnwxa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485088/portfolio_uploads/vz2nr4saxaj53lrohwtq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485089/portfolio_uploads/xzfjlk5ju5o1pbxtaiek.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485090/portfolio_uploads/qrinyvv5vswgii0brbvw.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485092/portfolio_uploads/fbplh9koxegwvaomuqtt.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485093/portfolio_uploads/dfdyeaumuzxubjdmy5yq.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485094/portfolio_uploads/z5t3tmgny2rblwvblbkf.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485096/portfolio_uploads/bfkacg4yrh0g8uceviud.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485098/portfolio_uploads/nc8fa0gdstv8y3vvxxef.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485099/portfolio_uploads/b2f70soatuopv1xjmqsm.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485101/portfolio_uploads/pklyxqnllfwxdoswyefr.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485103/portfolio_uploads/xhupnq0l7nyisjk7i5sk.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485104/portfolio_uploads/voisca2aqc4r74iffnqj.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485106/portfolio_uploads/i5blb5axyaks0q0dmiqj.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485107/portfolio_uploads/rkbqzwasiglrcz7e92sf.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485109/portfolio_uploads/entanbxpq1hocgsu8g2v.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 0,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a1194a4cdf9746f591881a4",
+    "title": "Plastic Production Company_Brand Guidelines",
+    "categoryIds": [
+      "6a0f75e7b6a9d231c17c7acb"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485114/portfolio_uploads/kjjbszpvysqbvbkigbo1.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485114/portfolio_uploads/kjjbszpvysqbvbkigbo1.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485122/portfolio_uploads/uqv1uf273mpqsjwdscf7.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485127/portfolio_uploads/kxolvqj88hraekzguw1v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485132/portfolio_uploads/whs0bttvvhz1bupiiofa.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485135/portfolio_uploads/djctu3psfa9r9ivdwaia.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485139/portfolio_uploads/ol9yfwh0rd0ijtjaurs5.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485142/portfolio_uploads/kecrsvhqh4h4zpcslaez.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485145/portfolio_uploads/qfrm3n80pqqfbzupc7gr.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485148/portfolio_uploads/ytsd5cwlkpic7tuycm1q.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485152/portfolio_uploads/xpsor5wvjakjy2n84oej.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485157/portfolio_uploads/gaacmtuamhq2eogh1b1c.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485161/portfolio_uploads/goythekq99kldtazvmue.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 1,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a1194a7cdf9746f591881a5",
+    "title": "Calendar branding",
+    "categoryIds": [
+      "6a0f7602b6a9d231c17c7ad8"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485777/portfolio_uploads/itec3n2iyqrxe8lsv4x5.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485777/portfolio_uploads/itec3n2iyqrxe8lsv4x5.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485779/portfolio_uploads/bpldzzq7sv8ems0bhbai.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485781/portfolio_uploads/gkovbfijrttsdxgh5kib.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485783/portfolio_uploads/hhkdf0pbwsw5roiblynb.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485786/portfolio_uploads/exr8z8bskb1nhwt8vbj9.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485789/portfolio_uploads/tqaips2bzfiteesjejth.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485792/portfolio_uploads/djwehjycfi3igdakrvgd.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485796/portfolio_uploads/ziqeyyelb7h81pdsiaxe.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485800/portfolio_uploads/lpxec20cvvy4sp2qlt9a.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485804/portfolio_uploads/pxzam7x4xrpacvghbxov.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485807/portfolio_uploads/hknl5v9pwghry1edrgyj.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485812/portfolio_uploads/thyqvncltx7pbvx0p3kh.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485816/portfolio_uploads/nuenuymcbyehuvxv116v.jpg",
+      "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485820/portfolio_uploads/obyky2rqfxm7q3naktpe.jpg"
+    ],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 2,
+    "blocks": [],
+    "__v": 0
+  },
+  {
+    "_id": "6a1194a7cdf9746f591881a6",
+    "title": "light board",
+    "categoryIds": [
+      "6a0f7602b6a9d231c17c7ad8"
+    ],
+    "coverImage": "https://res.cloudinary.com/dqltb8elz/image/upload/v1779485822/portfolio_uploads/pep1bxopggyikf5r717r.jpg",
+    "coverImageZoom": 1,
+    "coverImageX": 50,
+    "coverImageY": 50,
+    "images": [],
+    "cardOverlay": false,
+    "status": "published",
+    "order": 3,
+    "blocks": [],
+    "__v": 0
+  }
+]
