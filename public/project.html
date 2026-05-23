@@ -242,9 +242,9 @@
                     
                     <!-- Mobile Hamburger -->
                     <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50 ml-2">
-                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        <span class="w-6 h-0.5 bg-black transition-all duration-300"></span>
+                        <span class="block w-6 h-0.5 bg-black transition-all duration-300"></span>
+                        <span class="block w-6 h-0.5 bg-black transition-all duration-300"></span>
+                        <span class="block w-6 h-0.5 bg-black transition-all duration-300"></span>
                     </button>
                 </div>
             </div>
@@ -287,6 +287,16 @@
         
         function toggleMenu() {
             mainNav.classList.toggle('active');
+            const spans = hamburger.querySelectorAll('span');
+            if (mainNav.classList.contains('active')) {
+                spans[0].style.transform = 'translateY(7.5px) rotate(45deg)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'translateY(-7.5px) rotate(-45deg)';
+            } else {
+                spans[0].style.transform = '';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = '';
+            }
         }
         if (hamburger) hamburger.addEventListener('click', toggleMenu);
 
