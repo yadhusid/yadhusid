@@ -628,27 +628,35 @@
                     </div>
 
                     <!-- Cover Thumbnail Config -->
-                    <div class="form-group col">
-                        <label>Cover Thumbnail</label>
-                        <div style="display: flex; gap: 1rem; align-items: flex-start; justify-content: space-between; width: 100%;">
-                            <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 120px; aspect-ratio: 3/2.2; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
-                                <div class="btn-close" onclick="removeModalCover(event)" style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 28px; height: 28px; min-width: 28px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
+                    <div class="form-group col" style="align-items: center;">
+                        <h3 style="align-self: flex-start; margin-bottom: 0.5rem; font-size: 1rem; border: none; padding: 0;">Cover Thumbnail</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center; justify-content: center; width: 300px;">
+                            <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 300px; height: 220px; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
+                                <div class="btn-close" onclick="removeModalCover(event)" style="position: absolute; top: 1rem; right: 1rem; z-index: 10;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                                 <img id="modalCoverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
                                 <div class="card-overlay-sim">
                                     <div class="cat" id="modalPreviewCat">CATEGORY</div>
                                     <div class="title" id="modalPreviewTitle">Project Title</div>
                                 </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.8rem; width: 100%; justify-content: center;">
-                                <input type="file" id="modalProjImage" onchange="handleModalCoverUpload(this)" style="display: none;">
-                                <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; border: 1px solid var(--border); background: var(--input-bg); padding: 0.6rem;">
+                            <div style="display: flex; flex-direction: column; gap: 0.8rem; width: 100%;">
+                                <input type="file" id="modalProjImage" accept="image/*" onchange="handleModalCoverUpload(this)" style="display: none;">
+                                <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                                     Upload Cover
                                 </button>
-                                <div style="display: flex; flex: 1; align-items: center; gap: 8px;">
-                                    <span style="font-size: 11px; color: var(--muted);">Zoom:</span>
-                                    <input type="range" id="modalCoverZoomSlider" min="1" max="3" step="0.05" value="1" oninput="updateModalCoverTransform()" style="width: 100%; accent-color: white;">
+                                
+                                <!-- Zoom Slider -->
+                                <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 4px;">
+                                    <label style="font-size: 9px; color: var(--muted); font-weight: 800; text-transform: uppercase;">Zoom Level</label>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="range" id="modalCoverZoomSlider" min="1" max="3" step="0.05" value="1" oninput="updateModalCoverTransform()" style="width: 100%; accent-color: white;">
+                                        <span id="modalCoverZoomVal" style="font-size: 10px; color: var(--muted); min-width: 24px;">1.0x</span>
+                                    </div>
                                 </div>
+                                
+                                <span style="font-size: 10px; color: var(--muted); line-height: 1.4; text-align: center;">Drag the image inside the preview container to reposition it.</span>
                             </div>
                         </div>
                     </div>
