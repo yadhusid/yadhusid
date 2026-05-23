@@ -548,10 +548,18 @@
                                     </div>
                                 </div>
 
-                                <!-- 3. Contact Section -->
+                                <!-- 3. Projects Block -->
+                                <div class="section-card" onclick="selectHomepageSection('projects')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                        <h4 style="margin: 0; font-size: 1rem;">3. Projects Block</h4>
+                                        <span style="font-size: 10px; padding: 2px 8px; background: rgba(255,255,255,0.1); border-radius: 12px;">Text Area</span>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Contact Section -->
                                 <div class="section-card" onclick="selectHomepageSection('contact')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                        <h4 style="margin: 0; font-size: 1rem;">3. Contact</h4>
+                                        <h4 style="margin: 0; font-size: 1rem;">4. Contact</h4>
                                         <span style="font-size: 10px; padding: 2px 8px; background: rgba(255,255,255,0.1); border-radius: 12px;">Footer Area</span>
                                     </div>
                                 </div>
@@ -2506,14 +2514,15 @@
                 }
 
                 contentEl.innerHTML = `
-                    <div class="form-group col" style="margin-top: 1rem;">
+                    <div class="form-group col" style="margin-top: 0.5rem;">
                         <label>Banner Media (Image or Video)</label>
-                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-                            <div id="hero-media-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div id="hero-media-preview-box" style="width: 100%; height: 120px; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;">
                                 ${previewHtml}
+                                ${currentHomepageData.hero?.mediaUrl ? `<div class="btn-close" onclick="removeHeroMedia()" style="position:absolute; top: 8px; right: 8px; width:24px; height:24px; min-width:24px; background: rgba(0,0,0,0.6); z-index: 10;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>` : ''}
                             </div>
                             <input type="file" id="heroMediaUpload" accept="image/*,video/*" onchange="uploadHeroMedia(this)" style="display: none;">
-                            <button class="btn-sm" onclick="document.getElementById('heroMediaUpload').click()" style="background: transparent; border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px;">Upload Media</button>
+                            <button class="btn-sm" onclick="document.getElementById('heroMediaUpload').click()" style="background: transparent; border: 1px solid var(--border); padding: 0.5rem; border-radius: 8px;">Upload Media</button>
                         </div>
                     </div>
                 `;
@@ -2531,15 +2540,32 @@
                 });
 
                 contentEl.innerHTML = `
-                    <p style="font-size: 12px; color: var(--muted); margin-bottom: 1rem;">Add/remove skills displayed in the marquee.</p>
-                    <div class="form-group col">
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                    <p style="font-size: 12px; color: var(--muted); margin-bottom: 0.5rem;">Add/remove skills displayed in the marquee.</p>
+                    <div class="form-group col" style="margin-bottom: 1rem;">
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
                             <input type="text" id="newSkillInput" placeholder="e.g. UX DESIGN" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
                             <button class="btn-primary" onclick="addCoreSkill()" style="padding: 0 1rem; border-radius: 8px;">Add</button>
                         </div>
                         <div id="skillsListEditor" style="display: flex; flex-wrap: wrap; gap: 8px;">
                             ${skillsHtml}
                         </div>
+                    </div>
+                    
+                    <hr style="border: none; border-top: 1px solid var(--border); margin: 1rem 0;">
+
+                    <div class="form-group col" style="margin-bottom: 0.5rem;">
+                        <label>Core Skills Description Paragraph</label>
+                        <textarea id="skillsTextInput" rows="4" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; width: 100%; resize: vertical;">${currentHomepageData.coreSkillsText || ''}</textarea>
+                        <button class="btn-primary" onclick="applySkillsText()" style="width: 100%; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">Apply text</button>
+                    </div>
+                `;
+            } else if (section === 'projects') {
+                titleEl.textContent = 'Projects Section Settings';
+                contentEl.innerHTML = `
+                    <div class="form-group col" style="margin-bottom: 0.5rem;">
+                        <label>Projects Description Paragraph</label>
+                        <textarea id="projectsTextInput" rows="4" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; width: 100%; resize: vertical;">${currentHomepageData.projectsText || ''}</textarea>
+                        <button class="btn-primary" onclick="applyProjectsText()" style="width: 100%; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">Apply text</button>
                     </div>
                 `;
             } else if (section === 'contact') {
@@ -2557,19 +2583,19 @@
                 });
 
                 contentEl.innerHTML = `
-                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                    <div class="form-group col" style="margin-bottom: 0.5rem;">
                         <label>Contact Background Image</label>
-                        <div id="contact-banner-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; position: relative;">
+                        <div id="contact-banner-preview-box" style="width: 100%; aspect-ratio: 4/1; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; position: relative;">
                             ${contact.bannerUrl ? `<img src="${contact.bannerUrl}" style="width: 100%; height: 100%; object-fit: cover;">` : `<span style="font-size: 12px; color: var(--muted);">No banner</span>`}
                             ${contact.bannerUrl ? `<div class="btn-close" onclick="removeContactBanner()" style="position:absolute; top: 8px; right: 8px; width:24px; height:24px; min-width:24px; background: rgba(0,0,0,0.6);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>` : ''}
                         </div>
                         <input type="file" id="contactBannerUpload" accept="image/*" onchange="uploadContactBanner(this)" style="display: none;">
-                        <button class="btn-sm" onclick="document.getElementById('contactBannerUpload').click()" style="background: transparent; border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px; width: 100%;">Upload Background</button>
+                        <button class="btn-sm" onclick="document.getElementById('contactBannerUpload').click()" style="background: transparent; border: 1px solid var(--border); padding: 0.5rem; border-radius: 8px; width: 100%;">Upload Background</button>
                     </div>
                     
-                    <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
+                    <hr style="border: none; border-top: 1px solid var(--border); margin: 0.5rem 0;">
 
-                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                    <div class="form-group col" style="margin-bottom: 0.5rem;">
                         <label>Phone Numbers</label>
                         <div id="contactPhonesList">${phonesHtml}</div>
                         <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
@@ -2577,25 +2603,42 @@
                             <button class="btn-sm" onclick="addContactPhone()" style="padding: 0 1rem; border: 1px solid var(--border); background: transparent; border-radius: 8px;">Add</button>
                         </div>
                     </div>
-                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                    <div class="form-group col" style="margin-bottom: 0.5rem;">
                         <label>Email Address</label>
                         <input type="email" id="contactEmailInput" value="${contact.email || ''}" placeholder="e.g. hello@example.com" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
                     </div>
-                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                    <div class="form-group col" style="margin-bottom: 0.5rem;">
                         <label>Behance URL</label>
                         <input type="url" id="contactBehanceInput" value="${contact.behance || ''}" placeholder="https://behance.net/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
                     </div>
-                    <div class="form-group col" style="margin-bottom: 1.5rem;">
+                    <div class="form-group col" style="margin-bottom: 0.5rem;">
                         <label>LinkedIn URL</label>
                         <input type="url" id="contactLinkedinInput" value="${contact.linkedin || ''}" placeholder="https://linkedin.com/in/..." style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff;">
                     </div>
                     
-                    <button class="btn-primary" onclick="applyContactChanges()" style="width: 100%; padding: 1rem; border-radius: 8px; margin-top: 1rem;">Apply Contact Info</button>
+                    <button class="btn-primary" onclick="applyContactChanges()" style="width: 100%; padding: 0.8rem; border-radius: 8px; margin-top: 0.5rem;">Apply Contact Info</button>
                 `;
             }
         }
 
-        // --- Contact Field Handlers ---
+        // --- Field Handlers ---
+        function applyProjectsText() {
+            currentHomepageData.projectsText = document.getElementById('projectsTextInput').value;
+            showToast('Projects text applied locally');
+        }
+        function applySkillsText() {
+            currentHomepageData.coreSkillsText = document.getElementById('skillsTextInput').value;
+            showToast('Core Skills text applied locally');
+        }
+        function removeHeroMedia() {
+            if (currentHomepageData.hero) {
+                currentHomepageData.hero.mediaUrl = null;
+                currentHomepageData.hero.mediaPublicId = null;
+                currentHomepageData.hero.mediaType = null;
+                if (activeHomepageSection === 'hero') selectHomepageSection('hero');
+            }
+        }
+        
         function applyContactChanges() {
             if (!currentHomepageData.contact) currentHomepageData.contact = { phones: [], email: '', behance: '', linkedin: '' };
             currentHomepageData.contact.email = document.getElementById('contactEmailInput').value;

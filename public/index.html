@@ -698,7 +698,7 @@
             <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,28px)">
                 Core Skills
             </h2>
-            <p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)">
+            <p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)" id="core-skills-desc">
                 Senior Graphic Designer with 9+ years of experience in branding, creative direction, UI/UX, and AI-integrated design workflows. Proven track record of improving campaign performance, increasing engagement, and reducing production costs through CRO-driven strategies and AI-powered creative execution.
             </p>
             <div id="core-skills-container" class="flex flex-wrap" style="gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(32px,4vw,64px)">
@@ -722,7 +722,7 @@
         <div>
             <div style="margin-bottom:clamp(28px,4.2vw,80px)">
                 <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,20px)">Projects</h2>
-                <p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)" id="projects-draft-text">
+                <p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)" id="projects-desc">
                     This is a secondary paragraph that describes my approach to various projects, from concept to final execution. Each project is a unique blend of strategy and creativity.
                 </p>
                 
@@ -885,6 +885,15 @@
                 }
 
                 // Core Skills
+                if (data.coreSkillsText) {
+                    const el = document.getElementById('core-skills-desc');
+                    if (el) el.innerHTML = data.coreSkillsText.replace(/\n/g, '<br>');
+                }
+                if (data.projectsText) {
+                    const el = document.getElementById('projects-desc');
+                    if (el) el.innerHTML = data.projectsText.replace(/\n/g, '<br>');
+                }
+
                 if (data.coreSkills && Array.isArray(data.coreSkills)) {
                     const skillsContainer = document.getElementById('core-skills-container');
                     if (skillsContainer && data.coreSkills.length > 0) {
