@@ -579,15 +579,15 @@
 
                 <!-- Block Builder Modal / Editor -->
                 <div class="page" id="page-block-editor" style="max-width: 100%; height: calc(100vh - 12rem);">
-                    <div style="display: grid; grid-template-columns: 6fr 4fr; gap: 2rem; height: 100%;">
+                    <div style="display: grid; grid-template-columns: 4fr 6fr; gap: 2rem; height: 100%;">
                         <!-- Left Window: Block Wireframe List -->
-                        <div class="live-preview-window" style="height: 100%; border-radius: 24px; overflow-y: auto; background: var(--card-bg); border: 1px solid var(--border); position: relative; padding: 2rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                                <h3 style="margin: 0; font-size: 1.25rem;">Project Wireframe</h3>
-                                <div style="display: flex; gap: 1rem;">
-                                    <button class="btn-sm" id="websitePreviewBtn" onclick="openWebsitePreview()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border); padding: 0.8rem 1.5rem; text-decoration: none; color: white;">
-                                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 16px; height: 16px; display: inline; margin-right: 6px; vertical-align: text-bottom;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                                        Website Preview
+                        <div class="live-preview-window" style="height: 100%; border-radius: 24px; overflow-y: auto; background: var(--card-bg); border: 1px solid var(--border); position: relative; padding: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <h3 style="margin: 0; font-size: 1.1rem;">Project Wireframe</h3>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button class="btn-sm" id="websitePreviewBtn" onclick="openWebsitePreview()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border); padding: 0.6rem 1rem; text-decoration: none; color: white;">
+                                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 14px; height: 14px; display: inline; margin-right: 4px; vertical-align: text-bottom;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                        Preview
                                     </button>
                                     <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.8rem 1.5rem;" onclick="saveProjectModal('draft')">Save Draft</button>
                                     <button class="btn-primary" style="padding: 0.8rem 1.5rem;" onclick="saveProjectModal('published')">Publish</button>
@@ -595,16 +595,8 @@
                             </div>
 
                             <div style="font-family: 'Inter', sans-serif; color: #fff;">
-                                <div id="livePreviewBlocks" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                                <div id="livePreviewBlocks" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem;">
                                     <!-- Blocks injected here instantly by JS as wireframes -->
-                                </div>
-                                
-                                <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; gap: 0.5rem;">
-                                    <button class="btn-sm" onclick="addBlock('text')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Text</button>
-                                    <button class="btn-sm" onclick="addBlock('image')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Image</button>
-                                    <button class="btn-sm" onclick="addBlock('video')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Video</button>
-                                    <button class="btn-sm" onclick="addBlock('spacing')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Spacer</button>
-                                    <button class="btn-sm" onclick="addBlock('divider')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Line</button>
                                 </div>
                             </div>
                         </div>
@@ -617,28 +609,29 @@
                             </div>
 
                             <!-- Top Section: Metadata & Cover -->
-                            <div class="inputs-col" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+                            <div class="inputs-col" style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem;">
                                 <div class="form-group col">
                                     <label>Edit Title</label>
-                                    <input type="text" id="modalProjTitleEdit" oninput="updateModalPreviewText()">
+                                    <input type="text" id="modalProjTitleEdit" oninput="updateModalPreviewText()" style="padding: 0.6rem;">
                                 </div>
                     
                     <div class="form-group col">
                         <label>Category</label>
                         <div class="custom-dropdown">
-                            <div class="custom-dropdown-selected" onclick="toggleModalCustomDropdown()">
+                            <div class="custom-dropdown-selected" onclick="toggleModalCustomDropdown()" style="padding: 0.6rem;">
                                 <span id="modalDropdownSelectedText">Select Categories...</span>
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </div>
                             <div class="custom-dropdown-options" id="modalDropdownOptions"></div>
                         </div>
-                        <div id="modalSelectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;"></div>
+                        <div id="modalSelectedCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;"></div>
                     </div>
 
                     <!-- Cover Thumbnail Config -->
                     <div class="form-group col">
-                        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; justify-content: center; width: 100%;">
-                            <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 100%; height: auto; aspect-ratio: 3/2.2; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
+                        <label>Cover Thumbnail</label>
+                        <div style="display: flex; gap: 1rem; align-items: flex-start; justify-content: space-between; width: 100%;">
+                            <div class="homepage-card-preview" id="modalCoverPreviewContainer" onmousedown="startModalCoverDrag(event)" style="flex-shrink: 0; margin: 0; position: relative; overflow: hidden; width: 120px; aspect-ratio: 3/2.2; border-radius: var(--radius-outer); border: 1px solid var(--border); cursor: grab; user-select: none;">
                                 <div class="btn-close" onclick="removeModalCover(event)" style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 28px; height: 28px; min-width: 28px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>
                                 <img id="modalCoverPreviewImg" class="preview-img" src="" style="display:none; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
                                 <div class="card-overlay-sim">
@@ -646,24 +639,33 @@
                                     <div class="title" id="modalPreviewTitle">Project Title</div>
                                 </div>
                             </div>
-                            <div style="display: flex; gap: 1rem; width: 100%; align-items: center;">
+                            <div style="display: flex; flex-direction: column; gap: 0.8rem; width: 100%; justify-content: center;">
                                 <input type="file" id="modalProjImage" onchange="handleModalCoverUpload(this)" style="display: none;">
-                                <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; border: 1px solid var(--border); background: var(--input-bg);">
+                                <button class="btn-sm" onclick="document.getElementById('modalProjImage').click()" style="display: flex; align-items: center; gap: 8px; justify-content: center; border: 1px solid var(--border); background: var(--input-bg); padding: 0.6rem;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                                     Upload Cover
                                 </button>
                                 <div style="display: flex; flex: 1; align-items: center; gap: 8px;">
+                                    <span style="font-size: 11px; color: var(--muted);">Zoom:</span>
                                     <input type="range" id="modalCoverZoomSlider" min="1" max="3" step="0.05" value="1" oninput="updateModalCoverTransform()" style="width: 100%; accent-color: white;">
-                                    <span id="modalCoverZoomVal" style="font-size: 10px; color: var(--muted); min-width: 24px;">1.0x</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <hr style="border: none; height: 1px; background: var(--border); margin: 2rem 0;">
+                <div style="border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;">
+                    <div style="font-size: 12px; color: var(--muted); font-weight: bold; text-transform: uppercase;">Add Content Blocks</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        <input type="file" id="modalAddMedia" accept="image/*,video/*" multiple onchange="addMediaBlocks(this)" style="display: none;">
+                        <button class="btn-sm" onclick="document.getElementById('modalAddMedia').click()" style="background: var(--input-bg); border: 1px solid var(--border); padding: 0.6rem 1rem; display: flex; align-items: center; gap: 6px;"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Upload Content</button>
+                        <button class="btn-sm" onclick="addBlock('text')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Text</button>
+                        <button class="btn-sm" onclick="addBlock('spacing')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Space</button>
+                        <button class="btn-sm" onclick="addBlock('divider')" style="background: transparent; border: 1px solid var(--border); padding: 0.6rem 1rem;">+ Line</button>
+                    </div>
+                </div>
 
-                <div id="blockInspector" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+                <div id="blockInspector" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
                     <!-- Dynamic Inspector Content -->
                 </div>
 
@@ -1446,6 +1448,11 @@
             
             const sortedBlocks = [...(modalCurrentProject.blocks || [])].sort((a,b) => a.order - b.order);
             
+            let imgCount = 1;
+            let vidCount = 1;
+            let textCount = 1;
+            let gifCount = 1;
+            
             container.innerHTML = sortedBlocks.map(b => {
                 let content = '';
                 const isSelected = modalSelectedBlockId === (b._id || b.id);
@@ -1453,49 +1460,41 @@
 
                 let wireframePreview = '';
                 if (b.type === 'text') {
-                    // Extract a tiny snippet of text for preview without parsing raw HTML directly
                     const snippet = b.content ? b.content.replace(/<[^>]+>/g, '').substring(0, 60) + '...' : 'Empty Text Block';
                     wireframePreview = `
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></div>
-                            <div style="flex: 1;">
-                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">Text Block</h4>
-                                <p style="margin: 0; font-size: 12px; color: var(--muted);">${snippet}</p>
-                            </div>
+                        <div style="padding: 1.5rem; background: var(--input-bg); border-radius: 8px;">
+                            <h4 style="margin: 0 0 8px 0; font-size: 12px; color: var(--muted); text-transform: uppercase;">Text ${textCount++}</h4>
+                            <p style="margin: 0; font-size: 14px; color: #fff;">${snippet}</p>
                         </div>`;
                 } else if (b.type === 'image' || b.type === 'video') {
                     const blockContent = b.content || b.url || '';
                     const hasMedia = !!blockContent;
+                    const isGif = blockContent.toLowerCase().endsWith('.gif');
+                    const label = b.type === 'video' ? `Video ${vidCount++}` : (isGif ? `GIF ${gifCount++}` : `Image ${imgCount++}`);
+                    const filename = blockContent.split('/').pop() || '';
+                    
                     wireframePreview = `
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 60px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.1); overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                                ${hasMedia ? (b.type === 'video' ? `<video src="${blockContent}" style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${blockContent}" style="width:100%;height:100%;object-fit:cover;">`) : `<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`}
+                        <div style="background: var(--input-bg); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;">
+                            <div style="padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="margin: 0; font-size: 12px; font-weight: bold;">${label}</h4>
+                                <span style="font-size: 10px; color: var(--muted); max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${filename}">${filename}</span>
                             </div>
-                            <div style="flex: 1;">
-                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">${b.type === 'video' ? 'Video' : 'Image'} Block</h4>
-                                <p style="margin: 0; font-size: 12px; color: var(--muted);">${hasMedia ? 'Media uploaded' : 'No media selected'}</p>
+                            <div style="width: 100%; display: flex; align-items: center; justify-content: center; background: #000; position: relative;">
+                                ${hasMedia ? (b.type === 'video' ? `<video src="${blockContent}" style="width:100%; height:auto; display:block; object-fit:contain; max-height:300px;"></video>` : `<img src="${blockContent}" style="width:100%; height:auto; display:block; object-fit:contain; max-height:300px;">`) : `<div style="padding: 3rem; color: var(--muted);">No media</div>`}
                             </div>
                         </div>`;
                 } else if (b.type === 'spacing') {
                     wireframePreview = `
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg></div>
-                            <div style="flex: 1;">
-                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">Spacer</h4>
-                            </div>
-                        </div>`;
+                        <div style="height: 40px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.15);"></div>`;
                 } else if (b.type === 'divider') {
                     wireframePreview = `
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"></path></svg></div>
-                            <div style="flex: 1;">
-                                <h4 style="margin: 0 0 4px 0; font-size: 14px;">Divider Line</h4>
-                            </div>
+                        <div style="padding: 1rem 0; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 100%; height: 3px; background: rgba(255,255,255,0.6); border-radius: 2px;"></div>
                         </div>`;
                 }
 
                 content = `
-                    <div onclick="selectBlock('${b._id || b.id}')" style="cursor: pointer; width: 100%; border-radius: 12px; border: 1px solid transparent; padding: 1rem 1.5rem; transition: border-color 0.2s; ${highlightStyle}">
+                    <div draggable="true" ondragstart="handleBlockDragStart(event, '${b._id || b.id}')" ondragend="handleBlockDragEnd(event)" ondragover="handleBlockDragOver(event)" ondragleave="handleBlockDragLeave(event)" ondrop="handleBlockDrop(event, '${b._id || b.id}')" onclick="selectBlock('${b._id || b.id}')" style="cursor: grab; width: 100%; border-radius: 12px; border: 2px solid transparent; padding: 0.5rem; transition: border-color 0.2s; ${highlightStyle}">
                         ${wireframePreview}
                     </div>
                 `;
@@ -1503,9 +1502,50 @@
             }).join('');
         }
 
+        let draggedBlockId = null;
+        function handleBlockDragStart(e, id) {
+            draggedBlockId = id;
+            e.dataTransfer.effectAllowed = 'move';
+            e.target.style.opacity = '0.5';
+        }
+        function handleBlockDragEnd(e) {
+            e.target.style.opacity = '1';
+        }
+        function handleBlockDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.style.borderColor = 'var(--primary)';
+        }
+        function handleBlockDragLeave(e) {
+            e.currentTarget.style.borderColor = 'transparent';
+        }
+        async function handleBlockDrop(e, targetId) {
+            e.preventDefault();
+            e.currentTarget.style.borderColor = 'transparent';
+            if (!draggedBlockId || draggedBlockId === targetId) return;
+
+            const blocks = [...(modalCurrentProject.blocks || [])].sort((a,b) => a.order - b.order);
+            const draggedIdx = blocks.findIndex(b => (b._id || b.id) === draggedBlockId);
+            const targetIdx = blocks.findIndex(b => (b._id || b.id) === targetId);
+
+            if (draggedIdx > -1 && targetIdx > -1) {
+                const [draggedItem] = blocks.splice(draggedIdx, 1);
+                blocks.splice(targetIdx, 0, draggedItem);
+                
+                blocks.forEach((b, i) => b.order = i);
+                modalCurrentProject.blocks = blocks;
+                renderLivePreview();
+
+                await fetch('/api/projects/' + currentProjectId + '/blocks-bulk', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ blocks: modalCurrentProject.blocks })
+                });
+            }
+        }
+
         function openWebsitePreview() {
-            if (modalCurrentProject && modalCurrentProject.slug) {
-                window.open('/projects/' + modalCurrentProject.slug, '_blank');
+            if (modalCurrentProject && (modalCurrentProject.id || modalCurrentProject._id)) {
+                window.open('/project.html?id=' + (modalCurrentProject.id || modalCurrentProject._id), '_blank');
             } else {
                 showToast('Save project first to preview', true);
             }
@@ -1850,30 +1890,84 @@
                 fd.append('content', 'New Text Block');
             }
             
-            await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
+            const req = await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
+            const newBlock = await req.json();
             
             // force fresh fetch
             const res = await fetch('/api/projects/' + currentProjectId);
             modalCurrentProject = await res.json();
+            
+            if (modalSelectedBlockId) {
+                let blocks = [...(modalCurrentProject.blocks || [])].sort((a,b) => a.order - b.order);
+                const selectedIdx = blocks.findIndex(b => (b._id || b.id) === modalSelectedBlockId);
+                const newBlockIdx = blocks.findIndex(b => (b._id || b.id) === (newBlock._id || newBlock.id));
+                
+                if (selectedIdx !== -1 && newBlockIdx !== -1) {
+                    const [draggedItem] = blocks.splice(newBlockIdx, 1);
+                    blocks.splice(selectedIdx + 1, 0, draggedItem);
+                    blocks.forEach((b, i) => b.order = i);
+                    
+                    modalCurrentProject.blocks = blocks;
+                    await fetch('/api/projects/' + currentProjectId + '/blocks-bulk', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ blocks: modalCurrentProject.blocks })
+                    });
+                }
+            }
+            
             loadBlocks();
+            selectBlock(newBlock._id || newBlock.id);
         }
         
         async function addMediaBlocks(input) {
             const files = Array.from(input.files);
             if (!files.length) return;
             
+            showToast('Uploading ' + files.length + ' file(s)...');
+            let addedBlocks = [];
             for (let f of files) {
                 const fd = new FormData();
-                fd.append('type', 'image');
+                const type = f.type.startsWith('video/') ? 'video' : 'image';
+                fd.append('type', type);
                 fd.append('image', f);
-                await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
+                const req = await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
+                addedBlocks.push(await req.json());
             }
             input.value = '';
             
             // force fresh fetch
             const res = await fetch('/api/projects/' + currentProjectId);
             modalCurrentProject = await res.json();
+            
+            if (modalSelectedBlockId && addedBlocks.length > 0) {
+                let blocks = [...(modalCurrentProject.blocks || [])].sort((a,b) => a.order - b.order);
+                const selectedIdx = blocks.findIndex(b => (b._id || b.id) === modalSelectedBlockId);
+                
+                if (selectedIdx !== -1) {
+                    // Pull all added blocks out of their appended position
+                    const newlyAddedIds = addedBlocks.map(b => b._id || b.id);
+                    const pulledBlocks = blocks.filter(b => newlyAddedIds.includes(b._id || b.id));
+                    blocks = blocks.filter(b => !newlyAddedIds.includes(b._id || b.id));
+                    
+                    // Insert them right after the selected index
+                    const insertIdx = blocks.findIndex(b => (b._id || b.id) === modalSelectedBlockId) + 1;
+                    blocks.splice(insertIdx, 0, ...pulledBlocks);
+                    
+                    blocks.forEach((b, i) => b.order = i);
+                    modalCurrentProject.blocks = blocks;
+                    
+                    await fetch('/api/projects/' + currentProjectId + '/blocks-bulk', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ blocks: modalCurrentProject.blocks })
+                    });
+                }
+            }
+            
             loadBlocks();
+            showToast('Upload complete!');
+            if (addedBlocks.length > 0) selectBlock(addedBlocks[addedBlocks.length - 1]._id || addedBlocks[addedBlocks.length - 1].id);
         }
 
         async function deleteBlock(bid) {
