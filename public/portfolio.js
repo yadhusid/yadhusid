@@ -17,11 +17,9 @@ async function fetchCoreSkills() {
         const res = await fetch('/api/homepage/skills?t=' + Date.now());
         const fetchedSkills = await res.json();
         const newString = JSON.stringify(fetchedSkills);
-        if (newString !== cachedString) {
-            coreSkills = fetchedSkills;
-            sessionStorage.setItem('cachedSkills', newString);
-            renderCoreSkills();
-        }
+        coreSkills = fetchedSkills;
+        sessionStorage.setItem('cachedSkills', newString);
+        renderCoreSkills(); // Force render to override stale HTML
     } catch (err) {
         console.error('Error fetching core skills:', err);
     }
@@ -50,11 +48,9 @@ async function fetchCategories() {
         const res = await fetch('/api/categories?t=' + Date.now());
         const fetchedCats = await res.json();
         const newString = JSON.stringify(fetchedCats);
-        if (newString !== cachedString) {
-            allCategories = fetchedCats;
-            sessionStorage.setItem('cachedCats', newString);
-            renderCategories();
-        }
+        allCategories = fetchedCats;
+        sessionStorage.setItem('cachedCats', newString);
+        renderCategories(); // Force render
     } catch (err) {
         console.error('Error fetching categories:', err);
     }
@@ -71,11 +67,9 @@ async function fetchProjects() {
         const fetchedProjects = await res.json();
         const newString = JSON.stringify(fetchedProjects);
         
-        if (newString !== cachedString) {
-            allProjects = fetchedProjects;
-            sessionStorage.setItem('cachedProjects', newString);
-            renderProjects();
-        }
+        allProjects = fetchedProjects;
+        sessionStorage.setItem('cachedProjects', newString);
+        renderProjects(); // Force render
     } catch (err) {
         console.error('Error fetching projects:', err);
     }

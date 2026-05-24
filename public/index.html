@@ -657,21 +657,20 @@
             </div>
             
             <!-- Left-Aligned Content Group: Heading + CTA Buttons -->
-            <div class="relative z-10 w-full flex flex-col items-start text-left hero-content-pad my-auto">
-                <p class="text-white text-lg md:text-[22px] font-light tracking-wide mb-2 md:mb-6 opacity-90 text-left">
+            <div class="relative z-10 w-full flex flex-col items-center md:items-start text-center md:text-left hero-content-pad my-auto">
+                <p class="text-white text-lg md:text-[22px] font-light tracking-wide mb-2 md:mb-6 opacity-90 text-center md:text-left">
                     Yadhu Sidharthan
                 </p>
-                <!-- Single Line Fluid Heading with Auto-Arrange (Left Aligned - High Impact Scaling) -->
-                <h1 class="text-white font-bold leading-[1.0] tracking-[-0.04em] mb-8 md:mb-12 text-left text-[clamp(80px,10vw,120px)] py-4 md:py-2 max-w-5xl">
-                    Creative Graphics Designer
+                <h1 class="text-white font-bold leading-[1.0] tracking-[-0.04em] mb-8 md:mb-12 text-center md:text-left text-[clamp(48px,14vw,120px)] py-4 md:py-2 max-w-[320px] md:max-w-5xl mx-auto md:mx-0">
+                    Creative<br class="md:hidden"> Graphics<br class="md:hidden"> Designer
                 </h1>
 
                 <!-- Buttons Group Left-Aligned -->
-                <div class="flex flex-wrap items-center justify-start gap-4 md:gap-6">
-                    <a href="#projects" class="bg-white text-black px-8 py-4 rounded-full text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95">
+                <div class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 md:gap-6 w-full md:w-auto px-4 md:px-0 mx-auto md:mx-0 max-w-[300px] md:max-w-none">
+                    <a href="#projects" class="bg-white text-black px-8 py-4 rounded-full text-[17px] md:text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95 w-full md:w-auto text-center">
                         View My Work
                     </a>
-                    <a href="#contact" class="bg-[#111] text-white px-8 py-4 rounded-full text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95">
+                    <a href="#contact" class="bg-[#111] text-white px-8 py-4 rounded-full text-[17px] md:text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95 w-full md:w-auto text-center">
                         Let's Talk
                     </a>
                 </div>
@@ -811,6 +810,19 @@
                 padding-left: calc(var(--global-padding-mobile) - var(--hero-outer-padding)) !important;
                 padding-right: calc(var(--global-padding-mobile) - var(--hero-outer-padding)) !important;
             }
+            /* Floating pill navbar on mobile */
+            header.navbar-global:not(.scrolled) {
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%);
+                width: calc(100% - 32px); /* Give it a little margin from the screen edges */
+                max-width: 380px; /* Keep it compact like the reference */
+                padding: var(--nav-inset) 0 0 0 !important;
+            }
+            header.navbar-global:not(.scrolled) .nav-main-row {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
         }
     </style>
 
@@ -918,7 +930,8 @@
                     if (contactContainer) {
                         let html = '';
                         // Phones
-                        (data.contact.phones || []).forEach(phone => {
+                        const phones = (data.contact.phones && data.contact.phones.length > 0) ? data.contact.phones : ['+971 523325687'];
+                        phones.forEach(phone => {
                             html += `
                                 <a href="tel:${phone.replace(/\s+/g, '')}" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
@@ -927,32 +940,33 @@
                             `;
                         });
                         // Email
-                        if (data.contact.email) {
+                        const emailAddress = data.contact.email || 'yadhusid@gmail.com';
+                        if (emailAddress) {
                             html += `
-                                <a href="mailto:${data.contact.email}" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full lowercase transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
+                                <a href="mailto:${emailAddress}" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full lowercase transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                    ${data.contact.email}
+                                    ${emailAddress}
                                 </a>
                             `;
                         }
                         // Behance
-                        if (data.contact.behance) {
+                        const behanceUrl = data.contact.behance || 'https://www.behance.net/yadhusid';
+                        if (behanceUrl) {
                             html += `
-                                <a href="${data.contact.behance}" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
+                                <a href="${behanceUrl}" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.546-1.436-2.352-2.461-2.352-1.036 0-2.227.831-2.504 2.352zm-5.97-4.227c0-2.486-1.528-4.364-4.667-4.364h-5.403v15.18h5.343c3.125 0 4.939-1.929 4.939-4.705 0-1.765-.895-3.056-2.468-3.513 1.157-.492 2.256-1.603 2.256-2.598zm-7.07-2.128h2.09c1.077 0 1.93.36 1.93 1.636 0 1.393-.896 1.637-1.815 1.637h-2.205v-3.273zm0 9.248v-3.791h2.298c1.334 0 2.193.383 2.193 1.83 0 1.547-1 1.961-2.193 1.961h-2.298z"/></svg>
                                     Live Behance Portfolio
                                 </a>
                             `;
                         }
                         // LinkedIn
-                        if (data.contact.linkedin) {
-                            html += `
-                                <a href="${data.contact.linkedin}" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                                    LinkedIn Profile
-                                </a>
-                            `;
-                        }
+                        const linkedinUrl = data.contact.linkedin || 'https://www.linkedin.com/in/yadhu-sidharthan-b54862a4/';
+                        html += `
+                            <a href="${linkedinUrl}" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                LinkedIn Profile
+                            </a>
+                        `;
                         if (html !== '') contactContainer.innerHTML = html;
                     }
                 }

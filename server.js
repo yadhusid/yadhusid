@@ -875,9 +875,8 @@ app.get(['/', '/index.html'], async (req, res) => {
         let cmsData = {};
         if (record) {
             cmsData = record.data || {};
-            if (!cmsData.coreSkills && record.coreSkills) cmsData.coreSkills = record.coreSkills;
-            // Migration fallback: if data is empty but html exists, we can't easily parse it on server, 
-            // but the new system relies on structured data.
+            // Always use the top-level coreSkills from MongoDB to ensure syncing with the Overview page
+            cmsData.coreSkills = record.coreSkills || ["UI/UX", "PRINT", "CREATIVE DIRECTION"];
         }
         
         const scriptInjection = `<script>window.CMS_DATA = ${JSON.stringify(cmsData)};</script>`;
@@ -1057,6 +1056,40 @@ app.post('/api/projects/:id/blocks-bulk', requireAuth, async (req, res) => {
         res.json(project.blocks);
     } catch(err) {
         res.status(500).json({ error: 'Could not bulk create blocks' });
+    }
+});
+
+// Bulk Update Blocks (overwrite array)
+app.put('/api/projects/:id/blocks-bulk', requireAuth, async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id);
+        if (!project) return res.status(404).json({ error: 'Project not found' });
+        
+        const { blocks } = req.body;
+        if (Array.isArray(blocks)) {
+            const updatedBlocks = [];
+            blocks.forEach(b => {
+                const existing = project.blocks.id(b._id || b.id);
+                if (existing) {
+                    existing.type = b.type || existing.type;
+                    existing.content = b.content !== undefined ? b.content : existing.content;
+                    existing.order = b.order !== undefined ? b.order : existing.order;
+                    updatedBlocks.push(existing);
+                } else {
+                    updatedBlocks.push({
+                        type: b.type,
+                        content: b.content,
+                        order: b.order
+                    });
+                }
+            });
+            project.blocks = updatedBlocks;
+            await project.save();
+        }
+        res.json({ success: true, blocks: project.blocks });
+    } catch(err) {
+        console.error('Error in blocks-bulk:', err);
+        res.status(500).json({ error: 'Could not update blocks bulk' });
     }
 });
 
