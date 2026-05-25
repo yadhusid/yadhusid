@@ -694,13 +694,13 @@
     <!-- Core Skills Section -->
     <section id="expertise" class="w-full global-padding" style="margin-top:clamp(32px,3.9vw,80px);scroll-margin-top: var(--scroll-offset);">
         <div>
-            <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,28px)">
+            <h2 class="scroll-letter-target text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,28px)">
                 Core Skills
             </h2>
             <p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)" id="core-skills-desc">
                 Senior Graphic Designer with 9+ years of experience in branding, creative direction, UI/UX, and AI-integrated design workflows. Proven track record of improving campaign performance, increasing engagement, and reducing production costs through CRO-driven strategies and AI-powered creative execution.
             </p>
-            <div id="core-skills-container" class="flex flex-wrap" style="gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(32px,4vw,64px)">
+            <div id="core-skills-container" class="pills-wrapper flex flex-wrap" style="gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(32px,4vw,64px)">
                 <span class="bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
                     <div class="w-1.5 h-1.5 bg-current rounded-full flex-shrink-0"></div> UI/UX
                 </span>
@@ -720,12 +720,12 @@
     <section id="projects" class="pt-0 bg-white w-full global-padding" style="scroll-margin-top: var(--scroll-offset);">
         <div>
             <div style="margin-bottom:clamp(28px,4.2vw,80px)">
-                <h2 class="text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,20px)">Projects</h2>
+                <h2 class="scroll-letter-target text-[clamp(40px,5vw,60px)] font-bold tracking-tight" style="margin-bottom:clamp(12px,1.4vw,20px)">Projects</h2>
                 <p class="text-[clamp(13px,1vw,15px)] text-[#444] leading-[1.6] max-w-5xl font-light" style="margin-bottom:clamp(16px,1.8vw,36px)" id="projects-desc">
                     This is a secondary paragraph that describes my approach to various projects, from concept to final execution. Each project is a unique blend of strategy and creativity.
                 </p>
                 
-                <div class="flex flex-wrap" style="gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(32px,4vw,64px)" id="project-categories">
+                <div class="pills-wrapper flex flex-wrap" style="gap:clamp(8px,0.8vw,14px);margin-bottom:clamp(32px,4vw,64px)" id="project-categories">
                     <button class="bg-black text-white rounded-full font-bold uppercase tracking-widest transition-all" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);">All Works</button>
                 </div>
                 
@@ -824,7 +824,89 @@
                 padding-right: 20px !important;
             }
         }
+
+        /* =========================================================
+           Homepage Scroll Animations
+           Applies only to public homepage, not CMS/admin pages
+        ========================================================= */
+
+        /* Wrapper for Core Skills pills and Project filter buttons */
+        .pills-wrapper {
+          overflow: hidden;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          padding: 6px 0;
+        }
+
+        /* Each animated pill should move as a complete component */
+        .pill-btn {
+          will-change: transform, opacity;
+        }
+
+        /* Scroll-driven heading letter animation */
+        .scroll-letter-heading {
+          display: block;
+          overflow: visible;
+          line-height: 1.25;
+        }
+
+        .scroll-letter-heading .linev3 {
+          position: relative;
+          display: block;
+          overflow: hidden;
+          text-align: inherit;
+          line-height: 1.25;
+        }
+
+        .scroll-letter-heading .letters-wrap {
+          position: relative;
+          display: inline-block;
+          white-space: nowrap;
+        }
+
+        .scroll-letter-heading .letter {
+          position: relative;
+          display: inline-block;
+          vertical-align: top;
+          line-height: 1.25;
+          height: 1.25em;
+          will-change: transform;
+        }
+
+        .scroll-letter-heading .letter span {
+          display: block;
+          line-height: 1.25;
+          height: 1.25em;
+        }
+
+        .scroll-letter-heading .letter span:first-child {
+          transform: translateY(0);
+        }
+
+        .scroll-letter-heading .letter span:last-child {
+          transform: translateY(0);
+        }
+
+        /* Preserve spaces correctly */
+        .scroll-letter-heading .letter.space {
+          width: 0.28em;
+        }
+
+        /* Accessibility: reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+          .scroll-letter-heading .letter,
+          .pill-btn {
+            transform: none !important;
+            opacity: 1 !important;
+            animation: none !important;
+          }
+        }
     </style>
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
     <!-- Scripts -->
     <script src="script.js"></script>
@@ -866,6 +948,7 @@
 
             // Specific hero animation
             animate("#hero-banner-container", { scale: [0.95, 1], opacity: [0, 1] }, { duration: 1.2, easing: "ease-out" });
+
         } else {
             // Immediately reveal for stable editing
             document.querySelectorAll('section').forEach(sec => {
@@ -879,6 +962,147 @@
             }
         }
         
+        // --- Premium GSAP Animations ---
+        (function () {
+          const isEditMode = window.location.href.includes('edit=true');
+          if (isEditMode) return;
+
+          if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+            console.warn("GSAP or ScrollTrigger is not loaded. Homepage scroll animations skipped.");
+            return;
+          }
+
+          gsap.registerPlugin(ScrollTrigger);
+
+          function buildScrollLetterHeading(selector) {
+            const headings = document.querySelectorAll(selector);
+
+            headings.forEach((heading) => {
+              if (heading.dataset.scrollLettersReady === "true") return;
+
+              const originalText = heading.textContent.trim();
+              if (!originalText) return;
+
+              heading.setAttribute("aria-label", originalText);
+              heading.classList.add("scroll-letter-heading");
+
+              const line = document.createElement("span");
+              line.className = "linev3";
+
+              const wrap = document.createElement("span");
+              wrap.className = "letters-wrap";
+
+              [...originalText].forEach((char) => {
+                const letter = document.createElement("span");
+                letter.className = char === " " ? "letter space" : "letter";
+
+                if (char === " ") {
+                  letter.innerHTML = `<span>&nbsp;</span><span>&nbsp;</span>`;
+                } else {
+                  letter.innerHTML = `<span>${char}</span><span>${char}</span>`;
+                }
+
+                wrap.appendChild(letter);
+              });
+
+              line.appendChild(wrap);
+              heading.innerHTML = "";
+              heading.appendChild(line);
+
+              heading.dataset.scrollLettersReady = "true";
+            });
+          }
+
+          function initScrollLetterAnimation() {
+            buildScrollLetterHeading(".scroll-letter-target");
+
+            document.querySelectorAll(".scroll-letter-target").forEach((heading) => {
+              const letters = heading.querySelectorAll(".letter");
+              if (!letters.length) return;
+
+              letters.forEach((letter, index) => {
+                const isEven = index % 2 === 0;
+                gsap.fromTo(
+                  letter,
+                  { yPercent: isEven ? 0 : -100 },
+                  {
+                    yPercent: isEven ? -100 : 0,
+                    ease: "none",
+                    scrollTrigger: {
+                      trigger: heading,
+                      start: "top 95%",
+                      end: "top 20%",
+                      scrub: 1,
+                      invalidateOnRefresh: true
+                    }
+                  }
+                );
+              });
+            });
+
+            ScrollTrigger.refresh();
+          }
+
+          function initPillReveal(wrapper) {
+            if (wrapper.dataset.gsapInit) return;
+            const buttons = wrapper.querySelectorAll(".pill-btn");
+            if (!buttons.length) return;
+            wrapper.dataset.gsapInit = "true";
+
+            gsap.fromTo(
+              buttons,
+              {
+                y: 50,
+                opacity: 0
+              },
+              {
+                y: 0,
+                opacity: 1,
+                ease: "power2.out",
+                stagger: 0.08,
+                duration: 0.6,
+                scrollTrigger: {
+                  trigger: wrapper,
+                  start: "top 90%",
+                  toggleActions: "play none none reverse"
+                }
+              }
+            );
+          }
+
+          function initHomepageScrollAnimations() {
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reduceMotion) return;
+
+            initScrollLetterAnimation();
+
+            document.querySelectorAll(".pills-wrapper").forEach(wrapper => initPillReveal(wrapper));
+
+            const observer = new MutationObserver((mutations) => {
+              mutations.forEach((m) => {
+                if (m.addedNodes.length > 0) {
+                  if (m.target.classList.contains("pills-wrapper")) {
+                    initPillReveal(m.target);
+                    ScrollTrigger.refresh();
+                  }
+                }
+              });
+            });
+
+            document.querySelectorAll(".pills-wrapper").forEach(wrapper => {
+              observer.observe(wrapper, { childList: true });
+            });
+
+            ScrollTrigger.refresh();
+          }
+
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initHomepageScrollAnimations);
+          } else {
+            initHomepageScrollAnimations();
+          }
+        })();
+
         // Hydrate from CMS_DATA (Structured Content)
         document.addEventListener('DOMContentLoaded', () => {
             if (window.CMS_DATA) {

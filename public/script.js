@@ -109,7 +109,7 @@ if (typeof window !== 'undefined') {
         const header = document.querySelector('header');
         if (!header) return;
 
-        const SCROLL_THRESHOLD = 100; // ~2 scroll actions
+        const SCROLL_THRESHOLD = 20; // ~1st scroll action
 
         function updateNavbarState() {
             if (window.scrollY > SCROLL_THRESHOLD) {

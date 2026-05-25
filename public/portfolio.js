@@ -31,7 +31,7 @@ function renderCoreSkills(skills = coreSkills) {
 
     let html = '';
     skills.forEach(skill => {
-        html += `<span class="bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
+        html += `<span class="pill-btn bg-[#F2F2F2] rounded-full font-bold uppercase flex items-center gap-2 text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);letter-spacing:0.08em">
                     <div class="w-1.5 h-1.5 bg-current rounded-full flex-shrink-0"></div> ${skill}
                 </span>`;
     });
@@ -80,10 +80,10 @@ function renderCategories() {
     if (!filterContainer) return;
 
     // Keep "All Works" button (selected by default)
-    let html = `<button class="bg-black border border-black text-white rounded-full font-bold uppercase tracking-widest transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);" onclick="filterProjects('all', this)">All Works</button>`;
+    let html = `<button class="pill-btn bg-black border border-black text-white rounded-full font-bold uppercase tracking-widest transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);" onclick="filterProjects('all', this)">All Works</button>`;
     
     allCategories.forEach(cat => {
-        html += `<button class="bg-transparent border border-[#111] rounded-full font-bold uppercase tracking-widest text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);" onclick="filterProjects('${cat.id}', this)">${cat.name}</button>`;
+        html += `<button class="pill-btn bg-transparent border border-[#111] rounded-full font-bold uppercase tracking-widest text-[#111] transition-colors hover:bg-black hover:text-white" style="padding:clamp(8px,0.7vw,10px) clamp(14px,1.5vw,20px);font-size:clamp(10px,0.7vw,11px);" onclick="filterProjects('${cat.id}', this)">${cat.name}</button>`;
     });
 
     filterContainer.innerHTML = html;
