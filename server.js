@@ -532,6 +532,16 @@ app.post('/api/projects', requireAuth, projectFields, async (req, res) => {
         const coverFile = req.files && req.files.coverImage ? req.files.coverImage[0].path : null;
         const galleryFiles = req.files && req.files.galleryImages ? req.files.galleryImages.map(f => f.path) : [];
 
+        const initialBlocks = galleryFiles.map((path, i) => ({
+            id: 'block_' + Date.now() + '_' + i,
+            type: 'image',
+            content: path,
+            order: i,
+            hasGap: false,
+            radiusTop: false,
+            radiusBottom: false
+        }));
+
         const project = new Project({
             title,
             description: description || '',
@@ -544,7 +554,7 @@ app.post('/api/projects', requireAuth, projectFields, async (req, res) => {
             cardBanner: '',
             cardOverlay: cardOverlay === 'true',
             status: status || 'draft',
-            blocks: []
+            blocks: initialBlocks
         });
         await project.save();
         res.json(project);

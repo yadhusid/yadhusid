@@ -237,6 +237,55 @@
         .compact-list .item-row {
             margin-bottom: 0 !important;
         }
+
+        /* Toggle Switch CSS */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 8px;
+            width: 8px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: var(--accent2);
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--accent2);
+        }
+        input:checked + .slider:before {
+            transform: translateX(8px);
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
     </style>
 
 </head>
@@ -2711,15 +2760,34 @@
                     <div class="form-group col" style="margin-top: 0.5rem;">
                         <label>Banner Media (Image or Video)</label>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%;">
-                            <div>
-                                <div id="hero-media-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 0.5rem;">
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div id="hero-media-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;">
                                     ${previewHtml}
                                     ${currentHomepageData.hero?.mediaUrl ? `<div class="btn-close" onclick="removeHeroMedia()" style="position:absolute; top: 8px; right: 8px; width:24px; height:24px; min-width:24px; background: rgba(0,0,0,0.6); z-index: 10;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></div>` : ''}
                                 </div>
                                 <input type="file" id="heroMediaUpload" accept="image/*,video/*" onchange="uploadHeroMedia(this)" style="display: none;">
                                 <button class="btn-sm" onclick="document.getElementById('heroMediaUpload').click()" style="background: transparent; border: 1px solid var(--border); padding: 0.5rem; border-radius: 8px; width: 100%;">Upload Media</button>
+                                
+                                <div style="display: flex; flex-direction: column; padding: 1rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; gap: 1rem;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <div style="font-weight:600; font-size:0.9rem;">Text Shadow</div>
+                                            <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Apply a drop shadow to the hero texts for better contrast.</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="heroTextShadowToggle" ${currentHomepageData.hero?.textShadow ? 'checked' : ''} onchange="applyHeroTextShadow()">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <span style="font-size: 0.8rem; color: var(--muted); min-width: 40px;">Depth</span>
+                                        <input type="range" id="heroTextShadowSlider" min="0" max="100" value="${currentHomepageData.hero?.textShadowDepth !== undefined ? currentHomepageData.hero.textShadowDepth : 50}" oninput="applyHeroTextShadow()" style="flex: 1; accent-color: var(--accent2);">
+                                    </div>
+                                </div>
                             </div>
-                            <div></div>
+                            <div>
+                                <!-- Reserved for future right column content -->
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2881,6 +2949,27 @@
             }
         }
 
+        function applyHeroTextShadow() {
+            const checkbox = document.getElementById('heroTextShadowToggle');
+            const slider = document.getElementById('heroTextShadowSlider');
+            if (!checkbox || !slider) return;
+
+            if (!currentHomepageData.hero) currentHomepageData.hero = {};
+            currentHomepageData.hero.textShadow = checkbox.checked;
+            currentHomepageData.hero.textShadowDepth = parseInt(slider.value, 10);
+            
+            // Send live preview update to iframe
+            const iframe = document.getElementById('visual-iframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    source: 'cms-dashboard',
+                    action: 'update-hero-shadow',
+                    enabled: checkbox.checked,
+                    depth: parseInt(slider.value, 10)
+                }, '*');
+            }
+        }
+
         async function uploadHeroMedia(input) {
             if (!input.files || input.files.length === 0) return;
             const file = input.files[0];
@@ -2935,11 +3024,13 @@
                 });
                 if (res.ok) {
                     showToast('Homepage published successfully!');
-                    document.getElementById('homepage-preview-iframe').src = '/index.html?t=' + Date.now();
+                    const iframe = document.getElementById('homepage-preview-iframe') || document.getElementById('visual-iframe');
+                    if (iframe) iframe.src = '/index.html?t=' + Date.now();
                 } else {
                     showToast('Failed to publish', true);
                 }
             } catch (err) {
+                console.error("Save homepage error:", err);
                 showToast('Error publishing', true);
             }
         }

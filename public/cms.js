@@ -128,6 +128,21 @@ class VisualCMS {
                     }
                 }
                 
+                if (action === 'update-hero-shadow') {
+                    const heroContainer = document.getElementById('hero-banner-container');
+                    if (heroContainer) {
+                        this.saveState();
+                        if (e.data.enabled) {
+                            heroContainer.classList.add('hero-text-shadow-enabled');
+                            const depth = e.data.depth !== undefined ? e.data.depth : 50;
+                            heroContainer.style.setProperty('--shadow-size', (4 + (depth/100)*28) + 'px');
+                            heroContainer.style.setProperty('--shadow-alpha', (0.2 + (depth/100)*0.7));
+                        } else {
+                            heroContainer.classList.remove('hero-text-shadow-enabled');
+                        }
+                    }
+                }
+                
                 if (action === 'insert-element') {
                     const targetEl = el || this.selectedElement;
                     if (!targetEl) {
