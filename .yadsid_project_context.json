@@ -7,7 +7,7 @@
     "backend": "Node.js (Express)",
     "database": "MongoDB Atlas",
     "media": "Cloudinary",
-    "deployment": "Render.com"
+    "deployment": "Google Cloud Run"
   },
   "design_system": {
     "fonts": {

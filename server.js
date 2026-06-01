@@ -406,6 +406,26 @@ app.post('/api/categories', requireAuth, async (req, res) => {
     }
 });
 
+app.put('/api/categories/reorder', requireAuth, async (req, res) => {
+    try {
+        const { categoryIds } = req.body;
+        if (!Array.isArray(categoryIds)) return res.status(400).json({ error: 'Invalid categoryIds array' });
+        
+        const bulkOps = categoryIds.map((id, index) => ({
+            updateOne: {
+                filter: { _id: id },
+                update: { order: index }
+            }
+        }));
+        
+        await Category.bulkWrite(bulkOps);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Category Reorder Error:', err);
+        res.status(500).json({ error: 'Could not reorder categories' });
+    }
+});
+
 app.put('/api/categories/:id', requireAuth, async (req, res) => {
     try {
         const { name } = req.body;
@@ -424,26 +444,6 @@ app.delete('/api/categories/:id', requireAuth, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: 'Could not delete category' });
-    }
-});
-
-app.put('/api/categories/reorder', requireAuth, async (req, res) => {
-    try {
-        const { categoryIds } = req.body;
-        if (!Array.isArray(categoryIds)) return res.status(400).json({ error: 'Invalid categoryIds array' });
-        
-        const bulkOps = categoryIds.map((id, index) => ({
-            updateOne: {
-                filter: { _id: id },
-                update: { order: index }
-            }
-        }));
-        
-        await Category.bulkWrite(bulkOps);
-        res.json({ success: true });
-    } catch (err) {
-        console.error('Category Reorder Error:', err);
-        res.status(500).json({ error: 'Could not reorder categories' });
     }
 });
 
