@@ -291,11 +291,14 @@
         /* Mobile UI/UX Responsive Rules */
         @media (max-width: 768px) {
             body {
-                flex-direction: column-reverse !important;
+                flex-direction: column !important;
                 height: 100vh !important;
                 overflow: hidden !important;
             }
             .sidebar-rail {
+                position: fixed !important;
+                top: 56px !important;
+                left: 0 !important;
                 width: 100% !important;
                 height: 60px !important;
                 flex-direction: row !important;
@@ -303,8 +306,13 @@
                 align-items: center !important;
                 padding: 0 !important;
                 border-right: none !important;
-                border-top: 1px solid var(--border) !important;
+                border-bottom: 1px solid var(--border) !important;
+                border-top: none !important;
                 margin-top: 0 !important;
+                background: rgba(10, 10, 10, 0.85) !important;
+                backdrop-filter: blur(12px) !important;
+                -webkit-backdrop-filter: blur(12px) !important;
+                z-index: 1000 !important;
             }
             .rail-item {
                 margin-bottom: 0 !important;
@@ -316,18 +324,28 @@
                 margin-top: 0 !important;
             }
             .workspace-main {
-                height: calc(100vh - 60px) !important;
+                height: 100vh !important;
                 width: 100% !important;
             }
             .top-bar {
-                padding: 0 1rem !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
                 height: 56px !important;
+                padding: 0 1rem !important;
+                background: rgba(10, 10, 10, 0.85) !important;
+                backdrop-filter: blur(12px) !important;
+                -webkit-backdrop-filter: blur(12px) !important;
+                border-bottom: 1px solid var(--border) !important;
+                z-index: 1000 !important;
             }
             .top-bar .title {
                 font-size: 0.75rem !important;
             }
             .management-view {
                 padding: 1rem !important;
+                padding-top: 130px !important;
             }
             .page {
                 padding-bottom: 2rem !important;
