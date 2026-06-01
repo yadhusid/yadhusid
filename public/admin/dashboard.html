@@ -399,25 +399,25 @@
             }
             
             /* Recovery Email and flex row buttons styling */
-            .form-group div[style*="display:flex; gap:1rem"],
-            .form-group div[style*="display: flex; gap: 1rem"] {
+            .flex-row-mobile-stack {
                 flex-direction: column !important;
                 gap: 0.5rem !important;
                 width: 100% !important;
             }
-            .form-group div[style*="display:flex; gap:1rem"] button,
-            .form-group div[style*="display: flex; gap: 1rem"] button {
+            .flex-row-mobile-stack button,
+            .flex-row-mobile-stack input {
                 width: 100% !important;
+                flex: none !important;
             }
 
             /* Slider (range input) container responsiveness */
-            div[style*="display: flex; align-items: center; gap: 1rem;"] {
+            .slider-container {
                 width: 100% !important;
                 max-width: 100% !important;
                 flex-wrap: wrap !important;
                 gap: 0.5rem !important;
             }
-            input[type="range"] {
+            .slider-container input[type="range"] {
                 width: 100% !important;
                 min-width: 0 !important;
                 flex: 1 !important;
@@ -681,8 +681,8 @@
                         <h3>Security & Recovery Settings</h3>
                         <div class="form-group" style="margin-bottom:1.5rem;">
                             <label>Recovery Email ID</label>
-                            <div style="display:flex; gap:1rem;">
-                                <input type="password" id="settingsRecoveryEmail" placeholder="e.g. name@domain.com">
+                            <div class="flex-row-mobile-stack" style="display:flex; gap:1rem; width: 100%;">
+                                <input type="text" id="settingsRecoveryEmail" placeholder="e.g. name@domain.com">
                                 <button class="btn-primary" onclick="updateRecoveryEmail()" style="flex-shrink:0;">Save Email</button>
                             </div>
                             <span style="font-size:0.75rem; color:var(--muted); display:block; margin-top:0.5rem;">All verification tokens (OTPs) and password reset instructions will be sent here.</span>
@@ -2921,7 +2921,7 @@
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
-                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div class="slider-container" style="display: flex; align-items: center; gap: 1rem;">
                                         <span style="font-size: 0.8rem; color: var(--muted); min-width: 40px;">Depth</span>
                                         <input type="range" id="heroTextShadowSlider" min="0" max="100" value="${currentHomepageData.hero?.textShadowDepth !== undefined ? currentHomepageData.hero.textShadowDepth : 50}" oninput="applyHeroTextShadow()" style="flex: 1; accent-color: var(--accent2);">
                                     </div>
