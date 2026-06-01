@@ -393,7 +393,7 @@
                 min-width: unset !important;
                 width: 100% !important;
             }
-            .form-group input, .form-group select, .form-group textarea, .form-group .custom-dropdown {
+            .form-group input:not([type="checkbox"]):not([type="radio"]), .form-group select, .form-group textarea, .form-group .custom-dropdown {
                 width: 100% !important;
                 flex: none !important;
             }
@@ -2914,7 +2914,6 @@
                                     <div style="display: flex; align-items: center; justify-content: space-between;">
                                         <div style="display: flex; flex-direction: column;">
                                             <div style="font-weight:600; font-size:0.9rem;">Text Shadow</div>
-                                            <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Apply a drop shadow to the hero texts for better contrast.</div>
                                         </div>
                                         <label class="toggle-switch">
                                             <input type="checkbox" id="heroTextShadowToggle" ${currentHomepageData.hero?.textShadow ? 'checked' : ''} onchange="applyHeroTextShadow()">
