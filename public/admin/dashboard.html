@@ -286,6 +286,123 @@
         .slider.round:before {
             border-radius: 50%;
         }
+
+        /* Mobile UI/UX Responsive Rules */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column-reverse !important;
+                height: 100vh !important;
+                overflow: hidden !important;
+            }
+            .sidebar-rail {
+                width: 100% !important;
+                height: 60px !important;
+                flex-direction: row !important;
+                justify-content: space-around !important;
+                align-items: center !important;
+                padding: 0 !important;
+                border-right: none !important;
+                border-top: 1px solid var(--border) !important;
+                margin-top: 0 !important;
+            }
+            .rail-item {
+                margin-bottom: 0 !important;
+                margin-top: 0 !important;
+                width: 44px !important;
+                height: 44px !important;
+            }
+            .rail-item[style*="margin-top:auto"], .rail-item[style*="margin-top: auto"] {
+                margin-top: 0 !important;
+            }
+            .workspace-main {
+                height: calc(100vh - 60px) !important;
+                width: 100% !important;
+            }
+            .top-bar {
+                padding: 0 1rem !important;
+                height: 56px !important;
+            }
+            .top-bar .title {
+                font-size: 0.75rem !important;
+            }
+            .management-view {
+                padding: 1rem !important;
+            }
+            .page {
+                padding-bottom: 2rem !important;
+            }
+            
+            /* Responsive Grid override for inline 1fr 1fr grids */
+            div[style*="grid-template-columns: 1fr 1fr"],
+            div[style*="grid-template-columns: 1fr 1.5fr"],
+            div[style*="grid-template-columns: 1.5fr 1fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            /* Stacking visual editor sections */
+            div[style*="grid-template-columns: 3fr 7fr"],
+            div[style*="grid-template-columns: 7fr 3fr"] {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto 1fr !important;
+                gap: 1rem !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            #page-editor, #page-block-editor {
+                height: auto !important;
+                overflow-y: auto !important;
+            }
+            .live-preview-window {
+                height: 400px !important;
+                max-height: 400px !important;
+            }
+            
+            /* Core Skills / Category Lists styling on mobile */
+            .item-row {
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+                padding: 0.5rem 0.8rem !important;
+            }
+            
+            /* Stats responsive override */
+            .stats-grid {
+                grid-template-columns: 1fr !important;
+                gap: 0.8rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            .stat-card {
+                padding: 1.2rem !important;
+            }
+            .stat-num {
+                font-size: 1.8rem !important;
+            }
+            
+            /* Form inputs & cards */
+            .form-card {
+                padding: 1.25rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            .form-group {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.4rem !important;
+            }
+            .form-group label {
+                min-width: unset !important;
+                width: 100% !important;
+            }
+            .form-group input, .form-group select, .form-group textarea, .form-group .custom-dropdown {
+                width: 100% !important;
+                flex: none !important;
+            }
+            
+            /* Dialog Modal responsive */
+            .modal {
+                padding: 1.5rem !important;
+            }
+        }
     </style>
 
 </head>
