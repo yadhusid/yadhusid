@@ -277,10 +277,50 @@
         }
 
         .reeded-gradient {
-            background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%);
+            background: linear-gradient(135deg, #000000 0%, #1a0a2a 50%, #0a1c12 100%) !important;
             position: relative;
         }
-                .glass-overlay { 
+        #hero-banner-container.gradient-disabled {
+            background-color: #ffffff !important;
+            background-image: none !important;
+            border: 1px solid #e5e5e5 !important;
+        }
+        #hero-banner-container.gradient-disabled h1, 
+        #hero-banner-container.gradient-disabled h2, 
+        #hero-banner-container.gradient-disabled p, 
+        #hero-banner-container.gradient-disabled .text-white, 
+        #hero-banner-container.gradient-disabled .text-white\/90 {
+            color: #111111 !important;
+        }
+        /* Hero CTA Buttons adaptation when gradient is disabled */
+        #hero-banner-container.gradient-disabled a[href="#contact"].bg-\[\#111\] {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+        }
+        #hero-banner-container.gradient-disabled a[href="#projects"].bg-white {
+            background-color: #f5f5f5 !important;
+            border: 1px solid #e5e5e5 !important;
+            color: #111111 !important;
+        }
+        /* Scroll arrow adaptation */
+        #hero-banner-container.gradient-disabled .scroll-arrow {
+            background-color: #111111 !important;
+        }
+        #hero-banner-container.gradient-disabled .scroll-arrow svg {
+            stroke: #ffffff !important;
+        }
+        /* Hide media layer when gradient is active (i.e. container does not have .gradient-disabled) */
+        #hero-banner-container:not(.gradient-disabled) #hero-media-layer,
+        #contact-banner-container:not(.gradient-disabled) #contact-media-layer {
+            display: none !important;
+        }
+        /* Transparent container & overflow hidden clipping when gradient is active to prevent black corners leak */
+        #hero-banner-container:not(.gradient-disabled),
+        #contact-banner-container:not(.gradient-disabled) {
+            background: transparent !important;
+            overflow: hidden !important;
+        }
+        .glass-overlay { 
             position: absolute; 
             inset: 0; 
             z-index: 2; 
@@ -297,7 +337,7 @@
             );
             background-color: rgba(255, 100, 100, 0.1); 
         }
- .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%); } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
+ .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #000000 0%, #1a0a2a 50%, #0a1c12 100%) !important; } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
             content: '';
             position: absolute;
             inset: 0;
@@ -454,7 +494,17 @@
                         max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: top, left, right, padding, transform, width, max-width;
         }
-        .glass-nav{display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;border-width:1px;border-color:rgb(255 255 255 / 0.2);background-color:rgb(255 255 255 / 0.8);--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+        .glass-nav {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: hidden;
+            border-width: 1px;
+            border-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             height: 50px;
             border-radius: 50px !important;
             transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -558,10 +608,10 @@
         }
 
         .reeded-gradient {
-            background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%);
+            background: linear-gradient(135deg, #000000 0%, #1a0a2a 50%, #0a1c12 100%) !important;
             position: relative;
         }
-                .glass-overlay { 
+        .glass-overlay { 
             position: absolute; 
             inset: 0; 
             z-index: 2; 
@@ -578,7 +628,7 @@
             );
             background-color: rgba(255, 100, 100, 0.1); 
         }
- .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #FFB347 0%, #FF416C 50%, #8A2387 100%); } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
+ .media-layer { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; } .reeded-gradient { position: relative; isolation: isolate; background: linear-gradient(135deg, #000000 0%, #1a0a2a 50%, #0a1c12 100%) !important; } .reeded-gradient > *:not(.media-layer):not(.glass-overlay) { position: relative; z-index: 10; } /* Removed old */ .old-ignore {
             content: '';
             position: absolute;
             inset: 0;
@@ -669,7 +719,7 @@
                         <a href="#home" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a>
                         <a href="#expertise" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a>
                         <a href="#projects" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a>
-                        <a href="#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 bg-[#111] text-white hover:bg-[#FF416C] hover:-translate-y-[2px] active:scale-95 shadow-sm hover:shadow-lg">Let's Talk</a>
+                        <a href="#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:brightness-110 hover:-translate-y-[2px] active:scale-95 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_4px_15px_rgba(255,65,108,0.4)]">Let's Talk</a>
                     </div>
                     
                     <!-- Mobile Hamburger -->
@@ -687,7 +737,7 @@
                 <a href="#home" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Home</a>
                 <a href="#expertise" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Core Skills</a>
                 <a href="#projects" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Projects</a>
-                <a href="#contact" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Let's Talk</a>
+                <a href="#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-6 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:brightness-110 active:scale-95 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_4px_15px_rgba(255,65,108,0.4)] mt-2" onclick="toggleMenu()">Let's Talk</a>
             </div>
         </nav>
     </header>
@@ -711,10 +761,10 @@
 
                 <!-- Buttons Group Left-Aligned -->
                 <div class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 md:gap-6 w-full md:w-auto px-4 md:px-0 mx-auto md:mx-0 max-w-[300px] md:max-w-none">
-                    <a href="#projects" class="bg-white text-black px-8 py-4 rounded-full text-[17px] md:text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95 w-full md:w-auto text-center">
+                    <a href="#projects" class="bg-white/30 hover:bg-white/45 backdrop-blur-md border border-white/40 text-white px-8 py-4 rounded-full text-[17px] md:text-base font-bold shadow-2xl nav-scroll transition-all duration-200 hover:-translate-y-[2px] active:scale-95 w-full md:w-auto text-center">
                         View My Work
                     </a>
-                    <a href="#contact" class="bg-[#111] text-white px-8 py-4 rounded-full text-[17px] md:text-base font-bold shadow-xl nav-scroll transition-transform duration-200 hover:-translate-y-[2px] active:scale-95 w-full md:w-auto text-center">
+                    <a href="#contact" class="bg-white/10 hover:bg-white/25 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full text-[17px] md:text-base font-bold shadow-2xl nav-scroll transition-all duration-200 hover:-translate-y-[2px] active:scale-95 w-full md:w-auto text-center">
                         Let's Talk
                     </a>
                 </div>
@@ -725,8 +775,8 @@
                 <div class="flex items-center justify-between relative hero-content-pad">
                     <!-- Center: Scroll Indicator -->
                     <div class="absolute left-1/2 z-10" style="transform: translateX(-50%);">
-                        <a href="#expertise" class="scroll-arrow bg-white rounded-full cursor-pointer shadow-sm nav-scroll flex items-center justify-center animate-bounce transition-transform hover:bg-gray-50" style="padding:clamp(6px,1vw,8px);">
-                            <svg style="width:clamp(12px,1.3vw,18px);height:clamp(12px,1.3vw,18px)" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
+                        <a href="#expertise" class="scroll-arrow bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/70 shadow-[inset_0_0_10px_rgba(255,255,255,0.8),0_4px_15px_rgba(255,255,255,0.15)] rounded-full cursor-pointer nav-scroll flex items-center justify-center animate-bounce transition-all duration-300 hover:-translate-y-[2px]" style="padding:clamp(6px,1vw,8px);">
+                            <svg style="width:clamp(12px,1.3vw,18px);height:clamp(12px,1.3vw,18px)" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
                         </a>
                     </div>
 
@@ -811,20 +861,20 @@
             <!-- Right Column: Contact & Social Links -->
             <div class="relative z-10 w-full md:w-full lg:w-1/2 mt-6 md:mt-10 lg:mt-0 flex flex-col lg:items-end justify-center">
                 <div class="flex flex-col gap-2.5 w-full md:max-w-[320px]" id="contact-links-container">
-                    <a href="tel:+971523325687" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
+                    <a href="tel:+971523325687" class="bg-white/15 hover:bg-white/25 backdrop-blur-xl border border-white/60 text-white shadow-[inset_0_1px_4px_rgba(255,255,255,0.8),0_4px_15px_rgba(0,0,0,0.2)] px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         +971 523325687
                     </a>
-                    <a href="mailto:yadhusid@gmail.com" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full lowercase transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
+                    <a href="mailto:yadhusid@gmail.com" class="bg-white/15 hover:bg-white/25 backdrop-blur-xl border border-white/60 text-white shadow-[inset_0_1px_4px_rgba(255,255,255,0.8),0_4px_15px_rgba(0,0,0,0.2)] px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full lowercase transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         yadhusid@gmail.com
                     </a>
-                    <a href="https://www.behance.net/yadhusid" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.546-1.436-2.352-2.461-2.352-1.036 0-2.227.831-2.504 2.352zm-5.97-4.227c0-2.486-1.528-4.364-4.667-4.364h-5.403v15.18h5.343c3.125 0 4.939-1.929 4.939-4.705 0-1.765-.895-3.056-2.468-3.513 1.157-.492 2.256-1.603 2.256-2.598zm-7.07-2.128h2.09c1.077 0 1.93.36 1.93 1.636 0 1.393-.896 1.637-1.815 1.637h-2.205v-3.273zm0 9.248v-3.791h2.298c1.334 0 2.193.383 2.193 1.83 0 1.547-1 1.961-2.193 1.961h-2.298z"/></svg>
+                    <a href="https://www.behance.net/yadhusid" target="_blank" rel="noopener noreferrer" class="bg-white/15 hover:bg-white/25 backdrop-blur-xl border border-white/60 text-white shadow-[inset_0_1px_4px_rgba(255,255,255,0.8),0_4px_15px_rgba(0,0,0,0.2)] px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
+                        <svg width="14" height="14" viewBox="0 0 576 512" fill="currentColor"><path d="M232 237.2c31.8-15.2 48.4-38.2 48.4-74 0-70.6-52.6-87.8-113.3-87.8H0v354.4h171.8c64.4 0 124.9-30.9 124.9-102.9 0-44.5-21.1-77.4-64.7-89.7zM86.4 142.9h70.8c35.4 0 58.1 13.6 58.1 43.9 0 34.5-26.2 47.7-63.9 47.7H86.4v-91.6zm0 219.8v-100.7h77.7c42 0 68.9 17.5 68.9 51.4 0 37.8-29.8 49.3-72.9 49.3H86.4zm354.9-35.6c-40.8 0-58.1-15.2-61.1-50.7h119.3c-2.9-55.5-26.1-99.3-82.6-99.3-57.8 0-88.4 47.2-88.4 104.3 0 58.9 29.6 109.2 100.5 109.2 46 0 78.2-20.5 89.2-56.6l-58.2-16.7c-5.8 11.2-16.7 15.3-30.7 15.3zM454 207c21.6 0 31.8 13.3 34.2 34h-66.5c2.3-20.6 11.6-34 32.3-34zm-64-118.4h149.3v30.7H390v-30.7z"/></svg>
                         Live Behance Portfolio
                     </a>
-                    <a href="https://www.linkedin.com/in/yadhu-sidharthan-b54862a4/" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <a href="https://www.linkedin.com/in/yadhu-sidharthan-b54862a4/" target="_blank" rel="noopener noreferrer" class="bg-white/15 hover:bg-white/25 backdrop-blur-xl border border-white/60 text-white shadow-[inset_0_1px_4px_rgba(255,255,255,0.8),0_4px_15px_rgba(0,0,0,0.2)] px-5 py-3 rounded-full text-[13px] font-semibold flex items-center gap-3 w-full transition-all duration-300 hover:-translate-y-[2px] active:scale-95">
+                        <svg width="14" height="14" viewBox="0 0 448 512" fill="currentColor"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>
                         LinkedIn Profile
                     </a>
                 </div>
@@ -1177,14 +1227,18 @@
                 
                 // Hero Banner
                 if (data.hero) {
-                    const mediaLayer = document.getElementById('hero-media-layer');
-                    if (mediaLayer && data.hero.mediaUrl) {
-                        if (data.hero.mediaType === 'video') {
-                            mediaLayer.innerHTML = `<video src="${data.hero.mediaUrl}" muted autoplay loop playsinline class="media-element w-full h-full object-cover"></video>`;
-                        } else {
-                            mediaLayer.innerHTML = `<img src="${data.hero.mediaUrl}" class="media-element w-full h-full object-cover" alt="Hero Banner">`;
+                    if (data.hero.mediaUrl) {
+                        const heroMediaLayer = document.getElementById('hero-media-layer');
+                        if (heroMediaLayer) {
+                            const isVideo = data.hero.mediaUrl.includes('/video/upload/') || data.hero.mediaUrl.match(/\.(mp4|webm|ogg|mov)$/i);
+                            if (isVideo) {
+                                heroMediaLayer.innerHTML = `<video src="${data.hero.mediaUrl}" muted autoplay loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>`;
+                            } else {
+                                heroMediaLayer.innerHTML = `<img src="${data.hero.mediaUrl}" style="width:100%; height:100%; object-fit:cover;" loading="lazy">`;
+                            }
                         }
                     }
+
                     if (data.hero.textShadow) {
                         const heroContainer = document.getElementById('hero-banner-container');
                         if (heroContainer) {
@@ -1201,9 +1255,17 @@
                     const el = document.getElementById('core-skills-desc');
                     if (el) el.innerHTML = data.coreSkillsText.replace(/\n/g, '<br>');
                 }
+                if (data.coreSkillsFontSize) {
+                    const el = document.getElementById('core-skills-desc');
+                    if (el) el.style.fontSize = data.coreSkillsFontSize + 'px';
+                }
                 if (data.projectsText) {
                     const el = document.getElementById('projects-desc');
                     if (el) el.innerHTML = data.projectsText.replace(/\n/g, '<br>');
+                }
+                if (data.projectsFontSize) {
+                    const el = document.getElementById('projects-desc');
+                    if (el) el.style.fontSize = data.projectsFontSize + 'px';
                 }
 
                 if (data.coreSkills && Array.isArray(data.coreSkills)) {
@@ -1222,7 +1284,12 @@
                     if (data.contact.bannerUrl) {
                         const contactMediaLayer = document.getElementById('contact-media-layer');
                         if (contactMediaLayer) {
-                            contactMediaLayer.innerHTML = `<img src="${data.contact.bannerUrl}" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay" style="z-index: 1;" alt="Contact Banner">`;
+                            const isVideo = data.contact.bannerUrl.includes('/video/upload/') || data.contact.bannerUrl.match(/\.(mp4|webm|ogg|mov)$/i);
+                            if (isVideo) {
+                                contactMediaLayer.innerHTML = `<video src="${data.contact.bannerUrl}" muted autoplay loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>`;
+                            } else {
+                                contactMediaLayer.innerHTML = `<img src="${data.contact.bannerUrl}" style="width:100%; height:100%; object-fit:cover;" loading="lazy">`;
+                            }
                         }
                     }
                     

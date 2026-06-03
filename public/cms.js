@@ -143,6 +143,84 @@ class VisualCMS {
                     }
                 }
                 
+                if (action === 'update-hero-gradient') {
+                    if (!window.CMS_DATA) window.CMS_DATA = {};
+                    if (!window.CMS_DATA.hero) window.CMS_DATA.hero = {};
+                    this.saveState();
+                    window.CMS_DATA.hero.gradientEnabled = e.data.enabled;
+                    window.CMS_DATA.hero.gradientColor1 = e.data.color1;
+                    window.CMS_DATA.hero.gradientColor2 = e.data.color2;
+                    window.CMS_DATA.hero.gradientColor3 = e.data.color3;
+                    window.CMS_DATA.hero.gradientSpeed = e.data.speed;
+                    if (typeof initShaderGradients === 'function') {
+                        initShaderGradients();
+                    }
+                }
+
+                if (action === 'update-contact-gradient') {
+                    if (!window.CMS_DATA) window.CMS_DATA = {};
+                    if (!window.CMS_DATA.contact) window.CMS_DATA.contact = {};
+                    this.saveState();
+                    window.CMS_DATA.contact.gradientEnabled = e.data.enabled;
+                    window.CMS_DATA.contact.gradientColor1 = e.data.color1;
+                    window.CMS_DATA.contact.gradientColor2 = e.data.color2;
+                    window.CMS_DATA.contact.gradientColor3 = e.data.color3;
+                    window.CMS_DATA.contact.gradientSpeed = e.data.speed;
+                    if (typeof initShaderGradients === 'function') {
+                        initShaderGradients();
+                    }
+                }
+                
+                if (action === 'update-core-skills-font-size') {
+                    const el = document.getElementById('core-skills-desc');
+                    if (el) {
+                        this.saveState();
+                        el.style.fontSize = e.data.val + 'px';
+                    }
+                }
+                
+                if (action === 'update-projects-font-size') {
+                    const el = document.getElementById('projects-desc');
+                    if (el) {
+                        this.saveState();
+                        el.style.fontSize = e.data.val + 'px';
+                    }
+                }
+
+                if (action === 'update-hero-media') {
+                    const heroMediaLayer = document.getElementById('hero-media-layer');
+                    if (heroMediaLayer) {
+                        this.saveState();
+                        if (e.data.url) {
+                            const isVideo = e.data.type === 'video';
+                            if (isVideo) {
+                                heroMediaLayer.innerHTML = `<video src="${e.data.url}" muted autoplay loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>`;
+                            } else {
+                                heroMediaLayer.innerHTML = `<img src="${e.data.url}" style="width:100%; height:100%; object-fit:cover;">`;
+                            }
+                        } else {
+                            heroMediaLayer.innerHTML = '';
+                        }
+                    }
+                }
+
+                if (action === 'update-contact-media') {
+                    const contactMediaLayer = document.getElementById('contact-media-layer');
+                    if (contactMediaLayer) {
+                        this.saveState();
+                        if (e.data.url) {
+                            const isVideo = e.data.url.includes('/video/upload/') || e.data.url.match(/\.(mp4|webm|ogg|mov)$/i);
+                            if (isVideo) {
+                                contactMediaLayer.innerHTML = `<video src="${e.data.url}" muted autoplay loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>`;
+                            } else {
+                                contactMediaLayer.innerHTML = `<img src="${e.data.url}" style="width:100%; height:100%; object-fit:cover;">`;
+                            }
+                        } else {
+                            contactMediaLayer.innerHTML = '';
+                        }
+                    }
+                }
+                
                 if (action === 'insert-element') {
                     const targetEl = el || this.selectedElement;
                     if (!targetEl) {

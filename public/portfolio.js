@@ -144,7 +144,7 @@ function renderProjects(projects = allProjects) {
         const delay = (index % 10) * 100;
 
         return `
-            <a href="project.html?id=${p.id}" class="group block relative overflow-hidden rounded-[24px] bg-[#F9F9F9] border border-[#F2F2F2] transition-all duration-500 hover:shadow-2xl hover:shadow-black/5 ${gridClasses}" style="transform: translateZ(0); opacity: 0; animation: fadeUpReveal 0.6s ease-out ${delay}ms forwards;">
+            <a href="project.html?id=${p.id}" class="project-card group block relative overflow-hidden rounded-[24px] bg-[#F9F9F9] border border-[#F2F2F2] transition-all duration-500 hover:shadow-2xl hover:shadow-black/5 ${gridClasses}" style="opacity: 0;">
                 <div class="overflow-hidden relative w-full h-full ${aspectClasses}">
                     ${p.coverImage 
                         ? `<img src="${getOptThumb(p.coverImage)}" 
@@ -173,4 +173,33 @@ function renderProjects(projects = allProjects) {
             </a>
         `;
     }).join('');
+
+    if (!window.location.href.includes('edit=true') && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        const cards = grid.querySelectorAll('.project-card');
+        if (cards.length > 0) {
+            gsap.killTweensOf(cards);
+            ScrollTrigger.refresh();
+            
+            gsap.fromTo(
+                cards,
+                { y: 36, opacity: 0.85 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.65,
+                    ease: "power3.out",
+                    stagger: 0.06,
+                    scrollTrigger: {
+                        trigger: grid,
+                        start: "top 88%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        }
+    } else if (window.location.href.includes('edit=true')) {
+        grid.querySelectorAll('.project-card').forEach(card => {
+            card.style.opacity = '1';
+        });
+    }
 }

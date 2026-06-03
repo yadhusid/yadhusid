@@ -447,6 +447,40 @@
                 padding: 1.5rem !important;
             }
         }
+
+        /* Color input circle styles */
+        input[type="color"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 32px !important;
+            height: 32px !important;
+            border: 2px solid #444 !important;
+            border-radius: 50% !important;
+            overflow: hidden !important;
+            cursor: pointer !important;
+            background: transparent !important;
+            padding: 0 !important;
+            outline: none !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: border-color 0.2s, transform 0.2s !important;
+        }
+        input[type="color"]:hover {
+            border-color: var(--accent2) !important;
+            transform: scale(1.08);
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0 !important;
+            border-radius: 50% !important;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none !important;
+            border-radius: 50% !important;
+        }
+        input[type="color"]::-moz-color-swatch {
+            border: none !important;
+            border-radius: 50% !important;
+        }
     </style>
 
 </head>
@@ -2920,7 +2954,7 @@
                 contentEl.innerHTML = `
                     <div class="form-group col" style="margin-top: 0.5rem;">
                         <label>Banner Media (Image or Video)</label>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; width: 100%;">
                             <div style="display: flex; flex-direction: column; gap: 1rem;">
                                 <div id="hero-media-preview-box" style="width: 100%; aspect-ratio: 16/9; background: var(--input-bg); border-radius: 8px; border: 1px dashed var(--border); overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;">
                                     ${previewHtml}
@@ -2945,8 +2979,46 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <!-- Reserved for future right column content -->
+                            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                <div style="display: flex; flex-direction: column; padding: 1.25rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; gap: 1.25rem;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <div style="font-weight:700; font-size:0.95rem; color:#fff;">Animated Shader Gradient</div>
+                                            <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Turn WebGL fluid gradient animation on or off.</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="heroGradientToggle" ${currentHomepageData.hero?.gradientEnabled !== false ? 'checked' : ''} onchange="applyHeroGradientSettings()">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div id="gradientColorsContainer" style="display: ${currentHomepageData.hero?.gradientEnabled !== false ? 'flex' : 'none'}; flex-direction: column; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                                        <div style="font-weight:600; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted);">Choose 3 Colors</div>
+                                        
+                                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
+                                            <label style="font-size:0.85rem; color:var(--muted); min-width:80px; margin: 0;">Color 1</label>
+                                            <input type="color" id="heroGradientColor1" value="${currentHomepageData.hero?.gradientColor1 || '#9effbe'}" onchange="applyHeroGradientSettings()" style="cursor: pointer; background: transparent; padding: 0; outline: none; flex: none;">
+                                        </div>
+                                        
+                                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
+                                            <label style="font-size:0.85rem; color:var(--muted); min-width:80px; margin: 0;">Color 2</label>
+                                            <input type="color" id="heroGradientColor2" value="${currentHomepageData.hero?.gradientColor2 || '#f782ff'}" onchange="applyHeroGradientSettings()" style="cursor: pointer; background: transparent; padding: 0; outline: none; flex: none;">
+                                        </div>
+                                        
+                                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
+                                            <label style="font-size:0.85rem; color:var(--muted); min-width:80px; margin: 0;">Color 3</label>
+                                            <input type="color" id="heroGradientColor3" value="${currentHomepageData.hero?.gradientColor3 || '#9c8cff'}" onchange="applyHeroGradientSettings()" style="cursor: pointer; background: transparent; padding: 0; outline: none; flex: none;">
+                                        </div>
+
+                                        <div class="slider-container" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted);">
+                                                <span>Animation Speed</span>
+                                                <span id="heroGradientSpeedVal">${currentHomepageData.hero?.gradientSpeed !== undefined ? (currentHomepageData.hero.gradientSpeed < 0.15 ? 'Slow' : currentHomepageData.hero.gradientSpeed > 0.4 ? 'Fast' : 'Medium') : 'Medium'} (${currentHomepageData.hero?.gradientSpeed !== undefined ? currentHomepageData.hero.gradientSpeed : 0.25})</span>
+                                            </div>
+                                            <input type="range" id="heroGradientSpeed" min="0.05" max="1.0" step="0.05" value="${currentHomepageData.hero?.gradientSpeed !== undefined ? currentHomepageData.hero.gradientSpeed : 0.25}" oninput="applyHeroGradientSettings()" style="width: 100%; accent-color: var(--accent2);">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2955,19 +3027,43 @@
                 titleEl.textContent = 'Core Skills Settings';
                 
                 contentEl.innerHTML = `
-                    <div class="form-group col" style="margin-bottom: 0.5rem;">
-                        <label>Core Skills Description Paragraph</label>
-                        <textarea id="skillsTextInput" rows="4" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; width: 100%; resize: vertical;">${currentHomepageData.coreSkillsText !== undefined ? currentHomepageData.coreSkillsText : 'Senior Graphic Designer with 9+ years of experience in branding, creative direction, UI/UX, and AI-integrated design workflows. Proven track record of improving campaign performance, increasing engagement, and reducing production costs through CRO-driven strategies and AI-powered creative execution.'}</textarea>
-                        <button class="btn-primary" onclick="applySkillsText()" style="width: 100%; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">Apply text</button>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; width: 100%;">
+                        <div class="form-group col" style="margin-bottom: 0.5rem;">
+                            <label>Core Skills Description Paragraph</label>
+                            <textarea id="skillsTextInput" rows="4" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; width: 100%; resize: vertical;">${currentHomepageData.coreSkillsText !== undefined ? currentHomepageData.coreSkillsText : 'Senior Graphic Designer with 9+ years of experience in branding, creative direction, UI/UX, and AI-integrated design workflows. Proven track record of improving campaign performance, increasing engagement, and reducing production costs through CRO-driven strategies and AI-powered creative execution.'}</textarea>
+                            <button class="btn-primary" onclick="applySkillsText()" style="width: 100%; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">Apply text</button>
+                        </div>
+                        <div style="display: flex; flex-direction: column; padding: 1.25rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; gap: 1.25rem;">
+                            <div style="font-weight:700; font-size:0.95rem; color:#fff;">Text Style Options</div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted);">
+                                    <span>Font Size</span>
+                                    <span id="skillsFontSizeVal">${currentHomepageData.coreSkillsFontSize || 14}px</span>
+                                </div>
+                                <input type="range" id="skillsFontSizeSlider" min="12" max="24" value="${currentHomepageData.coreSkillsFontSize || 14}" oninput="applySkillsFontSize(this.value)" style="width: 100%; accent-color: var(--accent2);">
+                            </div>
+                        </div>
                     </div>
                 `;
             } else if (section === 'projects') {
                 titleEl.textContent = 'Projects Section Settings';
                 contentEl.innerHTML = `
-                    <div class="form-group col" style="margin-bottom: 0.5rem;">
-                        <label>Projects Description Paragraph</label>
-                        <textarea id="projectsTextInput" rows="4" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; width: 100%; resize: vertical;">${currentHomepageData.projectsText !== undefined ? currentHomepageData.projectsText : 'This is a secondary paragraph that describes my approach to various branding, UI/UX and other creative challenges over the years.'}</textarea>
-                        <button class="btn-primary" onclick="applyProjectsText()" style="width: 100%; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">Apply text</button>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; width: 100%;">
+                        <div class="form-group col" style="margin-bottom: 0.5rem;">
+                            <label>Projects Description Paragraph</label>
+                            <textarea id="projectsTextInput" rows="4" style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; width: 100%; resize: vertical;">${currentHomepageData.projectsText !== undefined ? currentHomepageData.projectsText : 'This is a secondary paragraph that describes my approach to various branding, UI/UX and other creative challenges over the years.'}</textarea>
+                            <button class="btn-primary" onclick="applyProjectsText()" style="width: 100%; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">Apply text</button>
+                        </div>
+                        <div style="display: flex; flex-direction: column; padding: 1.25rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; gap: 1.25rem;">
+                            <div style="font-weight:700; font-size:0.95rem; color:#fff;">Text Style Options</div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted);">
+                                    <span>Font Size</span>
+                                    <span id="projectsFontSizeVal">${currentHomepageData.projectsFontSize || 14}px</span>
+                                </div>
+                                <input type="range" id="projectsFontSizeSlider" min="12" max="24" value="${currentHomepageData.projectsFontSize || 14}" oninput="applyProjectsFontSize(this.value)" style="width: 100%; accent-color: var(--accent2);">
+                            </div>
+                        </div>
                     </div>
                 `;
             } else if (section === 'contact') {
@@ -2985,7 +3081,7 @@
                 });
 
                 contentEl.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
                         <div>
                             <div class="form-group col" style="margin-bottom: 0.5rem;">
                                 <label>Contact Background Image</label>
@@ -2999,6 +3095,46 @@
                         </div>
 
                         <div>
+                            <div style="display: flex; flex-direction: column; padding: 1.25rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; gap: 1.25rem; margin-bottom: 1rem;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <div style="font-weight:700; font-size:0.95rem; color:#fff;">Animated Shader Gradient</div>
+                                        <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Turn WebGL fluid gradient animation on or off for contact.</div>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="contactGradientToggle" ${contact.gradientEnabled !== false ? 'checked' : ''} onchange="applyContactGradientSettings()">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                
+                                <div id="contactGradientColorsContainer" style="display: ${contact.gradientEnabled !== false ? 'flex' : 'none'}; flex-direction: column; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                                    <div style="font-weight:600; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted);">Choose 3 Colors</div>
+                                    
+                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
+                                        <label style="font-size:0.85rem; color:var(--muted); min-width:80px; margin: 0;">Color 1</label>
+                                        <input type="color" id="contactGradientColor1" value="${contact.gradientColor1 || '#9effbe'}" onchange="applyContactGradientSettings()" style="cursor: pointer; background: transparent; padding: 0; outline: none; flex: none;">
+                                    </div>
+                                    
+                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
+                                        <label style="font-size:0.85rem; color:var(--muted); min-width:80px; margin: 0;">Color 2</label>
+                                        <input type="color" id="contactGradientColor2" value="${contact.gradientColor2 || '#f782ff'}" onchange="applyContactGradientSettings()" style="cursor: pointer; background: transparent; padding: 0; outline: none; flex: none;">
+                                    </div>
+                                    
+                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
+                                        <label style="font-size:0.85rem; color:var(--muted); min-width:80px; margin: 0;">Color 3</label>
+                                        <input type="color" id="contactGradientColor3" value="${contact.gradientColor3 || '#9c8cff'}" onchange="applyContactGradientSettings()" style="cursor: pointer; background: transparent; padding: 0; outline: none; flex: none;">
+                                    </div>
+
+                                    <div class="slider-container" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted);">
+                                            <span>Animation Speed</span>
+                                            <span id="contactGradientSpeedVal">${contact.gradientSpeed !== undefined ? (contact.gradientSpeed < 0.15 ? 'Slow' : contact.gradientSpeed > 0.4 ? 'Fast' : 'Medium') : 'Medium'} (${contact.gradientSpeed !== undefined ? contact.gradientSpeed : 0.25})</span>
+                                        </div>
+                                        <input type="range" id="contactGradientSpeed" min="0.05" max="1.0" step="0.05" value="${contact.gradientSpeed !== undefined ? contact.gradientSpeed : 0.25}" oninput="applyContactGradientSettings()" style="width: 100%; accent-color: var(--accent2);">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group col" style="margin-bottom: 0.5rem;">
                                 <label>Phone Numbers</label>
                                 <div id="contactPhonesList">${phonesHtml}</div>
@@ -3040,11 +3176,56 @@
             currentHomepageData.projectsText = document.getElementById('projectsTextInput').value;
             showToast('Projects text applied locally');
         }
+        function applySkillsFontSize(val) {
+            const display = document.getElementById('skillsFontSizeVal');
+            if (display) display.textContent = val + 'px';
+            
+            if (!currentHomepageData) currentHomepageData = {};
+            currentHomepageData.coreSkillsFontSize = parseInt(val, 10);
+            
+            // Send live preview update to iframe
+            const iframe = document.getElementById('visual-iframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    source: 'cms-dashboard',
+                    action: 'update-core-skills-font-size',
+                    val: parseInt(val, 10)
+                }, '*');
+            }
+        }
+        function applyProjectsFontSize(val) {
+            const display = document.getElementById('projectsFontSizeVal');
+            if (display) display.textContent = val + 'px';
+            
+            if (!currentHomepageData) currentHomepageData = {};
+            currentHomepageData.projectsFontSize = parseInt(val, 10);
+            
+            // Send live preview update to iframe
+            const iframe = document.getElementById('visual-iframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    source: 'cms-dashboard',
+                    action: 'update-projects-font-size',
+                    val: parseInt(val, 10)
+                }, '*');
+            }
+        }
         function removeHeroMedia() {
             if (currentHomepageData.hero) {
                 currentHomepageData.hero.mediaUrl = null;
                 currentHomepageData.hero.mediaPublicId = null;
                 currentHomepageData.hero.mediaType = null;
+                
+                // Send live preview update to iframe
+                const iframe = document.getElementById('visual-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({
+                        source: 'cms-dashboard',
+                        action: 'update-hero-media',
+                        url: null
+                    }, '*');
+                }
+                
                 if (activeHomepageSection === 'hero') selectHomepageSection('hero');
             }
         }
@@ -3093,6 +3274,16 @@
                 currentHomepageData.contact.bannerUrl = data.url;
                 currentHomepageData.contact.bannerPublicId = data.public_id;
                 
+                // Send live preview update to iframe
+                const iframe = document.getElementById('visual-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({
+                        source: 'cms-dashboard',
+                        action: 'update-contact-media',
+                        url: data.url
+                    }, '*');
+                }
+                
                 if (activeHomepageSection === 'contact') selectHomepageSection('contact'); // re-render
                 showToast("Banner uploaded! Don't forget to Publish.");
             } catch (err) {
@@ -3105,6 +3296,17 @@
             if (currentHomepageData.contact) {
                 currentHomepageData.contact.bannerUrl = null;
                 currentHomepageData.contact.bannerPublicId = null;
+                
+                // Send live preview update to iframe
+                const iframe = document.getElementById('visual-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({
+                        source: 'cms-dashboard',
+                        action: 'update-contact-media',
+                        url: null
+                    }, '*');
+                }
+                
                 if (activeHomepageSection === 'contact') selectHomepageSection('contact');
             }
         }
@@ -3130,6 +3332,102 @@
             }
         }
 
+        function applyHeroGradientSettings() {
+            const toggle = document.getElementById('heroGradientToggle');
+            const c1 = document.getElementById('heroGradientColor1');
+            const c2 = document.getElementById('heroGradientColor2');
+            const c3 = document.getElementById('heroGradientColor3');
+            const speedSlider = document.getElementById('heroGradientSpeed');
+            const colorsContainer = document.getElementById('gradientColorsContainer');
+            if (!toggle) return;
+
+            if (!currentHomepageData.hero) currentHomepageData.hero = {};
+            currentHomepageData.hero.gradientEnabled = toggle.checked;
+            
+            if (colorsContainer) {
+                colorsContainer.style.display = toggle.checked ? 'flex' : 'none';
+            }
+
+            if (c1 && c2 && c3) {
+                currentHomepageData.hero.gradientColor1 = c1.value;
+                currentHomepageData.hero.gradientColor2 = c2.value;
+                currentHomepageData.hero.gradientColor3 = c3.value;
+            }
+
+            let speed = 0.25;
+            if (speedSlider) {
+                speed = parseFloat(speedSlider.value);
+                currentHomepageData.hero.gradientSpeed = speed;
+                const speedValEl = document.getElementById('heroGradientSpeedVal');
+                if (speedValEl) {
+                    const label = speed < 0.15 ? 'Slow' : speed > 0.4 ? 'Fast' : 'Medium';
+                    speedValEl.textContent = `${label} (${speed})`;
+                }
+            }
+            
+            // Send live preview update to iframe
+            const iframe = document.getElementById('visual-iframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    source: 'cms-dashboard',
+                    action: 'update-hero-gradient',
+                    enabled: toggle.checked,
+                    color1: c1 ? c1.value : '#9effbe',
+                    color2: c2 ? c2.value : '#f782ff',
+                    color3: c3 ? c3.value : '#9c8cff',
+                    speed: speed
+                }, '*');
+            }
+        }
+
+        function applyContactGradientSettings() {
+            const toggle = document.getElementById('contactGradientToggle');
+            const c1 = document.getElementById('contactGradientColor1');
+            const c2 = document.getElementById('contactGradientColor2');
+            const c3 = document.getElementById('contactGradientColor3');
+            const speedSlider = document.getElementById('contactGradientSpeed');
+            const colorsContainer = document.getElementById('contactGradientColorsContainer');
+            if (!toggle) return;
+
+            if (!currentHomepageData.contact) currentHomepageData.contact = {};
+            currentHomepageData.contact.gradientEnabled = toggle.checked;
+            
+            if (colorsContainer) {
+                colorsContainer.style.display = toggle.checked ? 'flex' : 'none';
+            }
+
+            if (c1 && c2 && c3) {
+                currentHomepageData.contact.gradientColor1 = c1.value;
+                currentHomepageData.contact.gradientColor2 = c2.value;
+                currentHomepageData.contact.gradientColor3 = c3.value;
+            }
+
+            let speed = 0.25;
+            if (speedSlider) {
+                speed = parseFloat(speedSlider.value);
+                currentHomepageData.contact.gradientSpeed = speed;
+                const speedValEl = document.getElementById('contactGradientSpeedVal');
+                if (speedValEl) {
+                    const label = speed < 0.15 ? 'Slow' : speed > 0.4 ? 'Fast' : 'Medium';
+                    speedValEl.textContent = `${label} (${speed})`;
+                }
+            }
+            
+            // Send live preview update to iframe
+            const iframe = document.getElementById('visual-iframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    source: 'cms-dashboard',
+                    action: 'update-contact-gradient',
+                    enabled: toggle.checked,
+                    color1: c1 ? c1.value : '#9effbe',
+                    color2: c2 ? c2.value : '#f782ff',
+                    color3: c3 ? c3.value : '#9c8cff',
+                    speed: speed
+                }, '*');
+            }
+        }
+
         async function uploadHeroMedia(input) {
             if (!input.files || input.files.length === 0) return;
             const file = input.files[0];
@@ -3148,6 +3446,17 @@
                 currentHomepageData.hero.mediaUrl = data.url;
                 currentHomepageData.hero.mediaPublicId = data.public_id;
                 currentHomepageData.hero.mediaType = isVideo ? 'video' : 'image';
+                
+                // Send live preview update to iframe
+                const iframe = document.getElementById('visual-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({
+                        source: 'cms-dashboard',
+                        action: 'update-hero-media',
+                        url: data.url,
+                        type: isVideo ? 'video' : 'image'
+                    }, '*');
+                }
                 
                 if (activeHomepageSection === 'hero') selectHomepageSection('hero'); // re-render
                 showToast("Media uploaded! Don't forget to Publish.");
