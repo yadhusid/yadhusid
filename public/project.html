@@ -260,6 +260,67 @@
             position: relative; isolation: isolate; background: linear-gradient(135deg, #000000 0%, #1a0a2a 50%, #0a1c12 100%) !important;
         }
     </style>
+    <style>
+        /* ── Contact Card: exact homepage CSS parity ─────────────────────── */
+
+        /* global-margin: matches homepage definition */
+        .global-margin {
+            margin-left: var(--global-padding-desktop);
+            margin-right: var(--global-padding-desktop);
+        }
+        @media (max-width: 1279px) and (min-width: 768px) {
+            .global-margin {
+                margin-left: var(--global-padding-tablet);
+                margin-right: var(--global-padding-tablet);
+            }
+        }
+        @media (max-width: 767px) {
+            .global-margin {
+                margin-left: var(--global-padding-mobile);
+                margin-right: var(--global-padding-mobile);
+            }
+        }
+
+        /* Media layer z-index for WebGL gradient stacking */
+        .media-layer {
+            position: absolute; inset: 0; z-index: 1;
+            border-radius: inherit; overflow: hidden;
+        }
+        .reeded-gradient > *:not(.media-layer):not(.glass-overlay) {
+            position: relative; z-index: 10;
+        }
+
+        /* When WebGL gradient is active: hide static media, clear background */
+        #contact-banner-container:not(.gradient-disabled) #contact-media-layer {
+            display: none !important;
+        }
+        #contact-banner-container:not(.gradient-disabled) {
+            background: transparent !important;
+            overflow: hidden !important;
+        }
+
+        /* Glass overlay (reeded lines effect) */
+        .glass-overlay {
+            position: absolute; inset: 0; z-index: 2;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            pointer-events: none; border-radius: inherit;
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 10px,
+                rgba(0,0,0,0.05) 11px, rgba(0,0,0,0.05) 20px
+            );
+            background-color: rgba(255, 100, 100, 0.1);
+        }
+
+        /* Glassmorphism stability for contact link buttons */
+        .glass-card, .btn-glass, [class*="bg-white/"] {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transform: translateZ(0);
+            will-change: backdrop-filter;
+        }
+    </style>
 </head>
 <body class="bg-white">
 
@@ -336,10 +397,10 @@
 
     <script src="contactCard.js"></script>
     <script>
-        // Mobile Menu Toggle
+        // ── Mobile Menu Toggle ────────────────────────────────────────────────
         const hamburger = document.getElementById('hamburger');
         const mainNav = document.getElementById('main-nav');
-        
+
         function toggleMenu() {
             mainNav.classList.toggle('active');
             const spans = hamburger.querySelectorAll('span');
@@ -355,27 +416,200 @@
         }
         if (hamburger) hamburger.addEventListener('click', toggleMenu);
 
+        // ── WebGL Shader Gradient (same as homepage script.js) ───────────────
+        // Included inline so the contact card renders identically to homepage.
 
+        function hexToRgb(hex, defaultColor) {
+            if (!hex) return defaultColor;
+            hex = hex.replace(/^#/, '');
+            if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+            if (hex.length !== 6) return defaultColor;
+            return [
+                parseInt(hex.substring(0,2),16)/255,
+                parseInt(hex.substring(2,4),16)/255,
+                parseInt(hex.substring(4,6),16)/255
+            ];
+        }
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const projectId = urlParams.get('id');
-            if (!projectId) {
-                window.location.href = 'index.html';
-                return;
+        class ShaderGradient {
+            constructor(canvas, colors, speed) {
+                this.canvas = canvas;
+                this.gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (!this.gl) throw new Error('WebGL not supported');
+                this.colors = {
+                    color1: (colors && colors.color1) || [0.34, 1.0, 0.55],
+                    color2: (colors && colors.color2) || [0.06, 0.84, 1.0],
+                    color3: (colors && colors.color3) || [0.58, 0.65, 1.0],
+                    bg: [1.0, 1.0, 1.0]
+                };
+                this.speed = speed || 0.25;
+                this.init();
+            }
+            init() {
+                const gl = this.gl;
+                const vsSource = `attribute vec2 position; void main() { gl_Position = vec4(position, 0.0, 1.0); }`;
+                const fsSource = `
+                    precision mediump float;
+                    uniform vec2 u_resolution; uniform float u_time; uniform float u_speed;
+                    uniform vec3 u_color1; uniform vec3 u_color2; uniform vec3 u_color3; uniform vec3 u_bg;
+                    void main() {
+                        vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y) * 2.0;
+                        float t = u_time * u_speed;
+                        float zRot = p.y * 0.707;
+                        float dx = sin(p.y*0.8+t)*0.6 + sin(p.y*1.5+t*1.3)*0.3;
+                        float dy = cos(p.x*0.8+t*0.9)*0.6 + cos(p.x*1.4+t*1.1)*0.3;
+                        vec2 warped = p + vec2(dx,dy)*1.2;
+                        float wave1 = sin(warped.x*1.0+t*1.2)*cos(warped.y*1.0+t*0.8);
+                        float wave2 = cos(warped.x*1.8-t*0.9)*sin(warped.y*1.5+t*1.4);
+                        float sD = wave1*0.6 + wave2*0.4;
+                        float thr = sin(warped.y*2.0-t*0.5)*0.15;
+                        float shD = smoothstep(thr-0.05,thr+0.05,sD)*2.0-1.0;
+                        float wb = clamp(0.5+0.5*sin(p.x*1.5-t*0.6),0.0,1.0);
+                        float disp = mix(sD,shD,wb);
+                        float vPosZ = zRot + disp*1.6;
+                        vec3 c1s = u_color1*u_color1; vec3 c2s = u_color2*u_color2; vec3 c3s = u_color3*u_color3;
+                        vec3 xB = mix(c1s, c2s, smoothstep(-2.0,2.0,warped.x));
+                        float zF = clamp((vPosZ+1.8)/3.6,0.0,1.0);
+                        vec3 col = sqrt(mix(xB, c3s, zF));
+                        gl_FragColor = vec4(col,1.0);
+                    }`;
+                const vs = this._compile(vsSource, gl.VERTEX_SHADER);
+                const fs = this._compile(fsSource, gl.FRAGMENT_SHADER);
+                if (!vs || !fs) return;
+                this.program = gl.createProgram();
+                gl.attachShader(this.program, vs); gl.attachShader(this.program, fs);
+                gl.linkProgram(this.program);
+                if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
+                    console.error('Shader link failed:', gl.getProgramInfoLog(this.program)); return;
+                }
+                const verts = new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]);
+                this.buf = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, this.buf);
+                gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
+                this.aPos   = gl.getAttribLocation(this.program,'position');
+                this.uRes   = gl.getUniformLocation(this.program,'u_resolution');
+                this.uTime  = gl.getUniformLocation(this.program,'u_time');
+                this.uSpeed = gl.getUniformLocation(this.program,'u_speed');
+                this.uC1    = gl.getUniformLocation(this.program,'u_color1');
+                this.uC2    = gl.getUniformLocation(this.program,'u_color2');
+                this.uC3    = gl.getUniformLocation(this.program,'u_color3');
+                this.uBg    = gl.getUniformLocation(this.program,'u_bg');
+                this._resize();
+                window.addEventListener('resize', () => this._resize());
+            }
+            _compile(src, type) {
+                const gl = this.gl, s = gl.createShader(type);
+                gl.shaderSource(s, src); gl.compileShader(s);
+                if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+                    console.error('Shader compile error:', gl.getShaderInfoLog(s)); return null;
+                }
+                return s;
+            }
+            _resize() {
+                const gl = this.gl, w = this.canvas.clientWidth, h = this.canvas.clientHeight;
+                if (this.canvas.width!==w || this.canvas.height!==h) { this.canvas.width=w; this.canvas.height=h; }
+                gl.viewport(0,0,w,h);
+            }
+            render(time) {
+                const gl = this.gl;
+                gl.clearColor(1,1,1,1); gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.useProgram(this.program);
+                gl.enableVertexAttribArray(this.aPos);
+                gl.bindBuffer(gl.ARRAY_BUFFER, this.buf);
+                gl.vertexAttribPointer(this.aPos,2,gl.FLOAT,false,0,0);
+                gl.uniform2f(this.uRes, this.canvas.width, this.canvas.height);
+                gl.uniform1f(this.uTime, time*0.001);
+                gl.uniform1f(this.uSpeed, this.speed);
+                gl.uniform3fv(this.uC1, this.colors.color1);
+                gl.uniform3fv(this.uC2, this.colors.color2);
+                gl.uniform3fv(this.uC3, this.colors.color3);
+                gl.uniform3fv(this.uBg, this.colors.bg);
+                gl.drawArrays(gl.TRIANGLES,0,6);
+            }
+        }
+
+        // initShaderGradients — mirrors homepage version, contact card only
+        function initShaderGradients() {
+            const data = window.CMS_DATA || {};
+            const cfg  = data.contact || {};
+            const d1 = [0.62, 0.99, 0.74], d2 = [0.97, 0.51, 1.0], d3 = [0.61, 0.55, 1.0];
+
+            const container = document.getElementById('contact-banner-container');
+            if (!container) return;
+
+            // Cancel any previous animation loop
+            if (window._shaderAnimFrameId) {
+                cancelAnimationFrame(window._shaderAnimFrameId);
+                window._shaderAnimFrameId = null;
+            }
+
+            const enabled = cfg.gradientEnabled !== false;
+            if (!enabled) { container.classList.add('gradient-disabled'); return; }
+
+            container.style.position  = 'relative';
+            container.style.isolation = 'isolate';
+            container.style.background = '';
+            container.classList.remove('gradient-disabled');
+
+            // Reuse existing canvas or create one
+            let canvas = container.querySelector('.shader-gradient-canvas');
+            if (!canvas) {
+                canvas = document.createElement('canvas');
+                canvas.className = 'shader-gradient-canvas';
+                canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;border-radius:inherit;';
+                container.insertBefore(canvas, container.firstChild);
             }
 
             try {
-                const res = await fetch('/api/projects/' + projectId);
+                const speed = cfg.gradientSpeed !== undefined ? parseFloat(cfg.gradientSpeed) : 0.25;
+                const colors = {
+                    color1: hexToRgb(cfg.gradientColor1, d1),
+                    color2: hexToRgb(cfg.gradientColor2, d2),
+                    color3: hexToRgb(cfg.gradientColor3, d3),
+                    bg: [1,1,1]
+                };
+                const inst = new ShaderGradient(canvas, colors, speed);
+                (function animate(t) {
+                    inst.render(t);
+                    window._shaderAnimFrameId = requestAnimationFrame(animate);
+                })(0);
+            } catch(e) {
+                console.warn('WebGL unavailable for contact card:', e);
+                container.classList.add('gradient-disabled');
+            }
+        }
+        // Expose globally so contactCard.js can call it after rendering
+        window.initShaderGradients = initShaderGradients;
+
+        // ── Project Page Bootstrap ────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            if (!projectId) { window.location.href = 'index.html'; return; }
+
+            try {
+                // Fetch project data AND homepage CMS data in parallel.
+                // CMS data is needed so the contact card uses the exact same
+                // gradient colours/config as the homepage.
+                const [res, cmsRes] = await Promise.all([
+                    fetch('/api/projects/' + projectId),
+                    fetch('/api/homepage/data')
+                ]);
+
                 if (!res.ok) throw new Error('Project not found');
                 const project = await res.json();
+
+                // Populate window.CMS_DATA so contactCard.js and initShaderGradients
+                // both read the same source of truth as the homepage.
+                if (cmsRes.ok) {
+                    window.CMS_DATA = await cmsRes.json();
+                }
 
                 document.title = `${project.title} | Yadhu Sidharthan`;
                 document.getElementById('proj-title').textContent = project.title;
 
                 const blocksContainer = document.getElementById('project-blocks');
-                
-                // Gap exception removed for seamless integration
+
                 if (project.blocks && project.blocks.length) {
                     const sorted = project.blocks.sort((a,b) => a.order - b.order);
                     blocksContainer.innerHTML = sorted.map((b, i) => {
@@ -383,18 +617,14 @@
                         const radiusClass = `${b.radiusTop ? 'rounded-t-[32px]' : ''} ${b.radiusBottom ? 'rounded-b-[32px]' : ''}`;
                         const gapClass = b.hasGap ? 'mb-8' : '';
                         const delay = (i % 20) * 100;
-                        const animStyle = `opacity: 0; animation: fadeUpReveal 0.6s ease-out ${delay}ms forwards;`;
+                        const animStyle = `opacity:0;animation:fadeUpReveal 0.6s ease-out ${delay}ms forwards;`;
 
                         if (b.type === 'text') {
-                            content = `<div class="max-w-3xl text-[clamp(14px,1vw,16px)] text-[#444] leading-[1.8] py-8" style="${animStyle}">${b.content.replace(/\n/g, '<br>')}</div>`;
+                            content = `<div class="max-w-3xl text-[clamp(14px,1vw,16px)] text-[#444] leading-[1.8] py-8" style="${animStyle}">${b.content.replace(/\n/g,'<br>')}</div>`;
                         } else if (b.type === 'image') {
-                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}" style="${animStyle}">
-                                          <img src="${b.content}" alt="Project detail" loading="lazy">
-                                       </div>`;
+                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}" style="${animStyle}"><img src="${b.content}" alt="Project detail" loading="lazy"></div>`;
                         } else if (b.type === 'video') {
-                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}">
-                                          <video src="${b.content}" muted loop autoplay playsinline></video>
-                                       </div>`;
+                            content = `<div class="project-content-block overflow-hidden ${radiusClass} ${gapClass}"><video src="${b.content}" muted loop autoplay playsinline></video></div>`;
                         } else if (b.type === 'spacing') {
                             content = `<div class="h-12"></div>`;
                         } else if (b.type === 'divider') {
@@ -406,9 +636,11 @@
                     blocksContainer.innerHTML = '<div class="py-20 text-center text-gray-400">No content available for this project.</div>';
                 }
 
-                // Render contact card
+                // Render the EXACT same contact card as homepage.
+                // renderSharedContactCard uses window.CMS_DATA (set above) and
+                // calls initShaderGradients() (defined above) after injecting HTML.
                 if (typeof window.renderSharedContactCard === 'function') {
-                    window.renderSharedContactCard('shared-contact-container');
+                    await window.renderSharedContactCard('shared-contact-container');
                 }
 
             } catch (err) {
