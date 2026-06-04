@@ -182,7 +182,7 @@ function renderProjects(projects = allProjects) {
             
             gsap.fromTo(
                 cards,
-                { y: 36, opacity: 0.85 },
+                { y: 35, opacity: 0 },
                 {
                     y: 0,
                     opacity: 1,

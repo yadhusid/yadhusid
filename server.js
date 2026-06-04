@@ -933,6 +933,15 @@ app.get('/api/sync-html', async (req, res) => {
 });
 
 // ─── Homepage CMS Data Saving ──────────────────────────────────────────────────
+app.get('/api/homepage/data', async (req, res) => {
+    try {
+        const record = await Homepage.findOne({ key: 'index' });
+        res.json(record && record.data ? record.data : {});
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 app.post('/api/homepage/data', requireAuth, async (req, res) => {
     const { data } = req.body;
     console.log('[CMS] Saving structured homepage data');
