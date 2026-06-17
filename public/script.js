@@ -435,7 +435,7 @@ if (document.readyState === 'loading') {
     initShaderGradients();
 }
 
-// ── Hero Elements & Micro-Animations ──────────────────────────────────────────
+// ── Hero Heading Loop Animation ───────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -492,12 +492,5 @@ document.addEventListener('DOMContentLoaded', () => {
             gsap.set(heroRoles[1], { opacity: 0, display: 'none' });
             gsap.set(heroRoles[2], { opacity: 0, display: 'none' });
         }
-    }
-
-    // 2. Micro-Animations (Subtle Entrances)
-    if (!prefersReducedMotion && typeof gsap !== 'undefined') {
-        // Hero Name Reveal
-        const heroName = document.querySelector('#home p.text-white');
-        if (heroName) gsap.from(heroName, { y: 15, opacity: 0, duration: 1, ease: "power3.out", delay: 0.2 });
     }
 });
