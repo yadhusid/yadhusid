@@ -448,14 +448,23 @@ document.addEventListener('DOMContentLoaded', () => {
         heroRoles.forEach(r => r.classList.remove('translate-y-[20px]'));
         
         if (!prefersReducedMotion) {
-            // Split text into spans for staggered letter animation, preserving <br> tags
+            // Split text into word groups then letter spans for staggered animation, preserving <br> tags
             heroRoles.forEach(role => {
                 const newHtml = [];
                 role.childNodes.forEach(node => {
                     if (node.nodeType === 3) { // Text node
-                        [...node.textContent].forEach(char => {
-                            if (char === ' ') newHtml.push('<span>&nbsp;</span>');
-                            else newHtml.push(`<span style="display:inline-block">${char}</span>`);
+                        const words = node.textContent.split(' ');
+                        words.forEach((word, index) => {
+                            if (word.length > 0) {
+                                newHtml.push('<span style="display:inline-block; white-space:nowrap;">');
+                                [...word].forEach(char => {
+                                    newHtml.push(`<span class="letter-span" style="display:inline-block">${char}</span>`);
+                                });
+                                newHtml.push('</span>');
+                            }
+                            if (index < words.length - 1) {
+                                newHtml.push(' '); // Allow natural wrapping between words
+                            }
                         });
                     } else if (node.nodeType === 1) { // Element node
                         newHtml.push(node.outerHTML);
@@ -465,9 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Setup initial states
-            gsap.set(heroRoles[0].querySelectorAll('span'), { yPercent: 0, opacity: 1 });
-            gsap.set(heroRoles[1].querySelectorAll('span'), { yPercent: 100, opacity: 0 });
-            gsap.set(heroRoles[2].querySelectorAll('span'), { yPercent: 100, opacity: 0 });
+            gsap.set(heroRoles[0].querySelectorAll('.letter-span'), { yPercent: 0, opacity: 1 });
+            gsap.set(heroRoles[1].querySelectorAll('.letter-span'), { yPercent: 100, opacity: 0 });
+            gsap.set(heroRoles[2].querySelectorAll('.letter-span'), { yPercent: 100, opacity: 0 });
             
             // Ensure container visibility is handled by children spans
             gsap.set([heroRoles[1], heroRoles[2]], { opacity: 1 });
@@ -477,15 +486,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const stag = 0.02;
 
             // 0 -> 1
-            loopTl.to(heroRoles[0].querySelectorAll('span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
-                  .to(heroRoles[1].querySelectorAll('span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<")
+            loopTl.to(heroRoles[0].querySelectorAll('.letter-span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
+                  .to(heroRoles[1].querySelectorAll('.letter-span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<")
             // 1 -> 2
-                  .to(heroRoles[1].querySelectorAll('span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
-                  .to(heroRoles[2].querySelectorAll('span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<")
+                  .to(heroRoles[1].querySelectorAll('.letter-span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
+                  .to(heroRoles[2].querySelectorAll('.letter-span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<")
             // 2 -> 0
-                  .to(heroRoles[2].querySelectorAll('span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
-                  .set(heroRoles[0].querySelectorAll('span'), { yPercent: 100 })
-                  .to(heroRoles[0].querySelectorAll('span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<");
+                  .to(heroRoles[2].querySelectorAll('.letter-span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
+                  .set(heroRoles[0].querySelectorAll('.letter-span'), { yPercent: 100 })
+                  .to(heroRoles[0].querySelectorAll('.letter-span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<");
         } else {
             // Reduced motion: just show first heading cleanly
             gsap.set(heroRoles[0], { opacity: 1, y: 0 });
