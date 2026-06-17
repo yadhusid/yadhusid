@@ -499,17 +499,5 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hero Name Reveal
         const heroName = document.querySelector('#home p.text-white');
         if (heroName) gsap.from(heroName, { y: 15, opacity: 0, duration: 1, ease: "power3.out", delay: 0.2 });
-
-        // Hero Buttons Reveal
-        const buttons = document.querySelectorAll('#home a[href="#projects"], #home a[href="#contact"]');
-        if (buttons.length) gsap.from(buttons, { y: 20, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out", delay: 0.4 });
-
-        // Navbar Brand Reveal
-        const navBrand = document.querySelector('#main-nav .font-extrabold');
-        if (navBrand) gsap.from(navBrand, { x: -15, opacity: 0, duration: 1, ease: "power3.out", delay: 0.1 });
-        
-        // Navbar Desktop Links Reveal
-        const navLinks = document.querySelectorAll('#main-nav .nav-scroll:not(:first-child)');
-        if (navLinks.length) gsap.from(navLinks, { y: -10, opacity: 0, duration: 0.8, stagger: 0.08, ease: "power3.out", delay: 0.3 });
     }
 });

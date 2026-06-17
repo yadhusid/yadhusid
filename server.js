@@ -464,7 +464,13 @@ app.get('/api/projects', async (req, res) => {
     try {
         const { category, all } = req.query;
         let query = {};
-        if (!all) query.status = 'published';
+        if (!all) {
+            query.$or = [
+                { status: 'published' },
+                { status: { $exists: false } },
+                { status: null }
+            ];
+        }
         if (category) query.categoryIds = category;
 
         let projects = await Project.find(query).sort({ order: 1 });

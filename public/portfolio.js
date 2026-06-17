@@ -1,5 +1,6 @@
 let allProjects = [];
 let allCategories = [];
+let coreSkills = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchCoreSkills();
@@ -116,8 +117,8 @@ function renderProjects(projects = allProjects) {
     const grid = document.getElementById('projectsGrid');
     if (!grid) return;
 
-    // Only show published projects for public view
-    const published = projects.filter(p => p.status === 'published');
+    // Only show published projects for public view (treat missing as published for backwards compat)
+    const published = projects.filter(p => p.status === 'published' || !p.status);
 
     if (published.length === 0) {
         grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-400">Coming Soon</div>';
