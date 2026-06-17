@@ -405,7 +405,6 @@ function initShaderGradients() {
             canvas.style.borderRadius = 'inherit';
             container.insertBefore(canvas, container.firstChild);
         }
-
         try {
             const inst = new ShaderGradient(canvas, cfg.colors, cfg.speed);
             instances.push(inst);
@@ -436,48 +435,81 @@ if (document.readyState === 'loading') {
     initShaderGradients();
 }
 
-// ── Hero Word Flip Scroll Animation ───────────────────────────────────────────
+// ── Hero Elements & Micro-Animations ──────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 1. Hero Text Loop Animation (like Core Skills roll)
     const heroTitleContainer = document.getElementById('hero-title-container');
     const heroRoles = document.querySelectorAll('.hero-role');
     
-    // Check if reduced motion is enabled
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (heroTitleContainer && heroRoles.length === 3 && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReducedMotion) {
+    if (heroTitleContainer && heroRoles.length === 3 && typeof gsap !== 'undefined') {
+        // Reset tailwind classes to allow GSAP full control
+        heroRoles.forEach(r => r.classList.remove('translate-y-[20px]'));
         
-        // Hide initially
-        gsap.set(heroRoles[1], { y: 20, opacity: 0 });
-        gsap.set(heroRoles[2], { y: 20, opacity: 0 });
+        if (!prefersReducedMotion) {
+            // Split text into spans for staggered letter animation, preserving <br> tags
+            heroRoles.forEach(role => {
+                const newHtml = [];
+                role.childNodes.forEach(node => {
+                    if (node.nodeType === 3) { // Text node
+                        [...node.textContent].forEach(char => {
+                            if (char === ' ') newHtml.push('<span>&nbsp;</span>');
+                            else newHtml.push(`<span style="display:inline-block">${char}</span>`);
+                        });
+                    } else if (node.nodeType === 1) { // Element node
+                        newHtml.push(node.outerHTML);
+                    }
+                });
+                role.innerHTML = newHtml.join('');
+            });
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '#home',
-                start: 'top top',
-                end: '+=1200', // scroll distance for 3 roles
-                pin: true,
-                scrub: 1, // smooth scrub
-                snap: {
-                    snapTo: "labels", // snap to timeline labels
-                    duration: { min: 0.2, max: 0.6 },
-                    delay: 0.1,
-                    ease: "power1.inOut"
-                }
-            }
-        });
+            // Setup initial states
+            gsap.set(heroRoles[0].querySelectorAll('span'), { yPercent: 0, opacity: 1 });
+            gsap.set(heroRoles[1].querySelectorAll('span'), { yPercent: 100, opacity: 0 });
+            gsap.set(heroRoles[2].querySelectorAll('span'), { yPercent: 100, opacity: 0 });
+            
+            // Ensure container visibility is handled by children spans
+            gsap.set([heroRoles[1], heroRoles[2]], { opacity: 1 });
 
-        // Step 0 -> Step 1
-        tl.addLabel("step0")
-          .to(heroRoles[0], { y: -20, opacity: 0, duration: 1 })
-          .to(heroRoles[1], { y: 0, opacity: 1, duration: 1 }, "<0.2")
-          .addLabel("step1")
-        // Step 1 -> Step 2
-          .to(heroRoles[1], { y: -20, opacity: 0, duration: 1 }, "+=0.5") // slight pause
-          .to(heroRoles[2], { y: 0, opacity: 1, duration: 1 }, "<0.2")
-          .addLabel("step2");
-          
-    } else if (prefersReducedMotion && heroRoles.length > 0) {
-        // Fallback for reduced motion: just show first
-        gsap.set(heroRoles[0], { opacity: 1, y: 0 });
+            // Create infinite loop timeline
+            const loopTl = gsap.timeline({ repeat: -1 });
+            const stag = 0.02;
+
+            // 0 -> 1
+            loopTl.to(heroRoles[0].querySelectorAll('span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
+                  .to(heroRoles[1].querySelectorAll('span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<")
+            // 1 -> 2
+                  .to(heroRoles[1].querySelectorAll('span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
+                  .to(heroRoles[2].querySelectorAll('span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<")
+            // 2 -> 0
+                  .to(heroRoles[2].querySelectorAll('span'), { yPercent: -100, opacity: 0, duration: 0.6, stagger: stag, ease: "power2.inOut", delay: 3 })
+                  .set(heroRoles[0].querySelectorAll('span'), { yPercent: 100 })
+                  .to(heroRoles[0].querySelectorAll('span'), { yPercent: 0, opacity: 1, duration: 0.6, stagger: stag, ease: "power2.inOut" }, "<");
+        } else {
+            // Reduced motion: just show first heading cleanly
+            gsap.set(heroRoles[0], { opacity: 1, y: 0 });
+            gsap.set(heroRoles[1], { opacity: 0, display: 'none' });
+            gsap.set(heroRoles[2], { opacity: 0, display: 'none' });
+        }
+    }
+
+    // 2. Micro-Animations (Subtle Entrances)
+    if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+        // Hero Name Reveal
+        const heroName = document.querySelector('#home p.text-white');
+        if (heroName) gsap.from(heroName, { y: 15, opacity: 0, duration: 1, ease: "power3.out", delay: 0.2 });
+
+        // Hero Buttons Reveal
+        const buttons = document.querySelectorAll('#home a[href="#projects"], #home a[href="#contact"]');
+        if (buttons.length) gsap.from(buttons, { y: 20, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out", delay: 0.4 });
+
+        // Navbar Brand Reveal
+        const navBrand = document.querySelector('#main-nav .font-extrabold');
+        if (navBrand) gsap.from(navBrand, { x: -15, opacity: 0, duration: 1, ease: "power3.out", delay: 0.1 });
+        
+        // Navbar Desktop Links Reveal
+        const navLinks = document.querySelectorAll('#main-nav .nav-scroll:not(:first-child)');
+        if (navLinks.length) gsap.from(navLinks, { y: -10, opacity: 0, duration: 0.8, stagger: 0.08, ease: "power3.out", delay: 0.3 });
     }
 });
