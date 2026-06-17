@@ -436,32 +436,48 @@ if (document.readyState === 'loading') {
     initShaderGradients();
 }
 
-// ── Hero Word Flip Animation ──────────────────────────────────────────────────
+// ── Hero Word Flip Scroll Animation ───────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    const heroTitle = document.getElementById('hero-title-text');
-    if (heroTitle && typeof gsap !== 'undefined') {
-        const roles = [
-            'Creative<br class="md:hidden"> Graphics<br class="md:hidden"> Designer',
-            'Senior<br class="md:hidden"> Graphics<br class="md:hidden"> Designer',
-            'Creative<br class="md:hidden"> Director'
-        ];
-        let roleIndex = 0;
+    const heroTitleContainer = document.getElementById('hero-title-container');
+    const heroRoles = document.querySelectorAll('.hero-role');
+    
+    // Check if reduced motion is enabled
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (heroTitleContainer && heroRoles.length === 3 && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !prefersReducedMotion) {
         
-        setInterval(() => {
-            gsap.to(heroTitle, {
-                y: 15,
-                opacity: 0,
-                duration: 0.35,
-                ease: 'power2.in',
-                onComplete: () => {
-                    roleIndex = (roleIndex + 1) % roles.length;
-                    heroTitle.innerHTML = roles[roleIndex];
-                    gsap.fromTo(heroTitle, 
-                        { y: -15, opacity: 0 }, 
-                        { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }
-                    );
+        // Hide initially
+        gsap.set(heroRoles[1], { y: 20, opacity: 0 });
+        gsap.set(heroRoles[2], { y: 20, opacity: 0 });
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '#home',
+                start: 'top top',
+                end: '+=1200', // scroll distance for 3 roles
+                pin: true,
+                scrub: 1, // smooth scrub
+                snap: {
+                    snapTo: "labels", // snap to timeline labels
+                    duration: { min: 0.2, max: 0.6 },
+                    delay: 0.1,
+                    ease: "power1.inOut"
                 }
-            });
-        }, 4000);
+            }
+        });
+
+        // Step 0 -> Step 1
+        tl.addLabel("step0")
+          .to(heroRoles[0], { y: -20, opacity: 0, duration: 1 })
+          .to(heroRoles[1], { y: 0, opacity: 1, duration: 1 }, "<0.2")
+          .addLabel("step1")
+        // Step 1 -> Step 2
+          .to(heroRoles[1], { y: -20, opacity: 0, duration: 1 }, "+=0.5") // slight pause
+          .to(heroRoles[2], { y: 0, opacity: 1, duration: 1 }, "<0.2")
+          .addLabel("step2");
+          
+    } else if (prefersReducedMotion && heroRoles.length > 0) {
+        // Fallback for reduced motion: just show first
+        gsap.set(heroRoles[0], { opacity: 1, y: 0 });
     }
 });

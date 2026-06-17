@@ -1,0 +1,14 @@
+Project Path Assumption: c:\Users\Yadhu\Desktop\Portfolio_Yadhu_website
+Active Deployment: Google Cloud Run
+Database/Media: MongoDB + Cloudinary used
+Removed Services: Render/Vercel removed
+Main Run Command: npm run dev / npm start
+Main Validation Checklist:
+- Local test passed
+- Commit to GitHub
+- Cloud Run deploy passed
+- Live homepage works
+- Live CMS works
+- Uploads work
+- No console/API errors
+WARNING: Do not expose secrets (API keys, passwords, tokens, MongoDB URI, Cloudinary secrets, or ENV values) in any logs or code updates.
