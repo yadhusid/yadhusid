@@ -455,6 +455,8 @@
             appearance: none;
             width: 32px !important;
             height: 32px !important;
+            aspect-ratio: 1/1 !important;
+            flex-shrink: 0 !important;
             border: 2px solid #444 !important;
             border-radius: 50% !important;
             overflow: hidden !important;
@@ -632,9 +634,9 @@
                                 </div>
 
                                 <!-- Save Draft / Publish Buttons -->
-                                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                                    <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; flex: 1;" onclick="addProject('draft')">Save Draft</button>
-                                    <button class="btn-primary" style="flex: 1;" onclick="addProject('published')">Publish</button>
+                                <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+                                    <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; flex: 1; min-width: 120px;" onclick="addProject('draft')">Save Draft</button>
+                                    <button class="btn-primary" style="flex: 1; min-width: 120px;" onclick="addProject('published')">Publish</button>
                                 </div>
                             </div>
                             
@@ -860,9 +862,9 @@
 
                         <!-- Right Window: Configuration Sidebar -->
                         <div class="config-sidebar form-card" style="height: 100%; display: flex; flex-direction: column; padding: 2rem; margin: 0; background: var(--bg); position: relative; overflow-y: auto;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
                                 <h3 style="margin: 0; font-size: 1.25rem;">Project Details</h3>
-                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
                                     <button class="btn-primary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.6rem 1rem; font-size: 0.8rem;" onclick="saveProjectModal('draft')">Save Draft</button>
                                     <button class="btn-primary" style="padding: 0.6rem 1rem; font-size: 0.8rem;" onclick="saveProjectModal('published')">Publish</button>
                                     <button class="btn-close" onclick="closeBlockModal()" style="margin: 0; margin-left: 0.5rem; width: 36px; height: 36px; min-width: 36px; border: 1px solid var(--border); box-shadow: var(--shadow-subtle); background: var(--card); border-radius: 50%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
@@ -1568,15 +1570,23 @@
                 const errData = await res.json();
                 showToast(errData.error || 'Failed to create project', true);
             }
-        }
-
         async function deleteProject(id) {
-            if (!confirm('Delete?')) return;
-            await fetch('/api/projects/' + id, { method: 'DELETE' });
-            loadProjects();
+            if (!confirm('Delete project?')) return;
+            const originalProjects = [...allProjects];
+            allProjects = allProjects.filter(p => p.id !== id);
+            renderProjects();
+            showToast('Deleting project...', false, true);
+            try {
+                const res = await fetch('/api/projects/' + id, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                showToast('Project deleted successfully!');
+                loadProjects();
+            } catch (err) {
+                allProjects = originalProjects;
+                renderProjects();
+                showToast('Failed to delete project.', true);
+            }
         }
-
-        let modalSelectedBlockId = null;
         let modalSelectedCategories = [];
         let modalGalleryFiles = [];
         let isDraggingModalCover = false;
@@ -1771,7 +1781,7 @@
                     }
 
                     return `
-                        <div draggable="true" ondragstart="handleBlockDragStart(event, '${blockId}')" ondragend="handleBlockDragEnd(event)" ondragover="handleBlockDragOver(event)" ondragleave="handleBlockDragLeave(event)" ondrop="handleBlockDrop(event, '${blockId}')" onclick="selectBlock('${blockId}')" style="cursor: grab; width: 100%; background: var(--input-bg); border-radius: 12px; border: 1px solid var(--border); padding: 0.8rem 1rem; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.2s;">
+                        <div id="block-row-${blockId}" draggable="true" ondragstart="handleBlockDragStart(event, '${blockId}')" ondragend="handleBlockDragEnd(event)" ondragover="handleBlockDragOver(event)" ondragleave="handleBlockDragLeave(event)" ondrop="handleBlockDrop(event, '${blockId}')" onclick="selectBlock('${blockId}')" style="cursor: grab; width: 100%; background: var(--input-bg); border-radius: 12px; border: 1px solid var(--border); padding: 0.8rem 1rem; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.2s, opacity 0.2s;">
                             <div style="display: flex; align-items: center; flex: ${b.type === 'text' ? '0' : '1'};">
                                 ${leftContent}
                             </div>
@@ -1823,36 +1833,35 @@
                 const file = e.target.files[0];
                 const fd = new FormData();
                 fd.append('file', file);
+                
+                const blockRow = document.getElementById('block-row-' + id);
+                if (blockRow) blockRow.style.opacity = '0.5';
                 showToast('Uploading replacement media...');
+                
                 try {
-                    const req = await fetch('/api/projects/' + currentProjectId + '/blocks', { method: 'POST', body: fd });
-                    if (!req.ok) throw new Error('Upload failed');
-                    // We get back all blocks, but we just need the new one's url
-                    const res = await fetch('/api/projects/' + currentProjectId);
-                    const freshProj = await res.json();
+                    const uploadRes = await fetch('/api/upload-media', { method: 'POST', body: fd });
+                    if (!uploadRes.ok) throw new Error('Upload failed');
+                    const uploadData = await uploadRes.json();
                     
-                    // The new block was added to the end. We want to extract its URL and apply it to our target block.
-                    const newestBlock = freshProj.blocks[freshProj.blocks.length - 1];
-                    if (newestBlock) {
-                        const targetBlock = (modalCurrentProject.blocks || []).find(b => (b._id || b.id) === replaceBlockTargetId);
-                        if (targetBlock) {
-                            targetBlock.url = newestBlock.url;
-                            targetBlock.content = newestBlock.url;
-                            // Delete the duplicate block added at the end
-                            await fetch('/api/projects/' + currentProjectId + '/blocks/' + (newestBlock._id || newestBlock.id), { method: 'DELETE' });
-                            
-                            // Save the updated blocks array
-                            await fetch('/api/projects/' + currentProjectId + '/blocks-bulk', {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ blocks: modalCurrentProject.blocks })
-                            });
-                            renderLivePreview();
-                            showToast('Media replaced successfully.');
-                        }
+                    const patchRes = await fetch('/api/projects/' + currentProjectId + '/blocks/' + id, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: uploadData.url })
+                    });
+                    
+                    if (!patchRes.ok) throw new Error('Failed to update block data');
+                    
+                    const targetBlock = (modalCurrentProject.blocks || []).find(b => (b._id || b.id) === id);
+                    if (targetBlock) {
+                        targetBlock.url = uploadData.url;
+                        targetBlock.content = uploadData.url;
                     }
+                    
+                    renderLivePreview();
+                    showToast('Image replaced successfully');
                 } catch (err) {
                     console.error(err);
+                    if (blockRow) blockRow.style.opacity = '1';
                     showToast('Failed to replace media.', true);
                 }
             };
@@ -2312,11 +2321,25 @@
         }
 
         async function deleteBlock(bid) {
-            await fetch(`/api/projects/${currentProjectId}/blocks/${bid}`, { method: 'DELETE' });
-            
-            const res = await fetch('/api/projects/' + currentProjectId);
-            modalCurrentProject = await res.json();
-            loadBlocks();
+            const originalBlocks = [...(modalCurrentProject.blocks || [])];
+            modalCurrentProject.blocks = originalBlocks.filter(b => (b._id || b.id) !== bid);
+            if (modalSelectedBlockId === bid) modalSelectedBlockId = null;
+            renderLivePreview();
+            if (document.getElementById('blockInspector')) renderBlockInspector();
+            showToast('Deleting block...', false, true);
+
+            try {
+                const response = await fetch(`/api/projects/${currentProjectId}/blocks/${bid}`, { method: 'DELETE' });
+                if (!response.ok) throw new Error('Delete failed');
+                const res = await fetch('/api/projects/' + currentProjectId);
+                modalCurrentProject = await res.json();
+                loadBlocks();
+                showToast('Block deleted successfully!');
+            } catch (err) {
+                modalCurrentProject.blocks = originalBlocks;
+                renderLivePreview();
+                showToast('Failed to delete block. Please try again.', true);
+            }
         }
         
         async function saveProjectModal(status) {

@@ -435,3 +435,33 @@ if (document.readyState === 'loading') {
 } else {
     initShaderGradients();
 }
+
+// ── Hero Word Flip Animation ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const heroTitle = document.getElementById('hero-title-text');
+    if (heroTitle && typeof gsap !== 'undefined') {
+        const roles = [
+            'Creative<br class="md:hidden"> Graphics<br class="md:hidden"> Designer',
+            'Senior<br class="md:hidden"> Graphics<br class="md:hidden"> Designer',
+            'Creative<br class="md:hidden"> Director'
+        ];
+        let roleIndex = 0;
+        
+        setInterval(() => {
+            gsap.to(heroTitle, {
+                y: 15,
+                opacity: 0,
+                duration: 0.35,
+                ease: 'power2.in',
+                onComplete: () => {
+                    roleIndex = (roleIndex + 1) % roles.length;
+                    heroTitle.innerHTML = roles[roleIndex];
+                    gsap.fromTo(heroTitle, 
+                        { y: -15, opacity: 0 }, 
+                        { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }
+                    );
+                }
+            });
+        }, 4000);
+    }
+});

@@ -699,6 +699,35 @@ app.delete('/api/projects/:id/gallery', requireAuth, async (req, res) => {
     }
 });
 
+app.patch('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.projectId);
+        if (!project) return res.status(404).json({ error: 'Project not found' });
+        
+        const block = project.blocks.id(req.params.blockId);
+        if (!block) return res.status(404).json({ error: 'Block not found' });
+
+        if (req.body.content !== undefined) block.content = req.body.content;
+        if (req.body.url !== undefined) {
+            const oldUrl = block.url || (block.type === 'image' || block.type === 'video' ? block.content : null);
+            block.url = req.body.url;
+            if (block.type === 'image' || block.type === 'video') block.content = req.body.url;
+            
+            await project.save();
+            
+            if (oldUrl && oldUrl !== req.body.url) {
+                safeDeleteMedia(oldUrl);
+            }
+            return res.json(block);
+        }
+        
+        await project.save();
+        res.json(block);
+    } catch (err) {
+        res.status(500).json({ error: 'Could not update block' });
+    }
+});
+
 app.delete('/api/projects/:projectId/blocks/:blockId', requireAuth, async (req, res) => {
     try {
         const project = await Project.findById(req.params.projectId);
