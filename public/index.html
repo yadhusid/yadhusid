@@ -78,6 +78,9 @@
             --nav-inset: 2.1vw;
         }
         body { font-family: 'Outfit', sans-serif !important; background-color: #ffffff; color: #111111; overflow-x: hidden; }
+        .group:hover .logo-img-hover {
+            filter: brightness(0) invert(1) !important;
+        }
         
         @layer utilities {
             .font-heading { font-family: 'Outfit', sans-serif; }
@@ -374,12 +377,12 @@
         }
 
         .hero-banner-height {
-            height: 81vh; /* Scenario 2: Mobile stable height */
+            height: calc(100vh - 2 * var(--hero-outer-padding));
             overflow: hidden;
         }
         @media (min-width: 768px) {
             .hero-banner-height {
-                height: 90vh; /* Scenario 1: Tablet/Desktop stable height */
+                height: calc(100vh - 2 * var(--hero-outer-padding));
             }
         }
         
@@ -667,12 +670,12 @@
         }
 
         .hero-banner-height {
-            height: 81vh; /* Scenario 2: Mobile stable height */
+            height: calc(100vh - 2 * var(--hero-outer-padding));
             overflow: hidden;
         }
         @media (min-width: 768px) {
             .hero-banner-height {
-                height: 90vh; /* Scenario 1: Tablet/Desktop stable height */
+                height: calc(100vh - 2 * var(--hero-outer-padding));
             }
         }
         
@@ -711,26 +714,26 @@
             <div class="beading-frame"></div>
             <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
-                    <a href="#home" class="flex items-center gap-2 flex-nowrap min-w-fit cursor-pointer group nav-scroll">
-                        <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-[26.4px] h-[26.4px] flex-shrink-0 transition-transform duration-300 group-hover:scale-[1.15]">
-                        <div class="text-[15px] font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center transition-colors" style="margin: 0; padding: 0;">yadsid.com</div>
+                    <a href="#home" class="flex items-center gap-[10px] flex-nowrap min-w-fit cursor-pointer group nav-scroll">
+                        <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="logo-img-hover w-[30px] h-[30px] md:w-[32px] md:h-[32px] flex-shrink-0 transition-all duration-300">
+                        <div class="text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap leading-none flex items-center transition-colors group-hover:text-white" style="margin: 0; padding: 0;">yadsid.com</div>
                     </a>
                 </div>
                 
                 <div class="flex items-center">
                     <!-- Desktop Menu -->
                     <div class="hidden md:flex items-center gap-1 text-[14.5px] font-medium text-[#111]">
-                        <a href="#home" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Home</a>
-                        <a href="#expertise" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Core Skills</a>
-                        <a href="#projects" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/5 hover:text-black">Projects</a>
-                        <a href="#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:brightness-110 hover:-translate-y-[2px] active:scale-95 shadow-lg shadow-[#FF416C]/20">Let's Talk</a>
+                        <a href="#home" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white">Home</a>
+                        <a href="#expertise" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white">Core Skills</a>
+                        <a href="#projects" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white">Projects</a>
+                        <a href="#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:bg-none hover:bg-[#FFF0F2] hover:text-[#FF416C] hover:border-[#FF416C]/30 hover:-translate-y-[2px] active:scale-95 shadow-lg shadow-[#FF416C]/20">Let's Talk</a>
                     </div>
                     
                     <!-- Mobile Hamburger -->
-                    <button id="hamburger" class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-50 ml-2">
-                        <span class="block w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        <span class="block w-6 h-0.5 bg-black transition-all duration-300"></span>
-                        <span class="block w-6 h-0.5 bg-black transition-all duration-300"></span>
+                    <button id="hamburger" class="group md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded-full transition-all duration-300 hover:bg-black/50 z-50 ml-2">
+                        <span class="block w-6 h-0.5 bg-black group-hover:bg-white transition-all duration-300"></span>
+                        <span class="block w-6 h-0.5 bg-black group-hover:bg-white transition-all duration-300"></span>
+                        <span class="block w-6 h-0.5 bg-black group-hover:bg-white transition-all duration-300"></span>
                     </button>
                 </div>
                 </div>
@@ -738,10 +741,10 @@
             
             <!-- Mobile Menu Content (Accordion) -->
             <div id="mobile-menu-content">
-                <a href="#home" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Home</a>
-                <a href="#expertise" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Core Skills</a>
-                <a href="#projects" class="nav-scroll text-lg font-medium hover:text-[#FF416C] transition-colors" onclick="toggleMenu()">Projects</a>
-                <a href="#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-6 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:brightness-110 active:scale-95 shadow-lg shadow-[#FF416C]/20 mt-2" onclick="toggleMenu()">Let's Talk</a>
+                <a href="#home" class="nav-scroll text-lg font-medium inline-flex items-center justify-center h-[44px] px-6 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white" onclick="toggleMenu()">Home</a>
+                <a href="#expertise" class="nav-scroll text-lg font-medium inline-flex items-center justify-center h-[44px] px-6 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white" onclick="toggleMenu()">Core Skills</a>
+                <a href="#projects" class="nav-scroll text-lg font-medium inline-flex items-center justify-center h-[44px] px-6 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white" onclick="toggleMenu()">Projects</a>
+                <a href="#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-6 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:bg-none hover:bg-[#FFF0F2] hover:text-[#FF416C] hover:border-[#FF416C]/30 active:scale-95 shadow-lg shadow-[#FF416C]/20 mt-2" onclick="toggleMenu()">Let's Talk</a>
             </div>
         </nav>
     </header>
