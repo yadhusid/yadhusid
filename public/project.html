@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Yadhu Sidharthan</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -106,7 +112,7 @@
         }
 
         .glass-nav.active {
-            height: 340px;
+            height: 380px; /* Increased height for more breathing room */
             border-radius: 24px !important;
         }
 
@@ -115,7 +121,7 @@
             height: 50px;
             min-height: 50px;
             flex-shrink: 0;
-            color: #111111;
+            color: #ffffff;
             padding-left: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
             padding-right: calc(var(--global-padding-desktop) - var(--hero-outer-padding) - var(--nav-inset)) !important;
             transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -126,8 +132,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            padding: 40px 0;
+            flex-grow: 1; /* Automatically centers in remaining space */
+            gap: 28px; /* Increased gap */
+            padding-bottom: 20px; /* Visual balance */
             opacity: 0;
             transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             transform: translateY(-20px);
@@ -323,6 +330,70 @@
             transform: translateZ(0);
             will-change: backdrop-filter;
         }
+        /* --- Scrolled State Inversion (White to Black) --- */
+        header.scrolled .nav-main-row { color: #111111 !important; }
+        header.scrolled .nav-main-row .text-white { color: #111111 !important; }
+        
+        /* Logo Swap on scroll */
+        header.scrolled img[src*="LOGO_W"] { display: none !important; }
+        header.scrolled img[src*="LOGO_B"] { display: block !important; }
+        
+        /* New Nav Item Styles to Guarantee No Persistent Backgrounds and Smooth Transitions */
+        .nav-item {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            will-change: transform, background-color, backdrop-filter;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
+            transform: scale(1) translateZ(0); /* Hardware acceleration baseline */
+            transform-origin: center center;
+        }
+        .nav-item.active,
+        .nav-item:focus {
+            background: transparent !important;
+        }
+        
+        /* --- NUCLEAR TRANSPARENCY FIX FOR ALL NAV LINKS --- */
+        /* Force absolutely NO background, border, or shadow on any link by default */
+        header a.nav-scroll {
+            background: transparent !important;
+            background-color: transparent !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        /* Scrolled Rectangular Navbar - Default Link State */
+        header.scrolled .md\:flex a.nav-scroll,
+        header.scrolled #mobile-menu-content a.nav-scroll {
+            color: #111111 !important;
+        }
+
+        /* Floating Navbar - Hover State for All Links (White Pill Button Style) */
+        header:not(.scrolled) .md\:flex a.nav-scroll:hover,
+        header:not(.scrolled) #mobile-menu-content a.nav-scroll:hover {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            color: #111111 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Scrolled Rectangular Navbar - Hover State for All Links (Black Pill Button Style) */
+        header.scrolled .md\:flex a.nav-scroll:hover,
+        header.scrolled #mobile-menu-content a.nav-scroll:hover {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Hamburger Menu */
+        header.scrolled #hamburger span { background-color: #111111 !important; }
+        header.scrolled #hamburger:hover span { background-color: #ffffff !important; }
+        header.scrolled #hamburger:hover { background-color: rgba(0,0,0,0.8) !important; }
     </style>
 </head>
 <body class="bg-white">
@@ -331,38 +402,39 @@
         <nav class="glass-nav relative" id="main-nav">
             <!-- Beading Frame: Bridges gap to banner edges -->
             <div class="beading-frame" style="display: none;"></div>
-            <div class="nav-main-row flex items-center justify-between flex-nowrap w-full">
+            <div class="nav-main-row flex items-center justify-between flex-nowrap w-full text-white">
                 <div class="flex items-center gap-2 flex-nowrap min-w-fit">
-                    <a href="/#home" class="flex items-center gap-[10px] flex-nowrap min-w-fit cursor-pointer group nav-scroll">
-                        <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="logo-img-hover w-[30px] h-[30px] md:w-[32px] md:h-[32px] flex-shrink-0 transition-all duration-300">
-                        <div class="text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap leading-none flex items-center transition-colors group-hover:text-white" style="margin: 0; padding: 0;">yadsid.com</div>
+                    <a href="/#home" class="flex items-center gap-[10px] flex-nowrap min-w-fit cursor-pointer nav-scroll">
+                        <img src="/Yadsid_LOGO_W.svg" alt="Yadsid Logo" class="w-[30px] h-[30px] md:w-[32px] md:h-[32px] flex-shrink-0 transition-all duration-300 block">
+                        <img src="/Yadsid_LOGO_B.svg" alt="Yadsid Logo" class="w-[30px] h-[30px] md:w-[32px] md:h-[32px] flex-shrink-0 transition-all duration-300 hidden">
+                        <div class="text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap leading-none flex items-center text-white" style="margin: 0; padding: 0;">yadsid.com</div>
                     </a>
                 </div>
                 
                 <div class="flex items-center">
                     <!-- Desktop Menu -->
-                    <div class="hidden md:flex items-center gap-1 text-[14.5px] font-medium text-[#111]">
-                        <a href="/#home" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white">Home</a>
-                        <a href="/#expertise" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white">Core Skills</a>
-                        <a href="/#projects" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white">Projects</a>
-                        <a href="/#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:bg-none hover:bg-[#FFF0F2] hover:text-[#FF416C] hover:border-[#FF416C]/30 hover:-translate-y-[2px] active:scale-95 shadow-lg shadow-[#FF416C]/20">Let's Talk</a>
+                    <div class="hidden md:flex items-center gap-1 text-[14.5px] font-medium text-white">
+                        <a href="/#home" class="nav-scroll inline-flex items-center justify-center px-5 py-1.5 rounded-full transition-all duration-300 text-white">Home</a>
+                        <a href="/#expertise" class="nav-scroll inline-flex items-center justify-center px-5 py-1.5 rounded-full transition-all duration-300 text-white">Core Skills</a>
+                        <a href="/#projects" class="nav-scroll inline-flex items-center justify-center px-5 py-1.5 rounded-full transition-all duration-300 text-white">Projects</a>
+                        <a href="/#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-5 rounded-full transition-all duration-300 text-white">Let's Talk</a>
                     </div>
                     
                     <!-- Mobile Hamburger -->
-                    <button id="hamburger" class="group md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded-full transition-all duration-300 hover:bg-black/50 z-50 ml-2">
-                        <span class="block w-6 h-0.5 bg-black group-hover:bg-white transition-all duration-300"></span>
-                        <span class="block w-6 h-0.5 bg-black group-hover:bg-white transition-all duration-300"></span>
-                        <span class="block w-6 h-0.5 bg-black group-hover:bg-white transition-all duration-300"></span>
+                    <button id="hamburger" class="group md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded-full transition-all duration-300 hover:bg-white z-50 ml-2">
+                        <span class="block w-6 h-0.5 bg-white group-hover:bg-black transition-all duration-300"></span>
+                        <span class="block w-6 h-0.5 bg-white group-hover:bg-black transition-all duration-300"></span>
+                        <span class="block w-6 h-0.5 bg-white group-hover:bg-black transition-all duration-300"></span>
                     </button>
                 </div>
             </div>
             
             <!-- Mobile Menu Content -->
             <div id="mobile-menu-content" class="hidden flex-col items-center justify-center gap-6 py-10 opacity-0 pointer-events-none transition-all duration-500">
-                <a href="/#home" class="nav-scroll text-lg font-medium inline-flex items-center justify-center h-[44px] px-6 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white" onclick="toggleMenu()">Home</a>
-                <a href="/#expertise" class="nav-scroll text-lg font-medium inline-flex items-center justify-center h-[44px] px-6 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white" onclick="toggleMenu()">Core Skills</a>
-                <a href="/#projects" class="nav-scroll text-lg font-medium inline-flex items-center justify-center h-[44px] px-6 rounded-full transition-all duration-300 hover:bg-black/50 hover:!text-white" onclick="toggleMenu()">Projects</a>
-                <a href="/#contact" class="nav-scroll inline-flex items-center justify-center h-[38px] px-6 rounded-full transition-all duration-300 bg-gradient-to-r from-[#FF416C]/80 to-[#FF4B2B]/80 backdrop-blur-xl border border-white/60 text-white hover:bg-none hover:bg-[#FFF0F2] hover:text-[#FF416C] hover:border-[#FF416C]/30 active:scale-95 shadow-lg shadow-[#FF416C]/20 mt-2" onclick="toggleMenu()">Let's Talk</a>
+                <a href="/#home" class="nav-scroll text-lg font-medium inline-flex items-center justify-center px-6 py-2 rounded-full transition-all duration-300 text-white w-fit" onclick="toggleMenu()">Home</a>
+                <a href="/#expertise" class="nav-scroll text-lg font-medium inline-flex items-center justify-center px-6 py-2 rounded-full transition-all duration-300 text-white w-fit" onclick="toggleMenu()">Core Skills</a>
+                <a href="/#projects" class="nav-scroll text-lg font-medium inline-flex items-center justify-center px-6 py-2 rounded-full transition-all duration-300 text-white w-fit" onclick="toggleMenu()">Projects</a>
+                <a href="/#contact" class="nav-scroll inline-flex items-center justify-center h-[44px] px-6 rounded-full transition-all duration-300 text-white w-fit" onclick="toggleMenu()">Let's Talk</a>
             </div>
         </nav>
     </header>
