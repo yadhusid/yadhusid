@@ -7,6 +7,8 @@ const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first'); // Fix for Node 17+ IPv6 DNS resolution breaking MongoDB Atlas M0
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 
