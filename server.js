@@ -32,17 +32,36 @@ let otps = {}; // Temp store for password reset OTPs
 
 // ─── MongoDB Connection ──────────────────────────────────────────────────────
 let isOfflineMode = false;
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('📦 Connected to MongoDB Atlas'))
-    .catch(err => {
+const defaultUri = 'mongodb+srv://yadhusid:Mongodbportfolio1@cluster0.buietat.mongodb.net/test?appName=Cluster0';
+const connectDB = async () => {
+    try {
+        let uri = process.env.MONGODB_URI || defaultUri;
+        if (uri.includes('/portfolio?')) {
+            uri = uri.replace('/portfolio?', '/test?');
+        } else if (!uri.includes('/test?')) {
+            uri = uri.replace('/?', '/test?');
+        }
+        
+        await mongoose.connect(uri, {
+            serverSelectionTimeoutMS: 5000
+        });
+        console.log('📦 Connected to MongoDB Atlas');
+    } catch (err) {
         console.error('❌ MongoDB Connection Error:', err);
+        // Do not fallback to mock DB in production, let it crash and restart
+        if (process.env.NODE_ENV === 'production' || process.env.K_SERVICE) {
+            console.error('In production, failing fast to allow Cloud Run to restart container.');
+            process.exit(1);
+        }
         console.log('⚠️ Network/DNS error detected. Falling back to Local Mock DB for development/sandbox preview.');
         isOfflineMode = true;
         const mock = require('./mock_db.js');
         User = mock.User;
         Category = mock.Category;
         Project = mock.Project;
-    });
+    }
+};
+connectDB();
 
 // ─── Models ──────────────────────────────────────────────────────────────────
 const UserSchema = new mongoose.Schema({
